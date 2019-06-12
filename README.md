@@ -1,5 +1,7 @@
 # TEAM ORGANIZER
 
+## DESCRIPTION
+
 This is a web app that will manage tasks within workteams in such a way that it conveys to each member his/her own contributions to one or several projects. The projoct has the following considerations:
 
 * It is like the anteroom for a Project Management, in which the team(s) can start outlining the Work Breakdown Structure of the projects and start defining tasks, scopes, responsibles, temptative timelines, etc.
