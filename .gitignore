@@ -4,3 +4,8 @@ npm-debug.log
 .env
 config/config.json
 pushNot/
+
+# Stop listen for changes:
+# git update-index --assume-unchanged <file>
+# Listen for changes again:
+# git update-index --no-assume-unchanged <file>
