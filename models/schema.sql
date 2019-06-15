@@ -2,13 +2,15 @@
 
 USE wycgc3g4apmhrsf3;
 
+
 -- ================================== Basic tables 
 
 CREATE TABLE users (
 	id INT NOT NULL AUTO_INCREMENT,
     user_name VARCHAR(128) NOT NULL,
+    user_password VARCHAR(64) NOT NULL,
     phone_number INT,
-    email VARCHAR (64),
+    email VARCHAR (128),
     is_admin BOOLEAN,
 	PRIMARY KEY (id)
 );
@@ -22,20 +24,20 @@ CREATE TABLE projects (
 
 CREATE TABLE categories (
 	id INT NOT NULL AUTO_INCREMENT,
-	category_name VARCHAR(64),
+	category_name VARCHAR(64) NOT NULL,
     description VARCHAR(256),
     PRIMARY KEY (id)
 );
 
 CREATE TABLE chat_messages (
     id INT NOT NULL AUTO_INCREMENT,
-    message VARCHAR(1024) NOT NULL,
+    chat_message VARCHAR(1024) NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE mail_messages (
     id INT NOT NULL AUTO_INCREMENT,
-    message VARCHAR(2048) NOT NULL,
+    mail_message VARCHAR(2048) NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -45,7 +47,7 @@ CREATE TABLE mail_messages (
 CREATE TABLE tasks (
     id INT NOT NULL AUTO_INCREMENT,
     description VARCHAR(512),
-    category INT,
+    task_category INT,
     FOREIGN KEY (category)
         REFERENCES categories (id)
         ON UPDATE CASCADE ON DELETE CASCADE,
@@ -60,6 +62,7 @@ CREATE TABLE tasks (
         ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (id)
 );
+
 
 -- ================================== Mixed tables 
 
