@@ -7,6 +7,18 @@ module.exports = function (sequelize, DataTypes) {
         }
     });
 
+    chat_messages.associate = function (models) {
+        chat_messages.belongsTo(models.users, {
+
+            foreignKey: {
+                name: "message_creator",
+                allowNull: false
+            }
+
+        });
+
+    }
+
     return chat_messages;
 
 };

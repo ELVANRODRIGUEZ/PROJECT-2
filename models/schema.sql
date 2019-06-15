@@ -29,20 +29,8 @@ CREATE TABLE categories (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE chat_messages (
-    id INT NOT NULL AUTO_INCREMENT,
-    chat_message VARCHAR(1024) NOT NULL,
-    PRIMARY KEY (id)
-);
 
-CREATE TABLE mail_messages (
-    id INT NOT NULL AUTO_INCREMENT,
-    mail_message VARCHAR(2048) NOT NULL,
-    PRIMARY KEY (id)
-);
-
-
--- ================================== Task table 
+-- ================================== Related tables 
 
 CREATE TABLE tasks (
     id INT NOT NULL AUTO_INCREMENT,
@@ -58,6 +46,26 @@ CREATE TABLE tasks (
         ON UPDATE CASCADE ON DELETE CASCADE,
     created_by INT,
     FOREIGN KEY (created_by)
+        REFERENCES users (id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE chat_messages (
+    id INT NOT NULL AUTO_INCREMENT,
+    chat_message VARCHAR(1024) NOT NULL,
+    message_creator INT NOT NULL,
+    FOREIGN KEY fk_message_creator(message_creator)
+        REFERENCES users (id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE mail_messages (
+    id INT NOT NULL AUTO_INCREMENT,
+    mail_message VARCHAR(2048) NOT NULL,
+    message_creator INT NOT NULL,
+    FOREIGN KEY fk_message_creator(message_creator)
         REFERENCES users (id)
         ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (id)
@@ -80,7 +88,7 @@ CREATE TABLE project_users (
 );
 
 CREATE TABLE tasks_responsibles (
-	task INT NOT NULL, 
+	task_id INT NOT NULL, 
     responsible INT NOT NULL,
     FOREIGN KEY fk_task(task)
 		REFERENCES tasks(id)
@@ -93,9 +101,9 @@ CREATE TABLE tasks_responsibles (
 );
 
 CREATE TABLE chat_mess_tasks (
-	task INT NOT NULL, 
+	task_id INT NOT NULL, 
     chat_message INT NOT NULL,
-    FOREIGN KEY fk_task(task)
+    FOREIGN KEY fk_task_id(task_id)
 		REFERENCES tasks(id)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
@@ -106,9 +114,9 @@ CREATE TABLE chat_mess_tasks (
 );
 
 CREATE TABLE mail_mess_tasks (
-	task INT NOT NULL, 
+	task_id INT NOT NULL, 
     mail_message INT NOT NULL,
-    FOREIGN KEY fk_task(task)
+    FOREIGN KEY fk_task_id(task_id)
 		REFERENCES tasks(id)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
@@ -117,3 +125,4 @@ CREATE TABLE mail_mess_tasks (
         ON UPDATE CASCADE
         ON DELETE CASCADE
 );
+

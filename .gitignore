@@ -2,7 +2,7 @@
 node_modules
 npm-debug.log
 .env
-config/config.json
+
 pushNot/
 
 # Stop listen for changes:

@@ -7,6 +7,18 @@ module.exports = function (sequelize, DataTypes) {
         }
     });
 
+    mail_messages.associate = function (models) {
+        mail_messages.belongsTo(models.users, {
+
+            foreignKey: {
+                name: "message_creator",
+                allowNull: false
+            }
+
+        });
+
+    }
+
     return mail_messages;
 
 };
