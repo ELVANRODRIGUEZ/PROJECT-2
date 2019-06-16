@@ -4,7 +4,7 @@ module.exports = function (sequelize, DataTypes) {
 
     project_users.associate = function (models) {
 
-        project_users.belongsTo(models.Projects, {
+        project_users.belongsTo(models.projects, {
             foreignKey: {
                name: "project_name",
                allowNull: false
@@ -12,7 +12,7 @@ module.exports = function (sequelize, DataTypes) {
 
         });
 
-        project_users.belongsTo(models.Users, {
+        project_users.belongsTo(models.users, {
 
             foreignKey: {
                name: "user_name",
