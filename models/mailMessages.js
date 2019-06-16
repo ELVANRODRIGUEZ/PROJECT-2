@@ -11,7 +11,7 @@ module.exports = function (sequelize, DataTypes) {
         mail_messages.belongsTo(models.users, {
 
             foreignKey: {
-                name: "message_creator",
+                name: "creator",
                 allowNull: false
             }
 
