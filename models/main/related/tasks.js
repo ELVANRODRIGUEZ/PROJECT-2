@@ -6,19 +6,19 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     tasks.associate = function (models) {
-        tasks.belongsTo(models.users, {
+        tasks.belongsTo(models.Users, {
             foreignKey: {
                name: "created_by",
                allowNull: false
             }
         });
-        tasks.belongsTo(models.categories, {
+        tasks.belongsTo(models.Categories, {
             foreignKey: {
                name: "task_category",
                allowNull: false
             }
         });
-        tasks.belongsTo(models.tasks, {
+        tasks.belongsTo(models.Tasks, {
             foreignKey: {
                name: "parent_id"
             }

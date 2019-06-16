@@ -4,7 +4,7 @@ module.exports = function (sequelize, DataTypes) {
 
     tasks_responsibles.associate = function (models) {
 
-        tasks_responsibles.belongsTo(models.tasks, {
+        tasks_responsibles.belongsTo(models.Tasks, {
             foreignKey: {
                name: "task_id",
                allowNull: false
@@ -12,7 +12,7 @@ module.exports = function (sequelize, DataTypes) {
 
         });
 
-        tasks_responsibles.belongsTo(models.users, {
+        tasks_responsibles.belongsTo(models.Users, {
 
             foreignKey: {
                name: "responsible",

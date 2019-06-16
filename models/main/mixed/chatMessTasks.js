@@ -4,7 +4,7 @@ module.exports = function (sequelize, DataTypes) {
 
     chat_mess_tasks.associate = function (models) {
 
-        chat_mess_tasks.belongsTo(models.tasks, {
+        chat_mess_tasks.belongsTo(models.Tasks, {
 
             foreignKey: {
                name: "task_id",
@@ -13,7 +13,7 @@ module.exports = function (sequelize, DataTypes) {
 
         });
 
-        chat_mess_tasks.belongsTo(models.chat_messages, {
+        chat_mess_tasks.belongsTo(models.ChatMessages, {
 
             foreignKey: {
                name: "chat_mess",

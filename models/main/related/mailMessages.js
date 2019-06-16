@@ -8,7 +8,7 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     mail_messages.associate = function (models) {
-        mail_messages.belongsTo(models.users, {
+        mail_messages.belongsTo(models.Users, {
 
             foreignKey: {
                 name: "creator",

@@ -8,6 +8,7 @@ module.exports = function (sequelize, DataTypes) {
         is_admin: DataTypes.BOOLEAN
     });
 
+    
     return users;
 
 };

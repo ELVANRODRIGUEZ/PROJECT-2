@@ -8,7 +8,7 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     chat_messages.associate = function (models) {
-        chat_messages.belongsTo(models.users, {
+        chat_messages.belongsTo(models.Users, {
 
             foreignKey: {
                 name: "message_creator",
