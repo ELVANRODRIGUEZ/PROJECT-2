@@ -1,12 +1,15 @@
 "use strict";
 
 var fs = require("fs");
+var util = require("util");
 var path = require("path");
 var Sequelize = require("sequelize");
 var basename = path.basename(module.filename);
 var env = process.env.NODE_ENV || "production";
 var config = require(__dirname + "/../config/config.json")[env];
 var db = {};
+
+//  Generate database connection.
 
 if (config.use_env_variable) {
 
@@ -27,7 +30,7 @@ if (config.use_env_variable) {
 
 }
 
-//  Read from "main/basic" folder.
+//  Read models from "main/basic" folder.
 
 fs.readdirSync(path.join(__dirname, "./main/basic/"))
   .filter(function (file) {
@@ -40,7 +43,7 @@ fs.readdirSync(path.join(__dirname, "./main/basic/"))
     db[model.name] = model;
   });
 
-//  Read from "main/related" folder.
+//  Read models from "main/related" folder.
 
 fs.readdirSync(path.join(__dirname, "./main/related/"))
   .filter(function (file) {
@@ -53,7 +56,7 @@ fs.readdirSync(path.join(__dirname, "./main/related/"))
     db[model.name] = model;
   });
 
-//  Read from "main/mixed" folder.
+//  Read models from "main/mixed" folder.
 
 fs.readdirSync(path.join(__dirname, "./main/mixed/"))
   .filter(function (file) {
