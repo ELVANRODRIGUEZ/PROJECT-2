@@ -11,24 +11,24 @@ var db = {};
 
 //  Generate database connection.
 
-if (config.use_env_variable) {
+// if (config.use_env_variable) {
 
-  var sequelize = new Sequelize(process.env[config.use_env_variable]);
+//   var sequelize = new Sequelize(process.env[config.use_env_variable]);
 
-} else {
+// } else {
 
   var sequelize = new Sequelize(
 
-    process.env.DATABASE,
-    process.env.USER_NAME,
-    process.env.PASSWORD, {
-      host: process.env.HOST,
+    process.env.DATABASE_2,
+    process.env.USER_NAME_2,
+    process.env.PASSWORD_2, {
+      host: "localhost",
       dialect: "mysql"
     }
 
   );
 
-}
+// }
 
 //  Read models from "main/basic" folder.
 

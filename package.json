@@ -1,7 +1,7 @@
 {
-  "name": "node-handlebars-boilerplate",
+  "name": "team-orginizer",
   "version": "1.0.0",
-  "description": "Project 2 Starter",
+  "description": "Project 2",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -11,10 +11,14 @@
   },
   "license": "ISC",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "dotenv": "^8.0.0",
     "express": "^4.17.0",
     "express-handlebars": "^3.1.0",
+    "express-session": "^1.16.2",
     "mysql2": "^1.6.5",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "sequelize": "^5.8.6",
     "util": "^0.12.0"
   },

@@ -2,7 +2,15 @@ module.exports = function (sequelize, DataTypes) {
 
     var tasks = sequelize.define("tasks", {
         description: DataTypes.STRING(512),
-        dead_line: DataTypes.DATE
+        dead_line: DataTypes.DATE,
+        accomplished: {
+            type: DataTypes.FLOAT,
+            validate: {
+                min: 0,
+                max: 1 
+            },
+            defaultValue: 0
+        }
     });
 
     tasks.associate = function (models) {
