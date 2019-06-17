@@ -27,11 +27,19 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: false
     }
   }, {
+<<<<<<< HEAD
     hooks: {
       beforeCreate: function (user) {
         users.password = bcrypt.hashSync(users.password, bcrypt.genSaltSync(10), null);
       }
     }
+=======
+  hooks: {
+  beforeCreate: function(users) {
+  users.password = bcrypt.hashSync(users.password, bcrypt.genSaltSync(10), null);
+  }
+  }
+>>>>>>> 147f5cb528f60b8eef60a34fd563ce6a4b17e929
   })
 
   // Creating a custom method for our User model. 
