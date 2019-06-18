@@ -27,19 +27,11 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: false
     }
   }, {
-<<<<<<< HEAD
     hooks: {
-      beforeCreate: function (user) {
+      beforeCreate: function (users) {
         users.password = bcrypt.hashSync(users.password, bcrypt.genSaltSync(10), null);
       }
     }
-=======
-  hooks: {
-  beforeCreate: function(users) {
-  users.password = bcrypt.hashSync(users.password, bcrypt.genSaltSync(10), null);
-  }
-  }
->>>>>>> 147f5cb528f60b8eef60a34fd563ce6a4b17e929
   })
 
   // Creating a custom method for our User model. 
@@ -55,5 +47,17 @@ module.exports = function (sequelize, DataTypes) {
   user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
   });
   */
+
+  users.associate = function (models) {
+    
+    users.hasMany(models.tasks, {
+      foreignKey: {
+         name: "created_by",
+         allowNull: false
+      }
+  });
+
+  };
+
   return users;
 };

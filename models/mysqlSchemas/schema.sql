@@ -36,6 +36,10 @@ CREATE TABLE categories (
 CREATE TABLE tasks (
     id INT NOT NULL AUTO_INCREMENT,
     description VARCHAR(512),
+    task_project INT, 
+    FOREIGN KEY (task_project)
+		REFERENCES projects (id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
     task_category INT,
     FOREIGN KEY (task_category)
         REFERENCES categories (id)

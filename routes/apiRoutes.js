@@ -1,6 +1,7 @@
 var db = require("../models");
 var passport = require("../config/passport");
 
+
 module.exports = function (app) {
   // Using the passport.authenticate middleware with our local strategy.
   // If the user has valid login credentials, send them to the members page.
@@ -70,24 +71,83 @@ module.exports = function (app) {
 
   });
 
-  // Route for getting al users data but just show part of it.
+  // Route for getting all users data but just show part of it.
   app.get("/api/all_users", function (req, res) {
-   
-      db.users.findAll({
-        attributes: ["id", "user_name", "email"]
-      }).then(function (users) {
 
-        res.json(users);
+    db.users.findAll({
+      attributes: ["id", "user_name", "email"]
+    }).then(function (users) {
 
-      });
+      res.json(users);
+
+    });
+
+  });
+
+  // Route for getting all projects related to a user (with the task category included).
+  app.post("/api/user_projects", function (req, res) {
+
+    var currentUser;
+
+    db.users.findOne({
+      attributes: [
+        ["user_name", "user"]
+      ],
+      where: {
+        id: 5
+      },
+      include: [{
+        model: db.tasks,
+        attributes: [
+          ["id", "id"],
+          ["description", "description"]
+        ],
+        include: [{
+          model: db.categories,
+          attributes: [
+            ["category_name", "category"]
+          ]
+        }]
+      }]
+    }).then(function (users) {
+
+      res.json(users);
+
+    });
+
+  });
+
+  // Route for getting all projects tasks.
+  app.post("/api/user_projects", function (req, res) {
+
+    var currentUser;
+
+    db.users.findOne({
+      attributes: [
+        ["user_name", "user"]
+      ],
+      where: {
+        id: 5
+      },
+      include: [{
+        model: db.tasks,
+        attributes: [
+          ["id", "id"],
+          ["description", "description"]
+        ],
+        include: [{
+          model: db.categories,
+          attributes: [
+            ["category_name", "category"]
+          ]
+        }]
+      }]
+    }).then(function (users) {
+
+      res.json(users);
+
+    });
 
   });
 
 };
-
-// {
-//   // The user is not logged in, send back an empty object
-//   db.users.findAll({attributes: ["user_name"]}).then(function(users) {
-//     res.json(users);
-//   });
-// }

@@ -26,6 +26,12 @@ module.exports = function (sequelize, DataTypes) {
                allowNull: false
             }
         });
+        tasks.belongsTo(models.prjects, {
+            foreignKey: {
+               name: "task_prject",
+               allowNull: false
+            }
+        });
         tasks.belongsTo(models.tasks, {
             foreignKey: {
                name: "parent_id"
