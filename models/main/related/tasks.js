@@ -26,9 +26,9 @@ module.exports = function (sequelize, DataTypes) {
                allowNull: false
             }
         });
-        tasks.belongsTo(models.prjects, {
+        tasks.belongsTo(models.projects, {
             foreignKey: {
-               name: "task_prject",
+               name: "task_project",
                allowNull: false
             }
         });
