@@ -10,14 +10,13 @@ var env = process.env.NODE_ENV || "production";
 var config = require(__dirname + "/../config/config.json")[env];
 var db = {};
 
-
 //  Generate database connection.
 
-if (config.use_env_variable) {
+// if (config.use_env_variable) {
 
-  var sequelize = new Sequelize(process.env[config.use_env_variable]);
+//   var sequelize = new Sequelize(process.env[config.use_env_variable]);
 
-} else {
+// } else {
 
   var sequelize = new Sequelize(
 
@@ -30,7 +29,7 @@ if (config.use_env_variable) {
 
   );
 
-}
+// }
 
 //  Read models from "main/basic" folder.
 
@@ -71,7 +70,7 @@ fs.readdirSync(path.join(__dirname, "./main/mixed/"))
     db[model.name] = model;
   });
 
-Object.keys(db).forEach(function (modelName) {
+Object.keys(db).forEach(function (modelName) {  // Iteration among all the property names "db" object has so far.
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }

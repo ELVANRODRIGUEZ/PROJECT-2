@@ -1,5 +1,6 @@
 use wycgc3g4apmhrsf3;
 
+-- ++++++++++++++++++++++++++++ Tasks by Creator "tc"
 SELECT 
 	users.user_name as "user", 
 	tasks.id as "task_id", 
@@ -8,16 +9,104 @@ SELECT
 FROM users
 LEFT JOIN tasks on users.id = tasks.created_by
 LEFT JOIN categories ON tasks.task_category = categories.id
-WHERE users.id = 5;
+WHERE users.id = 4;
 
+-- ++++++++++++++++++++++++++++ Projects by User wiht just id "upId"
 SELECT 
-    users.user_name as "users",
 	projects.project_name as "project",
-    categories.category_name as "category",
-    tasks.id as "task_id",
-    tasks.description as "task",
-    tasks.dead_line as "deadline",
-    tasks.accomplished as "completion"
+    project_users.user_name as "user"
+FROM projects
+LEFT JOIN project_users ON projects.id = project_users.project_name
+WHERE project_users.user_name = 4;
+
+-- ++++++++++++++++++++++++++++ Projects by Category "cp"
+SELECT 
+	p.id as "project_id",
+    p.project_name as "project",
+	c.id as "category_id",
+	c.description as "category"    
+FROM projects p
+LEFT JOIN tasks t ON t.task_project = p.id
+LEFT JOIN categories c ON t.task_category = c.id;
+
+
+-- ++++++++++++++++++++++++++++ Tasks by Category "tc"
+SELECT 
+	c.id as "category_id",
+    c.description as "category",
+	t.id as "task_id",
+	t.description as "task"    
+FROM categories c
+LEFT JOIN tasks t ON t.task_category = c.id;
+
+
+-- ++++++++++++++++++++++++++++ Projects by User "up"
+SELECT
+	u.user_name as "user",
+    u.id as "user_id",
+    p.project_name as "project",
+    p.id as "project_id"
+FROM users u
+LEFT JOIN project_users pu ON u.id = pu.user_name
+JOIN projects p ON p.id = pu.project_name
+WHERE u.id = 4;
+
+-- ++++++++++++++++++++++++++++ General query Tasks by Project by User "put" (Successful)
+SELECT 
+	up.user,
+    up.user_id,
+    up.project,
+    up.project_id,
+    tc.category as "category",
+    tc.category_id as "category_id",
+    upt.task_description,
+    upt.task_id
+FROM 
+(SELECT
+	u.user_name as "user",
+    u.id as "user_id",
+    p.project_name as "project",
+    p.id as "project_id"
+FROM users u
+LEFT JOIN project_users pu ON u.id = pu.user_name
+JOIN projects p ON p.id = pu.project_name
+WHERE u.id = 4) up
+LEFT JOIN 
+(SELECT
+	u.id as "user",
+    tr.task_id as "task_id",
+    t.task_project as "task_project_id",
+    t.description as "task_description"
+FROM users u 
+LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id
+LEFT JOIN tasks t ON t.id = tr.task_id
+WHERE u.id = 4) upt 
+ON upt.task_project_id = up.project_id
+LEFT JOIN
+(SELECT 
+	c.id as "category_id",
+    c.description as "category",
+	t.id as "task_id",
+	t.description as "task"    
+FROM categories c
+LEFT JOIN tasks t ON t.task_category = c.id) tc
+ON upt.task_id = tc.task_id;
+
+
+-- ++++++++++++++++++++++++++++ Tasks by User "ut"
+SELECT
+	users.id,
+    tasks_responsibles.task_id
 FROM users
-LEFT JOIN project_users ON users.id = project_users.user_name
-LEFT JOIN tasks ON tasks.
+LEFT JOIN tasks_responsibles ON tasks_responsibles.responsible = users.id
+WHERE users.id = 4;
+
+-- ++++++++++++++++++++++++++++ Tasks by User and Project "upt"
+SELECT
+	u.id as "user",
+    tr.task_id as "task_id",
+    t.task_project as "task_project_id"
+FROM users u 
+LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id
+LEFT JOIN tasks t ON t.id = tr.task_id
+WHERE u.id = 4;
