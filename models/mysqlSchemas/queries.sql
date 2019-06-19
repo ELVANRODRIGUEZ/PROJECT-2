@@ -60,7 +60,8 @@ SELECT
     tc.category as "category",
     tc.category_id as "category_id",
     upt.task_description,
-    upt.task_id
+    upt.task_id,
+    upt.task_level
 FROM 
 (SELECT
 	u.user_name as "user",
@@ -76,10 +77,56 @@ LEFT JOIN
 	u.id as "user",
     tr.task_id as "task_id",
     t.task_project as "task_project_id",
-    t.description as "task_description"
+    t.description as "task_description",
+    t.level as "task_level"
 FROM users u 
 LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id
-LEFT JOIN tasks t ON t.id = tr.task_id
+LEFT JOIN 
+(WITH RECURSIVE tasks_path (
+	id, 
+	description, 
+	dead_line, 
+	accomplished,
+	createdAt,
+	updatedAt,
+	task_project,
+	created_by,
+	task_category,
+	parent_id,
+    level) AS
+ (SELECT 
+	id, 
+	description, 
+	dead_line, 
+	accomplished,
+	createdAt,
+	updatedAt,
+	task_project,
+	created_by,
+	task_category,
+	parent_id,
+    0 level
+    FROM tasks
+    WHERE parent_id IS NULL
+  UNION ALL
+  SELECT 
+	t.id, 
+	t.description, 
+	t.dead_line, 
+	t.accomplished,
+	t.createdAt,
+	t.updatedAt,
+	t.task_project,
+	t.created_by,
+	t.task_category,
+	t.parent_id,
+    tp.level + 1
+    FROM tasks_path AS tp JOIN tasks AS t
+      ON tp.id = t.parent_id
+)
+SELECT * FROM tasks_path
+ORDER BY level, id) t
+ON t.id = tr.task_id
 WHERE u.id = 4) upt 
 ON upt.task_project_id = up.project_id
 LEFT JOIN
@@ -110,3 +157,50 @@ FROM users u
 LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id
 LEFT JOIN tasks t ON t.id = tr.task_id
 WHERE u.id = 4;
+
+
+-- ++++++++++++++++++++++++++++ Tasks table with Levels "tl"
+WITH RECURSIVE tasks_path (
+	id, 
+	description, 
+	dead_line, 
+	accomplished,
+	createdAt,
+	updatedAt,
+	task_project,
+	created_by,
+	task_category,
+	parent_id,
+    level) AS
+ (SELECT 
+	id, 
+	description, 
+	dead_line, 
+	accomplished,
+	createdAt,
+	updatedAt,
+	task_project,
+	created_by,
+	task_category,
+	parent_id,
+    0 level
+    FROM tasks
+    WHERE parent_id IS NULL
+  UNION ALL
+  SELECT 
+	t.id, 
+	t.description, 
+	t.dead_line, 
+	t.accomplished,
+	t.createdAt,
+	t.updatedAt,
+	t.task_project,
+	t.created_by,
+	t.task_category,
+	t.parent_id,
+    tp.level + 1
+    FROM tasks_path AS tp JOIN tasks AS t
+      ON tp.id = t.parent_id
+)
+SELECT * FROM tasks_path
+ORDER BY level, id;
