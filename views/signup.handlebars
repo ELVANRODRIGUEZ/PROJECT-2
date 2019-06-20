@@ -19,22 +19,31 @@
           </div>
           <div class="form-group">
             <label for="InputEmail">Email address</label>
-            <input type="email" class="form-control" id="email-input" placeholder="you@domain.com">
+            <input type="text" class="form-control" id="email-input" placeholder="you@domain.com">
           </div>
           <div class="form-group">
             <label for="InputPassword">Password</label>
             <input type="password" class="form-control" id="password-input" placeholder="password">
+          
           </div>
 
 
 
            <div style="display: none" id="alert" class="alert alert-danger" role="alert">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> 
-            <span class="sr-only">Error:</span> <span class="msg"></span>
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Error:</span> <span class="msg"></span>
           </div>
           <button type="submit" class="btn btn-primary">Sign Up</button>
         </form>
         <br />
+
+<div id="pswd_info">
+            <h6>Password must meet the following requirements:</h6>
+                <p id="letter" class="invalid">At least <strong>one letter</strong></p>
+                <p id="capital" class="invalid">At least <strong>one capital letter</strong></p>
+                <p id="number" class="invalid">At least <strong>one number</strong></p>
+                <p id="length" class="invalid">Be at least <strong>8 characters</strong></p>
+        </div>
         <p>Or log in <a href="/">here</a></p>
       </div>
     </div>

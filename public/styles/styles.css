@@ -7,3 +7,84 @@ form.login {
   margin-top: 50px;
 }
 
+ul, li {
+  margin:0;
+  padding:0;
+  list-style-type:none;
+}
+
+
+
+input {
+  padding:10px 10px;
+  border:1px solid #d5d9da;
+  border-radius:5px;
+  box-shadow: 0 0 5px #e8e9eb inset;
+  width:328px; /* 400 (#container) - 40 (li margins) -  10 (span paddings) - 20 (input paddings) - 2 (input borders) */
+  font-size:1em;
+  outline:0; /* remove webkit focus styles */
+}
+input:focus {
+  border:1px solid #b9d4e9;
+  border-top-color:#b6d5ea;
+  border-bottom-color:#b8d4ea;
+  box-shadow:0 0 5px #b9d4e9;
+}
+
+label {
+  color:#555;
+}
+
+/* Password Information Box */
+#pswd_info {
+  position:relative;
+  z-index: 1;
+  bottom:75px;
+  bottom: -1px\9; /* IE Specific */
+  right:-155px;
+  width:250px;
+  padding:15px;
+  background:#fefefe;
+  font-size:.875em;
+  border-radius:5px;
+  box-shadow:0 1px 3px #ccc;
+  border:1px solid #ddd;
+}
+#pswd_info h6 {
+  margin:0 0 10px 0;
+  padding:0;
+  font-weight:normal;
+}
+
+#pswd_info p {
+ margin:0
+}
+
+#pswd_info::before {
+  content: "\25B2";
+  position:absolute;
+  top:-12px;
+  left:45%;
+  font-size:14px;
+  line-height:14px;
+  color:#ddd;
+  text-shadow:none;
+  display:block;
+}
+
+.invalid {
+  background:url(../images/cancel.png) no-repeat 0 50%;
+  padding-left:22px;
+  line-height:24px;
+  color:#ec3f41;
+}
+.valid {
+  background:url(../images/accept.png) no-repeat 0 50%;
+  padding-left:22px;
+  line-height:24px;
+  color:#3a7d34;
+}
+
+#pswd_info {
+  display:none;
+}
