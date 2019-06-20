@@ -13,8 +13,12 @@ $(document).ready(function() {
     };
 
     if (!userData.email || !userData.password) {
-      alert("Complete Data")
-      return;
+      $("#alert .msg").text("Please complete all fields");
+      $("#alert").fadeIn(100);
+      setTimeout(function(){
+        $("#alert").fadeOut(100);
+      }, 3000);
+      return false;
     }
 
     // If we have an email and password we run the loginUser function and clear the form
@@ -32,7 +36,13 @@ $(document).ready(function() {
       window.location.replace(data);
       // If there's an error, log the error
     }).catch(function(err) {
-      console.log(err);
+     console.log(err);
+      $("#alert .msg").text("Your Data is incorrect");
+      $("#alert").fadeIn(100);
+      setTimeout(function(){
+        $("#alert").fadeOut(100);
+      }, 3000);
+      
     });
   }
 
