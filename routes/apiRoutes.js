@@ -1,6 +1,6 @@
-var db = require("../models");
+var db = require("../models").db;
+var connection = require("../models").connection;
 var passport = require("../config/passport");
-
 
 module.exports = function (app) {
   // Using the passport.authenticate middleware with our local strategy.
@@ -41,6 +41,23 @@ module.exports = function (app) {
     req.logout();
     res.redirect("/");
   });
+
+  // Route for getting some data about our user to be used client side
+  app.get("/api/user_data", function (req, res) {
+    if (!req.user) {
+      // The user is not logged in, send back an empty object
+      res.json({});
+    } else {
+      // Otherwise send back the user's email and id
+      // Sending back a password, even a hashed password, isn't a good idea
+      res.json({
+        email: req.user.email,
+        id: req.user.id
+      });
+    }
+  });
+
+  // ==========================================================================
 
   // Route for getting some data about our user to be used client side
   app.get("/api/all_users/find_user/:user_data", function (req, res) {
@@ -145,6 +162,57 @@ module.exports = function (app) {
     }).then(function (users) {
 
       res.json(users);
+
+    });
+
+  });
+
+  app.get("/api/test", function (req, res) {
+
+    var id = 4;
+
+    var query =
+      'SELECT ' +
+      'up.user as "user", ' +
+      'up.user_id as "user_id", ' +
+      'up.project as "projects", ' +
+      'up.project_id as "projects_id", ' +
+      'tc.category as "category", ' +
+      'tc.category_id as "category_id", ' +
+      'upt.task_description as "tasks", ' +
+      'upt.task_id as "tasks_id" ' +
+      'FROM ' +
+      '(SELECT u.user_name as "user", ' +
+      'u.id as "user_id", ' +
+      'p.project_name as "project", ' +
+      'p.id as "project_id" ' +
+      'FROM users u ' +
+      'LEFT JOIN project_users pu ' +
+      'ON u.id = pu.user_name JOIN projects p ON p.id = pu.project_name WHERE u.id = 4) up ' +
+      'LEFT JOIN ' +
+      '(SELECT u.id as "user", ' +
+      'tr.task_id as "task_id", ' +
+      't.task_project as "task_project_id", ' +
+      't.description as "task_description" ' +
+      'FROM users u LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id LEFT JOIN tasks t ' +
+      'ON t.id = tr.task_id WHERE u.id = 4) upt ' +
+      'ON upt.task_project_id = up.project_id ' +
+      'LEFT JOIN ' +
+      '(SELECT c.id as "category_id", ' +
+      'c.description as "category", ' +
+      't.id as "task_id", ' +
+      't.description as "task" ' +
+      'FROM categories c LEFT JOIN tasks t ' +
+      'ON t.task_category = c.id) tc ' +
+      'ON upt.task_id = tc.task_id'
+
+    // res.send(console.log(connection));
+
+    connection.query(query, function (err, data) {
+
+      if (err) throw err;
+
+      res.send(data);
 
     });
 

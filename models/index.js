@@ -3,6 +3,7 @@
 var fs = require("fs");
 var util = require("util");
 var path = require("path");
+var mysql = require("mysql");
 var Sequelize = require("sequelize");
 var Op = Sequelize.Op;
 var basename = path.basename(module.filename);
@@ -10,13 +11,13 @@ var env = process.env.NODE_ENV || "production";
 var config = require(__dirname + "/../config/config.json")[env];
 var db = {};
 
-//  Generate database connection.
+//  Generate database connection through Sequelize.
 
-// if (config.use_env_variable) {
+if (config.use_env_variable) {
 
-//   var sequelize = new Sequelize(process.env[config.use_env_variable]);
+  var sequelize = new Sequelize(process.env[config.use_env_variable]);
 
-// } else {
+} else {
 
   var sequelize = new Sequelize(
 
@@ -29,7 +30,35 @@ var db = {};
 
   );
 
-// }
+}
+
+//  Generate database connection through mysql.
+
+if (config.use_env_variable) {
+
+  var connection = mysql.createConnection(process.env[config.use_env_variable]);
+
+} else {
+
+  var connection = mysql.createConnection({
+    host: "localhost",
+    port: process.env.PORT_2,
+    user: process.env.USER_NAME_2,
+    password: process.env.PASSWORD_2,
+    database: process.env.DATABASE_2
+  });
+
+}
+
+connection.connect(function (err) {
+	if (err) {
+		console.error("error connecting: " + err.stack);
+		return;
+	}
+
+  console.log("connected as id " + connection.threadId);
+  
+});
 
 //  Read models from "main/basic" folder.
 
@@ -79,4 +108,7 @@ Object.keys(db).forEach(function (modelName) {  // Iteration among all the prope
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;
+module.exports = {
+  "db": db,
+  "connection": connection
+}
