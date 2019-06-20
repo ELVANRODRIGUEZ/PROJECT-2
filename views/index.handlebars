@@ -1,19 +1,447 @@
- <nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/logout">
-        Logout
-      </a>
-    </div>
+
+<nav class="navbar navbar-dark bg-dark">
+  <p class="navbar-brand text-white ">Team Organizer™</p>
+  <form class="form-inline">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="button">Sign Out</button>
+  </form>
 </nav>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <h2>You are in <span class="member-name"></span></h2>
-        <h3>Aqui la página principal</h3>
+<!--Delete Modal For Projects-->
+<div class="modal" tabindex="-1" role="dialog" id="deleteProjectModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Are you sure you want to delete?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id='deleteProject'>Yes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
+</div>
+<!--Delete Modal For categories-->
+<div class="modal" tabindex="-1" role="dialog" id="deleteCategoryModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Are you sure you want to delete?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id='deleteCategory'>Yes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Add New Project-->
+<div class="modal" tabindex="-1" role="dialog" id="projectModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add a new Project</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="projectName">Project Name</label>
+            <input type="text" class="form-control" id="projectName" placeholder="Project Name">
+          </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript" src="js/members.js"></script>
+          <div class="form-group">
+            <label for="projectDesc">Project Description</label>
+            <textarea class="form-control" id="projectDesc" rows="3"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="projectUsers">Add Users</label>
+            <select class="form-control col-md-4 usersAvailables" id="projectUsers">
+              <option>user</option>
+            </select>
+            <button class='btn btn-primary col-md-2' id='addUser'>Add</button>
+            category </div>
+          Users Added
+          <ul>
+            <li id='userProject'>Users 1</li>
+          </ul>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id='projectModalAdd' data-dismiss="modal">Add</button>
+        <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--New Category Modal-->
+<div class="modal" tabindex="-1" role="dialog" id="categoryModalAdd">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add a new category</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="categoryName">Category name</label>
+            <input type="text" class="form-control" id="categoryName" placeholder="Task group name">
+          </div>
+
+          <div class="form-group">
+            <label for="categoryDesc">Category Description</label>
+            <textarea class="form-control" id="categoryDesc" rows="3"></textarea>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id='categoryModalAdd'>Add</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Category Card Modal-->
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" id="categoryModal">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content bg-dark">
+      <div class="modal-header">
+        <h5 class="modal-title text-white">Tasks</h5>
+        <button class='btn btn-secondary' style='float: right;margin-left: 5vh' data-toggle="collapse"
+          href="#collapseExample8" role="button" aria-expanded="false" aria-controls="collapseExample8"><i
+            class="fa fa-plus fa-4" aria-hidden="true"></i></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+
+      <div class="collapse" id="collapseExample8" style='margin:auto;width: 50vh'>
+
+        <div class="card card-body bg-secondary text-white">
+          <form>
+            <div class="form-group">
+              <label for="projectName">New Task Name</label>
+              <input type="text" class="form-control" id="ProjectName" placeholder="Project Name">
+            </div>
+
+            <div class="form-group">
+              <label for="projectDesc">New Task Description</label>
+              <textarea class="form-control" id="projectDesc" rows="3"></textarea>
+            </div>
+            <button class='btn btn-primary col-md-6' type="submit" id='addTask'>Add task!</button>
+          </form>
+        </div>
+      </div>
+      <div class="modal-body">
+
+        <div class="card bg-secondary text-white task" style='margin:5px'>
+          <div class="card-body">
+            <button class='btn btn-secondary' style='float: right;margin:0 2px' data-toggle="collapse"
+              href="#collapseExample6" role="button" aria-expanded="false" aria-controls="collapseExample6"><i
+                class="fa fa-trash-o fa-4" aria-hidden="true"></i></button>
+            <button class='btn btn-secondary' data-toggle="collapse" href="#collapseExample5" role="button"
+              aria-expanded="false" aria-controls="collapseExample5" style='float: right;'><i class="fa fa-pencil fa-4"
+                aria-hidden="true"></i></button>
+
+            <div class="collapse" id="collapseExample5">
+              <div class='card card-title bg-secondary h4'>Edit Task</div>
+              <div class="card card-body bg-dark">
+                <form>
+
+                  <div class="form-group col-md-4">
+                    <label for="formGroupExampleInput">New Name</label>
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Example input"
+                      value='Task 1'>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="formGroupExampleInput2">Add Users</label>
+                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label for="inputState">Delete User</label>
+                    <select id="inputState" class="form-control">
+                      <option selected>Choose...</option>
+                      <option>...</option>
+                    </select>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+
+
+
+            <div class="collapse" id="collapseExample6">
+              <div class='card card-title bg-secondary h4'>Are you sure you want to delete</div>
+              <div class="card card-body bg-dark">
+                <button class='btn btn-secondary col-md-4' style='margin:10px auto'>Cancel</button>
+                <button class='btn btn-primary col-md-4' style='margin:10px auto'>Yes</button>
+              </div>
+            </div>
+
+
+
+
+            <h5 class="card-title">Task 1</h5>
+            <h6 class='text-danger font-weight-bold'>Deadline 04/04/19</h6>
+            <h6 class="card-subtitle mb-2 text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vitae
+              semper augue. Pellentesque interdum vehicula leo et pharetra. </h6>
+            <h6>Progress:</h6>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
+                aria-valuemax="100"></div>
+            </div>
+
+            <div class="card bg-dark text-white task" style='margin:5px'>
+              <div class="card-body">
+                <ul class="nav nav-tabs bg-dark card-title">
+                  <li class="nav-item">
+                    <a class="nav-link active" type="button" data-toggle="collapse" href="#multiCollapseExample1"
+                      role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Users</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" type="button" data-toggle="collapse" href="#multiCollapseExample2" role="button"
+                      aria-expanded="false" aria-controls="multiCollapseExample2">Chat</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" type="button" data-toggle="collapse" href="#multiCollapseExample3" role="button"
+                      aria-expanded="false" aria-controls="multiCollapseExample3">New Email</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" type="button" data-toggle="collapse" href="#multiCollapseExample4" role="button"
+                      aria-expanded="false" aria-controls="multiCollapseExample4">Email History</a>
+                  </li>
+                </ul>
+                <!--  BODY USERS-->
+                <div class="collapse" id="multiCollapseExample1">
+                  <div class="card card-body bg-dark">
+                    <h6>Users: </h6>
+                    <ul>
+                      <li>Nacho</li>
+                      <li>Manu</li>
+                      <li>Elvan</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="collapse" id="multiCollapseExample2">
+                  <div class="card card-body bg-dark">
+                    <div class="mesgs overflow-auto">
+                      <div class="msg_history">
+                        <div class="incoming_msg">
+                          <div class="incoming_msg_img"> <img src="https://dummyimage.com/250/4aaaa5/000000&text=IG"
+                              alt="sunil"> </div>
+                          <div class="received_msg">
+                            <div class="received_withd_msg">
+                              <p>Test which is a new approach to have all
+                                solutions</p>
+                              <span class="time_date"> 11:01 AM | June 9</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="outgoing_msg">
+                          <div class="sent_msg">
+                            <p>Test which is a new approach to have all
+                              solutions</p>
+                            <span class="time_date"> 11:01 AM | June 9</span>
+                          </div>
+                        </div>
+                        <div class="incoming_msg">
+                          <div class="incoming_msg_img"> <img src="https://dummyimage.com/250/4aaaa5/000000&text=EG"
+                              alt="sunil"> </div>
+                          <div class="received_msg">
+                            <div class="received_withd_msg">
+                              <p>Test, which is a new approach to have</p>
+                              <span class="time_date"> 11:01 AM | Yesterday</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="outgoing_msg">
+                          <div class="sent_msg">
+                            <p>Apollo University, Delhi, India Test</p>
+                            <span class="time_date"> 11:01 AM | Today</span>
+                          </div>
+                        </div>
+                        <div class="incoming_msg">
+                          <div class="incoming_msg_img"> <img src="https://dummyimage.com/250/4aaaa5/000000&text=MC"
+                              alt="sunil"> </div>
+                          <div class="received_msg">
+                            <div class="received_withd_msg">
+                              <p>We work directly with our designers and suppliers,
+                                and sell direct to you, which means quality, exclusive
+                                products, at a price anyone can afford.</p>
+                              <span class="time_date"> 11:01 AM | Today</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="type_msg">
+                      <div class="input_msg_write">
+                        <input type="text" class="write_msg" placeholder="Type a message">
+                        <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o"
+                            aria-hidden="true"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="collapse" id="multiCollapseExample3">
+                  <div class="card card-body bg-dark">
+                    <div class='container'>
+                      <form>
+                        <div class="form-group">
+                          <label for="exampleFormControlInput1">Email address</label>
+                          <input type="email" class="form-control" id="exampleFormControlInput1"
+                            placeholder="name@example.com">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="exampleFormControlInput1">Subject</label>
+                          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Subject">
+                        </div>
+
+                        <div class="form-group">
+                          <label for="exampleFormControlTextarea1">Example textarea</label>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="collapse" id="multiCollapseExample4">
+                  <div class="card card-body bg-dark">
+                    <div class='container'>
+                      <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                          <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">List group item heading</h5>
+                            <small>3 days ago</small>
+                          </div>
+                          <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus
+                            varius blandit.</p>
+                          <small>Donec id elit non mi porta.</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                          <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">List group item heading</h5>
+                            <small class="text-muted">3 days ago</small>
+                          </div>
+                          <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus
+                            varius blandit.</p>
+                          <small class="text-muted">Donec id elit non mi porta.</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                          <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">List group item heading</h5>
+                            <small class="text-muted">3 days ago</small>
+                          </div>
+                          <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus
+                            varius blandit.</p>
+                          <small class="text-muted">Donec id elit non mi porta.</small>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <h6 class="card-subtitle mb-2 text-white">lorem ipsum</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Projects Card Side-->
+<div class="jumbotron bg-secondary " style='background-color: #aaa;height: 90vh'>
+  <div class='row'>
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <div class='row ' style='margin:5px;'>
+        <div class='card bg-dark text-white'>
+          <div class="card-header">
+            <span class='display-4'>Projects </span>
+            <button class='btn btn-secondary  projectDel' style='float: right;margin:0 2px'><i
+                class="fa fa-trash-o fa-4" aria-hidden="true"></i></button>
+            <button class='btn btn-secondary  projectAdd' style='float: right;'><i class="fa fa-plus fa-4"
+                aria-hidden="true"></i></button>
+          </div>
+
+          <div class="card-body bg-dark overflow-auto" style="height: 60vh">
+            <div class='card-columns'>
+              <!--Projects Card Inside-->
+              <div class="card bg-dark text-white projectCard" style=" margin:5px;" data-id='3'>
+                <div class="card-header">Project #1</div>
+                <div class="card-body">
+                  <h6 class="card-title">Update Github portfolio</h6>
+                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+              </div>
+              <!--------------------------->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--Category Card Side-->
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <div class='row' style='margin:5px;'>
+        <div class="card bg-dark text-white" style="width:100rem">
+          <div class="card-header">
+            <button class='btn btn-secondary categoryDel' style='float: right;margin:0 2px'><i
+                class="fa fa-trash-o fa-4" aria-hidden="true"></i></button>
+            <button class='btn btn-secondary categoryAdd' style='float: right;'><i class="fa fa-plus fa-4"
+                aria-hidden="true"></i></button>
+            <h3>Categories</h3>
+            <h4>For Project #1</h4>
+          </div>
+          <div class="card-body bg-dark overflow-auto" style="height: 60vh">
+            <!--Projects Card Inside-->
+            <div class="card bg-secondary text-white categoryCard" style='margin:5px' data-id="5">
+              <div class="card-body">
+                <h5 class="card-title">Designing</h5>
+                <h6 class="card-subtitle mb-2 text-white">Here we'll be managing all the concepts for the new web
+                  application, just requirements nothing else.</h6>
+              </div>
+            </div>
+            <!----------------------------->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- Nacho ===================================================== --}}
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script src="js/app.js"></script>

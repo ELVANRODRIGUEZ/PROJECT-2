@@ -1,4 +1,4 @@
-var db = require("../models");
+var db = require("../models").db;
 
 // Requiring our custom middleware for checking if a user is logged in
 var isAuthenticated = require("../config/middleware/isAuthenticated");
