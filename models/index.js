@@ -11,6 +11,9 @@ var env = process.env.NODE_ENV || "production";
 var config = require(__dirname + "/../config/config.json")[env];
 var db = {};
 
+
+// asdfasdfasdfasdfasd
+
 //  Generate database connection through Sequelize.
 
 if (config.use_env_variable) {
