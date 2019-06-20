@@ -57,6 +57,7 @@ connection.connect(function (err) {
 	}
 
   console.log("connected as id " + connection.threadId);
+  console.log("connected in " + connection.host);
   
 });
 
