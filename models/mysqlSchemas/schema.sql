@@ -1,4 +1,5 @@
 -- ================================== Database
+-- CREATE DATABASE wycgc3g4apmhrsf3;
 
 USE wycgc3g4apmhrsf3;
 
@@ -35,11 +36,16 @@ CREATE TABLE categories (
 CREATE TABLE tasks (
     id INT NOT NULL AUTO_INCREMENT,
     description VARCHAR(512),
+    task_project INT, 
+    FOREIGN KEY (task_project)
+		REFERENCES projects (id)
+        ON UPDATE CASCADE ON DELETE CASCADE,
     task_category INT,
-    FOREIGN KEY (category)
+    FOREIGN KEY (task_category)
         REFERENCES categories (id)
         ON UPDATE CASCADE ON DELETE CASCADE,
     dead_line DATETIME,
+    accomplished FLOAT DEFAULT 0,
     parent_id INT DEFAULT NULL,
 	FOREIGN KEY (parent_id)
 		REFERENCES tasks(id)
@@ -55,7 +61,7 @@ CREATE TABLE chat_messages (
     id INT NOT NULL AUTO_INCREMENT,
     chat_message VARCHAR(1024) NOT NULL,
     message_creator INT NOT NULL,
-    FOREIGN KEY fk_message_creator(message_creator)
+    FOREIGN KEY fk_chatMess_creator(message_creator)
         REFERENCES users (id)
         ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (id)
@@ -65,7 +71,7 @@ CREATE TABLE mail_messages (
     id INT NOT NULL AUTO_INCREMENT,
     mail_message VARCHAR(2048) NOT NULL,
     message_creator INT NOT NULL,
-    FOREIGN KEY fk_message_creator(message_creator)
+    FOREIGN KEY fk_mailMess_creator(message_creator)
         REFERENCES users (id)
         ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY (id)
@@ -90,7 +96,7 @@ CREATE TABLE project_users (
 CREATE TABLE tasks_responsibles (
 	task_id INT NOT NULL, 
     responsible INT NOT NULL,
-    FOREIGN KEY fk_task(task)
+    FOREIGN KEY fk_task(task_id)
 		REFERENCES tasks(id)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
@@ -103,7 +109,7 @@ CREATE TABLE tasks_responsibles (
 CREATE TABLE chat_mess_tasks (
 	task_id INT NOT NULL, 
     chat_message INT NOT NULL,
-    FOREIGN KEY fk_task_id(task_id)
+    FOREIGN KEY fk_taskChat_id(task_id)
 		REFERENCES tasks(id)
         ON UPDATE CASCADE
         ON DELETE CASCADE,
@@ -116,7 +122,7 @@ CREATE TABLE chat_mess_tasks (
 CREATE TABLE mail_mess_tasks (
 	task_id INT NOT NULL, 
     mail_message INT NOT NULL,
-    FOREIGN KEY fk_task_id(task_id)
+    FOREIGN KEY fk_taskMess_id(task_id)
 		REFERENCES tasks(id)
         ON UPDATE CASCADE
         ON DELETE CASCADE,

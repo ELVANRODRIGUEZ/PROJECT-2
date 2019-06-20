@@ -52,7 +52,8 @@ module.exports = function (app) {
       // Sending back a password, even a hashed password, isn't a good idea
       res.json({
         email: req.user.email,
-        id: req.user.id
+        id: req.user.id,
+        name: req.user.user_name
       });
     }
   });
@@ -205,6 +206,8 @@ module.exports = function (app) {
       'FROM categories c LEFT JOIN tasks t ' +
       'ON t.task_category = c.id) tc ' +
       'ON upt.task_id = tc.task_id'
+
+    // res.send(console.log(connection));
 
     connection.query(query, function (err, data) {
 

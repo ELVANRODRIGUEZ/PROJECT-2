@@ -111,4 +111,4 @@ db.Sequelize = Sequelize;
 module.exports = {
   "db": db,
   "connection": connection
-};
+}
