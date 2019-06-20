@@ -206,8 +206,6 @@ module.exports = function (app) {
       'ON t.task_category = c.id) tc ' +
       'ON upt.task_id = tc.task_id'
 
-    // res.send(console.log(connection));
-
     connection.query(query, function (err, data) {
 
       if (err) throw err;
