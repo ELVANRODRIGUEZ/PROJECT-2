@@ -221,4 +221,8 @@ module.exports = function (app) {
 
   });
 
+  app.delete("/api/projects/add", function (req, res) {
+    
+  })
+
 };

@@ -22,7 +22,7 @@ VALUES
 ("Colorado E. Weaver","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","20 622 806 4973","cursus@vulputatelacusCras.org",1,"01/06/18","08/10/18"),
 ("Oliver F. House","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","61 969 260 9007","facilisis.lorem.tristique@molestie.edu",0,"11/04/19","03/01/18"),
 ("Brody G. Pacheco","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","28 519 075 6900","rutrum@Nullam.org",1,"06/07/18","22/11/18"),
-("Octavia I. Walton","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","68 269 464 2785","feugiat@ipsum.co.uk",0,"10/11/18","27/05/18");
+("ELVAN LOPEZ RODRIGUEZ","$2a$10$zvwkuSTa2l8fWsTOXWCDZOjB3hsPQj9c5sgcaipPVFlG6n5deiOOa","+52 555 532 7109","elvanovich2000@yahoo.com.mx",0,"10/11/18","27/05/18");
 
 
 INSERT INTO `projects` (`project_name`, `description`, `createdAt`, `updatedAt`) 

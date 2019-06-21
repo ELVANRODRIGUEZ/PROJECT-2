@@ -68,7 +68,7 @@ $('.categoryCard').on('click',function(){
 
 
 
-/*
+
 ///--------New Project--------///
 	$("#projectModalAdd").on("submit", function (event) {
 		// Make sure to preventDefault on a submit event.
@@ -81,7 +81,7 @@ $('.categoryCard').on('click',function(){
         
 		
 		// Send the POST request.
-		$.ajax("/api/projects", {
+		$.ajax("/api/projects/add", {
 			type: "POST",
 			data: newProject
 		}).then(
@@ -144,26 +144,37 @@ $("#deleteCategory").on('click',function () {
     );
 });
 
-//----------Add a task------------------//
-	$("#addTask").on("submit", function (event) {
-		// Make sure to preventDefault on a submit event.
-		event.preventDefault();
+// $.get("/members", function (data) {
+//     console.log(data);
+// })
 
-		var newTask = {
-			category_name: $("#categoryName").val().trim(),
-            description: $("#categoryDesc").val(),
-        };
+// $.ajax("/members", {
+//     type: "GET"
+// }).then(function (data) {
+
+//     console.log(data);
+
+// })
+
+//----------Add a task------------------//
+	// $("#addTask").on("submit", function (event) {
+	// 	// Make sure to preventDefault on a submit event.
+	// 	event.preventDefault();
+
+	// 	var newTask = {
+	// 		category_name: $("#categoryName").val().trim(),
+    //         description: $("#categoryDesc").val(),
+    //     };
         
 		
-		// Send the POST request.
-		$.ajax("/api/categories", {
-			type: "POST",
-			data: newCategory
-		}).then(
-			function () {
-				location.reload();
-			}
-		);
-	});
+	// 	// Send the POST request.
+	// 	$.ajax("/api/categories", {
+	// 		type: "POST",
+	// 		data: newCategory
+	// 	}).then(
+	// 		function () {
+	// 			location.reload();
+	// 		}
+	// 	);
+	// });
 
-*/
