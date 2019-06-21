@@ -80,7 +80,7 @@ $("#projectAddButton").on("click", function (event) {
         // var project = data.description;
         // var id = data.id;
         var $projectUsers = $("#projectUsers");
-        var users = "<option>user</option>";
+        var users = "<option selected>Select User</option>";
 
         // " +  + "
 
