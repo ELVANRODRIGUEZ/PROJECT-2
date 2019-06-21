@@ -85,15 +85,12 @@ module.exports = function (app) {
       'FROM categories c LEFT JOIN tasks t ' +
       'ON t.task_category = c.id) tc ' +
       'ON upt.task_id = tc.task_id'
-    var data1;
 
     connection.query(query, function (err, data) {
 
       if (err) throw err;
 
-      data1 = data;
-      // console.log(data1);
-      res.json(data1);
+      res.json(data);
 
       
     });
