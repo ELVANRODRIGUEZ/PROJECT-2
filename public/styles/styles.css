@@ -51,12 +51,17 @@ body{
   padding: 10px 15px 15px 15px;
 }
 
+.btn {
+  /* display: inline-block; */
+  display: block
+}
+
 input[type=email], input[type=password], input[type=text], input[type=tel], textarea[type=text], select[type=list] {
   padding: 10px 10px;
   border: 1px solid #d5d9da;
   border-radius: 5px;
   box-shadow: 0 0 5px #e8e9eb inset;
-  width: 310px;
+  /* width: 310px; */
   /*400 (#container) - 40 (li margins) -  10 (span paddings) - 20 (input paddings) - 2 (input borders)*/
   font-size: 1em;
   outline: 0;
