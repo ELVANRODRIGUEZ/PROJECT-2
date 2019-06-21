@@ -176,19 +176,38 @@ module.exports = function (app) {
 
     var proyName = req.body.project_name;
     var proyDesc = req.body.description;
-    
+
     console.log(proyDesc);
     console.log(proyName);
 
     db.projects.create({
-      proyect_name: proyName,
+      project_name: proyName,
       description: proyDesc
     }).then(function (project) {
 
       res.json(project);
 
+      relateProject(project.id, req.user.id)
+
     });
 
   })
+
+  function relateProject(projectId, userId) {
+
+    db.project_users.create({
+      project_name: projectId,
+      user_name: userId
+    }).then(function () {
+
+      console.log(
+        "==>  Relationship added between projectId: %s and userId: %s.",
+        projectId,
+        userId
+      );
+
+    });
+
+  }
 
 };
