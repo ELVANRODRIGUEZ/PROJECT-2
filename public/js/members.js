@@ -11,10 +11,10 @@ $(document).ready(function () {
     })
     .then(function (data) {
 
-      console.log(data);
+      // console.log(data);
 
       Object.keys(data).forEach(function (item) {
-        console.log(data[item].projects);
+        // console.log(data[item].projects);
 
         // ====================================== Elvan 
 

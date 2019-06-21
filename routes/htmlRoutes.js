@@ -40,7 +40,6 @@ module.exports = function (app) {
     //   var userProfile = {
     //     userInfo: data
     //   }
-
     res.render("index");
 
     // })
@@ -50,7 +49,7 @@ module.exports = function (app) {
   app.get("/members/info", isAuthenticated, function (req, res) {
     // function test(cb) {
 
-    var id = 4;
+    var id = req.user.id;
 
     var query =
       'SELECT ' +
@@ -69,14 +68,14 @@ module.exports = function (app) {
       'p.id as "project_id" ' +
       'FROM users u ' +
       'LEFT JOIN project_users pu ' +
-      'ON u.id = pu.user_name JOIN projects p ON p.id = pu.project_name WHERE u.id = 4) up ' +
+      'ON u.id = pu.user_name JOIN projects p ON p.id = pu.project_name WHERE u.id = ' + id + ') up ' +
       'LEFT JOIN ' +
       '(SELECT u.id as "user", ' +
       'tr.task_id as "task_id", ' +
       't.task_project as "task_project_id", ' +
       't.description as "task_description" ' +
       'FROM users u LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id LEFT JOIN tasks t ' +
-      'ON t.id = tr.task_id WHERE u.id = 4) upt ' +
+      'ON t.id = tr.task_id WHERE u.id = ' + id + ') upt ' +
       'ON upt.task_project_id = up.project_id ' +
       'LEFT JOIN ' +
       '(SELECT c.id as "category_id", ' +
@@ -93,7 +92,7 @@ module.exports = function (app) {
       if (err) throw err;
 
       data1 = data;
-      console.log(data1);
+      // console.log(data1);
       res.json(data1);
 
       
