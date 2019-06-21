@@ -49,7 +49,7 @@ $(document).ready(function () {
           "<b>Team Organizer™</b>" + 
           "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + 
           "Welcome: " + user);
-        // $projectDiv.append(projectCard);
+        $projectDiv.append(projectCard);
 
       })
 
