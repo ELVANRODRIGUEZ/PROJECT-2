@@ -69,7 +69,32 @@ $('.categoryCard').on('click', function () {
 })
 
 
+///--------New Project--------///
+$("#projectAddButton").on("click", function (event) {
 
+    // Send the GET request.
+    $.get("/api/all_users", function (data) {
+
+        console.log(data);
+
+        // var project = data.description;
+        // var id = data.id;
+        var $projectUsers = $("#projectUsers");
+        var users = "<option>user</option>";
+
+        // " +  + "
+
+        data.forEach(function (item) {
+
+            users += "<option id=" + item.id + ">" + item.user_name + "</option>";
+            
+        })
+
+        $projectUsers.html(users);
+
+    });
+
+});
 
 ///--------New Project--------///
 $("#projectModalAdd").on("click", function (event) {
@@ -97,22 +122,22 @@ $("#projectModalAdd").on("click", function (event) {
         // " +  + "
 
         projectCard =
-          "<div class='card bg-dark text-white projectCard' " +
-          "style=' margin:5px; min-width: 120px' " +
-          "data-id='" + id + "'>" +
-          "<div class='card-header'>Project #" + id +
-          "</div> " +
-          "<div class='card-body'> " +
-          "<h6 class='card-title'> " +
-          project +
-          "</h6> " +
-          "<p class='card-text'> " +
-          "<small class='text-muted'> " +
-          "Last updated 3 mins ago" +
-          "</small> " +
-          "</p> " +
-          "</div> " +
-          "</div>";
+            "<div class='card bg-dark text-white projectCard' " +
+            "style=' margin:5px; min-width: 120px' " +
+            "data-id='" + id + "'>" +
+            "<div class='card-header'>Project #" + id +
+            "</div> " +
+            "<div class='card-body'> " +
+            "<h6 class='card-title'> " +
+            project +
+            "</h6> " +
+            "<p class='card-text'> " +
+            "<small class='text-muted'> " +
+            "Last updated 3 mins ago" +
+            "</small> " +
+            "</p> " +
+            "</div> " +
+            "</div>";
 
         $projectDiv.append(projectCard);
 
