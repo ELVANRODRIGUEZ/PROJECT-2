@@ -107,7 +107,22 @@ label {
              
             }
             .display-4{
-                font-size: 30px;
+                font-size: 35px;
+            }
+            .body{
+              overflow: hidden;
+            }
+  
+          }
+
+
+          @media screen and (max-width: 630px) {
+            .jumbotron {
+              margin: 5vh;
+             
+            }
+            .display-4{
+                font-size: 20px;
             }
             .body{
               overflow: hidden;

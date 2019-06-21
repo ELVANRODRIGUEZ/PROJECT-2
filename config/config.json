@@ -5,7 +5,7 @@
     "password": "process.env.PASSWORD_2",
     "database": "process.env.DATABASE_2",
     "port": 3306,
-    "host": "localhost",
+    "host": "process.env.HOST_2",
     "dialect": "mysql"
   },
   "production": {
