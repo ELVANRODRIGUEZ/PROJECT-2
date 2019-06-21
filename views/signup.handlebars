@@ -4,26 +4,27 @@
       </div>
     </div>
   </nav>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
+  <div id="most-outter">
+  <div class="container text-white">
+    <div class="row login-form bg-dark">
+      <div class="col">
         <h2>Sign Up Form</h2>
         <form class="signup">
- <div class="form-group">
-            <label for="InputName">Your Name</label>
-            <input type="text" class="form-control" id="name-input" placeholder="John Doe">
+ <div class="form-group" autocomplete="off">
+            <label for="InputName" autocomplete="off">Your Name</label>
+            <input type="text" class="form-control" id="name-input" placeholder="John Doe" autocomplete="off">
           </div>
 <div class="form-group">
             <label for="InputPhone">Your Phone Number</label>
-            <input type="tel" class="form-control" id="phone-input" placeholder="+12 123 123 1234">
+            <input type="tel" class="form-control" id="phone-input" placeholder="+12 123 123 1234" autocomplete="off">
           </div>
           <div class="form-group">
             <label for="InputEmail">Email address</label>
-            <input type="text" class="form-control" id="email-input" placeholder="you@domain.com">
+            <input type="text" class="form-control" id="email-input" placeholder="you@domain.com" autocomplete="off">
           </div>
           <div class="form-group">
             <label for="InputPassword">Password</label>
-            <input type="password" class="form-control" id="password-input" placeholder="password">
+            <input type="password" class="form-control" id="password-input" placeholder="password" autocomplete="off">
           
           </div>
 
@@ -33,7 +34,7 @@
             <i class="fas fa-exclamation-circle"></i>
             <span>Error:</span> <span class="msg"></span>
           </div>
-          <button type="submit" class="btn btn-primary">Sign Up</button>
+          <button type="submit" class="btn btn-outline-success">Sign Up</button>
         </form>
         <br />
 
@@ -44,10 +45,11 @@
                 <p id="number" class="invalid">At least <strong>one number</strong></p>
                 <p id="length" class="invalid">Be at least <strong>8 characters</strong></p>
         </div>
-        <p>Or log in <a href="/">here</a></p>
+        <p>Or log in <a href="/" role="button" class="btn btn-outline-primary btn-sm">here</a></p>
       </div>
     </div>
   </div>
+</div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="js/signup.js"></script>

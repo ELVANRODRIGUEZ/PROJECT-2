@@ -2,7 +2,7 @@
 <nav class="navbar navbar-dark bg-dark">
   <p class="navbar-brand text-white ">&nbsp;&nbsp;Team Organizer™</p>
   <form class="form-inline">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="button">Sign Out</button>
+    <a class="btn btn-outline-danger my-2 my-sm-0" role="button" aria-disabled="true" href="/logout" >Sign Out</a>
   </form>
 </nav>
 
@@ -375,24 +375,25 @@
   </div>
 </div>
 
-<!--Projects Card Side-->
-<div class="jumbotron bg-secondary " style='background-color: #aaa;height: 90vh'>
+<!--Jumbotron Cards-->
+<div class="jumbotron bg-secondary " style='background-color: #aaa;height: 100%'>
   <div class='row'>
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <!--Projects Card Side-->
+    <div class="col-sm-6">
       <div class='row ' style='margin:5px;'>
-        <div class='card bg-dark text-white'>
+        <div class='card bg-dark text-white' style="width:100rem">
           <div class="card-header">
             <span class='display-4'>Projects </span>
             <button class='btn btn-secondary  projectDel' style='float: right;margin:0 2px'><i
                 class="fa fa-trash-o fa-4" aria-hidden="true"></i></button>
-            <button class='btn btn-secondary  projectAdd' style='float: right;'><i class="fa fa-plus fa-4"
+            <button class='btn btn-secondary  projectAdd' style='float: right;;margin:0 2px'><i class="fa fa-plus fa-4"
                 aria-hidden="true"></i></button>
           </div>
 
-          <div class="card-body bg-dark overflow-auto" style="height: 60vh">
+          <div class="card-body bg-dark overflow-auto" style="min-height: 60vh">
             <div class='card-columns'>
               <!--Projects Card Inside-->
-              <div class="card bg-dark text-white projectCard" style=" margin:5px;" data-id='3'>
+              <div class="card bg-dark text-white projectCard" style=" margin:5px; min-width: 120px" data-id='3'>
                 <div class="card-header">Project #1</div>
                 <div class="card-body">
                   <h6 class="card-title">Update Github portfolio</h6>
@@ -407,19 +408,19 @@
       </div>
     </div>
     <!--Category Card Side-->
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+    <div class="col-sm-6">
       <div class='row' style='margin:5px;'>
         <div class="card bg-dark text-white" style="width:100rem">
           <div class="card-header">
             <button class='btn btn-secondary categoryDel' style='float: right;margin:0 2px'><i
                 class="fa fa-trash-o fa-4" aria-hidden="true"></i></button>
-            <button class='btn btn-secondary categoryAdd' style='float: right;'><i class="fa fa-plus fa-4"
+            <button class='btn btn-secondary categoryAdd' style='float: right;margin:0 2px'><i class="fa fa-plus fa-4"
                 aria-hidden="true"></i></button>
             <h3>Categories</h3>
             <h4>For Project #1</h4>
           </div>
-          <div class="card-body bg-dark overflow-auto" style="height: 60vh">
-            <!--Projects Card Inside-->
+          <div class="card-body bg-dark overflow-auto" style="min-height: 60vh">
+            <!--Categories Card Inside-->
             <div class="card bg-secondary text-white categoryCard" style='margin:5px' data-id="5">
               <div class="card-body">
                 <h5 class="card-title">Designing</h5>
