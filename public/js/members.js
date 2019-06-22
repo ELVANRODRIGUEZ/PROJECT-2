@@ -5,6 +5,7 @@ $(document).ready(function () {
   //   console.log("From 'members.js': " + data);
   // });
 
+
   $.ajax({
       url: "/members/info",
       method: "GET"
@@ -51,6 +52,22 @@ $(document).ready(function () {
           "Welcome: " + user);
         $projectDiv.append(projectCard);
 
+
+        $('.projectCard').on('click', function () {
+          $('.card').removeClass('border border-primary');
+          $(this).addClass('border border-primary');
+
+          var all = $('.border-primary').map(function () {
+            return this;
+        }).get();
+  
+        var id = $(all[0]).data('id');
+
+        $('#forProject').text(id);
+      
+      })
+
+      
       })
 
       // ====================================== Elvan 
@@ -73,3 +90,4 @@ $(document).ready(function () {
     });
 
 });
+
