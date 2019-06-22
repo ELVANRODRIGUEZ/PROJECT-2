@@ -56,6 +56,7 @@ module.exports = function (app) {
       'up.user as "user", ' +
       'up.user_id as "user_id", ' +
       'up.project as "projects", ' +
+      'up.project_description as "project_description", ' +
       'up.project_id as "projects_id", ' +
       'tc.category as "category", ' +
       'tc.category_id as "category_id", ' +
@@ -65,6 +66,7 @@ module.exports = function (app) {
       '(SELECT u.user_name as "user", ' +
       'u.id as "user_id", ' +
       'p.project_name as "project", ' +
+      'p.description as "project_description", ' +
       'p.id as "project_id" ' +
       'FROM users u ' +
       'LEFT JOIN project_users pu ' +
