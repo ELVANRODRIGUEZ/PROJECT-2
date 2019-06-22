@@ -9,6 +9,8 @@ $('.categoryCard').on('click', function () {
 })
 
 $('.projectAdd').on('click', function () {
+    $("#projectName").val("");
+    $("#projectDesc").val("");
     $("#projectModal").modal({
         show: true,
         backdrop: 'static',
@@ -159,8 +161,9 @@ $("#projectModalAdd").on("click", function (event) {
     //     // " +  + "
 
     //     projectCard =
-    //         "<div class='card bg-dark text-white projectCard' " +
-    //         "style=' margin:5px; min-width: 120px' " +
+    //        // Manuel CSS a las cards
+       // "<div class='card  bg-secondary projectCard col-md-5 overflow-auto' " +
+        // "style=' margin:5px; min-width: 120px' " +
     //         "data-id='" + id + "'>" +
     //         "<div class='card-header'>Project #" + id +
     //         "</div> " +
@@ -169,7 +172,7 @@ $("#projectModalAdd").on("click", function (event) {
     //         project +
     //         "</h6> " +
     //         "<p class='card-text'> " +
-    //         "<small class='text-muted'> " +
+    //         "<small class='text-dark'> " +
     //         "Last updated 3 mins ago" +
     //         "</small> " +
     //         "</p> " +
