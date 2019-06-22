@@ -150,8 +150,9 @@ color: #fff;
 min-height: 200px;
 max-height: 200px;
 padding: 0px;
-background-color: color:  #646464;
 }
+
+#here{ display: inline-block}
 
 /* Password Information Box */
 
