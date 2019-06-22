@@ -1,30 +1,78 @@
-var x=0;
+var x = 0;
 $('.pminus').on('click', function () {
-    x +=25;
-    if(x>100){x=100}else{
-        $('.progress-bar').width(x+"%");
-        $('#total').attr('value',x);
-        $('.progress-bar').attr('aria-valuenow',x);
+    x += 25;
+    if (x > 100) {
+        x = 100
+    } else {
+        $('.progress-bar').width(x + "%");
+        $('#total').attr('value', x);
+        $('.progress-bar').attr('aria-valuenow', x);
     }
 })
 
 $('.pplus').on('click', function () {
-    x -=25;
-    if(x<0){x=0}else{
-        $('.progress-bar').width(x+"%");
-        $('.progress-bar').attr('aria-valuenow',x);
-        $('#total').attr('value',x);
+    x -= 25;
+    if (x < 0) {
+        x = 0
+    } else {
+        $('.progress-bar').width(x + "%");
+        $('.progress-bar').attr('aria-valuenow', x);
+        $('#total').attr('value', x);
     }
 })
 
-$('.projectCard').on('click', function () {
+$(document).on('click', '.projectCard', function () {
     $('.card').removeClass('border border-primary');
     $(this).addClass('border border-primary');
-})
 
-$('.categoryCard').on('click', function () {
-    $('.card').removeClass('border border-danger');
-    $(this).addClass('border border-danger');
+    var all = $('.border-primary').map(function () {
+        return this;
+    }).get();
+
+    var projectId = $(all[0]).data('id');
+    var $categoryDiv = $("#categoryDiv");
+    var $forProject = $("#forProject");
+
+    $categoryDiv.empty();
+    $forProject.empty();
+
+    // $('#forProject').text(id);
+    $.ajax({
+            url: "/members/info/" + projectId,
+            method: "GET"
+        })
+        .then(function (data) {
+
+            // console.log(data);
+
+            console.log(data);
+
+            Object.keys(data).forEach(function (item) {
+
+                console.log(item);
+
+
+                var categoryInfo;
+                var projectId = data[item].projects;
+
+                $forProject.text(projectId);
+
+                categoryInfo =
+                    "<div class='card bg-secondary text-white categoryCard'" +
+                    "style='margin:5px' data-id='" + data[item].category_id + "' >" +
+                    "<div class='card-body'>" +
+                    "<h5 class='card-title'>" +
+                    data[item].category_name + "</h5>" +
+                    "<h6 class='card-subtitle mb-2 text-white'>" + data[item].category_description + "</h6>" +
+                    "</div>" +
+                    "</div>";
+
+                $categoryDiv.append(categoryInfo);
+
+            });
+
+        })
+
 })
 
 $('.projectAdd').on('click', function () {
@@ -81,12 +129,34 @@ $('.categoryDel').on('click', function () {
 
 })
 
-$('.categoryCard').on('click', function () {
+$(document).on('click', '.categoryCard', function () {
     $("#categoryModal").modal({
         show: true,
         backdrop: 'static',
         keyboard: false
     });
+
+    $('.card').removeClass('border border-danger');
+    $(this).addClass('border border-danger');
+
+    var all = $('.border-danger').map(function () {
+        return this;
+    }).get();
+
+    var categoryId = $(all[0]).data('id').toString();
+    console.log(categoryId);
+
+    // $('#forProject').text(id);
+    $.ajax({
+            url: "/members/info/category/" + categoryId,
+            method: "GET"
+        })
+        .then(function (data) {
+
+            console.log(data);
+
+        });
+
 })
 
 var usersArr = [];
@@ -180,7 +250,7 @@ $("#projectModalAdd").on("click", function (event) {
             // "style=' margin:5px; min-width: 120px' " +
             "data-id='" + id + "'>" +
             "<div class='card-header'>P id: " + id +
-            " -" + name + 
+            " -" + name +
             "</div> " +
             "<div class='card-body'> " +
             "<h6 class='card-title'> " +

@@ -60,81 +60,73 @@ $(document).ready(function () {
 
       });
 
-      $('.projectCard').on('click', function () {
-        $('.card').removeClass('border border-primary');
-        $(this).addClass('border border-primary');
+      // $('.projectCard').on('click', function () {
+      //   $('.card').removeClass('border border-primary');
+      //   $(this).addClass('border border-primary');
 
-        var all = $('.border-primary').map(function () {
-          return this;
-        }).get();
+      //   var all = $('.border-primary').map(function () {
+      //     return this;
+      //   }).get();
 
-        var categoryId = $(all[0]).data('id');
+      //   var categoryId = $(all[0]).data('id');
+      //   var $categoryDiv = $("#categoryDiv");
+      //   var $forProject = $("#forProject");
 
-        // $('#forProject').text(id);
-        $.ajax({
-          url: "/members/info/" + categoryId,
-          method: "GET"
-        })
-        .then(function (data) {
-    
-          // console.log(data);
-    
-          console.log(data);
-    
-          Object.keys(data).forEach(function (item) {
-            
-            console.log(item);
+      //   $categoryDiv.empty();
+      //   $forProject.empty();
 
-            var $categoryDiv = $("#categoryDiv");
-    
-            var categoryInfo;
-    
-            categoryInfo =
-              "<div class='card bg-secondary text-white categoryCard'" +
-              "style='margin:5px' data-id='" + data[item].category_id + "' >" +
-              "<div class='card-body'>" +
-              "<h5 class='card-title'>" +
-              data[item].category_name + "</h5>" +
-              "<h6 class='card-subtitle mb-2 text-white'>" + data[item].category_description + "</h6>" +
-              "</div>" +
-              "</div>";
-    
-            $categoryDiv.append(categoryInfo);
-    
-          });
-    
-          // $('.projectCard').on('click', function () {
-          //   $('.card').removeClass('border border-primary');
-          //   $(this).addClass('border border-primary');
-    
-          //   var all = $('.border-danger').map(function () {
-          //     return this;
-          //   }).get();
-    
-          //   var categoryId = $(all[0]).data('id');
-    
-          //   // $('#forProject').text(id);
-          //   $.ajax({
-          //       url: "/members/info/" + categoryId,
-          //       method: "GET"
-          //     })
-          //     .then(function (data) {
-    
-          //       console.log(data);
-    
-          //     });
-    
-          // })
-    
-        });
+      //   // $('#forProject').text(id);
+      //   $.ajax({
+      //     url: "/members/info/" + categoryId,
+      //     method: "GET"
+      //   })
+      //   .then(function (data) {
 
-      })
+      //     // console.log(data);
+
+      //     console.log(data);
+
+      //     Object.keys(data).forEach(function (item) {
+
+      //       console.log(item);
+
+
+      //       var categoryInfo;
+      //       var projectId = data[item].projects;
+
+      //       $forProject.text(projectId);
+
+      //       categoryInfo =
+      //         "<div class='card bg-secondary text-white categoryCard'" +
+      //         "style='margin:5px' data-id='" + data[item].category_id + "' >" +
+      //         "<div class='card-body'>" +
+      //         "<h5 class='card-title'>" +
+      //         data[item].category_name + "</h5>" +
+      //         "<h6 class='card-subtitle mb-2 text-white'>" + data[item].category_description + "</h6>" +
+      //         "</div>" +
+      //         "</div>";
+
+      //       $categoryDiv.append(categoryInfo);
+
+      //     });
+
+      //     $('.categoryCard').on('click', function () {
+      //       $('.card').removeClass('border border-danger');
+      //       $(this).addClass('border border-danger');
+
+      //     
+
+      //     })
+
+      //   });
+
+      // })
 
     });
 
 
   // ======================== Call to paint categories. 
-  
+
 
 
 });
