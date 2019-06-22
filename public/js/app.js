@@ -10,6 +10,8 @@ $('.categoryCard').on('click', function () {
 })
 
 $('.projectAdd').on('click', function () {
+    $("#projectName").val("");
+    $("#projectDesc").val("");
     $("#projectModal").modal({
         show: true,
         backdrop: 'static',

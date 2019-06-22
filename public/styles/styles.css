@@ -41,6 +41,10 @@ body{
   margin: 32px 17px 32px 17px;
 }
 
+.logsign-field{
+  width: 320px;
+}
+
 /* #outter-div {
   padding: 10rem
  
@@ -134,9 +138,20 @@ select:-webkit-autofill:focus {
   box-shadow: 0 0 5px #e8e9eb inset;
 }
 
-/* #login-form label {
-  color: white;
-} */
+.navbarTitle{
+  background-color: #fff;
+  color:  #646464;
+}
+
+.projectCard{
+  margin:auto;
+  min-width: 160px;
+color: #fff;
+min-height: 200px;
+max-height: 200px;
+padding: 0px;
+background-color: color:  #646464;
+}
 
 /* Password Information Box */
 
@@ -203,6 +218,32 @@ select:-webkit-autofill:focus {
   display: none;
 }
 
+/* scrollbar css */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+  background-clip: content-box;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background:#005fc4; 
+  border-radius: 10px;
+   
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(173, 173, 173); 
+}
+
+
 /* Style Nacho ==============================================*/
 
 .btn {
@@ -232,6 +273,8 @@ select:-webkit-autofill:focus {
   .body {
     overflow: hidden;
   }
+
+
 }
 
 
@@ -375,30 +418,6 @@ img {
 .msg_history {
   height: 516px;
   overflow-y: auto;
-}
-
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
-/* scrollbar css */
-/* Track */
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
-  border-radius: 10px;
-  background-clip: content-box;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background:white; 
-  border-radius: 10px;
-   
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(173, 173, 173); 
 }
 
   

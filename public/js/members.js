@@ -28,8 +28,9 @@ $(document).ready(function () {
         // " +  + "
 
         projectCard =
-          "<div class='card bg-dark text-white projectCard' " +
-          "style=' margin:5px; min-width: 120px' " +
+         // Manuel CSS a las cards
+        "<div class='card  bg-secondary projectCard col-md-5 overflow-auto' " +
+        // "style=' margin:5px; min-width: 120px' " +
           "data-id='" + data[item].projects_id + "'>" +
           "<div class='card-header'>Project #" + data[item].projects_id +
           "</div> " +
@@ -38,7 +39,7 @@ $(document).ready(function () {
           data[item].projects +
           "</h6> " +
           "<p class='card-text'> " +
-          "<small class='text-muted'> " +
+          "<small class='text-dark'> " +
           "Last updated 3 mins ago" +
           "</small> " +
           "</p> " +
