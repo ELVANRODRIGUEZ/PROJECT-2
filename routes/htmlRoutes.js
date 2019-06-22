@@ -101,11 +101,14 @@ module.exports = function (app) {
 
   });
 
-  app.get("/members/info/:categoryId", isAuthenticated, function (req, res) {
+  app.get("/members/info/:projectId", isAuthenticated, function (req, res) {
     // function test(cb) {
 
     var userId = req.user.id;
-    var ProjectId = req.params.categoryId;
+    var projectId = req.params.projectId;
+
+    console.log(userId);
+    console.log(projectId);
 
     var query =
       'SELECT ' +
@@ -127,8 +130,8 @@ module.exports = function (app) {
       'FROM users u ' +
       'LEFT JOIN project_users pu ON u.id = pu.user_name ' +
       'JOIN projects p ON p.id = pu.project_name ' +
-      'WHERE u.id = ' + userId +
-      ' AND p.id = ' + ProjectId + ') up ' +
+      'WHERE u.id = ' + userId + ' AND p.id = ' +
+      projectId + ') up ' +
       'LEFT JOIN ' +
       '(SELECT ' +
       'u.id as "user", ' +
@@ -151,7 +154,7 @@ module.exports = function (app) {
       'LEFT JOIN tasks t ON t.task_category = c.id) tc ' +
       'ON upt.task_id = tc.task_id ' +
       'WHERE category_id IS NOT NULL ' +
-      'GROUP BY category_id; '
+      'GROUP BY category_id'
 
     connection.query(query, function (err, data) {
 
@@ -161,8 +164,6 @@ module.exports = function (app) {
 
 
     });
-
-    // }
 
   });
 
