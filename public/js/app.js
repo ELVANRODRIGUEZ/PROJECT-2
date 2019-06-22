@@ -1,4 +1,3 @@
-
 $('.projectCard').on('click', function () {
     $('.card').removeClass('border border-primary');
     $(this).addClass('border border-primary');
@@ -139,7 +138,7 @@ $("#projectModalAdd").on("click", function (event) {
         description: $("#projectDesc").val()
     };
 
-   
+
     // Send the POST request.
     $.ajax("/api/projects/add", {
         type: "PUT",
@@ -149,6 +148,7 @@ $("#projectModalAdd").on("click", function (event) {
         // console.log(data);
 
         var project = data.description;
+        var name = data.project_name;
         var id = data.id;
         var $projectDiv = $("#projectDiv");
         var projectCard;
@@ -156,17 +156,19 @@ $("#projectModalAdd").on("click", function (event) {
         // " +  + "
 
         projectCard =
-            "<div class='card bg-dark text-white projectCard' " +
-            "style=' margin:5px; min-width: 120px' " +
+            // Manuel CSS a las cards
+            "<div class='card  bg-secondary projectCard col-md-5 overflow-auto' " +
+            // "style=' margin:5px; min-width: 120px' " +
             "data-id='" + id + "'>" +
-            "<div class='card-header'>Project #" + id +
+            "<div class='card-header'>P id: " + id +
+            " -" + name + 
             "</div> " +
             "<div class='card-body'> " +
             "<h6 class='card-title'> " +
             project +
             "</h6> " +
             "<p class='card-text'> " +
-            "<small class='text-muted'> " +
+            "<small class='text-dark'> " +
             "Last updated 3 mins ago" +
             "</small> " +
             "</p> " +

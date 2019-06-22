@@ -13,6 +13,8 @@ $(document).ready(function () {
 
       // console.log(data);
 
+      console.log(data);
+
       Object.keys(data).forEach(function (item) {
         // console.log(data[item].projects);
 
@@ -32,11 +34,13 @@ $(document).ready(function () {
         "<div class='card  bg-secondary projectCard col-md-5 overflow-auto' " +
         // "style=' margin:5px; min-width: 120px' " +
           "data-id='" + data[item].projects_id + "'>" +
-          "<div class='card-header'>Project #" + data[item].projects_id +
+          "<div class='card-header'>P id: " 
+          + data[item].projects_id +
+          " - " + data[item].projects +
           "</div> " +
           "<div class='card-body'> " +
           "<h6 class='card-title'> " +
-          data[item].projects +
+          data[item].project_description +
           "</h6> " +
           "<p class='card-text'> " +
           "<small class='text-dark'> " +
