@@ -68,9 +68,36 @@ $('.categoryCard').on('click', function () {
     });
 })
 
+var usersArr = [];
 
-///--------New Project--------///
+$('#addUser').on('click', function () {
+    // Make sure to preventDefault on a submit event.
+    event.preventDefault();
+
+    var $userList = $("#userList");
+    var userId = $("#projectUsers option:selected").attr("userId");
+    var userName = $("#projectUsers option:selected").val();
+
+    var newUser =
+        "<li class='projectUser' userId=" + userId + ">" + userName + "</li>";
+
+    $userList.append(newUser);
+
+    usersArr.push(userId);
+
+})
+
+
+///----------------Events with Ajax calls----------------///
+
+///--------Get all users in Add Project Modal--------///
 $("#projectAddButton").on("click", function (event) {
+
+    // Empty the list for Project related users.
+    $("#userList").html("");
+
+    // Empty the list for Project related users.
+    usersArr = [];
 
     // Send the GET request.
     $.get("/api/all_users", function (data) {
@@ -86,8 +113,10 @@ $("#projectAddButton").on("click", function (event) {
 
         data.forEach(function (item) {
 
-            users += "<option id=" + item.id + ">" + item.user_name + "</option>";
-            
+            users += "<option class='usersArr' userId=" +
+                item.id +
+                ">" + item.user_name + "</option>";
+
         })
 
         $projectUsers.html(users);
@@ -106,42 +135,50 @@ $("#projectModalAdd").on("click", function (event) {
         description: $("#projectDesc").val(),
     };
 
-    // Send the POST request.
-    $.ajax("/api/projects/add", {
-        type: "PUT",
-        data: newProject
-    }).then(function (data) {
+    // var allProjectUsers = $(".projectUser").attr("userId");
+    // console.log(allProjectUsers);
 
-        console.log(data);
+    usersArr.forEach(function(item) {
+        console.log(item);
+    })
 
-        var project = data.description;
-        var id = data.id;
-        var $projectDiv = $("#projectDiv");
-        var projectCard;
 
-        // " +  + "
+    // // Send the POST request.
+    // $.ajax("/api/projects/add", {
+    //     type: "PUT",
+    //     data: newProject
+    // }).then(function (data) {
 
-        projectCard =
-            "<div class='card bg-dark text-white projectCard' " +
-            "style=' margin:5px; min-width: 120px' " +
-            "data-id='" + id + "'>" +
-            "<div class='card-header'>Project #" + id +
-            "</div> " +
-            "<div class='card-body'> " +
-            "<h6 class='card-title'> " +
-            project +
-            "</h6> " +
-            "<p class='card-text'> " +
-            "<small class='text-muted'> " +
-            "Last updated 3 mins ago" +
-            "</small> " +
-            "</p> " +
-            "</div> " +
-            "</div>";
+    //     console.log(data);
 
-        $projectDiv.append(projectCard);
+    //     var project = data.description;
+    //     var id = data.id;
+    //     var $projectDiv = $("#projectDiv");
+    //     var projectCard;
 
-    });
+    //     // " +  + "
+
+    //     projectCard =
+    //         "<div class='card bg-dark text-white projectCard' " +
+    //         "style=' margin:5px; min-width: 120px' " +
+    //         "data-id='" + id + "'>" +
+    //         "<div class='card-header'>Project #" + id +
+    //         "</div> " +
+    //         "<div class='card-body'> " +
+    //         "<h6 class='card-title'> " +
+    //         project +
+    //         "</h6> " +
+    //         "<p class='card-text'> " +
+    //         "<small class='text-muted'> " +
+    //         "Last updated 3 mins ago" +
+    //         "</small> " +
+    //         "</p> " +
+    //         "</div> " +
+    //         "</div>";
+
+    //     $projectDiv.append(projectCard);
+
+    // });
 
 });
 

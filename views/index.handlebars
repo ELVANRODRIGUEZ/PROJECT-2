@@ -74,8 +74,10 @@
             <button class='btn btn-outline-success ' id='addUser'>Add</button>
             category </div>
           Users Added
-          <ul>
-            <li id='userProject'>Users 1</li>
+          {{!-- Elvan --}}
+          <ul id="userList">
+            {{!-- Elvan id="userList" --}}
+            {{!-- <li class='userProject' id='1'>User 1</li> --}}
           </ul>
         </form>
       </div>
@@ -197,8 +199,8 @@
             <div class="collapse" id="collapseExample6">
               <div class='card card-title bg-secondary h4'>Are you sure you want to delete</div>
               <div class="card-body bg-dark" style="text-align: right">
-                <button class='btn btn-outline-danger' >Cancel</button>
-                <button class='btn btn-outline-success' >Yes</button>
+                <button class='btn btn-outline-danger'>Cancel</button>
+                <button class='btn btn-outline-success'>Yes</button>
               </div>
             </div>
 
@@ -401,8 +403,8 @@
             <span class='display-4'>Projects </span>
             <button class='btn btn-secondary  projectDel' style='float: right;margin:0 2px'><i
                 class="fa fa-trash-o fa-4" aria-hidden="true"></i></button>
-            <button id="projectAddButton" class='btn btn-secondary  projectAdd' style='float: right;;margin:0 2px'><i class="fa fa-plus fa-4"
-                aria-hidden="true"></i></button>
+            <button id="projectAddButton" class='btn btn-secondary  projectAdd' style='float: right;;margin:0 2px'><i
+                class="fa fa-plus fa-4" aria-hidden="true"></i></button>
           </div>
 
           <div class="card-body bg-dark overflow-auto" style="max-height: 60vh">
@@ -426,7 +428,7 @@
       </div>
     </div>
     <!--Category Card Side-->
-     <div class="col-sm-6">
+    <div class="col-sm-6">
       <div class='row' style='margin:5px;'>
         <div class="card bg-dark text-white" style="width:100rem max-height: 60vh; height: 60vh">
           <div class="card-header">
