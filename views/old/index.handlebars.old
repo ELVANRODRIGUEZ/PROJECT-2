@@ -11,16 +11,16 @@
 <!--Delete Modal For Projects-->
 <div class="modal" tabindex="-1" role="dialog" id="deleteProjectModal">
   <div class="modal-dialog" role="document">
-    <div class="modal-content bg-dark text-white">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Are you sure you want to delete?</h5>
-        <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-success" data-dismiss="modal" id='deleteProject'>Yes</button>
-        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id='deleteProject'>Yes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
@@ -28,16 +28,16 @@
 <!--Delete Modal For categories-->
 <div class="modal" tabindex="-1" role="dialog" id="deleteCategoryModal">
   <div class="modal-dialog" role="document">
-    <div class="modal-content bg-dark text-white">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Are you sure you want to delete?</h5>
-        <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-success" data-dismiss="modal" id='deleteCategory'>Yes</button>
-        <button type="button" class="btn btn btn-outline-danger" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id='deleteCategory'>Yes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>
@@ -45,10 +45,10 @@
 <!--Add New Project-->
 <div class="modal" tabindex="-1" role="dialog" id="projectModal">
   <div class="modal-dialog" role="document">
-    <div class="modal-content bg-dark text-white">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Add a new Project</h5>
-        <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -61,29 +61,25 @@
 
           <div class="form-group">
             <label for="projectDesc">Project Description</label>
-            <textarea type="text" class="form-control" id="projectDesc" rows="3"></textarea>
+            <textarea class="form-control" id="projectDesc" rows="3"></textarea>
           </div>
 
           <div class="form-group">
             <label for="projectUsers">Add Users</label>
-            <select class="form-control col-md-4 usersAvailables" id="projectUsers" type="list">
-              <option>Elvan López</option>
-              <option> Ignacio Gaxiola</option>
-              <option> Manuel Castillo</option>
+            <select class="form-control col-md-4 usersAvailables" id="projectUsers">
+              <option>user</option>
             </select>
-            <button class='btn btn-outline-success ' id='addUser'>Add</button>
+            <button class='btn btn-primary col-md-2' id='addUser'>Add</button>
             category </div>
           Users Added
-          {{!-- Elvan --}}
-          <ul id="userList">
-            {{!-- Elvan id="userList" --}}
-            {{!-- <li class='userProject' id='1'>User 1</li> --}}
+          <ul>
+            <li id='userProject'>Users 1</li>
           </ul>
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline-success" id='projectModalAdd' data-dismiss="modal">Add</button>
-        <button class="btn btn btn-outline-danger" data-dismiss="modal">Close</button>
+        <button class="btn btn-primary" id='projectModalAdd' data-dismiss="modal">Add</button>
+        <button class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -91,10 +87,10 @@
 <!--New Category Modal-->
 <div class="modal" tabindex="-1" role="dialog" id="categoryModalAdd">
   <div class="modal-dialog" role="document">
-    <div class="modal-content bg-dark text-white">
+    <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Add a new category</h5>
-        <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -107,15 +103,14 @@
 
           <div class="form-group">
             <label for="categoryDesc">Category Description</label>
-            <textarea type="text" class="form-control" id="categoryDesc" rows="3"></textarea>
+            <textarea class="form-control" id="categoryDesc" rows="3"></textarea>
           </div>
 
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn btn-outline-success" data-dismiss="modal"
-          id='categoryModalAdd'>Add</button>
-        <button type="button" class="btn btn btn-outline-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id='categoryModalAdd'>Add</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -129,13 +124,13 @@
         <button class='btn btn-secondary' style='float: right;margin-left: 5vh' data-toggle="collapse"
           href="#collapseExample8" role="button" aria-expanded="false" aria-controls="collapseExample8"><i
             class="fa fa-plus fa-4" aria-hidden="true"></i></button>
-        <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
 
 
-      <div class="collapse" id="collapseExample8" style='margin:auto; width: 50vh'>
+      <div class="collapse" id="collapseExample8" style='margin:auto;width: 50vh'>
 
         <div class="card card-body bg-secondary text-white">
           <form>
@@ -146,9 +141,9 @@
 
             <div class="form-group">
               <label for="projectDesc">New Task Description</label>
-              <textarea type="text" class="form-control" id="projectDesc" rows="3"></textarea>
+              <textarea class="form-control" id="projectDesc" rows="3"></textarea>
             </div>
-            <button class='btn btn btn-outline-success' type="submit" id='addTask'>Add task!</button>
+            <button class='btn btn-primary col-md-6' type="submit" id='addTask'>Add task!</button>
           </form>
         </div>
       </div>
@@ -160,8 +155,8 @@
               href="#collapseExample6" role="button" aria-expanded="false" aria-controls="collapseExample6"><i
                 class="fa fa-trash-o fa-4" aria-hidden="true"></i></button>
             <button class='btn btn-secondary' data-toggle="collapse" href="#collapseExample5" role="button"
-              aria-expanded="false" aria-controls="collapseExample5" style='float: right; margin:0 2px'><i
-                class="fa fa-pencil fa-4" aria-hidden="true"></i></button>
+              aria-expanded="false" aria-controls="collapseExample5" style='float: right;'><i class="fa fa-pencil fa-4"
+                aria-hidden="true"></i></button>
 
             <div class="collapse" id="collapseExample5">
               <div class='card card-title bg-secondary h4'>Edit Task</div>
@@ -175,18 +170,14 @@
                   </div>
                   <div class="form-group col-md-4">
                     <label for="formGroupExampleInput2">Add Users</label>
-                    <select type="list" id="inputState" class="form-control">
-                      <option>Elvan López</option>
-                      <option> Ignacio Gaxiola</option>
-                      <option> Manuel Castillo</option>
-                    </select></div>
+                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Another input">
+                  </div>
 
                   <div class="form-group col-md-4">
                     <label for="inputState">Delete User</label>
-                    <select type="list" id="inputState" class="form-control">
-                      <option>Elvan López</option>
-                      <option> Ignacio Gaxiola</option>
-                      <option> Manuel Castillo</option>
+                    <select id="inputState" class="form-control">
+                      <option selected>Choose...</option>
+                      <option>...</option>
                     </select>
                   </div>
 
@@ -198,9 +189,9 @@
 
             <div class="collapse" id="collapseExample6">
               <div class='card card-title bg-secondary h4'>Are you sure you want to delete</div>
-              <div class="card-body bg-dark" style="text-align: right">
-                <button class='btn btn-outline-danger'>Cancel</button>
-                <button class='btn btn-outline-success'>Yes</button>
+              <div class="card card-body bg-dark">
+                <button class='btn btn-secondary col-md-4' style='margin:10px auto'>Cancel</button>
+                <button class='btn btn-primary col-md-4' style='margin:10px auto'>Yes</button>
               </div>
             </div>
 
@@ -221,24 +212,20 @@
               <div class="card-body">
                 <ul class="nav nav-tabs bg-dark card-title">
                   <li class="nav-item">
-                    <a class="nav-link btn btn-outline-primary" type="button" data-toggle="collapse"
-                      href="#multiCollapseExample1" role="button" aria-expanded="false"
-                      aria-controls="multiCollapseExample1">Users</a>
+                    <a class="nav-link active" type="button" data-toggle="collapse" href="#multiCollapseExample1"
+                      role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Users</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link btn btn-outline-primary" type="button" data-toggle="collapse"
-                      href="#multiCollapseExample2" role="button" aria-expanded="false"
-                      aria-controls="multiCollapseExample2">Chat</a>
+                    <a class="nav-link" type="button" data-toggle="collapse" href="#multiCollapseExample2" role="button"
+                      aria-expanded="false" aria-controls="multiCollapseExample2">Chat</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link btn btn-outline-primary" type="button" data-toggle="collapse"
-                      href="#multiCollapseExample3" role="button" aria-expanded="false"
-                      aria-controls="multiCollapseExample3">New Email</a>
+                    <a class="nav-link" type="button" data-toggle="collapse" href="#multiCollapseExample3" role="button"
+                      aria-expanded="false" aria-controls="multiCollapseExample3">New Email</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link btn btn-outline-primary" type="button" data-toggle="collapse"
-                      href="#multiCollapseExample4" role="button" aria-expanded="false"
-                      aria-controls="multiCollapseExample4">Email History</a>
+                    <a class="nav-link" type="button" data-toggle="collapse" href="#multiCollapseExample4" role="button"
+                      aria-expanded="false" aria-controls="multiCollapseExample4">Email History</a>
                   </li>
                 </ul>
                 <!--  BODY USERS-->
@@ -332,8 +319,7 @@
 
                         <div class="form-group">
                           <label for="exampleFormControlTextarea1">Example textarea</label>
-                          <textarea type="text" class="form-control" id="exampleFormControlTextarea1"
-                            rows="3"></textarea>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
                       </form>
                     </div>
@@ -385,12 +371,11 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn btn-outline-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
 </div>
-
 
 <!--Jumbotron Cards-->
 <div class="jumbotron bg-secondary " style='background-color: #aaa;height: 100%'>
@@ -398,16 +383,16 @@
     <!--Projects Card Side-->
     <div class="col-sm-6">
       <div class='row ' style='margin:5px;'>
-        <div class='card bg-dark text-white' style="width:100rem; max-height: 60vh; height: 60vh">
+        <div class='card bg-dark text-white' style="width:100rem">
           <div class="card-header">
             <span class='display-4'>Projects </span>
             <button class='btn btn-secondary  projectDel' style='float: right;margin:0 2px'><i
                 class="fa fa-trash-o fa-4" aria-hidden="true"></i></button>
-            <button id="projectAddButton" class='btn btn-secondary  projectAdd' style='float: right;;margin:0 2px'><i
-                class="fa fa-plus fa-4" aria-hidden="true"></i></button>
+            <button class='btn btn-secondary  projectAdd' style='float: right;;margin:0 2px'><i class="fa fa-plus fa-4"
+                aria-hidden="true"></i></button>
           </div>
 
-          <div class="card-body bg-dark overflow-auto" style="max-height: 60vh">
+          <div class="card-body bg-dark overflow-auto" style="min-height: 60vh">
             {{!-- Elvan --}}
             <div id="projectDiv" class='card-columns'>
               {{!-- <!--Projects Card Inside-->
@@ -430,16 +415,16 @@
     <!--Category Card Side-->
     <div class="col-sm-6">
       <div class='row' style='margin:5px;'>
-        <div class="card bg-dark text-white" style="width:100rem max-height: 60vh; height: 60vh">
+        <div class="card bg-dark text-white" style="width:100rem">
           <div class="card-header">
             <button class='btn btn-secondary categoryDel' style='float: right;margin:0 2px'><i
                 class="fa fa-trash-o fa-4" aria-hidden="true"></i></button>
             <button class='btn btn-secondary categoryAdd' style='float: right;margin:0 2px'><i class="fa fa-plus fa-4"
                 aria-hidden="true"></i></button>
-            <h3 class='display-4'>Categories</h3>
-            <h5 class='display-3'>For Project #1</h4>
+            <h3>Categories</h3>
+            <h4>For Project #1</h4>
           </div>
-          <div class="card-body bg-dark overflow-auto" style="height: 60vh">
+          <div class="card-body bg-dark overflow-auto" style="min-height: 60vh">
             <!--Categories Card Inside-->
             <div class="card bg-secondary text-white categoryCard" style='margin:5px' data-id="5">
               <div class="card-body">

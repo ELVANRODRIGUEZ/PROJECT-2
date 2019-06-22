@@ -2,9 +2,9 @@
   line-height: 2.5;
 }
 
-/* form.signup, form.login {
+form.signup, form.login {
   margin-top: 50px;
-} */
+}
 
 ul, li {
   margin: 0;
@@ -16,29 +16,21 @@ html {
   height: 100%;
 }
 
-
-body{
-  display: flex;
-  flex-direction: column;
+body {
   width: 100%;
   height: 98%;
+  display: flex;
+  flex-direction: column;
 }
 
 #most-outter {
-  width: 100%;
-  height: 98%;
-  display: flex;
-  flex-direction: column;
-}
-
-#outter {
-  background-color: #6c757d;
+  background-color: rgb(128, 128, 128);
   margin: auto;
   display: block;
 }
 
 .login-form {
-  margin: 32px 17px 32px 17px;
+  margin: 15px 0px 15px 0px;
 }
 
 /* #outter-div {
@@ -51,68 +43,35 @@ body{
   padding: 10px 15px 15px 15px;
 }
 
-.btn {
-  /* display: inline-block; */
-  display: block
-}
-
-input[type=email], input[type=password], input[type=text], input[type=tel], textarea[type=text], select[type=list] {
+input[type=email], input[type=password], input[type=text], input[type=tel] {
   padding: 10px 10px;
   border: 1px solid #d5d9da;
   border-radius: 5px;
   box-shadow: 0 0 5px #e8e9eb inset;
-  /* width: 310px; */
+  width: 328px;
   /*400 (#container) - 40 (li margins) -  10 (span paddings) - 20 (input paddings) - 2 (input borders)*/
   font-size: 1em;
   outline: 0;
   /* remove webkit focus styles */
-  background-color: #6c757d;
+  background-color: rgb(128, 128, 128);
   -webkit-transition: width 0.5s ease-in-out;
   transition: width 0.5s ease-in-out;
   color: white;
   /* width: 50%; */
 }
 
-select[type=list]{
-  border: 1px solid #d5d9da;
-  border-radius: 5px;
-  box-shadow: 0 0 5px #e8e9eb inset;
-  height: calc(1.5em + .9rem + 2px);
-  font-size: 1em;
-  outline: 0;
-  /* remove webkit focus styles */
-  background-color: #6c757d;
-  -webkit-transition: width 0.5s ease-in-out;
-  transition: width 0.5s ease-in-out;
-  color: white;
-  /* width: 50%; */
-}
-
-
-
-input[type=email]:focus, input[type=password]:focus, input[type=text]:focus, input[type=tel]:focus, textarea[type=text]:focus {
+input[type=email]:focus, input[type=password]:focus, input[type=text]:focus, input[type=tel]:focus {
   border: 1px solid #b9d4e9;
   border-top-color: #b6d5ea;
   border-bottom-color: #b8d4ea;
   box-shadow: 0 0 5px #b9d4e9;
-  background-color: #6c757d;
+  background-color: rgb(128, 128, 128);
   color: white;
 }
-select[type=list]:focus{
-  border: 1px solid #b9d4e9;
-  border-top-color: #b6d5ea;
-  border-bottom-color: #b8d4ea;
-  box-shadow: 0 0 5px #b9d4e9;
-  background-color: #6c757d;
-  color: white;
-} 
 
 input[type=email]::placeholder, input[type=password]::placeholder, input[type=text]::placeholder, input[type=tel]::placeholder {
-  color: #005fc4;
+  color: #05728f;
 }
-
-
-
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
@@ -149,18 +108,11 @@ select:-webkit-autofill:focus {
   right: -155px;
   width: 250px;
   padding: 15px;
-  background: black;
-  border: 1px solid #b9d4e9;
-  border-top-color: #b6d5ea;
-  border-bottom-color: #b8d4ea;
-  box-shadow: 0 0 5px #b9d4e9;
-  background-color: rgb(128, 128, 128);
+  background: #fefefe;
   font-size: .875em;
   border-radius: 5px;
-  /* background: #fefefe;
   box-shadow: 0 1px 3px #ccc;
   border: 1px solid #ddd;
-  background-color: rgb(128, 128, 128); */
 }
 
 #pswd_info h6 {
@@ -180,7 +132,7 @@ select:-webkit-autofill:focus {
   left: 45%;
   font-size: 14px;
   line-height: 14px;
-  color: #05728f;
+  color: #ddd;
   text-shadow: none;
   display: block;
 }
@@ -189,14 +141,14 @@ select:-webkit-autofill:focus {
   background: url(../images/cancel.png) no-repeat 0 50%;
   padding-left: 22px;
   line-height: 24px;
-  color: #a00103;
+  color: #ec3f41;
 }
 
 .valid {
   background: url(../images/accept.png) no-repeat 0 50%;
   padding-left: 22px;
   line-height: 24px;
-  color: #0b6d02;
+  color: #3a7d34;
 }
 
 #pswd_info {
@@ -210,56 +162,27 @@ select:-webkit-autofill:focus {
 }
 
 .jumbotron {
-  margin: 5vh 5vh;
-  /* padding: 32px 32px 32px 32px; */
-
+  margin: 5vh 10vh;
 }
 
-.display-3 {
-  font-size: 30px;
-}
-
-@media screen and (max-width: 950px) {
+@media screen and (max-width: 900px) {
   .jumbotron {
     margin: 5vh;
   }
   .display-4 {
     font-size: 35px;
   }
-  .display-3 {
-    font-size: 27px;
-  }
   .body {
     overflow: hidden;
   }
 }
 
-
-
-@media screen and (max-width: 760px) {
-  .jumbotron {
-    margin: 5vh;
-  }
-  .display-4 {
-    font-size: 32px;
-  }
-  .display-3 {
-    font-size: 26px;
-  }
-  .body {
-    overflow: hidden;
-  }
-}
-
-@media screen and (max-width: 730px) {
+@media screen and (max-width: 630px) {
   .jumbotron {
     margin: 5vh;
   }
   .display-4 {
     font-size: 20px;
-  }
-  .display-3 {
-    font-size: 13px;
   }
   .body {
     overflow: hidden;
@@ -376,29 +299,3 @@ img {
   height: 516px;
   overflow-y: auto;
 }
-
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
-/* scrollbar css */
-/* Track */
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
-  border-radius: 10px;
-  background-clip: content-box;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background:white; 
-  border-radius: 10px;
-   
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(173, 173, 173); 
-}
-
-  

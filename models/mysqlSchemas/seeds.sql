@@ -8,21 +8,21 @@ USE wycgc3g4apmhrsf3;
 INSERT INTO `users` 
 (`user_name`,`password`,`phone_number`,`email`,`is_admin`,`createdAt`,`updatedAt`) 
 VALUES 
-("Arsenio R. Estrada","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","63 736 365 3871","mauris.id.sapien@orcilacus.net",0,"06/08/18","29/01/19"),
-("Kelsey X. Hendricks","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","09 231 205 3053","aliquet.nec.imperdiet@imperdiet.org",0,"22/12/18","02/06/19"),
-("Kevin D. Cooley","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","98 635 796 5034","Aliquam@facilisis.org",0,"06/02/18","08/09/18"),
-("Kaitlin D. Cote","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","26 674 415 1869","sollicitudin@utaliquam.ca",1,"30/03/18","22/03/18"),
-("Iona E. Guerrero","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","88 043 466 4517","Proin@parturientmontes.edu",0,"03/09/18","27/07/18"),
-("Belle O. Atkinson","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","93 456 104 3393","Aenean@sedduiFusce.com",0,"01/05/19","30/05/19"),
-("Leslie L. Glenn","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","61 667 071 6261","In.mi.pede@vulputate.net",1,"11/10/18","04/05/19"),
-("Daniel E. Cantrell","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","10 157 718 4309","sit@nisinibhlacinia.co.uk",1,"14/06/19","24/06/18"),
-("Alyssa I. Gould","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","49 477 298 9460","facilisis.Suspendisse.commodo@congue.com",0,"13/04/19","26/03/19"),
-("Malik Q. Jacobson","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","57 704 719 2002","Donec.dignissim.magna@ametconsectetuer.edu",1,"02/02/19","19/05/18"),
-("Keely G. Coleman","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","98 308 537 5917","elit@Integeridmagna.ca",1,"02/04/18","19/05/19"),
-("Colorado E. Weaver","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","20 622 806 4973","cursus@vulputatelacusCras.org",1,"01/06/18","08/10/18"),
-("Oliver F. House","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","61 969 260 9007","facilisis.lorem.tristique@molestie.edu",0,"11/04/19","03/01/18"),
-("Brody G. Pacheco","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","28 519 075 6900","rutrum@Nullam.org",1,"06/07/18","22/11/18"),
-("Octavia I. Walton","$2a$10$7OI833MiBP5werO229LNRevBFU9lD0m.1Vuw3A6jHQZSo/fwXVm5u","68 269 464 2785","feugiat@ipsum.co.uk",0,"10/11/18","27/05/18");
+("Arsenio R. Estrada","$2a$10$O84O2n9Ca70DxeMh7kUREOMc0Fz5TGgzgduAfXR6r783PDmcT80/K","+63 736 365 3871","mauris.id.sapien@orcilacus.net",0,"06/08/18","29/01/19"),	-- Prueba01
+("Kelsey X. Hendricks","$2a$10$BWp9uxY/562/Zfdzkn5y.ua7C/8ZWmA89kzPjop9tMSNwIU8Vr2F.","+09 231 205 3053","aliquet.nec.imperdiet@imperdiet.org",0,"22/12/18","02/06/19"),	-- Prueba02
+("Kevin D. Cooley","$2a$10$PlLU0dFwIDXJkEvQtzlkieaW05o2wRc0/P0yv/CCcuRl87LB4axu.","+98 635 796 5034","Aliquam@facilisis.org",0,"06/02/18","08/09/18"),	-- Prueba03
+("Kaitlin D. Cote","$2a$10$hM1DrSmVR3OtiaTSHu3Yie53sZ3VLLV10Ce/LRrZZ7BsSl9O8HPvG","+26 674 415 1869","sollicitudin@utaliquam.ca",1,"30/03/18","22/03/18"),	-- Prueba04
+("Iona E. Guerrero","$2a$10$uuDiRBwUf7AVDvQujgJrK.UgR8/FedDTGn49ZWuB8v0RHMiHhlQI6","+88 043 466 4517","Proin@parturientmontes.edu",0,"03/09/18","27/07/18"),	-- Prueba05
+("Belle O. Atkinson","$2a$10$1c0/fR9Xil1aZku7ikubgOuvesjtDl2h5qVL/9eKsGoDuyGVrrlr2","+93 456 104 3393","Aenean@sedduiFusce.com",0,"01/05/19","30/05/19"),	-- Prueba06
+("Leslie L. Glenn","$2a$10$pNvTv7JPqeHKkdVhUpYiAeCT5dav53XAZ3jhWQc41oA1modIBTEDK","+61 667 071 6261","In.mi.pede@vulputate.net",1,"11/10/18","04/05/19"),	-- Prueba07
+("Daniel E. Cantrell","$2a$10$JSBs32Udwh6QOohaq3Ys6Ox3oQQDGyCv0QDF2NOaKG1ErEj0Fcszq","+10 157 718 4309","sit@nisinibhlacinia.co.uk",1,"14/06/19","24/06/18"),	-- Prueba08
+("Alyssa I. Gould","$2a$10$bVzW353V99J7p6Kl.y/d2ej/wpif5syWyhefZKzyMWrPaJnUW8LCO","+49 477 298 9460","facilisis.Suspendisse.commodo@congue.com",0,"13/04/19","26/03/19"),	-- Prueba09
+("Malik Q. Jacobson","$2a$10$klCwIDInOlBig5oqlD4GkeP6h4KNBLKkEtt5V9BXop5JVM79sxBM.","+57 704 719 2002","Donec.dignissim.magna@ametconsectetuer.edu",1,"02/02/19","19/05/18"),	-- Prueba10
+("Keely G. Coleman","$2a$10$G8dwzhQxH8x3ATASnevXLeDyqQeA89GvoVO1yj2JVcywRnYI1vLFq","+98 308 537 5917","elit@Integeridmagna.ca",1,"02/04/18","19/05/19"),	-- Prueba11
+("Colorado E. Weaver","$2a$10$IQsK.HYZHu5c0TVNx1QibuZ4ydgEX40lyJ01YFjxKfGp82gBPOmee","+20 622 806 4973","cursus@vulputatelacusCras.org",1,"01/06/18","08/10/18"),	-- Prueba12
+("Manuel Castillo","$2a$10$5NhiEVf27vzCpCPODiW6n.mtteYMW9F8tPkTuqEx756fu8MFB7ssq","+12 123 123 1254","mecastilloc@gmail.com",1,"11/04/19","03/01/18"),	-- Test1abc
+("Ignacio Gaxiola","$2a$10$WlbfE3Rxi7LiubTkZ.seD.sYfYYeMRYxrK1av15CPsc.hpWJwpneK","+12 123 123 1254","ignacioggb@hotmail.com",1,"06/07/18","22/11/18"),	-- Test2abc
+("Elvan Lopez Rodriguez","$2a$10$lmrjKQehtIBlpSaakKyZkeLG9NEcFzwJ5bJ0EmErsgFoT5CHTzUH.","+12 123 123 1254","elvanovich2000@yahoo.com.mx",1,"10/11/18","27/05/18");	-- Test3abc
 
 
 INSERT INTO `projects` (`project_name`, `description`, `createdAt`, `updatedAt`) 

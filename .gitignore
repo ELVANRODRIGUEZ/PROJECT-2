@@ -2,6 +2,7 @@
 node_modules
 npm-debug.log
 .env
+.env.old
 pushNot/
 
 # Stop listen for changes:

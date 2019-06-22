@@ -8,7 +8,8 @@ module.exports = function (sequelize, DataTypes) {
             foreignKey: {
                name: "project_name",
                allowNull: false
-            }
+            },
+            onDelete: "cascade" // The "onDelete" restriction goes on the "belongsTo" declaration.
 
         });
 
@@ -17,7 +18,8 @@ module.exports = function (sequelize, DataTypes) {
             foreignKey: {
                name: "user_name",
                allowNull: false
-            }
+            },
+            onDelete: "cascade" // The "onDelete" restriction goes on the "belongsTo" declaration.
 
         });
 

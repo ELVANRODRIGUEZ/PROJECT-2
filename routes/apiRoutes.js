@@ -11,8 +11,8 @@ module.exports = function (app) {
     // So we're sending the user back the route to the members page because the redirect will happen on the front end
     // They won't get this or even be able to access this page if they aren't authed
 
-    res.json("/members");
-    // res.send("Hi!");
+    res.send("/members");
+
   });
 
   // Route for signing up a user. The user's password is automatically hashed and stored securely thanks to
@@ -53,8 +53,8 @@ module.exports = function (app) {
       // Otherwise send back the user's email and id
       // Sending back a password, even a hashed password, isn't a good idea
       res.json({
-        email: req.user.email,
-        id: req.user.id,
+        // email: req.user.email,
+        // id: req.user.id,
         name: req.user.user_name
       });
     }
@@ -170,55 +170,44 @@ module.exports = function (app) {
 
   });
 
-  app.get("/api/test", function (req, res) {
 
-    var id = 4;
+  // Route for adding a project.
+  app.put("/api/projects/add", function (req, res) {
 
-    var query =
-      'SELECT ' +
-      'up.user as "user", ' +
-      'up.user_id as "user_id", ' +
-      'up.project as "projects", ' +
-      'up.project_id as "projects_id", ' +
-      'tc.category as "category", ' +
-      'tc.category_id as "category_id", ' +
-      'upt.task_description as "tasks", ' +
-      'upt.task_id as "tasks_id" ' +
-      'FROM ' +
-      '(SELECT u.user_name as "user", ' +
-      'u.id as "user_id", ' +
-      'p.project_name as "project", ' +
-      'p.id as "project_id" ' +
-      'FROM users u ' +
-      'LEFT JOIN project_users pu ' +
-      'ON u.id = pu.user_name JOIN projects p ON p.id = pu.project_name WHERE u.id = 4) up ' +
-      'LEFT JOIN ' +
-      '(SELECT u.id as "user", ' +
-      'tr.task_id as "task_id", ' +
-      't.task_project as "task_project_id", ' +
-      't.description as "task_description" ' +
-      'FROM users u LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id LEFT JOIN tasks t ' +
-      'ON t.id = tr.task_id WHERE u.id = 4) upt ' +
-      'ON upt.task_project_id = up.project_id ' +
-      'LEFT JOIN ' +
-      '(SELECT c.id as "category_id", ' +
-      'c.description as "category", ' +
-      't.id as "task_id", ' +
-      't.description as "task" ' +
-      'FROM categories c LEFT JOIN tasks t ' +
-      'ON t.task_category = c.id) tc ' +
-      'ON upt.task_id = tc.task_id'
+    var proyName = req.body.project_name;
+    var proyDesc = req.body.description;
 
-    // res.send(console.log(connection));
+    console.log(proyDesc);
+    console.log(proyName);
 
-    connection.query(query, function (err, data) {
+    db.projects.create({
+      project_name: proyName,
+      description: proyDesc
+    }).then(function (project) {
 
-      if (err) throw err;
+      res.json(project);
 
-      res.send(data);
+      relateProject(project.id, req.user.id)
 
     });
 
-  });
+  })
+
+  function relateProject(projectId, userId) {
+
+    db.project_users.create({
+      project_name: projectId,
+      user_name: userId
+    }).then(function () {
+
+      console.log(
+        "==>  Relationship added between projectId: %s and userId: %s.",
+        projectId,
+        userId
+      );
+
+    });
+
+  }
 
 };

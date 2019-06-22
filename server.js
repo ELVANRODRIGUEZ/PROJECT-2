@@ -47,8 +47,6 @@ var syncOptions = {
 db.sequelize.sync().then(function () {
   app.listen(PORT, function () {
 
-    console.log("Hello!!!");
-    console.log("database" + db.data  );
     console.log(
       "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
       PORT,

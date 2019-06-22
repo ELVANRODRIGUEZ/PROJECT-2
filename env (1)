@@ -1,0 +1,12 @@
+JAWSDB_URL=mysql://byofczfk6cyicml6:mp5ucjffj4m2rtej@y0nkiij6humroewt.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/wycgc3g4apmhrsf3
+PORT=3300
+NODE_ENV=production
+USER_NAME=byofczfk6cyicml6
+PASSWORD=mp5ucjffj4m2rtej
+DATABASE=wycgc3g4apmhrsf3
+dbPORT=3306
+HOST=y0nkiij6humroewt.cbetxkdyhwsb.us-east-1.rds.amazonaws.com	
+USER_NAME_2=root
+PASSWORD_2=#Elvanovich11119121
+DATABASE_2=wycgc3g4apmhrsf3
+dbPORT_2=3306

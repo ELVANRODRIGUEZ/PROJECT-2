@@ -33,7 +33,31 @@ $(document).ready(function() {
       email: email,
       password: password
     }).then(function(data) {
+
       window.location.replace(data);
+      
+      getId(email, password);
+
+      // If there's an error, log the error
+    }).catch(function(err) {
+     console.log(err);
+      $("#alert .msg").text("Your Data is incorrect");
+      $("#alert").fadeIn(100);
+      setTimeout(function(){
+        $("#alert").fadeOut(100);
+      }, 3000);
+      
+    });
+  }
+
+  function getId(email, password) {
+    $.post("/api/logged", {
+      email: email,
+      password: password
+    }).then(function(data) {
+      
+      console.log(data);
+
       // If there's an error, log the error
     }).catch(function(err) {
      console.log(err);
