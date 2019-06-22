@@ -5,7 +5,6 @@ $(document).ready(function () {
   //   console.log("From 'members.js': " + data);
   // });
 
-
   $.ajax({
       url: "/members/info",
       method: "GET"

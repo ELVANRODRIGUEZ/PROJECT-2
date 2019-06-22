@@ -67,7 +67,7 @@
           <div class="form-group">
             <label for="projectUsers">Add Users</label>
             <div class='row'>
-            <select class="form-control col-md-4 usersAvailables" id="projectUsers" type="list">
+            <select class="form-control col-md-6 usersAvailables" id="projectUsers" type="list">
             </select>
             <button class='btn btn-outline-success ' id='addUser'>Add</button>
             </div>
@@ -136,7 +136,7 @@
 
       <div class="collapse" id="collapseExample8" style='margin:auto; width: 50vh'>
 
-        <div class="card card-body bg-secondary text-white">
+        <div class="card card-body bg-dark text-white">
           <form>
             <div class="form-group">
               <label for="projectName">New Task Name</label>
@@ -147,7 +147,13 @@
               <label for="projectDesc">New Task Description</label>
               <textarea type="text" class="form-control" id="projectDesc" rows="3"></textarea>
             </div>
-            <button class='btn btn btn-outline-success' type="submit" id='addTask'>Add task!</button>
+
+            <div class="form-group">
+              <label for="deadline">Deadline</label>
+            <input class='form-control' type="date" name="deadline">  
+            <button class='btn btn btn-outline-success' type="submit" id='addTask'>Add task!</button>     
+          </div>
+          
           </form>
         </div>
       </div>
@@ -175,9 +181,6 @@
                   <div class="form-group col-md-4">
                     <label for="formGroupExampleInput2">Add Users</label>
                     <select type="list" id="inputState" class="form-control">
-                      <option>Elvan López</option>
-                      <option> Ignacio Gaxiola</option>
-                      <option> Manuel Castillo</option>
                     </select></div>
 
                   <div class="form-group col-md-4">
