@@ -5,17 +5,12 @@ $(document).ready(function () {
   //   console.log("From 'members.js': " + data);
   // });
 
-<<<<<<< HEAD
-=======
   // ======================== Call to paint projects. 
->>>>>>> 890dc004ac13707d8d6eeaeef7cde7cc0ce617ff
   $.ajax({
       url: "/members/info",
       method: "GET"
     })
     .then(function (data) {
-
-      // console.log(data);
 
       var project = "first";
 
@@ -63,73 +58,6 @@ $(document).ready(function () {
 
       });
 
-      // $('.projectCard').on('click', function () {
-      //   $('.card').removeClass('border border-primary');
-      //   $(this).addClass('border border-primary');
-
-      //   var all = $('.border-primary').map(function () {
-      //     return this;
-      //   }).get();
-
-      //   var categoryId = $(all[0]).data('id');
-      //   var $categoryDiv = $("#categoryDiv");
-      //   var $forProject = $("#forProject");
-
-      //   $categoryDiv.empty();
-      //   $forProject.empty();
-
-      //   // $('#forProject').text(id);
-      //   $.ajax({
-      //     url: "/members/info/" + categoryId,
-      //     method: "GET"
-      //   })
-      //   .then(function (data) {
-
-      //     // console.log(data);
-
-      //     console.log(data);
-
-      //     Object.keys(data).forEach(function (item) {
-
-      //       console.log(item);
-
-
-      //       var categoryInfo;
-      //       var projectId = data[item].projects;
-
-      //       $forProject.text(projectId);
-
-      //       categoryInfo =
-      //         "<div class='card bg-secondary text-white categoryCard'" +
-      //         "style='margin:5px' data-id='" + data[item].category_id + "' >" +
-      //         "<div class='card-body'>" +
-      //         "<h5 class='card-title'>" +
-      //         data[item].category_name + "</h5>" +
-      //         "<h6 class='card-subtitle mb-2 text-white'>" + data[item].category_description + "</h6>" +
-      //         "</div>" +
-      //         "</div>";
-
-      //       $categoryDiv.append(categoryInfo);
-
-      //     });
-
-      //     $('.categoryCard').on('click', function () {
-      //       $('.card').removeClass('border border-danger');
-      //       $(this).addClass('border border-danger');
-
-      //     
-
-      //     })
-
-      //   });
-
-      // })
-
     });
-
-
-  // ======================== Call to paint categories. 
-
-
 
 });

@@ -67,11 +67,12 @@
           <div class="form-group">
             <label for="projectUsers">Add Users</label>
             <div class='row'>
-            <select class="form-control col-md-6 usersAvailables" id="projectUsers" type="list">
-            </select>
-            <button class='btn btn-outline-success ' id='addUser'>Add</button>
+              <select class="form-control col-md-6 usersAvailables" id="projectUsers" type="list">
+              </select>
+              <button class='btn btn-outline-success' id='addUser'>Add</button>
+              <button class='btn btn btn-outline-danger' id='delUser'>Delete</button>
             </div>
-            </div>
+          </div>
           <h5>Users Added: </h5>
           {{!-- Elvan --}}
           <ul id="userList" class='list-group'>
@@ -150,10 +151,10 @@
 
             <div class="form-group">
               <label for="deadline">Deadline</label>
-            <input class='form-control' type="date" name="deadline">  
-            <button class='btn btn btn-outline-success' type="submit" id='addTask'>Add task!</button>     
-          </div>
-          
+              <input class='form-control' type="date" name="deadline">
+              <button class='btn btn btn-outline-success' type="submit" id='addTask'>Add task!</button>
+            </div>
+
           </form>
         </div>
       </div>
@@ -220,32 +221,29 @@
             </div>
             <label for="numberof-input">% of progress</label>
             <div class='row' style="margin:auto">
-            <button class='btn btn-success pplus'><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
-            <input type="text" value="0" id="total" class="field left form-control col-sm-1 text-dark" readonly="" style='margin:5px'> 
-            <button class='btn btn-success pminus'><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+              <button class='btn btn-success pplus'><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+              <input type="text" value="0" id="total" class="field left form-control col-sm-1 text-dark" readonly=""
+                style='margin:5px'>
+              <button class='btn btn-success pminus'><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
             </div>
             <div class="card bg-dark text-white task" style='margin:5px'>
               <div class="card-body">
                 <ul class="nav nav-tabs nav-pills card-title">
                   <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse"
-                      href="#multiCollapseExample1" role="button" aria-expanded="false"
-                      aria-controls="multiCollapseExample1">Users</a>
+                    <a class="nav-link" data-toggle="collapse" href="#multiCollapseExample1" role="button"
+                      aria-expanded="false" aria-controls="multiCollapseExample1">Users</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse"
-                      href="#multiCollapseExample2" role="button" aria-expanded="false"
-                      aria-controls="multiCollapseExample2">Chat</a>
+                    <a class="nav-link" data-toggle="collapse" href="#multiCollapseExample2" role="button"
+                      aria-expanded="false" aria-controls="multiCollapseExample2">Chat</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse"
-                      href="#multiCollapseExample3" role="button" aria-expanded="false"
-                      aria-controls="multiCollapseExample3">New Email</a>
+                    <a class="nav-link" data-toggle="collapse" href="#multiCollapseExample3" role="button"
+                      aria-expanded="false" aria-controls="multiCollapseExample3">New Email</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse"
-                      href="#multiCollapseExample4" role="button" aria-expanded="false"
-                      aria-controls="multiCollapseExample4">Email History</a>
+                    <a class="nav-link" data-toggle="collapse" href="#multiCollapseExample4" role="button"
+                      aria-expanded="false" aria-controls="multiCollapseExample4">Email History</a>
                   </li>
                 </ul>
                 <!--  BODY USERS-->
@@ -383,8 +381,6 @@
                     </div>
                   </div>
                 </div>
-
-                <h6 class="card-subtitle mb-2 text-white">lorem ipsum</h6>
               </div>
             </div>
           </div>

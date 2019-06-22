@@ -170,18 +170,23 @@ $('#addUser').on('click', function () {
     var userName = $("#projectUsers option:selected").val();
 
     var newUser =
-        "<li class='projectUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + 
-        "&nbsp&nbsp&nbsp&nbsp<a data-id="+userId+" href=#>delete</a>"+"</li>";
+        "<li class='projectUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
 
     $userList.append(newUser);
 
     usersArr.push(userId);
-    $('a').on('click',function(){
-        var id = $(this).data('id');
-        $('li[userId='+userId+']').remove();
-        usersArr.splice(userId);
+    console.log(usersArr);
+    $('#delUser').on('click', function () {
+        // Make sure to preventDefault on a submit event.
+        event.preventDefault();
+
+        $('#userList').empty();
+
+        usersArr = [];
+        console.log(usersArr);
+
     })
-    
+
 })
 
 
