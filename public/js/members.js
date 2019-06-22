@@ -21,8 +21,9 @@ $(document).ready(function () {
       Object.keys(data).forEach(function (item) {
         // console.log(data[item].projects);
 
-        if (project !== item.projects_id) {
-          console.log(item);
+        if (project !== data[item].projects_id) {
+          console.log(data[item].projects_id);
+          project = data[item].projects_id;
 
           var $projectDiv = $("#projectDiv");
           var $userNameBanner = $("#userNameBanner");
@@ -57,12 +58,7 @@ $(document).ready(function () {
             "Welcome: " + user);
           $projectDiv.append(projectCard);
 
-        } else {
-
-          project = item.projects_id;
-
-
-        }
+        } 
 
       });
 
