@@ -176,9 +176,11 @@ module.exports = function (app) {
 
     var proyName = req.body.project_name;
     var proyDesc = req.body.description;
+    var otherUsers = JSON.parse(req.body.other_users);
 
-    console.log(proyDesc);
-    console.log(proyName);
+    // console.log(otherUsers);
+    // console.log(proyDesc);
+    // console.log(proyName);
 
     db.projects.create({
       project_name: proyName,
@@ -187,23 +189,35 @@ module.exports = function (app) {
 
       res.json(project);
 
-      relateProject(project.id, req.user.id)
+      var projectRel = [];
+
+      projectRel.push({
+        project_name: project.id,
+        user_name: req.user.id
+      });
+
+      otherUsers.forEach(function (item) {
+        
+        projectRel.push({
+          project_name: project.id,
+          user_name: item
+        });
+        
+      })
+      
+      relateProject(projectRel)
 
     });
 
   })
 
-  function relateProject(projectId, userId) {
+  function relateProject(bulk) {
 
-    db.project_users.create({
-      project_name: projectId,
-      user_name: userId
-    }).then(function () {
+    db.project_users.bulkCreate(bulk).then(function () {
 
       console.log(
-        "==>  Relationship added between projectId: %s and userId: %s.",
-        projectId,
-        userId
+        "==>  Relationship added to projectId: %s",
+        bulk[0].project_name
       );
 
     });
