@@ -5,7 +5,7 @@ $(document).ready(function () {
   //   console.log("From 'members.js': " + data);
   // });
 
-
+  // ======================== Call to paint projects. 
   $.ajax({
       url: "/members/info",
       method: "GET"
@@ -58,7 +58,7 @@ $(document).ready(function () {
             "Welcome: " + user);
           $projectDiv.append(projectCard);
 
-        } 
+        }
 
       });
 
@@ -86,5 +86,68 @@ $(document).ready(function () {
       })
 
     });
+
+
+  // ======================== Call to paint categories. 
+  $.ajax({
+      url: "/members/info/:categoryId",
+      method: "GET"
+    })
+    .then(function (data) {
+
+      // console.log(data);
+
+      console.log(data);
+
+      Object.keys(data).forEach(function (item) {
+
+        var $categoryDiv = $("#categoryDiv");
+        var $userNameBanner = $("#userNameBanner");
+
+        var user = data[0].user;
+        var categoryInfo;
+
+        categoryInfo =
+          "<div class='card bg-secondary text-white categoryCard'" +
+          "style='margin:5px' data-id='" + data[item].category_id + "' >" +
+          "<div class='card-body'>" +
+          "<h5 class='card-title'>data[item].category_name</h5>" +
+          "<h6 class='card-subtitle mb-2 text-white'>" + data[item].category_description + "</h6>" +
+          "</div>" +
+          "</div>";
+
+        $userNameBanner.html(
+          "<b>Team Organizer™</b>" +
+          "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" +
+          "Welcome: " + user);
+        $categoryDiv.append(categoryInfo);
+
+      });
+
+      // $('.projectCard').on('click', function () {
+      //   $('.card').removeClass('border border-primary');
+      //   $(this).addClass('border border-primary');
+
+      //   var all = $('.border-danger').map(function () {
+      //     return this;
+      //   }).get();
+
+      //   var categoryId = $(all[0]).data('id');
+
+      //   // $('#forProject').text(id);
+      //   $.ajax({
+      //       url: "/members/info/" + categoryId,
+      //       method: "GET"
+      //     })
+      //     .then(function (data) {
+
+      //       console.log(data);
+
+      //     });
+
+      // })
+
+    });
+
 
 });
