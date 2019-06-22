@@ -66,16 +66,15 @@
 
           <div class="form-group">
             <label for="projectUsers">Add Users</label>
+            <div class='row'>
             <select class="form-control col-md-4 usersAvailables" id="projectUsers" type="list">
-              <option>Elvan López</option>
-              <option> Ignacio Gaxiola</option>
-              <option> Manuel Castillo</option>
             </select>
             <button class='btn btn-outline-success ' id='addUser'>Add</button>
-            category </div>
-          Users Added
+            </div>
+            </div>
+          <h5>Users Added: </h5>
           {{!-- Elvan --}}
-          <ul id="userList">
+          <ul id="userList" class='list-group'>
             {{!-- Elvan id="userList" --}}
             {{!-- <li class='userProject' id='1'>User 1</li> --}}
           </ul>
@@ -216,27 +215,32 @@
               <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
                 aria-valuemax="100"></div>
             </div>
-
+            <label for="numberof-input">% of progress</label>
+            <div class='row' style="margin:auto">
+            <button class='btn btn-success pplus'><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+            <input type="text" value="0" id="total" class="field left form-control col-sm-1 text-dark" readonly="" style='margin:5px'> 
+            <button class='btn btn-success pminus'><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+            </div>
             <div class="card bg-dark text-white task" style='margin:5px'>
               <div class="card-body">
-                <ul class="nav nav-tabs bg-dark card-title">
+                <ul class="nav nav-tabs nav-pills card-title">
                   <li class="nav-item">
-                    <a class="nav-link btn btn-outline-primary" type="button" data-toggle="collapse"
+                    <a class="nav-link" data-toggle="collapse"
                       href="#multiCollapseExample1" role="button" aria-expanded="false"
                       aria-controls="multiCollapseExample1">Users</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link btn btn-outline-primary" type="button" data-toggle="collapse"
+                    <a class="nav-link" data-toggle="collapse"
                       href="#multiCollapseExample2" role="button" aria-expanded="false"
                       aria-controls="multiCollapseExample2">Chat</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link btn btn-outline-primary" type="button" data-toggle="collapse"
+                    <a class="nav-link" data-toggle="collapse"
                       href="#multiCollapseExample3" role="button" aria-expanded="false"
                       aria-controls="multiCollapseExample3">New Email</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link btn btn-outline-primary" type="button" data-toggle="collapse"
+                    <a class="nav-link" data-toggle="collapse"
                       href="#multiCollapseExample4" role="button" aria-expanded="false"
                       aria-controls="multiCollapseExample4">Email History</a>
                   </li>

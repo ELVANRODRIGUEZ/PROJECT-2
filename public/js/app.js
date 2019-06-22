@@ -1,3 +1,22 @@
+var x=0;
+$('.pminus').on('click', function () {
+    x +=25;
+    if(x>100){x=100}else{
+        $('.progress-bar').width(x+"%");
+        $('#total').attr('value',x);
+        $('.progress-bar').attr('aria-valuenow',x);
+    }
+})
+
+$('.pplus').on('click', function () {
+    x -=25;
+    if(x<0){x=0}else{
+        $('.progress-bar').width(x+"%");
+        $('.progress-bar').attr('aria-valuenow',x);
+        $('#total').attr('value',x);
+    }
+})
+
 $('.projectCard').on('click', function () {
     $('.card').removeClass('border border-primary');
     $(this).addClass('border border-primary');
@@ -81,7 +100,7 @@ $('#addUser').on('click', function () {
     var userName = $("#projectUsers option:selected").val();
 
     var newUser =
-        "<li class='projectUser' userId=" + userId + ">" + userName + "</li>";
+        "<li class='projectUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
 
     $userList.append(newUser);
 
