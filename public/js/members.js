@@ -5,7 +5,10 @@ $(document).ready(function () {
   //   console.log("From 'members.js': " + data);
   // });
 
+<<<<<<< HEAD
+=======
   // ======================== Call to paint projects. 
+>>>>>>> 890dc004ac13707d8d6eeaeef7cde7cc0ce617ff
   $.ajax({
       url: "/members/info",
       method: "GET"
