@@ -116,7 +116,9 @@ input[type=email]::placeholder, input[type=password]::placeholder, input[type=te
   color: #005fc4;
 }
 
-
+#here{
+  display: inline-block;
+}
 
 
 input:-webkit-autofill,
@@ -140,8 +142,7 @@ select:-webkit-autofill:focus {
 }
 
 .navbarTitle{
-  background-color: #fff;
-  color:  #646464;
+   color: white;
 }
 
 .projectCard{
