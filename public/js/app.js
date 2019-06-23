@@ -155,6 +155,11 @@ $(document).on('click', '.categoryCard', function () {
 
             console.log(data);
 
+            data.forEach(function (item) {
+
+                
+            })
+
         });
 
 })
@@ -175,7 +180,7 @@ $('#addUser').on('click', function () {
     $userList.append(newUser);
 
     usersArr.push(userId);
-    console.log(usersArr);
+
     $('#delUser').on('click', function () {
         // Make sure to preventDefault on a submit event.
         event.preventDefault();
@@ -183,14 +188,10 @@ $('#addUser').on('click', function () {
         $('#userList').empty();
 
         usersArr = [];
-        console.log(usersArr);
 
     })
 
 })
-
-
-
 
 
 ///----------------Events with Ajax calls----------------///
@@ -279,6 +280,8 @@ $("#projectModalAdd").on("click", function (event) {
             "</div>";
 
         $projectDiv.append(projectCard);
+
+        location.reload();
 
     });
 
