@@ -1,4 +1,12 @@
+
 var x = 0;
+
+var userSelections = {
+    project: "",
+    category: "",
+    description: ""                    
+}
+
 $('.pminus').on('click', function () {
     x += 25;
     if (x > 100) {
@@ -43,13 +51,25 @@ $(document).on('click', '.projectCard', function () {
         })
         .then(function (data) {
 
+            userSelections.project = projectId;
+
+            $.ajax({
+                url: "/api/users-selections",
+                method: "POST",
+                data: {project: projectId}
+            }).then(function (Selections) {
+
+                // console.log(Selections);
+
+            });
+
             // console.log(data);
 
-            console.log(data);
+            // console.log(data);
 
             Object.keys(data).forEach(function (item) {
 
-                console.log(item);
+                // console.log(item);
 
 
                 var categoryInfo;
@@ -86,7 +106,7 @@ $('.projectAdd').on('click', function () {
 })
 
 $('.categoryAdd').on('click', function () {
-    $("#categoryModalAdd").modal({
+    $("#categoryModal").modal({
         show: true,
         backdrop: 'static',
         keyboard: false
@@ -130,7 +150,12 @@ $('.categoryDel').on('click', function () {
 })
 
 $(document).on('click', '.categoryCard', function () {
-    $("#categoryModal").modal({
+    
+    // Collapse Add Task window.
+    $("#addTaskCollapsWindow").collapse("hide");
+
+    // Show Task Modal window.
+    $("#taskModal").modal({
         show: true,
         backdrop: 'static',
         keyboard: false
@@ -144,7 +169,7 @@ $(document).on('click', '.categoryCard', function () {
     }).get();
 
     var categoryId = $(all[0]).data('id').toString();
-    console.log(categoryId);
+    // console.log(categoryId);
 
     // $('#forProject').text(id);
     $.ajax({
@@ -153,18 +178,46 @@ $(document).on('click', '.categoryCard', function () {
         })
         .then(function (data) {
 
-            console.log(data);
+            userSelections.category = categoryId;
 
-            data.forEach(function (item) {
+            $.ajax({
+                url: "/api/users-selections",
+                method: "POST",
+                data: {category: categoryId}
+            }).then(function (Selections) {
 
-                
-            })
+                // console.log(Selections);
+
+            });
+
+            // console.log(data.tasks);
+
+            $("#modal-container").html(data.tasks);
 
         });
 
 })
 
-var usersArr = [];
+$(document).on('click', '#testbutton', function () {
+
+    $.ajax({
+            url: "/members/info/category/" + 6,
+            method: "GET"
+        })
+        .then(function (data) {
+
+            // console.log(data);
+            $('body').replaceWith(data);
+            // location.reload();
+
+            // $.get("/memebers")
+
+        });
+
+})
+
+var generalUsersArr = [];
+var projectUsersArr = [];
 
 $('#addUser').on('click', function () {
     // Make sure to preventDefault on a submit event.
@@ -179,7 +232,7 @@ $('#addUser').on('click', function () {
 
     $userList.append(newUser);
 
-    usersArr.push(userId);
+    generalUsersArr.push(userId);
 
     $('#delUser').on('click', function () {
         // Make sure to preventDefault on a submit event.
@@ -187,9 +240,40 @@ $('#addUser').on('click', function () {
 
         $('#userList').empty();
 
-        usersArr = [];
+        generalUsersArr = [];
 
     })
+
+})
+
+$('#addTaskUser').on('click', function () {
+    // Make sure to preventDefault on a submit event.
+    event.preventDefault();
+
+    var $taskUserList = $("#taskUserList");
+    var userId = $("#taskUsers option:selected").attr("userId");
+    var userName = $("#taskUsers option:selected").val();
+
+    var newUser =
+        "<li class='taskUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
+
+    $taskUserList.append(newUser);
+
+    // console.log(userId);
+
+    projectUsersArr.push(userId);
+
+    $('#delTaskUser').on('click', function () {
+        // Make sure to preventDefault on a submit event.
+        event.preventDefault();
+
+        $('#taskUserList').empty();
+
+        projectUsersArr = [];
+
+    })
+
+    // console.log(projectUsersArr);
 
 })
 
@@ -199,11 +283,11 @@ $('#addUser').on('click', function () {
 ///--------Get all users in Add Project Modal--------///
 $("#projectAddButton").on("click", function (event) {
 
-    // Empty the list for Project related users.
+    // Empty the list for general users.
     $("#userList").html("");
 
-    // Empty the list for Project related users.
-    usersArr = [];
+    // Empty the list array for general users.
+    generalUsersArr = [];
 
     // Send the GET request.
     $.get("/api/all_users", function (data) {
@@ -231,13 +315,49 @@ $("#projectAddButton").on("click", function (event) {
 
 });
 
+///--------Get all users in Add Task Modal--------///
+$(document).on("click","#addTaskModal", function (event) {
+
+    // Empty the list for Project related users.
+    $("#taskUsers").html("");
+
+    // Empty the list array for Project related users.
+    projectUsersArr = [];
+
+    // Send the GET request.
+    $.get("/api/project_users", function (data) {
+
+        // console.log(data);
+
+        var $taskUsers = $("#taskUsers");
+        var users = "<option selected>Select User</option>";
+
+        // " +  + "
+
+        data.forEach(function (item) {
+
+            // console.log(item.user_id);
+            // console.log(item.user.user_name);
+
+            users += "<option class='taksUsersArr' userId=" +
+                item.user_id +
+                ">" + item.user.user_name + "</option>";
+
+        })
+
+        $taskUsers.html(users);
+
+    });
+
+});
+
 ///--------New Project--------///
 $("#projectModalAdd").on("click", function (event) {
     // Make sure to preventDefault on a submit event.
     event.preventDefault();
-    console.log(usersArr);
+    console.log(generalUsersArr);
     var newProject = {
-        other_users: JSON.stringify(usersArr),
+        other_users: JSON.stringify(generalUsersArr),
         project_name: $("#projectName").val().trim(),
         description: $("#projectDesc").val()
     };
@@ -245,7 +365,7 @@ $("#projectModalAdd").on("click", function (event) {
 
     // Send the POST request.
     $.ajax("/api/projects/add", {
-        type: "PUT",
+        type: "POST",
         data: newProject
     }).then(function (data) {
 
@@ -303,7 +423,7 @@ $("#deleteProject").on('click', function () {
     );
 });
 //----------Add a category------------------//
-$("#categoryModalAdd").on("submit", function (event) {
+$("#categoryModalAdd").on("click", function (event) {
     // Make sure to preventDefault on a submit event.
     event.preventDefault();
 
@@ -314,12 +434,26 @@ $("#categoryModalAdd").on("submit", function (event) {
 
 
     // Send the POST request.
-    $.ajax("/api/categories", {
+    $.ajax("/api/category/add", {
         type: "POST",
         data: newCategory
     }).then(
-        function () {
-            location.reload();
+        function (data) {
+
+            // console.log(data);
+            // location.reload();
+
+            $("#categoryAddMessage").text(data);
+
+            $("#categorySuccessModal").modal({
+                show: true,
+                backdrop: 'static',
+                keyboard: false
+            });
+            
+            category_name: $("#categoryName").val("");
+            description: $("#categoryDesc").val("");
+
         }
     );
 });
@@ -340,36 +474,28 @@ $("#deleteCategory").on('click', function () {
     );
 });
 
-// $.get("/members", function (data) {
-//     console.log(data);
-// })
+// ----------Add a task------------------//
+$(document).on("click", "#addTask",function (event) {
+	// Make sure to preventDefault on a submit event.
+	event.preventDefault();
 
-// $.ajax("/members", {
-//     type: "GET"
-// }).then(function (data) {
+    console.log(projectUsersArr);
 
-//     console.log(data);
-
-// })
-
-//----------Add a task------------------//
-// $("#addTask").on("submit", function (event) {
-// 	// Make sure to preventDefault on a submit event.
-// 	event.preventDefault();
-
-// 	var newTask = {
-// 		category_name: $("#categoryName").val().trim(),
-//         description: $("#categoryDesc").val(),
-//     };
+	var newTask = {
+        description: $("#taskDesc").val(),
+        deadline: $("#taskDeadline").val(),
+        other_users: JSON.stringify(projectUsersArr)
+    };
 
 
-// 	// Send the POST request.
-// 	$.ajax("/api/categories", {
-// 		type: "POST",
-// 		data: newCategory
-// 	}).then(
-// 		function () {
-// 			location.reload();
-// 		}
-// 	);
-// });
+	// Send the POST request.
+	$.ajax("/api/task/add", {
+		type: "POST",
+		data: newTask
+	}).then(
+		function (task) {
+            console.log(task);
+			// location.reload();
+		}
+	);
+});

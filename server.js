@@ -4,6 +4,8 @@ var exphbs = require("express-handlebars");
 var session = require("express-session");
 var passport = require("./config/passport");
 var app = express();
+var path = require("path");
+var node
 
 var PORT = process.env.PORT || 3000;
 var db = require("./models").db;
@@ -24,10 +26,12 @@ app.use(passport.session());
 app.engine(
   "handlebars",
   exphbs({
-    defaultLayout: "main"
+    defaultLayout: "main",
+    partialsDir: path.join(__dirname, "views/partials")
   })
 );
 app.set("view engine", "handlebars");
+// exphbs.registerPartial("task-modal");
 
 // Routes
 require("./routes/apiRoutes")(app);

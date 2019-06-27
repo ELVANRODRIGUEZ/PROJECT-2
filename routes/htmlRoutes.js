@@ -1,7 +1,18 @@
+// =================================== Require db connection and models
+
 var db = require("../models").db;
 var connection = require("../models").connection;
+var moment = require("moment");
 
-// Requiring our custom middleware for checking if a user is logged in
+
+// =================================== Require hardcoded templates.
+
+var taskModal = require("../hardcoded-templates/taskModal-templete");
+var userProfile = require("../hardcoded-templates/project-templete.js");
+var categoryCard = require("../hardcoded-templates/category-templete.js");
+
+// =================================== Requiring our custom middleware for checking if a user is logged in.
+
 var isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = function (app) {
@@ -35,11 +46,10 @@ module.exports = function (app) {
   // If a user who is not logged in tries to access this route they will be redirected to the signup page
   app.get("/members", isAuthenticated, function (req, res) {
 
-    // test(function (data) {
+    var testHbsObject = {
+      task_id: 40
+    };
 
-    //   var userProfile = {
-    //     userInfo: data
-    //   }
     res.render("index");
 
     // })
@@ -92,8 +102,43 @@ module.exports = function (app) {
 
       if (err) throw err;
 
-      res.json(data);
+      // console.log(data);
 
+      // Getting the User Name of the query and formatting as html.
+
+      var userName = userProfile.userNameTag(data[0].user)
+
+      var allProjects = "";
+
+      // Getting all the proyects from the query and formatting as html.
+      // We need evaluation to not add an already added project while creating the html string.
+
+      var project = "first";
+
+      data.forEach(function (item) {
+
+        if (project !== item.projects_id) {
+
+          project = item.projects_id;
+
+          allProjects += userProfile.projectCard(item.projects_id, item.projects, item.project_description);
+
+        };
+
+      });
+
+      // Creating a JSON object to send as response.
+
+      var sentResponse = {
+        projectsHtml: allProjects,
+        userTagHtml: userName,
+        user_id: data[0].user_id,
+        user_name: data[0].user
+      }
+
+      // Sendig response.
+
+      res.send(sentResponse);
 
     });
 
@@ -157,6 +202,8 @@ module.exports = function (app) {
 
       if (err) throw err;
 
+      // console.log(data);
+
       res.json(data);
 
 
@@ -170,8 +217,8 @@ module.exports = function (app) {
     var userId = req.user.id;
     var categoryId = req.params.categoryId;
 
-    console.log(userId);
-    console.log(categoryId);
+    // console.log(userId);
+    // console.log(categoryId);
 
     var query =
       'SELECT ' +
@@ -179,9 +226,11 @@ module.exports = function (app) {
       'up.user_id, ' +
       'up.project, ' +
       'up.project_id, ' +
-      'tc.category as "category", ' +
-      'tc.category_id as "category_id", ' +
+      'tc.category, ' +
+      'tc.category_id, ' +
       'upt.task_description, ' +
+      'upt.task_deadline, ' +
+      'upt.task_accomplished, ' +
       'upt.task_id ' +
       'FROM ' +
       '(SELECT ' +
@@ -198,7 +247,9 @@ module.exports = function (app) {
       'u.id as "user", ' +
       'tr.task_id as "task_id", ' +
       't.task_project as "task_project_id", ' +
-      't.description as "task_description" ' +
+      't.description as "task_description", ' +
+      't.dead_line as "task_deadline", ' +
+      't.accomplished as "task_accomplished" ' +
       'FROM users u ' +
       'LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id ' +
       'LEFT JOIN tasks t ON t.id = tr.task_id ' +
@@ -215,14 +266,35 @@ module.exports = function (app) {
       'ON upt.task_id = tc.task_id ' +
       'WHERE category_id = ' + categoryId + ';'
 
-      connection.query(query, function (err, data) {
+    connection.query(query, function (err, data) {
 
-        if (err) throw err;
+      if (err) throw err;
 
-        res.json(data);
+      // console.log(data);
 
 
-      });
+      // Getting all tasks from the selected category to create the HTML string.
+
+      var allTasks = "";
+
+      data.forEach(function (item) {
+
+        allTasks += taskModal(
+          item.task_id, 
+          item.task_description,
+          moment(item.task_deadline).format("DD, MMMM. YYYY"),
+          item.task_accomplished
+          );
+
+      })
+
+      var sentResponse = {
+        tasks: allTasks,
+      };
+
+      res.send(sentResponse);
+
+    });
 
   });
 

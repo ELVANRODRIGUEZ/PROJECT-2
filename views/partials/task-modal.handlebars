@@ -1,0 +1,70 @@
+<!--Task Card Modal-->
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" id="taskModal">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content bg-dark">
+      <div class="modal-header">
+        <h5 class="modal-title text-white"></h5>
+        <button id="addTaskModal" class='btn btn-secondary' style='float: right;margin-left: 5vh' data-toggle="collapse"
+          href="#addTaskCollapsWindow" role="button" aria-expanded="false" aria-controls="addTaskCollapsWindow"><i
+            class="fa fa-plus fa-4" aria-hidden="true"></i></button>
+        <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <!--New Taks Collapse Window-->
+      <div class="collapse" id="addTaskCollapsWindow" style='margin:auto; width: 50vh'>
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header">
+            <h5 class="modal-title">Add new Task</h5>
+            {{!-- <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> --}}
+          </div>
+          <div class="card card-body bg-dark text-white">
+            <form>
+
+              <div class="form-group">
+                <label for="projectDesc">New Task Description</label>
+                <textarea type="text" class="form-control" id="taskDesc" rows="3"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="deadline">Deadline</label>
+                <input class='form-control' type="date" name="deadline" id="taskDeadline">
+              </div>
+
+              <div class="form-group">
+                <label for="taskUsers">Add Users</label>
+                <div class='row noMargin'>
+                  <select class="form-control col-md-6 usersAvailables" id="taskUsers" type="list">
+                  </select>
+                  <button class='btn btn-outline-success' id='addTaskUser'>Add</button>
+                  <button class='btn btn btn-outline-danger' id='delTaskUser'>Delete</button>
+                </div>
+              </div>
+              <h5 class="modal-title">Users Added: </h5>
+              {{!-- Elvan --}}
+              <ul id="taskUserList" class='list-group'>
+                {{!-- Elvan id="userList" --}}
+                {{!-- <li class='userProject' id='1'>User 1</li> --}}
+              </ul>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline-success" id='addTask' data-dismiss="modal">Add task!</button>
+          </div>
+        </div>
+      </div>
+      <div id="modal-container" class="modal-body">
+
+        {{> task }}
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn btn-outline-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

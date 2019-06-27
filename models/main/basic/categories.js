@@ -5,7 +5,10 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING(64),
             allowNull: false
         },
-        description: DataTypes.STRING(128),
+        description: {
+            type: DataTypes.STRING(128),
+            allowNull: false
+        }
     });
 
     return categories;

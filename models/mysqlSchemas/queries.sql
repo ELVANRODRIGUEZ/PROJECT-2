@@ -11,13 +11,25 @@ LEFT JOIN tasks on users.id = tasks.created_by
 LEFT JOIN categories ON tasks.task_category = categories.id
 WHERE users.id = 4;
 
--- ++++++++++++++++++++++++++++ Projects by User wiht just id "upId"
+-- ++++++++++++++++++++++++++++ Projects by User with just id "upId"
 SELECT 
 	projects.project_name as "project",
     project_users.user_name as "user"
 FROM projects
 LEFT JOIN project_users ON projects.id = project_users.project_name
 WHERE project_users.user_name = 4;
+
+
+-- ++++++++++++++++++++++++++++ Projects by User including name "upIdName"
+SELECT 
+	projects.project_name as "project_name",
+    projects.id as "project_id",
+	users.user_name as "user_name",
+	project_users.user_name as "user_id"
+FROM project_users 
+LEFT JOIN users ON project_users.user_name = users.id
+LEFT JOIN projects ON projects.id = project_users.project_name
+WHERE project_users.project_name = 4;
 
 -- ++++++++++++++++++++++++++++ Projects by Category "cp"
 SELECT 
@@ -70,7 +82,7 @@ FROM
 FROM users u
 LEFT JOIN project_users pu ON u.id = pu.user_name
 JOIN projects p ON p.id = pu.project_name
-WHERE u.id = 4) up
+WHERE u.id = 15) up
 LEFT JOIN 
 (SELECT
 	u.id as "user",
@@ -80,7 +92,54 @@ LEFT JOIN
 FROM users u 
 LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id
 LEFT JOIN tasks t ON t.id = tr.task_id
-WHERE u.id = 4) upt 
+WHERE u.id = 15) upt 
+ON upt.task_project_id = up.project_id
+LEFT JOIN
+(SELECT 
+	c.id as "category_id",
+    c.description as "category",
+	t.id as "task_id",
+	t.description as "task"    
+FROM categories c
+LEFT JOIN tasks t ON t.task_category = c.id) tc
+ON upt.task_id = tc.task_id
+WHERE category_id = 2;
+
+
+-- ++++++++++++++++++++++++++++ Tasks by Category
+SELECT 
+	up.user,
+    up.user_id,
+    up.project,
+    up.project_id,
+    tc.category,
+    tc.category_id,
+    upt.task_description,
+    upt.task_deadline,
+    upt.task_accomplished,
+    upt.task_id
+FROM 
+(SELECT
+	u.user_name as "user",
+    u.id as "user_id",
+    p.project_name as "project",
+    p.id as "project_id"
+FROM users u
+LEFT JOIN project_users pu ON u.id = pu.user_name
+JOIN projects p ON p.id = pu.project_name
+WHERE u.id = 15) up
+LEFT JOIN 
+(SELECT
+	u.id as "user",
+    tr.task_id as "task_id",
+    t.task_project as "task_project_id",
+    t.description as "task_description",
+    t.dead_line as "task_deadline",
+    t.accomplished as "task_accomplished"
+FROM users u 
+LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id
+LEFT JOIN tasks t ON t.id = tr.task_id
+WHERE u.id = 15) upt 
 ON upt.task_project_id = up.project_id
 LEFT JOIN
 (SELECT 

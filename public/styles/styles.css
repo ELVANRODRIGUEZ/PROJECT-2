@@ -423,4 +423,15 @@ img {
   overflow-y: auto;
 }
 
-  
+
+/* Style Elvan ==============================================*/
+
+.noMargin {
+  margin-left:0;
+  /* margin-right:0; */
+}
+
+.form-control {
+  margin-left:0;
+  /* margin-right:0; */
+}

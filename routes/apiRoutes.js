@@ -105,11 +105,11 @@ module.exports = function (app) {
   });
 
   // Route for getting all projects related to a user (with the task category included).
-  app.post("/api/user_projects", function (req, res) {
+  app.get("/api/user_projects", function (req, res) {
 
     var currentUser;
 
-    db.users.findOne({
+    db.users.findAll({
       attributes: [
         ["user_name", "user"]
       ],
@@ -130,7 +130,7 @@ module.exports = function (app) {
         }]
       }]
     }).then(function (users) {
-
+      console.log(users);
       res.json(users);
 
     });
@@ -138,11 +138,11 @@ module.exports = function (app) {
   });
 
   // Route for getting all projects tasks.
-  app.post("/api/user_projects", function (req, res) {
+  app.post("/api/user_projects***", function (req, res) {
 
     var currentUser;
 
-    db.users.findOne({
+    db.users.findAll({
       attributes: [
         ["user_name", "user"]
       ],
@@ -163,7 +163,8 @@ module.exports = function (app) {
         }]
       }]
     }).then(function (users) {
-
+      
+      console.log(users);
       res.json(users);
 
     });
@@ -172,7 +173,7 @@ module.exports = function (app) {
 
 
   // Route for adding a project.
-  app.put("/api/projects/add", function (req, res) {
+  app.post("/api/projects/add", function (req, res) {
 
     var proyName = req.body.project_name;
     var proyDesc = req.body.description;
@@ -197,14 +198,14 @@ module.exports = function (app) {
       });
 
       otherUsers.forEach(function (item) {
-        
+
         projectRel.push({
           project_name: project.id,
           user_name: item
         });
-        
+
       })
-      
+
       relateProject(projectRel)
 
     });
@@ -224,4 +225,180 @@ module.exports = function (app) {
 
   }
 
+  app.post("/api/category/add", function (req, res) {
+
+    var catName = req.body.category_name;
+    var catDescription = req.body.description;
+
+    // console.log(CatName);
+    // console.log(CatDescription);
+
+    if (!catName || !catDescription) {
+      res.send("Something went wrong. Please Try again.");
+    } else {
+      db.categories.create({
+        category_name: catName,
+        description: catDescription
+      }).then(function (category) {
+
+        res.send("New Category successfully added.");
+
+      });
+    }
+  });
+
+  // ===================== FOR TASK ADDITIONS.
+
+  // Creating an object to store selected Project and Category.
+  var userSelections = {
+    project: null,
+    category: null
+  }
+
+  // Route for storing Project and Category here in Server instead of the Client.
+  app.post("/api/users-selections", function (req, res) {
+
+    if (req.body.project) {
+
+      userSelections.project = req.body.project;
+
+      if (!req.body.category) {
+
+        userSelections.category = null;
+
+      }
+
+    }
+
+    if (req.body.category) {
+
+      userSelections.category = req.body.category;
+
+    }
+
+    // console.log(userSelections.project);
+    // console.log(userSelections.category);
+
+    res.send("Hi");
+
+  })
+
+  // Route for getting all users that will be releted to the selected project.
+  app.get("/api/project_users", function (req, res) {
+
+    db.project_users.findAll({
+      attributes: [
+        ["user_name", "user_id"]
+      ],
+      where: {
+        project_name: userSelections.project
+      },
+      include: [{
+        model: db.users,
+        attributes: [
+          ["user_name","user_name"]
+        ],
+        include: [{
+          model: db.project_users,
+          attributes: [
+            ["project_name","project_name"],
+            ["id","project_id"]
+          ],
+          where: {
+            project_name: userSelections.project
+          }
+        }]
+      }]
+    }).then(function (users) {
+
+      res.json(users);
+
+    });
+
+  });
+
+  // Route for task adding.
+  app.post("/api/task/add", function (req, res) {
+
+    var taskDescription = req.body.description;
+    var taskDeadline = req.body.deadline;
+    var taskAccomplishment = 0;
+    var taskProject = userSelections.project;
+    var userId = req.user.id;
+    var taskCategory = userSelections.category;
+    var taskParent = null;
+
+    var otherUsers = JSON.parse(req.body.other_users);
+
+    // console.log(taskDescription);
+    // console.log(taskDeadline);
+    // console.log(taskAccomplishment);
+    // console.log(taskProject);
+    // console.log(userId);
+    // console.log(taskCategory);
+    // console.log(taskParent);
+
+    if (
+      !taskDescription ||
+      !taskDeadline ||
+      !taskProject ||
+      !userId ||
+      !taskCategory
+    ) {
+      res.send("Something went wrong. Please Try again.");
+      console.log("Failed on adding new Task!");
+    } else {
+      db.tasks.create({
+        description: taskDescription,
+        dead_line: taskDeadline,
+        accomplished: taskAccomplishment,
+        task_project: taskProject,
+        created_by: userId,
+        task_category: taskCategory,
+        parent_id: taskParent
+      }).then(function (task) {
+
+        // console.log(task.id);
+        console.log("success!");
+        res.send("New Task successfully added.");
+
+        var taskRel = [];
+
+        taskRel.push({
+          task_id: task.id,
+          responsible: req.user.id
+        });
+
+        otherUsers.forEach(function (item) {
+
+          taskRel.push({
+            task_id: task.id,
+            responsible: parseInt(item)
+          });
+  
+        })
+
+        relateTask(taskRel);
+
+      });
+
+    }
+
+  });
+
+  function relateTask(bulk) {
+
+    // console.log(bulk);
+
+    db.tasks_responsibles.bulkCreate(bulk).then(function () {
+
+      console.log(
+        "==>  Relationships added to taskId: %s",
+        bulk[0].task_id
+      );
+
+    });
+
+  }
+  
 };
