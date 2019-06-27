@@ -360,7 +360,7 @@ module.exports = function (app) {
 
         // console.log(task.id);
         console.log("success!");
-        res.send("New Task successfully added.");
+        res.json(task);
 
         var taskRel = [];
 
