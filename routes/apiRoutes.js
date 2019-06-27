@@ -1,6 +1,15 @@
 var db = require("../models").db;
 var connection = require("../models").connection;
 var passport = require("../config/passport");
+var moment = require("moment");
+
+
+// =================================== Require hardcoded templates.
+
+var taskModal = require("../hardcoded-templates/taskModal-templete");
+var userProfile = require("../hardcoded-templates/project-templete.js");
+var categoryCard = require("../hardcoded-templates/category-templete.js");
+
 
 module.exports = function (app) {
   // Using the passport.authenticate middleware with our local strategy.
@@ -163,7 +172,7 @@ module.exports = function (app) {
         }]
       }]
     }).then(function (users) {
-      
+
       console.log(users);
       res.json(users);
 
@@ -296,13 +305,13 @@ module.exports = function (app) {
       include: [{
         model: db.users,
         attributes: [
-          ["user_name","user_name"]
+          ["user_name", "user_name"]
         ],
         include: [{
           model: db.project_users,
           attributes: [
-            ["project_name","project_name"],
-            ["id","project_id"]
+            ["project_name", "project_name"],
+            ["id", "project_id"]
           ],
           where: {
             project_name: userSelections.project
@@ -358,9 +367,21 @@ module.exports = function (app) {
         parent_id: taskParent
       }).then(function (task) {
 
-        // console.log(task.id);
+        // console.log(task);
         console.log("success!");
-        res.json(task);
+
+        var newTask = taskModal(
+          task.id,
+          task.description,
+          moment(task.deadline).format("DD, MMMM. YYYY"),
+          task.accomplished
+        );
+
+        var sentResponse = {
+          task: newTask,
+        };
+
+        res.send(sentResponse);
 
         var taskRel = [];
 
@@ -375,7 +396,7 @@ module.exports = function (app) {
             task_id: task.id,
             responsible: parseInt(item)
           });
-  
+
         })
 
         relateTask(taskRel);
@@ -400,5 +421,5 @@ module.exports = function (app) {
     });
 
   }
-  
+
 };

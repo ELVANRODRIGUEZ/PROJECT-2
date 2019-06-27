@@ -1,10 +1,9 @@
-
 var x = 0;
 
 var userSelections = {
     project: "",
     category: "",
-    description: ""                    
+    description: ""
 }
 
 $('.pminus').on('click', function () {
@@ -56,7 +55,9 @@ $(document).on('click', '.projectCard', function () {
             $.ajax({
                 url: "/api/users-selections",
                 method: "POST",
-                data: {project: projectId}
+                data: {
+                    project: projectId
+                }
             }).then(function (Selections) {
 
                 // console.log(Selections);
@@ -150,7 +151,7 @@ $('.categoryDel').on('click', function () {
 })
 
 $(document).on('click', '.categoryCard', function () {
-    
+
     // Collapse Add Task window.
     $("#addTaskCollapsWindow").collapse("hide");
 
@@ -183,7 +184,9 @@ $(document).on('click', '.categoryCard', function () {
             $.ajax({
                 url: "/api/users-selections",
                 method: "POST",
-                data: {category: categoryId}
+                data: {
+                    category: categoryId
+                }
             }).then(function (Selections) {
 
                 // console.log(Selections);
@@ -316,7 +319,7 @@ $("#projectAddButton").on("click", function (event) {
 });
 
 ///--------Get all users in Add Task Modal--------///
-$(document).on("click","#addTaskModal", function (event) {
+$(document).on("click", "#addTaskModal", function (event) {
 
     // Empty the list for Project related users.
     $("#taskUsers").html("");
@@ -351,7 +354,7 @@ $(document).on("click","#addTaskModal", function (event) {
 
 });
 
-///--------New Project--------///
+///--------Add Project--------///
 $("#projectModalAdd").on("click", function (event) {
     // Make sure to preventDefault on a submit event.
     event.preventDefault();
@@ -450,7 +453,7 @@ $("#categoryModalAdd").on("click", function (event) {
                 backdrop: 'static',
                 keyboard: false
             });
-            
+
             category_name: $("#categoryName").val("");
             description: $("#categoryDesc").val("");
 
@@ -475,27 +478,39 @@ $("#deleteCategory").on('click', function () {
 });
 
 // ----------Add a task------------------//
-$(document).on("click", "#addTask",function (event) {
-	// Make sure to preventDefault on a submit event.
-	event.preventDefault();
+$(document).on("click", "#addTask", function (event) {
+    // Make sure to preventDefault on a submit event.
+    event.preventDefault();
 
     console.log(projectUsersArr);
 
-	var newTask = {
+    var newTask = {
         description: $("#taskDesc").val(),
         deadline: $("#taskDeadline").val(),
         other_users: JSON.stringify(projectUsersArr)
     };
 
+    // Send the POST request.
+    $.ajax("/api/task/add", {
+        type: "POST",
+        data: newTask
+    }).then(
+        function (data) {
 
-	// Send the POST request.
-	$.ajax("/api/task/add", {
-		type: "POST",
-		data: newTask
-	}).then(
-		function (task) {
-            console.log(task);
-			// location.reload();
-		}
-	);
+            // console.log(data.task);
+            
+            // Collapse Add Task window.
+            $("#addTaskCollapsWindow").collapse("hide");
+            
+            // Empty values for Task creation.
+            $("#taskDesc").val("");
+            $("#taskDeadline").val("");
+            $('#taskUserList').empty();
+            projectUsersArr = [];
+
+            // Prepend new Task.
+            $("#modal-container").prepend(data.task);
+
+        });
+
 });
