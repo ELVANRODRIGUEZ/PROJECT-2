@@ -5,7 +5,7 @@ function projectCard(projectId, projectName, projectDescription) {
     projectHtml =
         "<div class='card  bg-secondary projectCard col-md-5 overflow-auto' " +
         "data-id='" + projectId + "'>" +
-        "<div class='card-header'>P id: " +
+        "<div class='card-header'>Project: " +
         projectId +
         " - " + projectName +
         "</div> " +
