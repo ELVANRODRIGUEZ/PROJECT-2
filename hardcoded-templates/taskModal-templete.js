@@ -5,43 +5,71 @@ function taskModal (taksId, taskDescription, taskDeadLine, taskAccomplished) {
  var taskHtml =   
     "<div class='card bg-secondary text-white task' style='margin:5px'>" +
         "<div class='card-body'>" +
-            "<button class='btn btn-secondary' style='float: right;margin:0 2px' data-toggle='collapse'" +
-                "href='#collapseExample6' role='button' aria-expanded='false' aria-controls='collapseExample6'><i" +
+            //--Erase Task Button--//
+            "<button class='btn btn-secondary' data-toggle='collapse' href='#eraseTask" + taksId + "' task='" + taksId + "' role='button'" +
+                "aria-expanded='false' aria-controls='eraseTask" + taksId + "' style='float: right; margin:0 2px'><i " +
                     "class='fa fa-trash-o fa-4' aria-hidden='true'></i></button>" +
-            "<button class='btn btn-secondary' data-toggle='collapse' href='#collapseExample5' role='button'" +
-                "aria-expanded='false' aria-controls='collapseExample5' style='float: right; margin:0 2px'><i" +
+            //--Edit Task Button--//
+            "<button class='btn btn-secondary' data-toggle='collapse' href='#editTask" + taksId + "' task='" + taksId + "' role='button'" +
+                "aria-expanded='false' aria-controls='editTask" + taksId + "' style='float: right; margin:0 2px'><i " +
                     "class='fa fa-pencil fa-4' aria-hidden='true'></i></button>" +
-            "<div class='collapse' id='collapseExample5'>" +
-                "<div class='card card-title bg-secondary h4'>Edit Task</div>" +
+            //--Edit Task Modal--//
+            "<div class='collapse' id='editTask" + taksId + "'>" +
+                "<div class='card card-title bg-secondary h4' style='border: 0px'>Edit Task</div>" +
                 "<div class='card card-body bg-dark'>" +
                     "<form>" +
-                        "<div class='form-group col-md-4'>" +
-                            "<label for='formGroupExampleInput'>New Name</label>" +
-                            "<input type='text' class='form-control' id='formGroupExampleInput' placeholder='Example input'" +
-                                "value='Task 1'>" +
+                        //--New Task Description--//
+                        "<div class='form-group col-md-12'>" +
+                            "<label for='Task" + taksId + "Description'>Change Description</label>" +
+                            "<textarea type='text' class='form-control' id='Task" + taksId + "Description' rows='2'></textarea>" +
                         "</div>" +
-                        "<div class='form-group col-md-4'>" +
-                            "<label for='formGroupExampleInput2'>Add Users</label>" +
-                            "<select type='list' id='inputState' class='form-control'>" +
-                            "</select></div>" +
-                        "<div class='form-group col-md-4'>" +
-                            "<label for='inputState'>Delete User</label>" +
-                            "<select type='list' id='inputState' class='form-control'>" +
-                                "<option>Elvan López</option>" +
-                                "<option> Ignacio Gaxiola</option>" +
-                                "<option> Manuel Castillo</option>" +
-                            "</select>" +
+                        //--New Task Users addition--//
+                        "<div class='form-group col-md-8'>" +
+                        // "<div class='form-group'>" +
+                            "<label for='task" + taksId + "Users'>Add Users</label>" +
+                            "<div class='row noMargin'>" +
+                                "<select class='form-control col-md-6 usersAvailables' id='task" + taksId + "Users' type='list'>" +
+                                "</select>" +
+                                "<button class='btn btn-outline-success' id='addTask" + taksId + "Users'>Add</button>" +
+                                "<button class='btn btn btn-outline-danger' id='delTask" + taksId + "Users'>Delete</button>" +
+                            "</div>" +
+                        "</div>" +
+                        //--New Task Users added--//
+                        "<div class='form-group col-md-8'>" +
+                        "<label for='task" + taksId + "UserList'>Users Added:</label>" +
+                        "<ul id='task" + taksId + "UserList' class='list-group'>" +
+                            //--to be filled--//
+                        "</ul>" +
+                        "</div>" +
+                        //--Delete Task Users--//
+                        "<div class='form-group col-md-8'>" +
+                        // "<div class='form-group'>" +
+                            "<label for='task" + taksId + "UsersDel'>Delete Users</label>" +
+                            "<div class='row noMargin'>" +
+                                "<select class='form-control col-md-6 usersAvailables' id='task" + taksId + "UsersDel' type='list'>" +
+                                "</select>" +
+                                "<button class='btn btn-outline-success' id='addTask" + taksId + "UsersDel'>Add</button>" +
+                                "<button class='btn btn btn-outline-danger' id='delTask" + taksId + "UsersDel'>Delete</button>" +
+                            "</div>" +
+                        "</div>" +
+                        //--New Task Users added--//
+                        "<div class='form-group col-md-8'>" +
+                        "<label for='task" + taksId + "UserListDel'>Users Added for Deletion:</label>" +
+                        "<ul id='task" + taksId + "UserListDel' class='list-group'>" +
+                            //--to be filled--//
+                        "</ul>" +
                         "</div>" +
                     "</form>" +
                 "</div>" +
             "</div>" +
-            "<div class='collapse' id='collapseExample6'>" +
-                "<div class='card card-title bg-secondary h4'>Are you sure you want to delete</div>" +
+            //--Erase Task Modal--//
+            "<div class='collapse' id='eraseTask" + taksId + "'>" +
+                "<div class='card card-title bg-secondary h4' style='border: 0px'>Confirm to delete Task " + taksId + "?</div>" +
                 "<div class='card-body bg-dark' style='text-align: right'>" +
-                    "<button class='btn btn-outline-danger'>Cancel</button>" +
                     "<button class='btn btn-outline-success'>Yes</button>" +
                 "</div>" +
             "</div>" +
+            //--Task Card--//
             "<h5 id='modal-task-id' class='card-title'>Task " + taksId + "</h5>" +
             "<h6 class='text-danger font-weight-bold'>Deadline " + taskDeadLine + "</h6>" +
             "<h6 id='modal-task-description' class='card-subtitle mb-2 text-white'>" + taskDescription + "</h6>" +

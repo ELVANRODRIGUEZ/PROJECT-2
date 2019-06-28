@@ -9,7 +9,7 @@ USE wycgc3g4apmhrsf3;
 CREATE TABLE users (
 	id INT NOT NULL AUTO_INCREMENT,
     user_name VARCHAR(128) NOT NULL,
-    user_password VARCHAR(64) NOT NULL,
+    password VARCHAR(64) NOT NULL,
     phone_number INT,
     email VARCHAR (128),
     is_admin BOOLEAN,
