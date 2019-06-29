@@ -420,7 +420,7 @@ $("#categoryModalAdd").on("click", function (event) {
             description: $("#categoryDesc").val("");
             
             // Populate Categories div with newly created Category by making a nested Ajax call to retrieve the bulk of Categories.
-            
+
             var $categoryDiv = $("#categoryDiv");
 
             // Test if there is a Project selected.
@@ -469,7 +469,7 @@ $(document).on("click", "#addTask", function (event) {
     // Make sure to preventDefault on a submit event.
     event.preventDefault();
 
-    console.log(projectUsersArr);
+    // console.log(projectUsersArr);
 
     var newTask = {
         description: $("#taskDesc").val(),

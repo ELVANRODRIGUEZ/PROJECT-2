@@ -369,11 +369,14 @@ module.exports = function (app) {
 
         // console.log(task);
         console.log("success!");
+        
+        var deadline = moment(task.dead_line);
+        console.log(deadline);
 
         var newTask = taskModal(
           task.id,
           task.description,
-          moment(task.deadline).format("DD, MMMM. YYYY"),
+          deadline.format("DD, MMMM. YYYY"),
           task.accomplished
         );
 
