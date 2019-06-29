@@ -3,7 +3,7 @@
 function projectCard(projectId, projectName, projectDescription) {
 
     projectHtml =
-        "<div class='card  bg-secondary projectCard col-md-5 overflow-auto' " +
+        "<div class='card  bg-secondary projectCard col-md-12 overflow-auto' " +
         "data-id='" + projectId + "'>" +
         "<div class='card-header'>Project: " +
         projectId +
@@ -13,11 +13,11 @@ function projectCard(projectId, projectName, projectDescription) {
         "<h6 class='card-title'> " +
         projectDescription +
         "</h6> " +
-        "<p class='card-text'> " +
-        "<small class='text-dark'> " +
-        "Last updated 3 mins ago" +
-        "</small> " +
-        "</p> " +
+        // "<p class='card-text'> " +
+        // "<small class='text-dark'> " +
+        // "Last updated 3 mins ago" +
+        // "</small> " +
+        // "</p> " +
         "</div> " +
         "</div>" +
         " ";

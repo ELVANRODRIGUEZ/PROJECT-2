@@ -50,8 +50,12 @@ $(document).on('click', '.projectCard', function () {
         })
         .then(function (data) {
 
+            // Test response:
+            // console.log(data.categories);
+
             userSelections.project = projectId;
 
+            // We use this call to keep track of the chosen Project in the server and not in the client. Nothing is done here with the response.
             $.ajax({
                 url: "/api/users-selections",
                 method: "POST",
@@ -64,33 +68,7 @@ $(document).on('click', '.projectCard', function () {
 
             });
 
-            // console.log(data);
-
-            // console.log(data);
-
-            Object.keys(data).forEach(function (item) {
-
-                // console.log(item);
-
-
-                var categoryInfo;
-                var projectId = data[item].projects;
-
-                $forProject.text(projectId);
-
-                categoryInfo =
-                    "<div class='card bg-secondary text-white categoryCard'" +
-                    "style='margin:5px' data-id='" + data[item].category_id + "' >" +
-                    "<div class='card-body'>" +
-                    "<h5 class='card-title'>" +
-                    data[item].category_name + "</h5>" +
-                    "<h6 class='card-subtitle mb-2 text-white'>" + data[item].category_description + "</h6>" +
-                    "</div>" +
-                    "</div>";
-
-                $categoryDiv.append(categoryInfo);
-
-            });
+            $categoryDiv.html(data.categories);
 
         })
 
@@ -174,7 +152,9 @@ $(document).on('click', '.categoryCard', function () {
 
     // $('#forProject').text(id);
     $.ajax({
-            url: "/members/info/category/" + categoryId,
+            url: "/members/info/" +
+                userSelections.project +
+                "/category/" + categoryId,
             method: "GET"
         })
         .then(function (data) {
@@ -196,24 +176,6 @@ $(document).on('click', '.categoryCard', function () {
             // console.log(data.tasks);
 
             $("#modal-container").html(data.tasks);
-
-        });
-
-})
-
-$(document).on('click', '#testbutton', function () {
-
-    $.ajax({
-            url: "/members/info/category/" + 6,
-            method: "GET"
-        })
-        .then(function (data) {
-
-            // console.log(data);
-            $('body').replaceWith(data);
-            // location.reload();
-
-            // $.get("/memebers")
 
         });
 
@@ -447,15 +409,40 @@ $("#categoryModalAdd").on("click", function (event) {
             // location.reload();
 
             $("#categoryAddMessage").text(data);
-
+            
             $("#categorySuccessModal").modal({
                 show: true,
                 backdrop: 'static',
                 keyboard: false
             });
-
+            
             category_name: $("#categoryName").val("");
             description: $("#categoryDesc").val("");
+            
+            // Populate Categories div with newly created Category by making a nested Ajax call to retrieve the bulk of Categories.
+            
+            var $categoryDiv = $("#categoryDiv");
+
+            // Test if there is a Project selected.
+
+            if (userSelections.project != "") {
+
+                var projectId = userSelections.project;
+
+                $.ajax({
+                    url: "/members/info/" + projectId,
+                    method: "GET"
+                })
+                .then(function (data) {
+        
+                    // Test response:
+                    // console.log(data.categories);
+        
+                    $categoryDiv.html(data.categories);
+        
+                })
+
+            }
 
         }
     );
@@ -498,10 +485,10 @@ $(document).on("click", "#addTask", function (event) {
         function (data) {
 
             // console.log(data.task);
-            
+
             // Collapse Add Task window.
             $("#addTaskCollapsWindow").collapse("hide");
-            
+
             // Empty values for Task creation.
             $("#taskDesc").val("");
             $("#taskDeadline").val("");

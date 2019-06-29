@@ -145,7 +145,7 @@ select:-webkit-autofill:focus {
    color: white;
 }
 
-.projectCard{
+.projectCard, .categoryCard{
   margin:auto;
   min-width: 160px;
 color: #fff;

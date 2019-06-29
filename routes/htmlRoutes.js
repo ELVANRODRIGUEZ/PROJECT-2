@@ -11,6 +11,7 @@ var taskModal = require("../hardcoded-templates/taskModal-templete");
 var userProfile = require("../hardcoded-templates/project-templete.js");
 var categoryCard = require("../hardcoded-templates/category-templete.js");
 
+
 // =================================== Requiring our custom middleware for checking if a user is logged in.
 
 var isAuthenticated = require("../config/middleware/isAuthenticated");
@@ -154,49 +155,29 @@ module.exports = function (app) {
 
     var query =
       'SELECT ' +
-      'up.user as "user", ' +
-      'up.user_id as "user_id", ' +
-      'up.project as "projects", ' +
-      'up.project_description as "project_description", ' +
-      'up.project_id as "projects_id", ' +
-      'tc.category_name as "category_name", ' +
-      'tc.category_description as "category_description", ' +
-      'tc.category_id as "category_id" ' +
-      'FROM ' +
-      '(SELECT ' +
-      'u.user_name as "user", ' +
-      'u.id as "user_id", ' +
-      'p.project_name as "project", ' +
-      'p.description as "project_description", ' +
-      'p.id as "project_id" ' +
-      'FROM users u ' +
-      'LEFT JOIN project_users pu ON u.id = pu.user_name ' +
-      'JOIN projects p ON p.id = pu.project_name ' +
-      'WHERE u.id = ' + userId + ' AND p.id = ' +
-      projectId + ') up ' +
-      'LEFT JOIN ' +
-      '(SELECT ' +
-      'u.id as "user", ' +
-      'tr.task_id as "task_id", ' +
-      't.task_project as "task_project_id", ' +
-      't.description as "task_description" ' +
-      'FROM users u ' +
-      'LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id ' +
-      'LEFT JOIN tasks t ON t.id = tr.task_id ' +
-      'WHERE u.id = ' + userId + ') upt ' +
-      'ON upt.task_project_id = up.project_id ' +
-      'LEFT JOIN ' +
-      '(SELECT ' +
-      'c.id as "category_id", ' +
       'c.category_name as "category_name", ' +
       'c.description as "category_description", ' +
-      't.id as "task_id", ' +
-      't.description as "task" ' +
+      'c.id as "category_id", ' +
+      't2.tasks_count ' +
       'FROM categories c ' +
-      'LEFT JOIN tasks t ON t.task_category = c.id) tc ' +
-      'ON upt.task_id = tc.task_id ' +
-      'WHERE category_id IS NOT NULL ' +
-      'GROUP BY category_id'
+      'LEFT JOIN ' +
+      '(SELECT ' +
+      'c.category_name as "category_name", ' +
+      'c.id as "category_id", ' +
+      't.task_project as "project_id", ' +
+      't.id as "task_id", ' +
+      'tr.responsible as "responsible_id", ' +
+      'COUNT(t.id) as "tasks_count" ' +
+      'FROM categories c ' +
+      'LEFT JOIN tasks t ' +
+      'ON c.id = t.task_category ' +
+      'LEFT JOIN tasks_responsibles tr ' +
+      'ON tr.task_id = t.id ' +
+      'WHERE tr.responsible = ' + userId +
+      ' AND t.task_project = ' + projectId +
+      ' GROUP BY category_id) t2 ' +
+      'ON t2.category_id = c.id ' +
+      'ORDER BY category_id';
 
     connection.query(query, function (err, data) {
 
@@ -204,18 +185,35 @@ module.exports = function (app) {
 
       // console.log(data);
 
-      res.json(data);
+      var allCategories = "";
 
+      data.forEach(function (item) {
+
+        allCategories += categoryCard(
+          item.category_id,
+          item.category_name,
+          item.category_description,
+          item.tasks_count || 0
+        );
+
+      })
+
+      var sentResponse = {
+        categories: allCategories
+      };
+
+      res.json(sentResponse);
 
     });
 
   });
 
-  app.get("/members/info/category/:categoryId", isAuthenticated, function (req, res) {
+  app.get("/members/info/:projectId/category/:categoryId", isAuthenticated, function (req, res) {
     // function test(cb) {
 
     var userId = req.user.id;
     var categoryId = req.params.categoryId;
+    var projectId = req.params.projectId;
 
     // console.log(userId);
     // console.log(categoryId);
@@ -241,7 +239,8 @@ module.exports = function (app) {
       'FROM users u ' +
       'LEFT JOIN project_users pu ON u.id = pu.user_name ' +
       'JOIN projects p ON p.id = pu.project_name ' +
-      'WHERE u.id = ' + userId + ') up ' +
+      'WHERE u.id = ' + userId + 
+      ' AND p.id = ' + projectId + ') up ' +
       'LEFT JOIN ' +
       '(SELECT ' +
       'u.id as "user", ' +
@@ -264,7 +263,7 @@ module.exports = function (app) {
       'FROM categories c ' +
       'LEFT JOIN tasks t ON t.task_category = c.id) tc ' +
       'ON upt.task_id = tc.task_id ' +
-      'WHERE category_id = ' + categoryId + ';'
+      'WHERE category_id = ' + categoryId;
 
     connection.query(query, function (err, data) {
 
@@ -280,16 +279,16 @@ module.exports = function (app) {
       data.forEach(function (item) {
 
         allTasks += taskModal(
-          item.task_id, 
+          item.task_id,
           item.task_description,
           moment(item.task_deadline).format("DD, MMMM. YYYY"),
           item.task_accomplished
-          );
+        );
 
       })
 
       var sentResponse = {
-        tasks: allTasks,
+        tasks: allTasks
       };
 
       res.send(sentResponse);
@@ -298,4 +297,4 @@ module.exports = function (app) {
 
   });
 
-};
+}

@@ -29,7 +29,7 @@ SELECT
 FROM project_users 
 LEFT JOIN users ON project_users.user_name = users.id
 LEFT JOIN projects ON projects.id = project_users.project_name
-WHERE project_users.project_name = 4;
+WHERE project_users.project_name = 7;
 
 -- ++++++++++++++++++++++++++++ Projects by Category "cp"
 SELECT 
@@ -82,7 +82,7 @@ FROM
 FROM users u
 LEFT JOIN project_users pu ON u.id = pu.user_name
 JOIN projects p ON p.id = pu.project_name
-WHERE u.id = 15) up
+WHERE u.id = 1) up
 LEFT JOIN 
 (SELECT
 	u.id as "user",
@@ -92,7 +92,7 @@ LEFT JOIN
 FROM users u 
 LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id
 LEFT JOIN tasks t ON t.id = tr.task_id
-WHERE u.id = 15) upt 
+WHERE u.id = 1) upt 
 ON upt.task_project_id = up.project_id
 LEFT JOIN
 (SELECT 
@@ -103,8 +103,48 @@ LEFT JOIN
 FROM categories c
 LEFT JOIN tasks t ON t.task_category = c.id) tc
 ON upt.task_id = tc.task_id
-WHERE category_id = 2;
+WHERE category_id = 1;
 
+
+-- ++++++++++++++++++++++++++++ All Categories with nested Tasks by Project and User "ctpu"
+
+SELECT 
+	c.category_name as "category_name",
+    c.id as "category_id",
+	t2.tasks_count
+FROM categories c
+LEFT JOIN
+(SELECT 
+    c.category_name as "category_name",
+    c.id as "category_id",
+    t.task_project as "project_id",
+    t.id as "task_id",
+    tr.responsible as "responsible_id",
+    COUNT(t.id) as "tasks_count"
+FROM categories c
+LEFT JOIN tasks t 
+ON c.id = t.task_category
+LEFT JOIN tasks_responsibles tr
+ON tr.task_id = t.id
+WHERE tr.responsible = 5
+GROUP BY category_id) t2
+ON t2.category_id = c.id;
+
+SELECT 
+    c.category_name as "category_name",
+    c.id as "category_id",
+    t.task_project as "project_id",
+    t.id as "task_id",
+    tr.responsible as "responsible_id"
+FROM categories c
+LEFT JOIN tasks t 
+ON c.id = t.task_category
+LEFT JOIN tasks_responsibles tr
+ON tr.task_id = t.id;
+
+
+	
+    
 
 -- ++++++++++++++++++++++++++++ Tasks by Category
 SELECT 
