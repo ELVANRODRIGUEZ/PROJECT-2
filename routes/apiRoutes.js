@@ -509,7 +509,7 @@ module.exports = function (app) {
           }
         })
       })
-      
+
       var query2 =
         'SELECT ' +
         'users.id, ' +
@@ -534,12 +534,12 @@ module.exports = function (app) {
         forTaskAddingId.forEach(function (userId) {
 
           data.forEach(function (dataId) {
-            
+
             // We first will select from the "data" array just the id's from the Users available for adding to the Task, that is, the Users that belong to the Project but are do not belong to the Task already.
             if (userId == dataId.id) {
 
               forTaskAddComplete
-              .push(dataId);
+                .push(dataId);
 
             }
 
@@ -556,7 +556,7 @@ module.exports = function (app) {
             if (userId == dataId.id) {
 
               allTaskUsersComplete
-              .push(dataId);
+                .push(dataId);
 
             }
 
@@ -570,21 +570,21 @@ module.exports = function (app) {
 
         // for each User in the 'Users to add' array we will call the imported function "userLis.userList" that generate the tags to fill the list on the Front End.
         forTaskAddComplete
-        .forEach(function (item) {
+          .forEach(function (item) {
 
-          usersToAddHtml +=
-          userList.userList(item.id,item.user_name).toString();
+            usersToAddHtml +=
+              userList.userList(item.id, item.user_name).toString();
 
-        });
-        
+          });
+
         // for each User in the 'Users to delete' array we will call the imported function "userLis.userList" that generate the tags to fill the list on the Front End.
         allTaskUsersComplete
-        .forEach(function (item) {
+          .forEach(function (item) {
 
-          usersToDeleteHtml +=
-          userList.userList(item.id,item.user_name).toString();
+            usersToDeleteHtml +=
+              userList.userList(item.id, item.user_name).toString();
 
-        });
+          });
 
         // Test console.
         // console.log("=====================");
@@ -606,6 +606,75 @@ module.exports = function (app) {
       });
 
     });
+
+  })
+
+  // Route to edit a Task and all its Relationships.
+  app.put("/api/project/task/:id", function (req, res) {
+
+    db.tasks.update({
+      description: req.body.description,
+      dead_line: req.body.deadline
+    }, {
+      where: {
+        id: req.params.id
+      }
+    }).then(function (data) {
+
+      res.json(data);
+
+    });
+
+  })
+
+  // Route to add Responsibles to a Task.
+  app.post("/api/project/task/responsible/:id", function (req, res) {
+
+    var bulk = JSON.parse(req.body.data)
+
+    db.tasks_responsibles.bulkCreate(bulk).
+    then(function (data) {
+
+      res.send("Success!");
+
+    });
+
+  })
+
+  // Route to delete Responsibles to a Task.
+  app.delete("/api/project/task/responsible/delete/:id", function (req, res) {
+
+    var bulk = JSON.parse(req.body.data)
+
+    db.tasks_responsibles.findAll({
+      where: {
+        task_id: req.params.id,
+        responsible: bulk
+      }
+    }).
+    then(function (data) {
+
+      var taskUserRel = [];
+
+      data.forEach(function (item) {
+
+        taskUserRel.push(item.id);
+
+      })
+
+      db.tasks_responsibles.destroy({
+        where: {
+          id: taskUserRel
+        }
+      }).
+      then(function (data2) {
+
+        res.json(data2);
+
+      });
+
+    })
+
 
   })
 

@@ -108,7 +108,7 @@ $('.categoryDel').on('click', function () {
 
 // ----------------- Task
 
-// ---------- Click on Add User inside Task Edit Modal
+// ---------- Click on Add User inside New Task Modal
 $(document).on('click', '#addTaskUser', function () {
     // Make sure to preventDefault on a submit event.
     event.preventDefault();
@@ -136,11 +136,12 @@ $(document).on('click', '#addTaskUser', function () {
 
     })
 
+    // Test console.
     // console.log(projectUsersArr);
 
 })
 
-// ---------- Click on Add User inside Task Add Modal
+// ---------- Click on Add User for Adding inside Task Edit Modal
 $(document).on('click', '.taskAddTskUserAdd', function () {
     // Make sure to preventDefault on a submit event.
     event.preventDefault();
@@ -181,7 +182,7 @@ $(document).on('click', '.taskAddTskUserAdd', function () {
 
 })
 
-// ---------- Click on Add User inside Task Add Modal
+// ---------- Click on Add User for Deleting inside Task Add Modal
 $(document).on('click', '.taskDelTskUserAdd', function () {
     // Make sure to preventDefault on a submit event.
     event.preventDefault();
@@ -202,7 +203,7 @@ $(document).on('click', '.taskDelTskUserAdd', function () {
 
     $taskUserList.append(newUser);
 
-    taskUsersToAdd.push(userId);
+    taskUsersToDel.push(userId);
 
     $(document).on('click', '.taskDelTskUserDel', function () {
         // Make sure to preventDefault on a submit event.
@@ -212,13 +213,13 @@ $(document).on('click', '.taskDelTskUserAdd', function () {
 
             $taskUserList.empty();
 
-            taskUsersToAdd = [];
+            taskUsersToDel = [];
         };
 
     });
 
     // Test console.
-    // console.log(taskUsersToAdd);
+    // console.log(taskUsersToDel);
 
 })
 
@@ -619,7 +620,7 @@ $(document).on("click", "#addTask", function (event) {
 
 });
 
-// ---------- Get all Users in Edit Task Modal 
+// ---------- Click on Edit Task button inside the Task Card
 $(document).on("click", ".editTaskButton", function (event) {
 
     var taskSelected = $(this).attr("task");
@@ -706,5 +707,114 @@ $(document).on("click", ".editTaskButton", function (event) {
 
 
     });
+
+});
+
+// ---------- Click on Accept Edition button inside the Task Card Edit Modal
+$(document).on("click", ".acceptEdition", function (event) {
+
+    // Test console.
+    // console.log(taskUsersToAdd);
+    // console.log(taskUsersToDel);
+
+    var taskId = $(this).attr("task");
+
+    var taskDescription =
+        $("#" + "editTask" + taskId + "Description").val();
+    var taskDeadline =
+        $("#" + "editTask" + taskId + "Deadline").val();
+
+    // taskDescription = "Have trucks to extract excavation soil.";
+    // taskDeadline = "2019-07-30";
+
+    // taskDescription = "Task decription changes test.";
+    // taskDeadline = "2019-01-01";
+
+    var taskEdit = {
+        description: taskDescription,
+        deadline: taskDeadline
+    };
+
+    // Send the PUT request.
+    $.ajax("/api/project/task/" + taskId, {
+        type: "PUT",
+        data: taskEdit
+    }).then(
+        function (data) {
+
+            // Test console.
+            // console.log(data);
+
+            if (taskUsersToAdd.length > 0) {
+
+                var taskResp = [];
+
+                taskUsersToAdd.forEach(function (item) {
+
+                    taskResp.push({
+                        task_id: taskId.toString(),
+                        responsible: item.toString()
+                    });
+
+                });
+
+                var sentData = JSON.stringify(taskResp)
+
+                // Test console.
+                console.log(taskResp);
+
+                // Send the POST request.
+                $.ajax({
+                    url: "/api/project/task/responsible/" + taskId,
+                    type: "POST",
+                    data: {
+                        data: sentData
+                    }
+                }).then(
+                    function (data) {
+
+                        // Test console.
+                        // console.log(data);
+
+
+                    });
+
+            }
+
+            if (taskUsersToDel.length > 0) {
+
+                var taskRespDel = [];
+
+                taskUsersToDel.forEach(function (item) {
+
+                    taskRespDel.push(item);
+
+                });
+
+                var sentData2 = JSON.stringify(taskUsersToDel)
+
+                // Test console.
+                // console.log(taskUsersToDel);
+
+                // Send the DELETE request.
+                $.ajax({
+                    url: "/api/project/task/responsible/delete/" + taskId,
+                    type: "DELETE",
+                    data: {
+                        data: sentData2
+                    }
+                }).then(
+                    function (data) {
+
+                        // Test console.
+                        console.log(data);
+
+
+                    });
+
+            }
+
+
+        });
 
 });

@@ -90,14 +90,15 @@ function taskModal (taskId, taskDescription, taskDeadLine, taskAccomplished) {
                         "<h5 class='modal-title'>" +
                         "Users Added for Deletion:</h5>" +
                         "<ul id='task" + taskId + "UserListDel' class='list-group taskUsersDelList' " +
-                        "task=" + taskId + ">" +
+                        "task='" + taskId + "'>" +
                             //--to be filled--//
                         "</ul>" +
                         "</div>" +
                     "</form>" +
 
-                    '<div class="modal-footer">' +
-                        '<button class="btn btn-outline-success" id="addTask">' + 'Edit task!</button>' +
+                    "<div class='modal-footer'>" +
+                        "<button class='btn btn-outline-success acceptEdition' " + "task='" + taskId + 
+                        "'>Accept Edition</button>" +
                     '</div>' +
 
                 "</div>" +
