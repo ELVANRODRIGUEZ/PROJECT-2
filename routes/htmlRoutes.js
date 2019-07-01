@@ -10,6 +10,7 @@ var moment = require("moment");
 var taskModal = require("../hardcoded-templates/taskModal-templete");
 var userProfile = require("../hardcoded-templates/project-templete.js");
 var categoryCard = require("../hardcoded-templates/category-templete.js");
+var userList = require("../hardcoded-templates/usersList-templete");
 
 
 // =================================== Requiring our custom middleware for checking if a user is logged in.

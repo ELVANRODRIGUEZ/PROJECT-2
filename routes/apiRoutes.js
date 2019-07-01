@@ -9,6 +9,7 @@ var moment = require("moment");
 var taskModal = require("../hardcoded-templates/taskModal-templete");
 var userProfile = require("../hardcoded-templates/project-templete.js");
 var categoryCard = require("../hardcoded-templates/category-templete.js");
+var userList = require("../hardcoded-templates/usersList-templete");
 
 
 module.exports = function (app) {
@@ -261,8 +262,13 @@ module.exports = function (app) {
   // Creating an object to store selected Project and Category.
   var userSelections = {
     project: null,
-    category: null
+    category: null,
+    task: null
   }
+  // Creating arrays for Project selected Users (that gets populated when a Project is selected).
+  var allProjectUsersId = [];
+  // Creating arrays for Task selected Users (that gets populated when a Task is selected).
+  var allTaskUsersId = [];
 
   // Route for storing Project and Category here in Server instead of the Client.
   app.post("/api/users-selections", function (req, res) {
@@ -283,6 +289,18 @@ module.exports = function (app) {
 
       userSelections.category = req.body.category;
 
+      if (!req.body.task) {
+
+        userSelections.task = null;
+
+      }
+
+    }
+
+    if (req.body.task) {
+
+      userSelections.task = req.body.task;
+
     }
 
     // console.log(userSelections.project);
@@ -302,6 +320,7 @@ module.exports = function (app) {
       where: {
         project_name: userSelections.project
       },
+      raw: true,
       include: [{
         model: db.users,
         attributes: [
@@ -319,6 +338,18 @@ module.exports = function (app) {
         }]
       }]
     }).then(function (users) {
+
+      // Test console.
+      // console.log(users);
+
+      allProjectUsersId = [];
+
+      users.forEach(function (item) {
+
+        allProjectUsersId.push(item.user_id);
+
+      })
+
 
       res.json(users);
 
@@ -369,7 +400,7 @@ module.exports = function (app) {
 
         // console.log(task);
         console.log("success!");
-        
+
         var deadline = moment(task.dead_line);
         console.log(deadline);
 
@@ -424,5 +455,159 @@ module.exports = function (app) {
     });
 
   }
+
+  // Route for getting all Task Users depending on the Project selected.
+  app.get("/api/project/task/users", function (req, res) {
+
+    var userId = req.user.id;
+    var taskId = userSelections.task;
+    allTaskUsersId = [];
+
+    var query =
+      'SELECT ' +
+      't.id as "task_id", ' +
+      't.description as "task_description", ' +
+      'u.user_name as "user_name", ' +
+      'tr.responsible as "user_id" ' +
+      'FROM tasks_responsibles tr ' +
+      'LEFT JOIN tasks t ' +
+      'ON t.id = tr.task_id ' +
+      'LEFT JOIN users u ' +
+      'ON tr.responsible = u.id ' +
+      'WHERE task_id = ' + taskId;
+
+    connection.query(query, function (err, data) {
+
+      if (err) throw err;
+
+      // Test console.
+      // console.log(data[0].task_id);
+      // console.log(allTaskUsers);
+      // console.log(allProjectUsers);
+
+      // Create an array containing all Users for the selected Task (including the logged User).
+      data.forEach(function (item) {
+
+        allTaskUsersId.push(item.user_id);
+
+      })
+
+      // Create an array containing all the Users_id in the Project that can be added to the Task. (including the ones that already belong the it).
+      var forTaskAddingId = [];
+      allProjectUsersId.forEach(function (item) {
+        forTaskAddingId.push(item);
+      })
+
+      // Test console.
+      // console.log(allProjectUsersId);
+
+      // Now we "splice" the users that already belong to the selected Task.
+      allTaskUsersId.forEach(function (tU) {
+        forTaskAddingId.forEach(function (pU) {
+          if (tU == pU) {
+            forTaskAddingId.splice(forTaskAddingId.indexOf(pU), 1);
+          }
+        })
+      })
+      
+      var query2 =
+        'SELECT ' +
+        'users.id, ' +
+        'users.user_name ' +
+        'FROM users ' +
+        'WHERE users.id IN (' +
+        allProjectUsersId.toString() + ')';
+
+      connection.query(query2, function (err, data) {
+
+        if (err) throw err;
+
+        // Test console.
+        // console.log(data);
+
+        // We create the final arrays that will store Id's and Names of the Users that are related to the selected Project...
+        var forTaskAddComplete = [];
+        // And to the selected Task.
+        var allTaskUsersComplete = [];
+
+        // Then we populate 'Users available for adding to Task' array with the data retrieved by this query that contains "id" and "user_name". 
+        forTaskAddingId.forEach(function (userId) {
+
+          data.forEach(function (dataId) {
+            
+            // We first will select from the "data" array just the id's from the Users available for adding to the Task, that is, the Users that belong to the Project but are do not belong to the Task already.
+            if (userId == dataId.id) {
+
+              forTaskAddComplete
+              .push(dataId);
+
+            }
+
+          })
+
+        });
+
+        // Then we populate the 'Users available for deleting from the Task' array with the data retrieved by this query that contains "id" and "user_name". 
+        allTaskUsersId.forEach(function (userId) {
+
+          data.forEach(function (dataId) {
+
+            // We first will select from the "data" array just the id's from the Users available for deleting from the Task, that is, the Users that belong to the selected Task already.
+            if (userId == dataId.id) {
+
+              allTaskUsersComplete
+              .push(dataId);
+
+            }
+
+          })
+
+        });
+
+        // We will build the HTML for both lists (Users to add and Users to delte from a Task) and then send it as a response.
+        var usersToAddHtml = "";
+        var usersToDeleteHtml = "";
+
+        // for each User in the 'Users to add' array we will call the imported function "userLis.userList" that generate the tags to fill the list on the Front End.
+        forTaskAddComplete
+        .forEach(function (item) {
+
+          usersToAddHtml +=
+          userList.userList(item.id,item.user_name).toString();
+
+        });
+        
+        // for each User in the 'Users to delete' array we will call the imported function "userLis.userList" that generate the tags to fill the list on the Front End.
+        allTaskUsersComplete
+        .forEach(function (item) {
+
+          usersToDeleteHtml +=
+          userList.userList(item.id,item.user_name).toString();
+
+        });
+
+        // Test console.
+        // console.log("=====================");
+        // console.log(usersToAddHtml);
+        // console.log("---------------------");
+        // console.log(usersToDeleteHtml);
+        // console.log("=====================");
+
+        var sentResponse = {
+          usersToAdd: usersToAddHtml,
+          usersToDelete: usersToDeleteHtml
+        };
+
+        // Test console.
+        // console.log(forTaskAdding);
+
+        res.json(sentResponse);
+
+      });
+
+
+    });
+
+  })
 
 };

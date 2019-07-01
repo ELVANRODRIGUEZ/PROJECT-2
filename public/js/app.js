@@ -1,3 +1,5 @@
+// ========================= Declare Global Variables
+
 var x = 0;
 
 var userSelections = {
@@ -6,6 +8,221 @@ var userSelections = {
     description: ""
 }
 
+var generalUsersArr = [];
+var projectUsersArr = [];
+var taskUsersToAdd = [];
+var taskUsersToDel = [];
+
+// ========================= Simple Button Events
+
+// ----------------- Project
+
+// ---------- Click on Project Add Button
+$('.projectAdd').on('click', function () {
+    $("#projectName").val("");
+    $("#projectDesc").val("");
+    $("#projectModal").modal({
+        show: true,
+        backdrop: 'static',
+        keyboard: false
+    });
+})
+
+// ---------- Click on Project Delete Button
+$('.projectDel').on('click', function () {
+    var all = $('.border-primary').map(function () {
+        return this;
+    }).get();
+
+    var id = $(all[0]).data('id');
+    $("#deleteProject").attr('data-id', id);
+    if (typeof id == 'undefined') {
+        alert('no item selected')
+    } else {
+        $("#deleteProjectModal").modal({
+            show: true,
+            backdrop: 'static',
+            keyboard: false
+        });
+    }
+})
+
+// ---------- Click on Add User inside Project Add Modal
+$('#addUser').on('click', function () {
+    // Make sure to preventDefault on a submit event.
+    event.preventDefault();
+
+    var $userList = $("#userList");
+    var userId = $("#projectUsers option:selected").attr("userId");
+    var userName = $("#projectUsers option:selected").val();
+
+    var newUser =
+        "<li class='projectUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
+
+    $userList.append(newUser);
+
+    generalUsersArr.push(userId);
+
+    $('#delUser').on('click', function () {
+        // Make sure to preventDefault on a submit event.
+        event.preventDefault();
+
+        $('#userList').empty();
+
+        generalUsersArr = [];
+
+    })
+
+})
+
+
+// ----------------- Category
+
+// ---------- Click on Category Add Button
+$('.categoryAdd').on('click', function () {
+    $("#categoryModal").modal({
+        show: true,
+        backdrop: 'static',
+        keyboard: false
+    });
+})
+
+// ---------- Click on Category Delete Button
+$('.categoryDel').on('click', function () {
+    var all = $('.border-danger').map(function () {
+        return this;
+    }).get();
+    var id = $(all[0]).data('id');
+    $("#deleteCategory").attr('data-id', id);
+    if (typeof id == 'undefined') {
+        alert('no item selected')
+    } else {
+        $("#deleteCategoryModal").modal({
+            show: true,
+            backdrop: 'static',
+            keyboard: false
+        });
+    }
+
+})
+
+// ----------------- Task
+
+// ---------- Click on Add User inside Task Edit Modal
+$(document).on('click', '#addTaskUser', function () {
+    // Make sure to preventDefault on a submit event.
+    event.preventDefault();
+
+    var $taskUserList = $("#taskUserList");
+    var userId = $("#taskUsers option:selected").attr("userId");
+    var userName = $("#taskUsers option:selected").val();
+
+    var newUser =
+        "<li class='taskUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
+
+    $taskUserList.append(newUser);
+
+    // console.log(userId);
+
+    projectUsersArr.push(userId);
+
+    $('#delTaskUser').on('click', function () {
+        // Make sure to preventDefault on a submit event.
+        event.preventDefault();
+
+        $('#taskUserList').empty();
+
+        projectUsersArr = [];
+
+    })
+
+    // console.log(projectUsersArr);
+
+})
+
+// ---------- Click on Add User inside Task Add Modal
+$(document).on('click', '.taskAddTskUserAdd', function () {
+    // Make sure to preventDefault on a submit event.
+    event.preventDefault();
+
+    var taskForEdit = $(this).attr("task");
+
+    var $taskUserList =
+        $("#" + "task" + taskForEdit + "UserList");
+    var userId =
+        $("#" + "task" + taskForEdit +
+            "Users option:selected").attr("userId");
+    var userName =
+        $("#" + "task" + taskForEdit +
+            "Users option:selected").val();
+
+    var newUser =
+        "<li class='taskUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
+
+    $taskUserList.append(newUser);
+
+    taskUsersToAdd.push(userId);
+
+    $(document).on('click', '.taskAddTskUserDel', function () {
+        // Make sure to preventDefault on a submit event.
+        event.preventDefault();
+
+        if ($(this).attr("task") == taskForEdit) {
+
+            $taskUserList.empty();
+
+            taskUsersToAdd = [];
+        };
+
+    });
+
+    // Test console.
+    // console.log(taskUsersToAdd);
+
+})
+
+// ---------- Click on Add User inside Task Add Modal
+$(document).on('click', '.taskDelTskUserAdd', function () {
+    // Make sure to preventDefault on a submit event.
+    event.preventDefault();
+
+    var taskForEdit = $(this).attr("task");
+
+    var $taskUserList =
+        $("#" + "task" + taskForEdit + "UserListDel");
+    var userId =
+        $("#" + "task" + taskForEdit +
+            "UsersDel option:selected").attr("userId");
+    var userName =
+        $("#" + "task" + taskForEdit +
+            "UsersDel option:selected").val();
+
+    var newUser =
+        "<li class='taskUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
+
+    $taskUserList.append(newUser);
+
+    taskUsersToAdd.push(userId);
+
+    $(document).on('click', '.taskDelTskUserDel', function () {
+        // Make sure to preventDefault on a submit event.
+        event.preventDefault();
+
+        if ($(this).attr("task") == taskForEdit) {
+
+            $taskUserList.empty();
+
+            taskUsersToAdd = [];
+        };
+
+    });
+
+    // Test console.
+    // console.log(taskUsersToAdd);
+
+})
+
+// ---------- Click on Task Increase Accomplishment Button
 $('.pminus').on('click', function () {
     x += 25;
     if (x > 100) {
@@ -17,6 +234,7 @@ $('.pminus').on('click', function () {
     }
 })
 
+// ---------- Click on Task Decrease Accomplishment Button
 $('.pplus').on('click', function () {
     x -= 25;
     if (x < 0) {
@@ -28,6 +246,12 @@ $('.pplus').on('click', function () {
     }
 })
 
+
+// ========================= Ajax Calls Button Events
+
+// ----------------- Project
+
+// ---------- Click on Project Card
 $(document).on('click', '.projectCard', function () {
     $('.card').removeClass('border border-primary');
     $(this).addClass('border border-primary');
@@ -74,178 +298,7 @@ $(document).on('click', '.projectCard', function () {
 
 })
 
-$('.projectAdd').on('click', function () {
-    $("#projectName").val("");
-    $("#projectDesc").val("");
-    $("#projectModal").modal({
-        show: true,
-        backdrop: 'static',
-        keyboard: false
-    });
-})
-
-$('.categoryAdd').on('click', function () {
-    $("#categoryModal").modal({
-        show: true,
-        backdrop: 'static',
-        keyboard: false
-    });
-})
-
-$('.projectDel').on('click', function () {
-    var all = $('.border-primary').map(function () {
-        return this;
-    }).get();
-
-    var id = $(all[0]).data('id');
-    $("#deleteProject").attr('data-id', id);
-    if (typeof id == 'undefined') {
-        alert('no item selected')
-    } else {
-        $("#deleteProjectModal").modal({
-            show: true,
-            backdrop: 'static',
-            keyboard: false
-        });
-    }
-})
-
-$('.categoryDel').on('click', function () {
-    var all = $('.border-danger').map(function () {
-        return this;
-    }).get();
-    var id = $(all[0]).data('id');
-    $("#deleteCategory").attr('data-id', id);
-    if (typeof id == 'undefined') {
-        alert('no item selected')
-    } else {
-        $("#deleteCategoryModal").modal({
-            show: true,
-            backdrop: 'static',
-            keyboard: false
-        });
-    }
-
-})
-
-$(document).on('click', '.categoryCard', function () {
-
-    // Collapse Add Task window.
-    $("#addTaskCollapsWindow").collapse("hide");
-
-    // Show Task Modal window.
-    $("#taskModal").modal({
-        show: true,
-        backdrop: 'static',
-        keyboard: false
-    });
-
-    $('.card').removeClass('border border-danger');
-    $(this).addClass('border border-danger');
-
-    var all = $('.border-danger').map(function () {
-        return this;
-    }).get();
-
-    var categoryId = $(all[0]).data('id').toString();
-    // console.log(categoryId);
-
-    // $('#forProject').text(id);
-    $.ajax({
-            url: "/members/info/" +
-                userSelections.project +
-                "/category/" + categoryId,
-            method: "GET"
-        })
-        .then(function (data) {
-
-            userSelections.category = categoryId;
-
-            $.ajax({
-                url: "/api/users-selections",
-                method: "POST",
-                data: {
-                    category: categoryId
-                }
-            }).then(function (Selections) {
-
-                // console.log(Selections);
-
-            });
-
-            // console.log(data.tasks);
-
-            $("#modal-container").html(data.tasks);
-
-        });
-
-})
-
-var generalUsersArr = [];
-var projectUsersArr = [];
-
-$('#addUser').on('click', function () {
-    // Make sure to preventDefault on a submit event.
-    event.preventDefault();
-
-    var $userList = $("#userList");
-    var userId = $("#projectUsers option:selected").attr("userId");
-    var userName = $("#projectUsers option:selected").val();
-
-    var newUser =
-        "<li class='projectUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
-
-    $userList.append(newUser);
-
-    generalUsersArr.push(userId);
-
-    $('#delUser').on('click', function () {
-        // Make sure to preventDefault on a submit event.
-        event.preventDefault();
-
-        $('#userList').empty();
-
-        generalUsersArr = [];
-
-    })
-
-})
-
-$('#addTaskUser').on('click', function () {
-    // Make sure to preventDefault on a submit event.
-    event.preventDefault();
-
-    var $taskUserList = $("#taskUserList");
-    var userId = $("#taskUsers option:selected").attr("userId");
-    var userName = $("#taskUsers option:selected").val();
-
-    var newUser =
-        "<li class='taskUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
-
-    $taskUserList.append(newUser);
-
-    // console.log(userId);
-
-    projectUsersArr.push(userId);
-
-    $('#delTaskUser').on('click', function () {
-        // Make sure to preventDefault on a submit event.
-        event.preventDefault();
-
-        $('#taskUserList').empty();
-
-        projectUsersArr = [];
-
-    })
-
-    // console.log(projectUsersArr);
-
-})
-
-
-///----------------Events with Ajax calls----------------///
-
-///--------Get all users in Add Project Modal--------///
+// ---------- Get all Users in Add Project Modal
 $("#projectAddButton").on("click", function (event) {
 
     // Empty the list for general users.
@@ -280,43 +333,7 @@ $("#projectAddButton").on("click", function (event) {
 
 });
 
-///--------Get all users in Add Task Modal--------///
-$(document).on("click", "#addTaskModal", function (event) {
-
-    // Empty the list for Project related users.
-    $("#taskUsers").html("");
-
-    // Empty the list array for Project related users.
-    projectUsersArr = [];
-
-    // Send the GET request.
-    $.get("/api/project_users", function (data) {
-
-        // console.log(data);
-
-        var $taskUsers = $("#taskUsers");
-        var users = "<option selected>Select User</option>";
-
-        // " +  + "
-
-        data.forEach(function (item) {
-
-            // console.log(item.user_id);
-            // console.log(item.user.user_name);
-
-            users += "<option class='taksUsersArr' userId=" +
-                item.user_id +
-                ">" + item.user.user_name + "</option>";
-
-        })
-
-        $taskUsers.html(users);
-
-    });
-
-});
-
-///--------Add Project--------///
+// ---------- Add Project
 $("#projectModalAdd").on("click", function (event) {
     // Make sure to preventDefault on a submit event.
     event.preventDefault();
@@ -372,7 +389,7 @@ $("#projectModalAdd").on("click", function (event) {
 
 });
 
-//---------Delete project------------------//
+// ---------- Delete project
 $("#deleteProject").on('click', function () {
     var id = $(this).data("id");
     console.log(id);
@@ -387,7 +404,67 @@ $("#deleteProject").on('click', function () {
         }
     );
 });
-//----------Add a category------------------//
+
+
+// ----------------- Category
+
+
+
+// ---------- Click on Category Card
+$(document).on('click', '.categoryCard', function () {
+
+    // Collapse Add Task window.
+    $("#addTaskCollapsWindow").collapse("hide");
+
+    // Show Task Modal window.
+    $("#taskModal").modal({
+        show: true,
+        backdrop: 'static',
+        keyboard: false
+    });
+
+    $('.card').removeClass('border border-danger');
+    $(this).addClass('border border-danger');
+
+    var all = $('.border-danger').map(function () {
+        return this;
+    }).get();
+
+    var categoryId = $(all[0]).data('id').toString();
+    // console.log(categoryId);
+
+    // $('#forProject').text(id);
+    $.ajax({
+            url: "/members/info/" +
+                userSelections.project +
+                "/category/" + categoryId,
+            method: "GET"
+        })
+        .then(function (data) {
+
+            userSelections.category = categoryId;
+
+            $.ajax({
+                url: "/api/users-selections",
+                method: "POST",
+                data: {
+                    category: categoryId
+                }
+            }).then(function (Selections) {
+
+                // console.log(Selections);
+
+            });
+
+            // console.log(data.tasks);
+
+            $("#modal-container").html(data.tasks);
+
+        });
+
+})
+
+// ---------- Add a category
 $("#categoryModalAdd").on("click", function (event) {
     // Make sure to preventDefault on a submit event.
     event.preventDefault();
@@ -409,16 +486,16 @@ $("#categoryModalAdd").on("click", function (event) {
             // location.reload();
 
             $("#categoryAddMessage").text(data);
-            
+
             $("#categorySuccessModal").modal({
                 show: true,
                 backdrop: 'static',
                 keyboard: false
             });
-            
+
             category_name: $("#categoryName").val("");
             description: $("#categoryDesc").val("");
-            
+
             // Populate Categories div with newly created Category by making a nested Ajax call to retrieve the bulk of Categories.
 
             var $categoryDiv = $("#categoryDiv");
@@ -430,17 +507,17 @@ $("#categoryModalAdd").on("click", function (event) {
                 var projectId = userSelections.project;
 
                 $.ajax({
-                    url: "/members/info/" + projectId,
-                    method: "GET"
-                })
-                .then(function (data) {
-        
-                    // Test response:
-                    // console.log(data.categories);
-        
-                    $categoryDiv.html(data.categories);
-        
-                })
+                        url: "/members/info/" + projectId,
+                        method: "GET"
+                    })
+                    .then(function (data) {
+
+                        // Test response:
+                        // console.log(data.categories);
+
+                        $categoryDiv.html(data.categories);
+
+                    })
 
             }
 
@@ -448,7 +525,8 @@ $("#categoryModalAdd").on("click", function (event) {
     );
 });
 
-//---------Delete category------------------//
+
+// ---------- Delete category
 $("#deleteCategory").on('click', function () {
     var id = $(this).data("id");
     console.log(id);
@@ -464,7 +542,46 @@ $("#deleteCategory").on('click', function () {
     );
 });
 
-// ----------Add a task------------------//
+
+// ----------------- Task
+
+// ---------- Get all Users in Add Task Modal 
+$(document).on("click", "#addTaskModal", function (event) {
+
+    // Empty the list for Project related users.
+    $("#taskUsers").html("");
+
+    // Empty the list array for Project related users.
+    projectUsersArr = [];
+
+    // Send the GET request.
+    $.get("/api/project_users", function (data) {
+
+        // console.log(data);
+
+        var $taskUsers = $("#taskUsers");
+        var users = "<option selected>Select User</option>";
+
+        // " +  + "
+
+        data.forEach(function (item) {
+
+            // console.log(item.user_id);
+            // console.log(item.user.user_name);
+
+            users += "<option class='taksUsersArr' userId=" +
+                item.user_id +
+                ">" + item["user.user_name"] + "</option>";
+
+        })
+
+        $taskUsers.html(users);
+
+    });
+
+});
+
+// ---------- Add a New Task
 $(document).on("click", "#addTask", function (event) {
     // Make sure to preventDefault on a submit event.
     event.preventDefault();
@@ -499,5 +616,95 @@ $(document).on("click", "#addTask", function (event) {
             $("#modal-container").prepend(data.task);
 
         });
+
+});
+
+// ---------- Get all Users in Edit Task Modal 
+$(document).on("click", ".editTaskButton", function (event) {
+
+    var taskSelected = $(this).attr("task");
+
+    // Test console.
+    // console.log(taskSelected);
+
+    // Close all "editTask" collapse windows.
+
+    // Select all "editTask" buttons which "task" attribute does not match the clicked one and set "aria-expanded" attribute to "false" and add the "collapsed" class.
+    $(".editTaskButton[task != " + taskSelected + "]")
+        .attr("aria-expanded", "false")
+        .addClass("collapsed");
+
+    // Select all "editTask" collapse window which "task" attribute does not match the clicked one and remove the "shwo" class to collapse it.
+    $(".editTaskCollapse[task != " + taskSelected + "]")
+        .removeClass("show");
+
+    // Remove probable content in the "AddUsers" and "DeleteUsers" lists.
+    $(".taskUsersAddList[task != " + taskSelected + "]")
+        .html("");
+    $(".taskUsersDelList[task != " + taskSelected + "]")
+        .html("");
+
+    // Remove probable content in the "AddUsers" and "DeleteUsers" arrays.
+    taskUsersToAdd = [];
+    taskUsersToDel = [];
+
+    // Create selectors for Add and Delete Dropdown Lists.
+    var $taskUsers =
+        $("#" + "task" + taskSelected + "Users");
+    var $taskUsersDel =
+        $("#" + "task" + taskSelected + "UsersDel");
+
+    // Empty Description and Deadline fields.
+    $("#" + "editTask" + taskSelected + "Description").val("");
+    $("#" + "editTask" + taskSelected + "Deadline").val("");
+
+    // Empty the select list for Project related users.
+    $("#" + "task" + taskSelected + "Users").html("");
+    $("#" + "task" + taskSelected + "UsersDel").html("");
+
+    // Empty the list array for Project related users.
+    projectUsersArr = [];
+
+    // Send the GET request.
+    $.get("/api/project_users", function (data) {
+
+        // console.log(data);
+
+        // Create the HTML containers for the lists.
+        var usersToAdd = "<option selected>Select User</option> ";
+        var usersToDelete = "<option selected>Select User</option> ";
+
+        $.ajax({
+            url: "/api/users-selections",
+            method: "POST",
+            data: {
+                task: taskSelected
+            }
+        }).then(function (Selections) {
+
+            // Test console.
+            // console.log(Selections);
+
+            $.get("/api/project/task/users", function (users) {
+
+                // Test console.
+                // console.log(users.usersToAdd);
+                // console.log(users.usersToDelete);
+
+                // Add the data response to the HTML containers.
+                usersToAdd += users.usersToAdd;
+                usersToDelete += users.usersToDelete;
+
+                // Add the complete HTML code to the Users lists.
+                $taskUsers.html(usersToAdd);
+                $taskUsersDel.html(usersToDelete);
+
+            });
+
+        });
+
+
+
+    });
 
 });
