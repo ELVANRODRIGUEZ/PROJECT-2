@@ -646,6 +646,10 @@ module.exports = function (app) {
 
     var bulk = JSON.parse(req.body.data)
 
+    // Test console.
+    // console.log(bulk);
+    // console.log(req.user.id.toString());
+
     db.tasks_responsibles.findAll({
       where: {
         task_id: req.params.id,
@@ -669,7 +673,15 @@ module.exports = function (app) {
       }).
       then(function (data2) {
 
-        res.json(data2);
+        if (bulk.indexOf((req.user.id).toString()) == -1) {
+
+          res.send("Don't Reload Page");
+          
+        } else {
+          
+          res.send("Reload Page");
+
+        }
 
       });
 

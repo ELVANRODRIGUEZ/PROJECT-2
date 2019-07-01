@@ -724,9 +724,11 @@ $(document).on("click", ".acceptEdition", function (event) {
     var taskDeadline =
         $("#" + "editTask" + taskId + "Deadline").val();
 
+    
+    // Test data.
     // taskDescription = "Have trucks to extract excavation soil.";
     // taskDeadline = "2019-07-30";
-
+    // -------------------
     // taskDescription = "Task decription changes test.";
     // taskDeadline = "2019-01-01";
 
@@ -761,7 +763,7 @@ $(document).on("click", ".acceptEdition", function (event) {
                 var sentData = JSON.stringify(taskResp)
 
                 // Test console.
-                console.log(taskResp);
+                // console.log(taskResp);
 
                 // Send the POST request.
                 $.ajax({
@@ -783,13 +785,13 @@ $(document).on("click", ".acceptEdition", function (event) {
 
             if (taskUsersToDel.length > 0) {
 
-                var taskRespDel = [];
+                // var taskRespDel = [];
 
-                taskUsersToDel.forEach(function (item) {
+                // taskUsersToDel.forEach(function (item) {
 
-                    taskRespDel.push(item);
+                //     taskRespDel.push(item);
 
-                });
+                // });
 
                 var sentData2 = JSON.stringify(taskUsersToDel)
 
@@ -807,8 +809,13 @@ $(document).on("click", ".acceptEdition", function (event) {
                     function (data) {
 
                         // Test console.
-                        console.log(data);
+                        // console.log(data);
 
+                        if (data == "Reload Page") {
+
+                            location.reload();
+
+                        }
 
                     });
 

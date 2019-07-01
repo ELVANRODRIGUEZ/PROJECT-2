@@ -82,7 +82,8 @@ FROM
 FROM users u
 LEFT JOIN project_users pu ON u.id = pu.user_name
 JOIN projects p ON p.id = pu.project_name
-WHERE u.id = 1) up
+WHERE u.id = 1
+AND p.id = 1) up
 LEFT JOIN 
 (SELECT
 	u.id as "user",
@@ -92,7 +93,7 @@ LEFT JOIN
 FROM users u 
 LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id
 LEFT JOIN tasks t ON t.id = tr.task_id
-WHERE u.id = 1) upt 
+WHERE tr.responsible = 1) upt 
 ON upt.task_project_id = up.project_id
 LEFT JOIN
 (SELECT 
@@ -110,6 +111,7 @@ WHERE category_id = 1;
 
 SELECT 
 	c.category_name as "category_name",
+    c.description as "category_description",
     c.id as "category_id",
 	t2.tasks_count
 FROM categories c
@@ -126,7 +128,7 @@ LEFT JOIN tasks t
 ON c.id = t.task_category
 LEFT JOIN tasks_responsibles tr
 ON tr.task_id = t.id
-WHERE tr.responsible = 5
+WHERE tr.responsible = 1 AND t.task_project = 1
 GROUP BY category_id) t2
 ON t2.category_id = c.id;
 
@@ -271,6 +273,21 @@ LEFT JOIN tasks t2 ON t2.parent_id = t1.id
 LEFT JOIN tasks t3 ON t3.parent_id = t2.id
 LEFT JOIN tasks t4 ON t4.parent_id = t3.id
 WHERE t1.parent_id IS NULL;
+
+
+-- ++++++++++++++++++++++++++++ Users by Tasks "ut".ALTER
+
+SELECT 
+	t.id as "task_id",
+    t.description as "task_description",
+    u.user_name as "user_name",
+	tr.responsible as "user_id"
+FROM tasks_responsibles tr
+LEFT JOIN tasks t 
+ON t.id = tr.task_id
+LEFT JOIN users u 
+ON tr.responsible = u.id
+WHERE task_id = 61;
 
 
 
