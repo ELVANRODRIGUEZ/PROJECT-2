@@ -724,7 +724,7 @@ $(document).on("click", ".acceptEdition", function (event) {
     var taskDeadline =
         $("#" + "editTask" + taskId + "Deadline").val();
 
-    
+
     // Test data.
     // taskDescription = "Have trucks to extract excavation soil.";
     // taskDeadline = "2019-07-30";
@@ -821,6 +821,30 @@ $(document).on("click", ".acceptEdition", function (event) {
 
             }
 
+
+        });
+
+});
+
+// ---------- Click on Accept Taks Deletion
+$(document).on("click", ".eraseOneTask", function (event) {
+
+    var taskId = $(this).attr("task");
+
+    $.ajax({
+        url: "/api/project/task/" + taskId + "/delete_all",
+        type: "DELETE"
+    }).then(
+        function (data) {
+
+            // Test console.
+            // console.log(data);
+
+            if (data == "Reload Page") {
+
+                location.reload();
+
+            }
 
         });
 

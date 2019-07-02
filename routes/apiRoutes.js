@@ -690,4 +690,49 @@ module.exports = function (app) {
 
   })
 
+  // Route to delete a Task.
+  app.delete("/api/project/task/:id/delete_all", function (req, res) {
+
+    var taskId = req.params.id;
+
+    console.log(taskId);
+
+    db.chat_mess_tasks.destroy({
+      where: {
+        task_id: taskId
+      }
+    }).
+    then(function () {
+
+      db.mail_mess_tasks.destroy({
+        where: {
+          task_id: taskId
+        }
+      });
+
+    }).
+    then(function () {
+
+      db.tasks_responsibles.destroy({
+        where: {
+          task_id: taskId
+        }
+      });
+
+    }).
+    then(function () {
+
+      db.tasks.destroy({
+        where: {
+          id: taskId
+        }
+      });
+
+      res.send("Reload Page");
+
+    });
+
+
+  });
+
 };

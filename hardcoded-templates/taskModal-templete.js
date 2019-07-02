@@ -17,7 +17,8 @@ function taskModal (taskId, taskDescription, taskDeadLine, taskAccomplished) {
             "<div class='collapse' id='eraseTask" + taskId + "'>" +
                 "<div class='card card-title bg-secondary h4' style='border: 0px'>Confirm to delete Task " + taskId + "?</div>" +
                 "<div class='card-body bg-dark' style='text-align: right'>" +
-                    "<button class='btn btn-outline-success'>Yes</button>" +
+                    "<button class='btn btn-outline-success eraseOneTask' " + 
+                    "task='" + taskId + "'>Erase Task and all it's relationships</button>" +
                 "</div>" +
             "</div>" +
 
