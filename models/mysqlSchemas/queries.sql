@@ -204,13 +204,17 @@ WHERE users.id = 4;
 
 -- ++++++++++++++++++++++++++++ Tasks by User and Project "upt"
 SELECT
-	u.id as "user",
+	u.user_name as "user",
+	u.id as "user_id",
+    t.description as "task_description",
     tr.task_id as "task_id",
-    t.task_project as "task_project_id"
+    p.project_name as "project_name",
+    t.task_project as "project_id"
 FROM users u 
 LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id
 LEFT JOIN tasks t ON t.id = tr.task_id
-WHERE u.id = 4;
+LEFT JOIN projects p ON p.id = t.task_project
+WHERE u.id = 1;
 
 
 -- ++++++++++++++++++++++++++++ Tasks table with Levels "tl" (Just for MySql.8 onwards)
@@ -275,7 +279,7 @@ LEFT JOIN tasks t4 ON t4.parent_id = t3.id
 WHERE t1.parent_id IS NULL;
 
 
--- ++++++++++++++++++++++++++++ Users by Tasks "ut".ALTER
+-- ++++++++++++++++++++++++++++ Task by User "tu".
 
 SELECT 
 	t.id as "task_id",
@@ -288,6 +292,51 @@ ON t.id = tr.task_id
 LEFT JOIN users u 
 ON tr.responsible = u.id
 WHERE task_id = 61;
+
+
+-- ++++++++++++++++++++++++++++ Task by User, Project and Category "tupc".
+
+SELECT
+tsk.tsk_resp_name,
+tsk.tsk_resp_id,
+tsk.tsk_desc,
+tsk.tsk_id,
+cat.cat_name,
+cat.cat_id,
+cat.cat_proj_tsk_id,
+proj.proj_id,
+proj.proj_name
+FROM 
+(SELECT
+tasks.id as tsk_id,
+tasks.description as tsk_desc,
+tasks_responsibles.responsible as tsk_resp_id,
+users.user_name as tsk_resp_name
+FROM tasks
+LEFT JOIN tasks_responsibles
+ON tasks_responsibles.task_id = tasks.id
+LEFT JOIN users
+ON users.id = tasks_responsibles.responsible) as tsk
+LEFT JOIN
+(SELECT
+categories.id as cat_id,
+categories.category_name as cat_name,
+tasks.id as cat_tsk_id,
+tasks.task_project as cat_proj_tsk_id
+FROM categories
+LEFT JOIN tasks
+ON tasks.task_category = categories.id) as cat
+ON cat.cat_tsk_id = tsk.tsk_id
+LEFT JOIN
+(SELECT
+projects.id as proj_id,
+projects.project_name as proj_name,
+project_users.user_name as proj_user_name
+FROM projects
+LEFT JOIN project_users
+ON project_users.project_name = projects.id) as proj
+ON proj.proj_id = cat.cat_proj_tsk_id AND proj.proj_user_name = tsk.tsk_resp_id
+WHERE tsk_resp_id = 1;
 
 
 

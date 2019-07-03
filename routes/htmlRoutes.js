@@ -19,6 +19,9 @@ var isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = function (app) {
 
+  var allTasksInProject = [];
+  var allTasksInCategory = [];
+
   app.get("/", function (req, res) {
     // If the user already has an account send them to the members page
     if (req.user) {
@@ -154,6 +157,7 @@ module.exports = function (app) {
     var userId = req.user.id;
     var projectId = req.params.projectId;
 
+    // Query to get all the Task count within each Category for the selected Project.
     var query =
       'SELECT ' +
       'c.category_name as "category_name", ' +
@@ -184,6 +188,7 @@ module.exports = function (app) {
 
       if (err) throw err;
 
+      // Test console.
       // console.log(data);
 
       var allCategories = "";
@@ -205,7 +210,52 @@ module.exports = function (app) {
 
       res.json(sentResponse);
 
-    });
+      // Query to get all Tasks within the selected Project.
+      var query2 =
+        'SELECT ' +
+        'u.user_name as "user", ' +
+        'u.id as "user_id", ' +
+        't.description as "task_description", ' +
+        'tr.task_id as "task_id", ' +
+        'p.project_name as "project_name", ' +
+        't.task_project as "project_id" ' +
+        'FROM users u ' +
+        'LEFT JOIN tasks_responsibles tr ' +
+        'ON tr.responsible = u.id ' +
+        'LEFT JOIN tasks t ON t.id = tr.task_id ' +
+        'LEFT JOIN projects p ON p.id = t.task_project ' +
+        'WHERE u.id = ' + userId + ' ' +
+        'AND p.id = ' + projectId;
+
+      connection.query(query2, function (err3, projTasks) {
+
+        if (err3) throw err3;
+
+        // Test console.
+        // console.log(projTasks);
+
+        allTasksInProject = [];
+
+        projTasks.forEach(function (item) {
+
+          allTasksInProject.push(item.task_id);
+
+        })
+
+        // Test console.
+        // console.log(allProjectTasks);
+
+      });
+
+    })
+    // then(function (err2) {
+
+    // if (err2) throw err2;
+
+
+    // console.log("Here!");
+
+    // });
 
   });
 
@@ -240,7 +290,7 @@ module.exports = function (app) {
       'FROM users u ' +
       'LEFT JOIN project_users pu ON u.id = pu.user_name ' +
       'JOIN projects p ON p.id = pu.project_name ' +
-      'WHERE u.id = ' + userId + 
+      'WHERE u.id = ' + userId +
       ' AND p.id = ' + projectId + ') up ' +
       'LEFT JOIN ' +
       '(SELECT ' +
@@ -293,6 +343,175 @@ module.exports = function (app) {
       };
 
       res.send(sentResponse);
+
+    });
+
+  });
+
+  app.get("/members/info/:projectId/category/:categoryId/all_tasks", isAuthenticated, function (req, res) {
+
+    var userId = req.user.id;
+    var categoryId = req.params.categoryId;
+    var projectId = req.params.projectId;
+
+    // Test console.
+    // console.log(userId);
+    // console.log(projectId);
+    // console.log(categoryId);
+
+    var query =
+      'SELECT ' +
+      'up.user, ' +
+      'up.user_id, ' +
+      'up.project, ' +
+      'up.project_id, ' +
+      'tc.category, ' +
+      'tc.category_id, ' +
+      'upt.task_description, ' +
+      'upt.task_deadline, ' +
+      'upt.task_accomplished, ' +
+      'upt.task_id ' +
+      'FROM ' +
+      '(SELECT ' +
+      'u.user_name as "user", ' +
+      'u.id as "user_id", ' +
+      'p.project_name as "project", ' +
+      'p.id as "project_id" ' +
+      'FROM users u ' +
+      'LEFT JOIN project_users pu ON u.id = pu.user_name ' +
+      'JOIN projects p ON p.id = pu.project_name ' +
+      'WHERE u.id = ' + userId +
+      ' AND p.id = ' + projectId + ') up ' +
+      'LEFT JOIN ' +
+      '(SELECT ' +
+      'u.id as "user", ' +
+      'tr.task_id as "task_id", ' +
+      't.task_project as "task_project_id", ' +
+      't.description as "task_description", ' +
+      't.dead_line as "task_deadline", ' +
+      't.accomplished as "task_accomplished" ' +
+      'FROM users u ' +
+      'LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id ' +
+      'LEFT JOIN tasks t ON t.id = tr.task_id ' +
+      'WHERE u.id = ' + userId + ') upt ' +
+      'ON upt.task_project_id = up.project_id ' +
+      'LEFT JOIN ' +
+      '(SELECT ' +
+      'c.id as "category_id", ' +
+      'c.description as "category", ' +
+      't.id as "task_id", ' +
+      't.description as "task" ' +
+      'FROM categories c ' +
+      'LEFT JOIN tasks t ON t.task_category = c.id) tc ' +
+      'ON upt.task_id = tc.task_id ' +
+      'WHERE category_id = ' + categoryId;
+
+    connection.query(query, function (err, data) {
+
+      if (err) throw err;
+
+      // Test console.
+      // console.log(data);
+
+
+      // Getting all Tasks id's from the selected Category to feed the "allTasksInCategory" array.
+
+      allTasksInCategory = [];
+
+      data.forEach(function (item) {
+
+        allTasksInCategory.push(item.task_id)
+
+      })
+
+      //Test console.
+      // console.log(allTasksInCategory);
+
+      res.json(allTasksInCategory);
+
+    });
+
+  });
+
+  // Route to delete a Tasks (and all relationships) nested in a Category.
+  app.delete("/members/info/category/delete_all_tasks", function (req, res) {
+
+    console.log(allTasksInCategory);
+
+    db.chat_mess_tasks.destroy({
+      where: {
+        task_id: allTasksInCategory
+      }
+    }).
+    then(function () {
+
+      db.mail_mess_tasks.destroy({
+        where: {
+          task_id: allTasksInCategory
+        }
+      });
+
+    }).
+    then(function () {
+
+      db.tasks_responsibles.destroy({
+        where: {
+          task_id: allTasksInCategory
+        }
+      });
+
+    }).
+    then(function () {
+
+      db.tasks.destroy({
+        where: {
+          id: allTasksInCategory
+        }
+      });
+
+      res.send("Reload Page");
+
+    });
+
+  });
+
+  // Route to delete a Tasks (and all relationships) nested in a Category.
+  app.delete("/members/info/project/delete_all_tasks", function (req, res) {
+
+    console.log(allTasksInProject);
+
+    db.chat_mess_tasks.destroy({
+      where: {
+        task_id: allTasksInProject
+      }
+    }).
+    then(function () {
+
+      db.mail_mess_tasks.destroy({
+        where: {
+          task_id: allTasksInProject
+        }
+      });
+
+    }).
+    then(function () {
+
+      db.tasks_responsibles.destroy({
+        where: {
+          task_id: allTasksInProject
+        }
+      });
+
+    }).
+    then(function () {
+
+      db.tasks.destroy({
+        where: {
+          id: allTasksInProject
+        }
+      });
+
+      res.send("Reload Page");
 
     });
 

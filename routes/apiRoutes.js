@@ -690,8 +690,8 @@ module.exports = function (app) {
 
   })
 
-  // Route to delete a Task.
-  app.delete("/api/project/task/:id/delete_all", function (req, res) {
+  // Route to delete a Task (and all relationships).
+  app.delete("/api/task/:id/delete_all", function (req, res) {
 
     var taskId = req.params.id;
 
@@ -734,5 +734,7 @@ module.exports = function (app) {
 
 
   });
+
+  
 
 };

@@ -30,21 +30,46 @@ $('.projectAdd').on('click', function () {
 
 // ---------- Click on Project Delete Button
 $('.projectDel').on('click', function () {
+
     var all = $('.border-primary').map(function () {
         return this;
     }).get();
 
     var id = $(all[0]).data('id');
+
     $("#deleteProject").attr('data-id', id);
+
     if (typeof id == 'undefined') {
-        alert('no item selected')
-    } else {
+
+        $("#eraseProjModalTitle").text(
+            "No Project was selected."
+        );
+
+        $("#deleteProject").css("visibility", "hidden");
+
         $("#deleteProjectModal").modal({
             show: true,
             backdrop: 'static',
             keyboard: false
         });
+
+    } else {
+
+        $("#eraseProjModalTitle").text(
+            "This will erase all Tasks in Project " +
+            id
+        );
+
+        $("#deleteProject").css("visibility", "visible");
+
+        $("#deleteProjectModal").modal({
+            show: true,
+            backdrop: 'static',
+            keyboard: false
+        });
+
     }
+
 })
 
 // ---------- Click on Add User inside Project Add Modal
@@ -76,10 +101,11 @@ $('#addUser').on('click', function () {
 })
 
 
+
 // ----------------- Category
 
 // ---------- Click on Category Add Button
-$('.categoryAdd').on('click', function () {
+$('#categoryAdd').on('click', function () {
     $("#categoryModal").modal({
         show: true,
         backdrop: 'static',
@@ -88,23 +114,50 @@ $('.categoryAdd').on('click', function () {
 })
 
 // ---------- Click on Category Delete Button
-$('.categoryDel').on('click', function () {
+$('#categoryDel').on('click', function () {
+
     var all = $('.border-danger').map(function () {
         return this;
     }).get();
+
     var id = $(all[0]).data('id');
+
     $("#deleteCategory").attr('data-id', id);
+
     if (typeof id == 'undefined') {
-        alert('no item selected')
-    } else {
+
+        $("#eraseCatModalTitle").text(
+            "No Category was selected."
+        );
+
+        $("#deleteCategory").css("visibility", "hidden");
+
         $("#deleteCategoryModal").modal({
             show: true,
             backdrop: 'static',
             keyboard: false
         });
+
+    } else {
+
+        $("#eraseCatModalTitle").text(
+            "This will erase all Tasks in Category " +
+            id
+        );
+
+        $("#deleteCategory").css("visibility", "visible");
+
+        $("#deleteCategoryModal").modal({
+            show: true,
+            backdrop: 'static',
+            keyboard: false
+        });
+
     }
 
 })
+
+
 
 // ----------------- Task
 
@@ -392,27 +445,67 @@ $("#projectModalAdd").on("click", function (event) {
 
 // ---------- Delete project
 $("#deleteProject").on('click', function () {
-    var id = $(this).data("id");
-    console.log(id);
-    // Send the DELETE request.
-    $.ajax("/api/projects" + id, {
+    
+    // Test console.
+    console.log(userSelections.project);
+
+    $.ajax({
+        url: "/members/info/project/delete_all_tasks",
         type: "DELETE"
     }).then(
-        function () {
-            console.log("deleted ", id);
-            // Reload the page to get the updated list
-            location.reload();
-        }
-    );
+        function (data) {
+
+            // Test console.
+            console.log(data);
+
+            if (data == "Reload Page") {
+
+                location.reload();
+
+            }
+
+        });
+
 });
+
 
 
 // ----------------- Category
 
-
-
 // ---------- Click on Category Card
 $(document).on('click', '.categoryCard', function () {
+
+    $('.card').removeClass('border border-danger');
+    $(this).addClass('border border-danger');
+
+    var all = $('.border-danger').map(function () {
+        return this;
+    }).get();
+
+    userSelections.category =
+        $(all[0]).data('id').toString();
+
+    // Test console.
+    // console.log(categoryId);
+
+    // $('#forProject').text(id);
+    $.ajax({
+            url: "/members/info/" +
+                userSelections.project +
+                "/category/" +
+                userSelections.category + "/all_tasks",
+            method: "GET"
+        })
+        .then(function (data) {
+
+            console.log(data);
+
+        });
+
+})
+
+// ---------- Double Click on Category Card
+$(document).on('dblclick', '.categoryCard', function () {
 
     // Collapse Add Task window.
     $("#addTaskCollapsWindow").collapse("hide");
@@ -424,14 +517,13 @@ $(document).on('click', '.categoryCard', function () {
         keyboard: false
     });
 
-    $('.card').removeClass('border border-danger');
-    $(this).addClass('border border-danger');
-
     var all = $('.border-danger').map(function () {
         return this;
     }).get();
 
     var categoryId = $(all[0]).data('id').toString();
+
+    // Test console.
     // console.log(categoryId);
 
     // $('#forProject').text(id);
@@ -526,22 +618,31 @@ $("#categoryModalAdd").on("click", function (event) {
     );
 });
 
-
 // ---------- Delete category
 $("#deleteCategory").on('click', function () {
-    var id = $(this).data("id");
-    console.log(id);
-    // Send the DELETE request.
-    $.ajax("/api/categories" + id, {
+
+    // Test console.
+    console.log(userSelections.category);
+
+    $.ajax({
+        url: "/members/info/category/delete_all_tasks",
         type: "DELETE"
     }).then(
-        function () {
-            console.log("deleted ", id);
-            // Reload the page to get the updated list
-            location.reload();
-        }
-    );
+        function (data) {
+
+            // Test console.
+            console.log(data);
+
+            if (data == "Reload Page") {
+
+                location.reload();
+
+            }
+
+        });
+
 });
+
 
 
 // ----------------- Task
@@ -832,7 +933,7 @@ $(document).on("click", ".eraseOneTask", function (event) {
     var taskId = $(this).attr("task");
 
     $.ajax({
-        url: "/api/project/task/" + taskId + "/delete_all",
+        url: "/api/task/" + taskId + "/delete_all",
         type: "DELETE"
     }).then(
         function (data) {
