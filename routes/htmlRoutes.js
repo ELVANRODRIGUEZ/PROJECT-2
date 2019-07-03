@@ -478,6 +478,7 @@ module.exports = function (app) {
   // Route to delete a Tasks (and all relationships) nested in a Category.
   app.delete("/members/info/project/delete_all_tasks", function (req, res) {
 
+    // Test console.
     console.log(allTasksInProject);
 
     db.chat_mess_tasks.destroy({

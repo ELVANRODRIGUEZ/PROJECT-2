@@ -445,7 +445,7 @@ $("#projectModalAdd").on("click", function (event) {
 
 // ---------- Delete project
 $("#deleteProject").on('click', function () {
-    
+
     // Test console.
     console.log(userSelections.project);
 
@@ -736,7 +736,7 @@ $(document).on("click", ".editTaskButton", function (event) {
         .attr("aria-expanded", "false")
         .addClass("collapsed");
 
-    // Select all "editTask" collapse window which "task" attribute does not match the clicked one and remove the "shwo" class to collapse it.
+    // Select all "editTask" collapse window which "task" attribute does not match the clicked one and remove the "show" class to collapse it.
     $(".editTaskCollapse[task != " + taskSelected + "]")
         .removeClass("show");
 
@@ -879,8 +879,36 @@ $(document).on("click", ".acceptEdition", function (event) {
                         // Test console.
                         // console.log(data);
 
+                        var taskSelected = $(this).attr("task");
+
+                        // Test console.
+                        // console.log(taskSelected);
+
+                        // Close "editTask" collapse windows.
+
+                        // Select the "editTask" button which "task" attribute matches the clicked one and set "aria-expanded" attribute to "false" and add the "collapsed" class.
+                        $(".editTaskButton[task = " + taskId + "]")
+                            .attr("aria-expanded", "false")
+                            .addClass("collapsed");
+
+                        // Select the "editTask" button which "task" attribute matches the clicked one and remove the "show" class to collapse it.
+                        $(".editTaskCollapse[task = " + taskId + "]")
+                            .removeClass("show");
 
                     });
+
+            } else {
+
+                // Close "editTask" collapse windows.
+
+                // Select the "editTask" button which "task" attribute matches the clicked one and set "aria-expanded" attribute to "false" and add the "collapsed" class.
+                $(".editTaskButton[task = " + taskId + "]")
+                    .attr("aria-expanded", "false")
+                    .addClass("collapsed");
+
+                // Select the "editTask" button which "task" attribute matches the clicked one and remove the "show" class to collapse it.
+                $(".editTaskCollapse[task = " + taskId + "]")
+                    .removeClass("show");
 
             }
 
