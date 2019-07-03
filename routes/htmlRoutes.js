@@ -1,6 +1,7 @@
 // =================================== Require db connection and models
 
 var db = require("../models").db;
+var Op = require("../models").Op;
 var connection = require("../models").connection;
 var moment = require("moment");
 
@@ -62,7 +63,9 @@ module.exports = function (app) {
   });
 
   app.get("/members/info", isAuthenticated, function (req, res) {
-    // function test(cb) {
+
+    // Test console.
+    // console.log(req.user);
 
     var id = req.user.id;
 
@@ -106,44 +109,61 @@ module.exports = function (app) {
     connection.query(query, function (err, data) {
 
       if (err) throw err;
-
+      
+      // Test console.
       // console.log(data);
 
-      // Getting the User Name of the query and formatting as html.
+      if (data.length == 0) {
 
-      var userName = userProfile.userNameTag(data[0].user)
+        var sentResponse = {
+          projectsHtml: "You have no Projects yet.",
+          userTagHtml: 
+          userProfile.userNameTag(req.user.user_name),
+          user_id: req.user.id,
+          user_name: req.user.user_name
+        }
 
-      var allProjects = "";
+        res.send(sentResponse);
 
-      // Getting all the proyects from the query and formatting as html.
-      // We need evaluation to not add an already added project while creating the html string.
+      } else {
 
-      var project = "first";
 
-      data.forEach(function (item) {
+        // Getting the User Name of the query and formatting as html.
 
-        if (project !== item.projects_id) {
+        var userName = userProfile.userNameTag(data[0].user);
 
-          project = item.projects_id;
+        var allProjects = "";
 
-          allProjects += userProfile.projectCard(item.projects_id, item.projects, item.project_description);
+        // Getting all the proyects from the query and formatting as html.
+        // We need evaluation to not add an already added project while creating the html string.
 
-        };
+        var project = "first";
 
-      });
+        data.forEach(function (item) {
 
-      // Creating a JSON object to send as response.
+          if (project !== item.projects_id) {
 
-      var sentResponse = {
-        projectsHtml: allProjects,
-        userTagHtml: userName,
-        user_id: data[0].user_id,
-        user_name: data[0].user
+            project = item.projects_id;
+
+            allProjects += userProfile.projectCard(item.projects_id, item.projects, item.project_description);
+
+          };
+
+        });
+
+        // Creating a JSON object to send as response.
+
+        var sentResponse = {
+          projectsHtml: allProjects,
+          userTagHtml: userName,
+          user_id: data[0].user_id,
+          user_name: data[0].user
+        }
+
+        // Sendig response.
+
+        res.send(sentResponse);
       }
-
-      // Sendig response.
-
-      res.send(sentResponse);
 
     });
 
@@ -248,14 +268,7 @@ module.exports = function (app) {
       });
 
     })
-    // then(function (err2) {
-
-    // if (err2) throw err2;
-
-
-    // console.log("Here!");
-
-    // });
+    
 
   });
 

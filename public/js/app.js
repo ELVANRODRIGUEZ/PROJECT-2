@@ -741,9 +741,9 @@ $(document).on("click", ".editTaskButton", function (event) {
         .removeClass("show");
 
     // Remove probable content in the "AddUsers" and "DeleteUsers" lists.
-    $(".taskUsersAddList[task != " + taskSelected + "]")
+    $(".taskUsersAddList")
         .html("");
-    $(".taskUsersDelList[task != " + taskSelected + "]")
+    $(".taskUsersDelList")
         .html("");
 
     // Remove probable content in the "AddUsers" and "DeleteUsers" arrays.
@@ -757,8 +757,10 @@ $(document).on("click", ".editTaskButton", function (event) {
         $("#" + "task" + taskSelected + "UsersDel");
 
     // Empty Description and Deadline fields.
-    $("#" + "editTask" + taskSelected + "Description").val("");
-    $("#" + "editTask" + taskSelected + "Deadline").val("");
+    $("#" + "editTask" + taskSelected + "Description")
+    .val("");
+    $("#" + "editTask" + taskSelected + "Deadline")
+    .val("");
 
     // Empty the select list for Project related users.
     $("#" + "task" + taskSelected + "Users").html("");

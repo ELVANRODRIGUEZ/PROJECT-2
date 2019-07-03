@@ -1,4 +1,5 @@
 var db = require("../models").db;
+var Op = require("../models").Op;
 var connection = require("../models").connection;
 var passport = require("../config/passport");
 var moment = require("moment");
@@ -104,8 +105,16 @@ module.exports = function (app) {
   // Route for getting all users data but just show part of it.
   app.get("/api/all_users", function (req, res) {
 
+    // Test console.
+    // console.log(req.user.id);
+
     db.users.findAll({
-      attributes: ["id", "user_name", "email"]
+      attributes: ["id", "user_name", "email"],
+      where: {
+        id: { 
+          [Op.ne]: "16"
+        }
+      }
     }).then(function (users) {
 
       res.json(users);
