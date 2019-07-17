@@ -4,6 +4,7 @@ npm-debug.log
 .env
 .env.old
 pushNot/
+MVP.md
 
 # Stop listen for changes:
 # git update-index --assume-unchanged <file>

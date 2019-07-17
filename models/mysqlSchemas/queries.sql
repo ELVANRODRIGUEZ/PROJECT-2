@@ -214,7 +214,8 @@ FROM users u
 LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id
 LEFT JOIN tasks t ON t.id = tr.task_id
 LEFT JOIN projects p ON p.id = t.task_project
-WHERE u.id = 1;
+WHERE u.id = 1
+AND p.id = 1;
 
 
 -- ++++++++++++++++++++++++++++ Tasks table with Levels "tl" (Just for MySql.8 onwards)
@@ -336,7 +337,7 @@ FROM projects
 LEFT JOIN project_users
 ON project_users.project_name = projects.id) as proj
 ON proj.proj_id = cat.cat_proj_tsk_id AND proj.proj_user_name = tsk.tsk_resp_id
-WHERE tsk_resp_id = 1;
+WHERE tsk_resp_id = 2;
 
 
 
