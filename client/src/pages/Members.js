@@ -338,6 +338,7 @@ class Members extends Component {
                         return (<div
                           className="card  bg-secondary projectCard col-md-12 overflow-auto"
                           data-id={project.projId}
+                          key={project.projId}
                         >
                           <div className="card-header">
                             Project: {project.projId} - {project.projName}
