@@ -1,3 +1,4 @@
+<!! +++++++++++++++++ NAVBAR +++++++++++++++++>>
 <nav class="navbar  bg-dark navbarTitle">
   {{!-- Elvan --}}
   <p id="userNameBanner" class="navbar-brand"></p>
@@ -7,14 +8,14 @@
   </form>
 </nav>
 
-<!--Delete Modal For Projects-->
+<!! +++++++++++++++++ MODAL: Delete Modal For Projects +++++++++++++++++>>
 <div class="modal" tabindex="-1" role="dialog" id="deleteProjectModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content bg-dark text-white">
       <div class="modal-header">
         <h5 class="modal-title" id="eraseProjModalTitle">
           Are you sure you want to delete?
-          </h5>
+        </h5>
         <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -27,13 +28,13 @@
     </div>
   </div>
 </div>
-<!--Delete Modal For categories-->
+
+<!! +++++++++++++++++ MODAL: Delete Modal For categories +++++++++++++++++>>
 <div class="modal" tabindex="-1" role="dialog" id="deleteCategoryModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content bg-dark text-white">
       <div class="modal-header">
         <h5 class="modal-title" id="eraseCatModalTitle">
-
         </h5>
         <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -47,7 +48,8 @@
     </div>
   </div>
 </div>
-<!--Add New Project-->
+
+<!! +++++++++++++++++ MODAL: Add New Project +++++++++++++++++>>
 <div class="modal" tabindex="-1" role="dialog" id="projectModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content bg-dark text-white">
@@ -63,12 +65,10 @@
             <label for="projectName">Project Name</label>
             <input type="text" class="form-control" id="projectName" placeholder="Project Name">
           </div>
-
           <div class="form-group">
             <label for="projectDesc">Project Description</label>
             <textarea type="text" class="form-control" id="projectDesc" rows="3"></textarea>
           </div>
-
           <div class="form-group">
             <label for="projectUsers">Add Users</label>
             <div class='row noMargin'>
@@ -79,10 +79,7 @@
             </div>
           </div>
           <h5>Users Added: </h5>
-          {{!-- Elvan --}}
           <ul id="userList" class='list-group'>
-            {{!-- Elvan id="userList" --}}
-            {{!-- <li class='userProject' id='1'>User 1</li> --}}
           </ul>
         </form>
       </div>
@@ -93,7 +90,8 @@
     </div>
   </div>
 </div>
-<!--New Category Modal-->
+
+<!! +++++++++++++++++ MODAL: New Category Modal +++++++++++++++++>>
 <div class="modal" tabindex="-1" role="dialog" id="categoryModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content bg-dark text-white">
@@ -123,7 +121,8 @@
     </div>
   </div>
 </div>
-<!--Successfully added category-->
+
+<!! +++++++++++++++++ MODAL: Successfully added category +++++++++++++++++>>
 <div class="modal" tabindex="-1" role="dialog" id="categorySuccessModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content bg-dark text-white">
@@ -151,71 +150,51 @@
   </div>
 </div>
 
-{{> task-modal taskId=task_id }}
 
-<!--Jumbotron Cards-->
-<div class="jumbotron bg-secondary " style='background-color: #aaa'>
-  <div class='row'>
-    <!--Projects Card Side-->
-    <div class="col-sm-6">
-      <div class='row ' style='margin:5px;'>
-        <div class='card bg-dark text-white' style="width:100rem; max-height: 60vh; height: 60vh">
-          <div class="card-header">
-            <span class='display-3'><b>Projects</b></span>
-            <button class='btn btn-secondary  projectDel' style='float: right;margin:0 2px'><i
-                class="fa fa-trash-o fa-4" aria-hidden="true"></i></button>
-            <button id="projectAddButton" class='btn btn-secondary  projectAdd' style='float: right;;margin:0 2px'><i
-                class="fa fa-plus fa-4" aria-hidden="true"></i></button>
-          </div>
+<!! +++++++++++++++++ JUMBOTRON CONTAINER +++++++++++++++++>>
+  <div class="jumbotron bg-secondary " style='background-color: #aaa'>
+    <div class='row'>
 
-          <div class="card-body bg-dark overflow-auto" style="max-height: 60vh">
-            {{!-- Elvan --}}
-            <div id="projectDiv" class='card-columns row'>
-              {{!-- <!--Projects Card Inside-->
-              <div class="card bg-dark text-white projectCard" style=" margin:5px; min-width: 120px" data-id='3'>
-                <div class="card-header">Project #1</div>
-                <div class="card-body">
-                  <h6 class="card-title">Update Github portfolio</h6>
-                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+      <!! +++++++++++++++++ PROJECTS +++++++++++++++++>
+        <div class="col-sm-6">
+          <div class='row ' style='margin:5px;'>
+            <div class='card bg-dark text-white' style="width:100rem; max-height: 60vh; height: 60vh">
+              <div class="card-header">
+                <span class='display-3'><b>Projects</b></span>
+                <button class='btn btn-secondary  projectDel' style='float: right;margin:0 2px'><i
+                    class="fa fa-trash-o fa-4" aria-hidden="true"></i></button>
+                <button id="projectAddButton" class='btn btn-secondary  projectAdd'
+                  style='float: right;;margin:0 2px'><i class="fa fa-plus fa-4" aria-hidden="true"></i></button>
+              </div>
+              <div class="card-body bg-dark overflow-auto" style="max-height: 60vh">
+                <div id="projectDiv" class='card-columns row'>
+                  <!! +++++++++++++++++ Project Card Container +++++++++++++++++>
                 </div>
               </div>
-              <!---------------------------> --}}
-              {{!-- Elvan added id="projectDiv"  --}}
-              {{!-- Elvan is adding project cards from data --}}
-            </div>
-          </div>
 
-        </div>
-      </div>
-    </div>
-    <!--Category Card Side-->
-    <div class="col-sm-6">
-      <div class='row' style='margin:5px;'>
-        <div class="card bg-dark text-white" style="width:100rem; max-height: 60vh; height: 60vh">
-          <div class="card-header">
-            <button class='btn btn-secondary' id='categoryDel' style='float: right;margin:0 2px'><i
-                class="fa fa-trash-o fa-4" aria-hidden="true"></i></button>
-            <button class='btn btn-secondary' id='categoryAdd' style='float: right;margin:0 2px'><i
-                class="fa fa-plus fa-4" aria-hidden="true"></i></button>
-            <span class='display-3'><b>Categories</b></span>
-            {{!-- <h3 class='display-2'>asdf<span id='forProject'></span></h4> --}}
-          </div>
-          <div class="card-body bg-dark overflow-auto" id='categoryBody' style="height: 60vh">
-            <!--Categories Card Inside-->
-            <div id="categoryDiv" class="card-columns row">
-              {{!-- Manuel --}}
-              {{!-- <div class="card bg-secondary text-white categoryCard" style='margin:5px' data-id="5">
-              <div class="card-body">
-                <h5 class="card-title">Designing</h5>
-                <h6 class="card-subtitle mb-2 text-white">Here we'll be managing all the concepts for the new web
-                  application, just requirements nothing else.</h6>
-              </div>
-            </div> --}}
             </div>
-            <!----------------------------->
           </div>
         </div>
-      </div>
+
+        <!! +++++++++++++++++ CATEGORIES +++++++++++++++++>
+          <div class="col-sm-6">
+            <div class='row' style='margin:5px;'>
+              <div class="card bg-dark text-white" style="width:100rem; max-height: 60vh; height: 60vh">
+                <div class="card-header">
+                  <button class='btn btn-secondary' id='categoryDel' style='float: right;margin:0 2px'><i
+                      class="fa fa-trash-o fa-4" aria-hidden="true"></i></button>
+                  <button class='btn btn-secondary' id='categoryAdd' style='float: right;margin:0 2px'><i
+                      class="fa fa-plus fa-4" aria-hidden="true"></i></button>
+                  <span class='display-3'><b>Categories</b></span>
+                  {{!-- <h3 class='display-2'>asdf<span id='forProject'></span></h4> --}}
+                </div>
+                <div class="card-body bg-dark overflow-auto" id='categoryBody' style="height: 60vh">
+                  <div id="categoryDiv" class="card-columns row">
+                    <!! +++++++++++++++++ Categories Card Container +++++++++++++++++>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
   </div>
-</div>

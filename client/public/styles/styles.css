@@ -18,7 +18,7 @@ html {
 }
 
 
-body{
+body, #root, #profile {
   display: flex;
   flex-direction: column;
   width: 100%;
