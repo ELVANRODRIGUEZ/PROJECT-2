@@ -284,6 +284,9 @@ module.exports = function (app) {
   // Route for storing Project and Category here in Server instead of the Client.
   app.post("/api/users-selections", function (req, res) {
 
+    // Test console.
+    // console.log("I am here at '/api/users-selections");
+    console.log(req.body.project);
     if (req.body.project) {
 
       userSelections.project = req.body.project;

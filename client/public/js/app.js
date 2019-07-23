@@ -306,51 +306,51 @@ $('.pplus').on('click', function () {
 // ----------------- Project
 
 // ---------- Click on Project Card
-$(document).on('click', '.projectCard', function () {
-    $('.card').removeClass('border border-primary');
-    $(this).addClass('border border-primary');
+// $(document).on('click', '.projectCard', function () {
+//     $('.card').removeClass('border border-primary');
+//     $(this).addClass('border border-primary');
 
-    var all = $('.border-primary').map(function () {
-        return this;
-    }).get();
+//     var all = $('.border-primary').map(function () {
+//         return this;
+//     }).get();
 
-    var projectId = $(all[0]).data('id');
-    var $categoryDiv = $("#categoryDiv");
-    var $forProject = $("#forProject");
+//     var projectId = $(all[0]).data('id');
+//     var $categoryDiv = $("#categoryDiv");
+//     var $forProject = $("#forProject");
 
-    $categoryDiv.empty();
-    $forProject.empty();
+//     $categoryDiv.empty();
+//     $forProject.empty();
 
-    // $('#forProject').text(id);
-    $.ajax({
-            url: "/members/info/" + projectId,
-            method: "GET"
-        })
-        .then(function (data) {
+//     // $('#forProject').text(id);
+//     $.ajax({
+//             url: "/members/info/" + projectId,
+//             method: "GET"
+//         })
+//         .then(function (data) {
 
-            // Test response:
-            // console.log(data.categories);
+//             // Test response:
+//             // console.log(data.categories);
 
-            userSelections.project = projectId;
+//             userSelections.project = projectId;
 
-            // We use this call to keep track of the chosen Project in the server and not in the client. Nothing is done here with the response.
-            $.ajax({
-                url: "/api/users-selections",
-                method: "POST",
-                data: {
-                    project: projectId
-                }
-            }).then(function (Selections) {
+//             // We use this call to keep track of the chosen Project in the server and not in the client. Nothing is done here with the response.
+//             $.ajax({
+//                 url: "/api/users-selections",
+//                 method: "POST",
+//                 data: {
+//                     project: projectId
+//                 }
+//             }).then(function (Selections) {
 
-                // console.log(Selections);
+//                 // console.log(Selections);
 
-            });
+//             });
 
-            $categoryDiv.html(data.categories);
+//             $categoryDiv.html(data.categories);
 
-        })
+//         })
 
-})
+// })
 
 // ---------- Get all Users in Add Project Modal
 $("#projectAddButton").on("click", function (event) {

@@ -1,13 +1,58 @@
 import React, { Component } from "react";
 import axios from "axios";
 
+let ProjectCard = function(props) {
+  return (
+    <div
+      className=" card  bg-secondary projectCard col-md-12 overflow-auto"
+      data-id={props.id}
+      key={props.id}
+      onClick={props.onClick}
+    >
+      <div className="card-header" data-id={props.id}>
+        Project: {props.id} - {props.name}
+      </div>
+      <div className="card-body" data-id={props.id}>
+        <h6 className="card-title" data-id={props.id}>
+          {props.description}
+        </h6>
+      </div>
+    </div>
+  );
+};
+
+let CategoryCard = function(props) {
+  return (
+    <div
+      className="card  bg-secondary categoryCard col-md-12 overflow-auto"
+      key={props.id}
+      data-id={props.id}
+    >
+      <div className="card-header" data-id={props.id}>
+        <div>
+          <i className="fa fa-paste"></i>
+          &nbsp;(tasks)&nbsp;x&nbsp;&nbsp;{props.count}
+        </div>
+        Category: {props.id}-{props.name}
+      </div>
+      <div className="card-body" data-id={props.id}>
+        <h6 className="card-title" data-id={props.id}>
+          {props.description}
+        </h6>
+      </div>
+    </div>
+  );
+};
+
 class Members extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       projectCards: [],
-      userName: ""
+      categoryCards: [],
+      userName: "",
+      border: ""
     };
   }
 
@@ -26,6 +71,61 @@ class Members extends Component {
         console.log(error);
       });
   }
+
+  ProjectClick = event => {
+    console.log(event.target);
+    console.log(event.target.getAttribute("data-id"));
+
+    const projectId = event.target.getAttribute("data-id");
+    const projectData = { project: event.target.getAttribute("data-id") };
+
+    axios
+      .get("/members/info/" + projectId)
+      .then(data => {
+        console.log(data.data);
+
+        this.setState({categoryCards: data.data.categories});
+        axios
+          .post("/api/users-selections", projectData)
+          .then(data2 => {
+            console.log(data.data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  //   $.ajax({
+  //     url: "/members/info/" + projectId,
+  //     method: "GET"
+  // })
+  // .then(function (data) {
+
+  //     // Test response:
+  //     // console.log(data.categories);
+
+  //     userSelections.project = projectId;
+
+  //     // We use this call to keep track of the chosen Project in the server and not in the client. Nothing is done here with the response.
+  //     $.ajax({
+  //         url: "/api/users-selections",
+  //         method: "POST",
+  //         data: {
+  //             project: projectId
+  //         }
+  //     }).then(function (Selections) {
+
+  //         // console.log(Selections);
+
+  //     });
+
+  //     $categoryDiv.html(data.categories);
+
+  // })
 
   render() {
     return (
@@ -335,20 +435,36 @@ class Members extends Component {
                     <div id="projectDiv" className="card-columns row">
                       {/* +++++++++++++++++ Project Card Container +++++++++++++++++ */}
                       {this.state.projectCards.map(project => {
-                        return (<div
-                          className="card  bg-secondary projectCard col-md-12 overflow-auto"
-                          data-id={project.projId}
-                          key={project.projId}
-                        >
-                          <div className="card-header">
-                            Project: {project.projId} - {project.projName}
+                        return (
+                          <div
+                            style={{
+                              position: "relative",
+                              zIndex: "0",
+                              width: "100%"
+                            }}
+                          >
+                            <div
+                              className="Wrapper"
+                              onClick={this.ProjectClick}
+                              data-id={project.projId}
+                              style={{
+                                position: "absolute",
+                                top: "0",
+                                left: "0",
+                                bottom: "0",
+                                right: "0",
+                                zIndex: "3"
+                              }}
+                            ></div>
+                            <ProjectCard
+                              style={{ position: "relative" }}
+                              onClick={this.ProjectClick}
+                              id={project.projId}
+                              name={project.projName}
+                              description={project.projDescription}
+                            />
                           </div>
-                          <div className="card-body">
-                            <h6 className="card-title">
-                              {project.projDescription}
-                            </h6>
-                          </div>
-                        </div>);
+                        );
                       })}
                     </div>
                   </div>
@@ -390,6 +506,39 @@ class Members extends Component {
                   >
                     <div id="categoryDiv" className="card-columns row">
                       {/* +++++++++++++++++ Categories Card Container +++++++++++++++++ */}
+                      {this.state.categoryCards.map(category => {
+                        return (
+                          <div
+                            style={{
+                              position: "relative",
+                              zIndex: "0",
+                              width: "100%"
+                            }}
+                          >
+                            <div
+                              className="Wrapper"
+                              onClick={this.CategoryClick}
+                              data-id={category.catId}
+                              style={{
+                                position: "absolute",
+                                top: "0",
+                                left: "0",
+                                bottom: "0",
+                                right: "0",
+                                zIndex: "3"
+                              }}
+                            ></div>
+                            <CategoryCard
+                              style={{ position: "relative" }}
+                              onClick={this.categoryClick}
+                              id={category.catId}
+                              count={category.taskCount}
+                              name={category.catName}
+                              description={category.catDescription}
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

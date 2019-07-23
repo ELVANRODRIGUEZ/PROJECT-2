@@ -221,15 +221,15 @@ module.exports = function(app) {
       // Test console.
       // console.log(data);
 
-      var allCategories = "";
+      var allCategories = [];
 
       data.forEach(function(item) {
-        allCategories += categoryCard(
-          item.category_id,
-          item.category_name,
-          item.category_description,
-          item.tasks_count || 0
-        );
+        allCategories.push({
+          catId: item.category_id,
+          catName: item.category_name,
+          catDescription: item.category_description,
+          taskCount: item.tasks_count || 0
+        });
       });
 
       var sentResponse = {

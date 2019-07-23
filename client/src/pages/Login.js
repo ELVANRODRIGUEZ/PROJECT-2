@@ -43,12 +43,12 @@ class Login extends Component {
         if ((res = "Successful")) {
           window.location = "/members";
         } else {
-          console.log(res);
-          this.setState({ style: { display: "block", opacity: "0" } });
-          setTimeout(function() {
-            console.log("hola");
-            this.setState({ style: { display: "block", opacity: "1" } });
-          }, 2000);
+          // console.log(res);
+          // this.setState({ style: { display: "block", opacity: "0" } });
+          // setTimeout(function() {
+          //   console.log("hola");
+          //   this.setState({ style: { display: "block", opacity: "1" } });
+          // }, 2000);
         }
       })
       .catch(err => {
