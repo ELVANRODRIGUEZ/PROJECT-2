@@ -51,10 +51,13 @@ class Signup extends Component {
 
     const userData = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      phone: this.state.password,
+      userName:this.state.name
     };
-
-    axios.post("/api/login", userData).then(res => {
+console.log(userData);
+    axios.post("/api/signup", userData)
+    .then(res => {
       if ((res = "Successful")) {
         window.location = "/members";
       }
@@ -70,9 +73,9 @@ class Signup extends Component {
             <div className="row login-form bg-dark">
               <div className="col">
                 <h2>Sign Up Form</h2>
-                <form className="signup" onSubmit={this.onChangePassword}>
-                  <div className="form-group" autocomplete="off">
-                    <label htmlFor="InputName" autocomplete="off">
+                <form className="signup" onSubmit={this.onSubmit}>
+                  <div className="form-group" autoComplete="off">
+                    <label htmlFor="InputName" autoComplete="off">
                       Your Name
                     </label>
                     <input
@@ -80,18 +83,18 @@ class Signup extends Component {
                       className="form-control logsign-field"
                       id="name-input"
                       placeholder="John Doe"
-                      autocomplete="off"
+                      autoComplete="off"
                       onChange={this.onChangeName}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="form-group"autoComplete="off">
                     <label htmlFor="InputPhone">Your Phone Number</label>
                     <input
                       type="tel"
                       className="form-control logsign-field"
                       id="phone-input"
                       placeholder="+12 123 123 1234"
-                      autocomplete="off"
+                      autoComplete="off"
                       onChange={this.onChangePhone}
                     />
                   </div>
@@ -102,7 +105,7 @@ class Signup extends Component {
                       className="form-control logsign-field"
                       id="email-input"
                       placeholder="you@domain.com"
-                      autocomplete="off"
+                      autoComplete="off"
                       onChange={this.onChangeEmail}
                     />
                   </div>
@@ -113,7 +116,7 @@ class Signup extends Component {
                       className="form-control logsign-field"
                       id="password-input"
                       placeholder="password"
-                      autocomplete="off"
+                      autoComplete="off"
                       onChange={this.onChangePassword}
                     />
                   </div>
@@ -129,7 +132,7 @@ class Signup extends Component {
                   <button
                     type="submit"
                     className="btn btn-outline-success"
-                    onSubmit={this.onChangePassword}
+                    onSubmit={this.onSubmit}
                   >
                     Sign Up
                   </button>
