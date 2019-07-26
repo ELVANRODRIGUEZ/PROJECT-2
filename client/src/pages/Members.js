@@ -1,48 +1,14 @@
+// ================================== Packages Dependencies
 import React, { Component } from "react";
 import axios from "axios";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import { useState } from 'react';
 
-let ProjectCard = function(props) {
-  return (
-    <div
-      className=" card  bg-secondary projectCard col-md-12 overflow-auto"
-      data-id={props.id}
-      key={props.id}
-      onClick={props.onClick}
-    >
-      <div className="card-header" data-id={props.id}>
-        Project: {props.id} - {props.name}
-      </div>
-      <div className="card-body" data-id={props.id}>
-        <h6 className="card-title" data-id={props.id}>
-          {props.description}
-        </h6>
-      </div>
-    </div>
-  );
-};
-
-let CategoryCard = function(props) {
-  return (
-    <div
-      className="card  bg-secondary categoryCard col-md-12 overflow-auto"
-      key={props.id}
-      data-id={props.id}
-    >
-      <div className="card-header" data-id={props.id}>
-        <div>
-          <i className="fa fa-paste"></i>
-          &nbsp;(tasks)&nbsp;x&nbsp;&nbsp;{props.count}
-        </div>
-        Category: {props.id}-{props.name}
-      </div>
-      <div className="card-body" data-id={props.id}>
-        <h6 className="card-title" data-id={props.id}>
-          {props.description}
-        </h6>
-      </div>
-    </div>
-  );
-};
+// ================================== Files Dependencies
+import ProjectCard from "../components/ProjectCard";
+import CategoryCard from "../components/CategoryCard";
+import TaskModal from "../components/TaskModal";
 
 class Members extends Component {
   constructor(props) {
@@ -51,9 +17,25 @@ class Members extends Component {
     this.state = {
       projectCards: [],
       categoryCards: [],
+      tasksCards: [],
+      projectSelected: "",
+      categorySelected: "",
       userName: "",
-      border: ""
+      border: "",
+      taskModal: {
+        class: "modal fade bd-example-modal-xl",
+        style: {display: "none"},
+        modalState: "false",
+
+      },
+      isOpen: "false",
+      show: false, 
+      setShow: false,
+      view: "none",
+      show2: ""
     };
+
+    // [show, setShow] = useState(false);
   }
 
   componentWillMount() {
@@ -61,7 +43,7 @@ class Members extends Component {
       .get("/members/info")
       .then(data => {
         // Test console.
-        console.log(data.data);
+        // console.log(data.data);
         this.setState({
           projectCards: data.data.projects,
           userName: data.data.user
@@ -73,22 +55,27 @@ class Members extends Component {
   }
 
   ProjectClick = event => {
-    console.log(event.target);
-    console.log(event.target.getAttribute("data-id"));
+    // Test console.
+    // console.log(event.target);
+    // console.log(event.target.getAttribute("data-id"));
 
     const projectId = event.target.getAttribute("data-id");
     const projectData = { project: event.target.getAttribute("data-id") };
 
+    this.setState({projectSelected: parseInt(projectId)});
+
     axios
       .get("/members/info/" + projectId)
       .then(data => {
-        console.log(data.data);
+        // Test console.
+        // console.log(data.data);
 
-        this.setState({categoryCards: data.data.categories});
+        this.setState({ categoryCards: data.data.categories });
         axios
           .post("/api/users-selections", projectData)
           .then(data2 => {
-            console.log(data.data);
+            // Test console.
+            // console.log(data.data);
           })
           .catch(error => {
             console.log(error);
@@ -98,34 +85,95 @@ class Members extends Component {
         console.log(error);
       });
   };
+  
+  CategoryClick = event => {
+    // Test console.
+    // console.log(event.target);
+    // console.log(event.target.getAttribute("data-id"));
 
-  //   $.ajax({
-  //     url: "/members/info/" + projectId,
-  //     method: "GET"
-  // })
-  // .then(function (data) {
+    const categoryId = event.target.getAttribute("data-id");
+    console.log(categoryId);
+    const categoryData = { category: event.target.getAttribute("data-id") };
 
-  //     // Test response:
-  //     // console.log(data.categories);
+    this.setState({categorySelected: parseInt(categoryId)});
+    
+    axios
+      .get(
+        "/members/info/" +
+                this.state.projectSelected +
+                "/category/" +
+                categoryId + "/all_tasks"
+      )
+      .then(data => {
+        // Test console.
+        console.log(data.data);
 
-  //     userSelections.project = projectId;
+        //!this.setState({ tasksCards: data.data.categories });
+        // axios
+        //   .post("/api/users-selections", categoryData)
+        //   .then(data2 => {
+        //     // Test console.
+        //     // console.log(data.data);
+        //   })
+        //   .catch(error => {
+        //     console.log(error);
+        //   });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  
+  
 
-  //     // We use this call to keep track of the chosen Project in the server and not in the client. Nothing is done here with the response.
-  //     $.ajax({
-  //         url: "/api/users-selections",
-  //         method: "POST",
-  //         data: {
-  //             project: projectId
-  //         }
-  //     }).then(function (Selections) {
+  handleClose = () => {
+    this.setState({show2:""});
+    this.setState({view:"none"});
+    this.setState({show:false});
+  };
 
-  //         // console.log(Selections);
+  handleShow = () => {
+    this.setState({show2:"show"});
+    this.setState({view:"block"});
+    this.setState({show:true});
+};
+handleView1 = () => {
+    this.setState({view:"none"});
+  };
 
-  //     });
+  handleView2 = () => {
+    this.setState({view:"block"});
+};
+  
 
-  //     $categoryDiv.html(data.categories);
+  CategoryDoubleClick = event => {
+    // Test console.
+    // console.log(event.target);
+    // console.log(event.target.getAttribute("data-id"));
 
-  // })
+    // const categoryId = event.target.getAttribute("data-id");
+    // console.log(categoryId);
+    // const categoryData = { category: event.target.getAttribute("data-id") };
+
+    // this.setState({categorySelected: parseInt(categoryId)});
+
+    // this.setState({taskModal: {
+    //   class: "modal fade bd-example-modal-xl show",
+    //   style: {display: "block"}
+    // }})
+
+    // this.taskModal.modal({
+    //     show: true,
+    //     backdrop: 'static',
+    //     keyboard: false
+    // });
+    console.log("here");
+    this.setState({
+      isOpen: "true"
+    });
+    console.log(this.state.isOpen);
+    
+  };
 
   render() {
     return (
@@ -396,6 +444,21 @@ class Members extends Component {
           </div>
         </div>
 
+        {/* +++++++++++++++++ TASK MODAL +++++++++++++++++ */}
+
+        <TaskModal 
+          // ref = { element => this.taskModal = element}
+          // class = {this.state.taskModal.class}
+          // style = {this.state.taskModal.style}
+          show2={this.state.show2}
+          show={this.state.show}
+          handleClose={this.handleClose}
+          view={this.state.view}
+          handleView1={this.handleView2}
+          // onDoubleClick={this.handleShow}
+          // onClose={this.CategoryDoubleClick}
+        />
+
         {/* +++++++++++++++++ JUMBOTRON CONTAINER +++++++++++++++++ */}
         <div
           className="jumbotron bg-secondary "
@@ -444,7 +507,9 @@ class Members extends Component {
                             }}
                           >
                             <div
-                              className="Wrapper"
+                              className={
+                                project.projId === this.state.projectSelected ? "Wrapper border border-primary" : "Wrapper"
+                              }
                               onClick={this.ProjectClick}
                               data-id={project.projId}
                               style={{
@@ -453,6 +518,8 @@ class Members extends Component {
                                 left: "0",
                                 bottom: "0",
                                 right: "0",
+                                borderRadius: "5px",
+                                marginBottom: "1.1rem",
                                 zIndex: "3"
                               }}
                             ></div>
@@ -518,6 +585,7 @@ class Members extends Component {
                             <div
                               className="Wrapper"
                               onClick={this.CategoryClick}
+                              onDoubleClick={this.handleShow}
                               data-id={category.catId}
                               style={{
                                 position: "absolute",
@@ -531,6 +599,7 @@ class Members extends Component {
                             <CategoryCard
                               style={{ position: "relative" }}
                               onClick={this.categoryClick}
+                              onDoubleClick={this.handleShow}
                               id={category.catId}
                               count={category.taskCount}
                               name={category.catName}

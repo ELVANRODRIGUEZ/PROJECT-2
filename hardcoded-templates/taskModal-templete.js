@@ -32,8 +32,6 @@ function taskModal (taskId, taskDescription, taskDeadLine, taskAccomplished) {
             //--Edit Task Modal--//
             "<div class='collapse editTaskCollapse' " +
             "id='editTask" + taskId + "' task='" + taskId + "'>" +
-                // "<div class='card card-title bg-secondary h4' style='border: 0px'>Edit Task</div>" +
-                
                 "<div class='card card-body bg-dark' " +
                 "style='clear:both; padding:0px'>" +
                 //--Edited Task Header--//
@@ -53,7 +51,6 @@ function taskModal (taskId, taskDescription, taskDeadLine, taskAccomplished) {
                         "</div>" +
                         //--Edited Task Users addition--//
                         "<div class='form-group col-md-8'>" +
-                        // "<div class='form-group'>" +
                             "<label for='task" + taskId + "Users'>Add Users</label>" +
                             "<div class='row noMargin'>" +
                                 "<select class='form-control col-md-8 usersAvailables' id='task" + taskId + "Users' type='list'>" +

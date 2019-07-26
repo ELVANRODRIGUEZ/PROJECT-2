@@ -510,12 +510,12 @@ $(document).on('dblclick', '.categoryCard', function () {
     // Collapse Add Task window.
     $("#addTaskCollapsWindow").collapse("hide");
 
-    // Show Task Modal window.
-    $("#taskModal").modal({
-        show: true,
-        backdrop: 'static',
-        keyboard: false
-    });
+    // // Show Task Modal window.
+    // $("#taskModal").modal({
+    //     show: true,
+    //     backdrop: 'static',
+    //     keyboard: false
+    // });
 
     var all = $('.border-danger').map(function () {
         return this;
@@ -526,7 +526,6 @@ $(document).on('dblclick', '.categoryCard', function () {
     // Test console.
     // console.log(categoryId);
 
-    // $('#forProject').text(id);
     $.ajax({
             url: "/members/info/" +
                 userSelections.project +

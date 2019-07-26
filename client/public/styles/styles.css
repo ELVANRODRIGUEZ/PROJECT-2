@@ -435,3 +435,8 @@ img {
   margin-left:0;
   /* margin-right:0; */
 }
+
+/* Adding style to the immediate child of the "taskModal" id tag. */
+#taskModal > .modal-content {
+  background-color:#343a40;
+}
