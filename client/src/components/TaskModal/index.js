@@ -6,29 +6,6 @@ import ModalDialog from "react-bootstrap/ModalDialog";
 // ================================== Files Dependencies
 import TaskCard from "../TaskCard";
 
-// function TaskModal(props) {
-//   // const [show, setShow] = useState(false);
-
-//   // const handleClose = () => setShow(false);
-//   // const handleShow = () => setShow(true);
-
-//   return (
-//       <Modal show={props.show} onHide={props.handleClose}>
-//         <Modal.Header closeButton>
-//           <Modal.Title>Modal heading</Modal.Title>
-//         </Modal.Header>
-//         <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-//         <Modal.Footer>
-//           <Button variant="secondary" onClick={props.handleClose}>
-//             Close
-//           </Button>
-//           <Button variant="primary" onClick={props.handleClose}>
-//             Save Changes
-//           </Button>
-//         </Modal.Footer>
-//       </Modal>
-//   );
-// }
 
 const TaskModal = function(props) {
   return (
@@ -46,27 +23,27 @@ const TaskModal = function(props) {
     >
       {/* <Modal.Footer className="modal-dialog modal-xl" role="document"> */}
       {/* <Modal className="modal-content bg-dark"> */}
-      <Modal.Header class="elvan">
+      <Modal.Header>
         <h5 className="modal-title text-white"></h5>
         <button
           id="addTaskModal"
           className="btn btn-secondary"
           style={{ float: "right" }}
-          data-toggle="collapse"
+          dataToggle="collapse"
           href="#addTaskCollapsWindow"
-          aria-expanded="false"
-          aria-controls="addTaskCollapsWindow"
+          ariaExpanded="false"
+          ariaControls="addTaskCollapsWindow"
         >
           <i className="fa fa-plus fa-4" aria-hidden="true"></i>
         </button>
         <button
           type="button"
           className="close text-danger"
-          data-dismiss="taskModal"
-          aria-label="Close"
+          dataDismiss="taskModal"
+          ariaLabel="Close"
           onClick={props.handleClose}
         >
-          <span aria-hidden="true">&times;</span>
+          <span ariaHidden="true">&times;</span>
         </button>
       </Modal.Header>
       {/* +++++++++++++++++ New Taks Collapse Window +++++++++++++++++ */}
@@ -84,7 +61,7 @@ const TaskModal = function(props) {
         <button
           type="button"
           className="btn btn btn-outline-danger"
-          data-dismiss="modal"
+          dataDismiss="modal"
         >
           Close
         </button>

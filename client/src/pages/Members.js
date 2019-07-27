@@ -1,9 +1,6 @@
 // ================================== Packages Dependencies
 import React, { Component } from "react";
 import axios from "axios";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import { useState } from "react";
 
 // ================================== Files Dependencies
 import ProjectCard from "../components/ProjectCard";
@@ -21,20 +18,10 @@ class Members extends Component {
       projectSelected: "",
       categorySelected: "",
       userName: "",
-      border: "",
-      taskModal: {
-        class: "modal fade bd-example-modal-xl",
-        style: { display: "none" },
-        modalState: "false"
-      },
-      isOpen: "false",
-      show: false,
-      setShow: false,
-      view: "none",
-      show2: ""
+      projectCardBorder: "",
+      taskModalShow: false,
+      taskModalView: "none"
     };
-
-    // [show, setShow] = useState(false);
   }
 
   componentWillMount() {
@@ -52,32 +39,6 @@ class Members extends Component {
         console.log(error);
       });
   }
-  // =======
-
-  // componentWillMount() {
-  //   axios
-  //     .get("/members/info")
-  //     .then(data => {
-  //       // Test console.
-  //       console.log(data.data);
-  //       if(!data.data.projects.length){
-  //         this.setState({
-  //           projectCards: ["No Projects yet"],
-  //           userName: data.data.user
-  //         });
-  //       }
-  //       else{
-  //         this.setState({
-  //           projectCards: data.data.projects,
-  //           userName: data.data.user
-  //         });
-  //       }
-
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // }
 
   ProjectClick = event => {
     // Test console.
@@ -117,84 +78,51 @@ class Members extends Component {
     // console.log(event.target.getAttribute("data-id"));
 
     const categoryId = event.target.getAttribute("data-id");
-    console.log(categoryId);
     const categoryData = { category: event.target.getAttribute("data-id") };
 
-    this.setState({ categorySelected: parseInt(categoryId) });
+    // React documentation enforces the use of "Functional SetState" to change State values instead of just passing an object to the "SetStte" function --this.setState({state: "state value"})--. This can be done like this:
+    this.setState((prevState, props) => {
+      return { categorySelected: parseInt(categoryId) };
+    });
 
     axios
       .get(
         "/members/info/" +
-          this.state.projectSelected +
-          "/category/" +
-          categoryId +
-          "/all_tasks"
+        this.state.projectSelected +
+        "/category/" +
+        categoryId +
+        "/all_tasks"
       )
       .then(data => {
         // Test console.
         console.log(data.data);
 
-        //!this.setState({ tasksCards: data.data.categories });
-        // axios
-        //   .post("/api/users-selections", categoryData)
-        //   .then(data2 => {
-        //     // Test console.
-        //     // console.log(data.data);
-        //   })
-        //   .catch(error => {
-        //     console.log(error);
-        //   });
+        this.setState((prevState, props) => {
+          return { tasksCards: data.data.categories };
+        });
+
+        axios
+          .post("/api/users-selections", categoryData)
+          .then(data2 => {
+            // Test console.
+            // console.log(data.data);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+
       })
       .catch(error => {
         console.log(error);
       });
   };
 
-  handleClose = () => {
-    this.setState({ show2: "" });
-    this.setState({ view: "none" });
-    this.setState({ show: false });
+  taskModalClose = () => {
+    this.setState({ taskModalView: "none", taskModalShow: false });
   };
 
-  handleShow = () => {
-    this.setState({ show2: "show" });
-    this.setState({ view: "block" });
-    this.setState({ show: true });
-  };
-  handleView1 = () => {
-    this.setState({ view: "none" });
-  };
-
-  handleView2 = () => {
-    this.setState({ view: "block" });
-  };
-
-  CategoryDoubleClick = event => {
-    // Test console.
-    // console.log(event.target);
-    // console.log(event.target.getAttribute("data-id"));
-
-    // const categoryId = event.target.getAttribute("data-id");
-    // console.log(categoryId);
-    // const categoryData = { category: event.target.getAttribute("data-id") };
-
-    // this.setState({categorySelected: parseInt(categoryId)});
-
-    // this.setState({taskModal: {
-    //   class: "modal fade bd-example-modal-xl show",
-    //   style: {display: "block"}
-    // }})
-
-    // this.taskModal.modal({
-    //     show: true,
-    //     backdrop: 'static',
-    //     keyboard: false
-    // });
-    console.log("here");
-    this.setState({
-      isOpen: "true"
-    });
-    console.log(this.state.isOpen);
+  taskModalShow = () => {
+    this.setState({ taskModalView: "block", taskModalShow: true });
   };
 
   render() {
@@ -469,16 +397,8 @@ class Members extends Component {
         {/* +++++++++++++++++ TASK MODAL +++++++++++++++++ */}
 
         <TaskModal
-          // ref = { element => this.taskModal = element}
-          // class = {this.state.taskModal.class}
-          // style = {this.state.taskModal.style}
-          show2={this.state.show2}
-          show={this.state.show}
-          handleClose={this.handleClose}
-          view={this.state.view}
-          handleView1={this.handleView2}
-          // onDoubleClick={this.handleShow}
-          // onClose={this.CategoryDoubleClick}
+          show={this.state.taskModalShow}
+          handleClose={this.taskModalClose}
         />
 
         {/* +++++++++++++++++ JUMBOTRON CONTAINER +++++++++++++++++ */}
@@ -519,80 +439,80 @@ class Members extends Component {
                   >
                     <div id="projectDiv" className="card-columns row">
                       {/* +++++++++++++++++ Project Card Container +++++++++++++++++ */}
-                    
-                      {this.state.projectCards ? (this.state.projectCards.map(project => {
-                        return (
-                          <div
-                            style={{
-                              position: "relative",
-                              zIndex: "0",
-                              width: "100%"
-                            }}
-                          >
+
+                      {this.state.projectCards
+                        ? this.state.projectCards.map(project => {
+                          return (
                             <div
-                              className={
-                                project.projId === this.state.projectSelected
-                                  ? "Wrapper border border-primary"
-                                  : "Wrapper"
-                              }
-                              onClick={this.ProjectClick}
-                              data-id={project.projId}
+                              key={project.projId}
                               style={{
-                                position: "absolute",
-                                top: "0",
-                                left: "0",
-                                bottom: "0",
-                                right: "0",
-                                borderRadius: "5px",
-                                marginBottom: "1.1rem",
-                                zIndex: "3"
+                                position: "relative",
+                                zIndex: "0",
+                                width: "100%"
                               }}
-                            ></div>
-                            <ProjectCard
-                              style={{ position: "relative" }}
-                              onClick={this.ProjectClick}
-                              id={project.projId}
-                              name={project.projName}
-                              description={project.projDescription}
-                            />
-                          </div>
-                        );
-                      })
-                      ) : ( () => {
-                        return (
-                        <div
-                          style={{
-                            position: "relative",
-                            zIndex: "0",
-                            width: "100%"
-                          }}
-                        >
-                          <div
-                            className="Wrapper"
-                            onClick={this.ProjectClick}
-                            data-id=""
-                            style={{
-                              position: "absolute",
-                              top: "0",
-                              left: "0",
-                              bottom: "0",
-                              right: "0",
-                              zIndex: "3"
-                            }}
-                          ></div>
-                          <ProjectCard
-                            style={{ position: "relative" }}
-                            onClick={this.ProjectClick}
-                            id=""
-                            name="Project nam?"
-                            description="Description"
-                          />
-                        </div>
-                      );
-                    })
-                    
-                      
-                      }
+                            >
+                              <div
+                                className={
+                                  project.projId ===
+                                    this.state.projectSelected
+                                    ? "Wrapper border border-primary"
+                                    : "Wrapper"
+                                }
+                                onClick={this.ProjectClick}
+                                data-id={project.projId}
+                                style={{
+                                  position: "absolute",
+                                  top: "0",
+                                  left: "0",
+                                  bottom: "0",
+                                  right: "0",
+                                  borderRadius: "5px",
+                                  marginBottom: "1.1rem",
+                                  zIndex: "3"
+                                }}
+                              ></div>
+                              <ProjectCard
+                                style={{ position: "relative" }}
+                                onClick={this.ProjectClick}
+                                id={project.projId}
+                                name={project.projName}
+                                description={project.projDescription}
+                              />
+                            </div>
+                          );
+                        })
+                        : () => {
+                          return (
+                            <div
+                              style={{
+                                position: "relative",
+                                zIndex: "0",
+                                width: "100%"
+                              }}
+                            >
+                              <div
+                                className="Wrapper"
+                                onClick={this.ProjectClick}
+                                data-id=""
+                                style={{
+                                  position: "absolute",
+                                  top: "0",
+                                  left: "0",
+                                  bottom: "0",
+                                  right: "0",
+                                  zIndex: "3"
+                                }}
+                              ></div>
+                              <ProjectCard
+                                style={{ position: "relative" }}
+                                onClick={this.ProjectClick}
+                                id=""
+                                name="Project nam?"
+                                description="Description"
+                              />
+                            </div>
+                          );
+                        }}
                     </div>
                   </div>
                 </div>
@@ -634,8 +554,10 @@ class Members extends Component {
                     <div id="categoryDiv" className="card-columns row">
                       {/* +++++++++++++++++ Categories Card Container +++++++++++++++++ */}
                       {this.state.categoryCards.map(category => {
+                        console.log(category.catId);
                         return (
                           <div
+                            key={category.catId}
                             style={{
                               position: "relative",
                               zIndex: "0",
@@ -643,9 +565,14 @@ class Members extends Component {
                             }}
                           >
                             <div
-                              className="Wrapper"
+                              className={
+                                category.catId ===
+                                  this.state.categorySelected
+                                  ? "Wrapper border border-danger"
+                                  : "Wrapper"
+                              }
                               onClick={this.CategoryClick}
-                              onDoubleClick={this.handleShow}
+                              onDoubleClick={this.taskModalShow}
                               data-id={category.catId}
                               style={{
                                 position: "absolute",
@@ -653,13 +580,15 @@ class Members extends Component {
                                 left: "0",
                                 bottom: "0",
                                 right: "0",
+                                borderRadius: "5px",
+                                marginBottom: "1.1rem",
                                 zIndex: "3"
                               }}
                             ></div>
                             <CategoryCard
                               style={{ position: "relative" }}
                               onClick={this.categoryClick}
-                              onDoubleClick={this.handleShow}
+                              onDoubleClick={this.taskModalShow}
                               id={category.catId}
                               count={category.taskCount}
                               name={category.catName}
