@@ -434,7 +434,8 @@ class Members extends Component {
                   >
                     <div id="projectDiv" className="card-columns row">
                       {/* +++++++++++++++++ Project Card Container +++++++++++++++++ */}
-                      {this.state.projectCards.map(project => {
+                    
+                      {this.state.projectCards ? (this.state.projectCards.map(project => {
                         return (
                           <div
                             style={{
@@ -465,7 +466,42 @@ class Members extends Component {
                             />
                           </div>
                         );
-                      })}
+                      })
+                      ) : ( () => {
+                        return (
+                        <div
+                          style={{
+                            position: "relative",
+                            zIndex: "0",
+                            width: "100%"
+                          }}
+                        >
+                          <div
+                            className="Wrapper"
+                            onClick={this.ProjectClick}
+                            data-id=""
+                            style={{
+                              position: "absolute",
+                              top: "0",
+                              left: "0",
+                              bottom: "0",
+                              right: "0",
+                              zIndex: "3"
+                            }}
+                          ></div>
+                          <ProjectCard
+                            style={{ position: "relative" }}
+                            onClick={this.ProjectClick}
+                            id=""
+                            name="Project nam?"
+                            description="Description"
+                          />
+                        </div>
+                      );
+                    })
+                    
+                      
+                      }
                     </div>
                   </div>
                 </div>
