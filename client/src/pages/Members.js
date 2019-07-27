@@ -54,7 +54,6 @@ class Members extends Component {
   }
   // =======
 
-<<<<<<< HEAD
   // componentWillMount() {
   //   axios
   //     .get("/members/info")
@@ -79,23 +78,6 @@ class Members extends Component {
   //       console.log(error);
   //     });
   // }
-=======
-  componentWillMount() {
-    axios
-      .get("/members/info")
-      .then(data => {
-        // Test console.
-        console.log(data.data);
-        this.setState({
-          projectCards: data.data.projects,
-          userName: data.data.user
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
->>>>>>> 2f908317cda5f14ba6f536b5a6341992c6de6f78
 
   ProjectClick = event => {
     // Test console.
