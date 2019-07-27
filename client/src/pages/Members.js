@@ -56,30 +56,21 @@ class Members extends Component {
     };
   }
 
-  // componentWillMount() {
-  //   axios
-  //     .get("/members/info")
-  //     .then(data => {
-  //       // Test console.
-  //       console.log(data.data);
-  //       if(!data.data.projects.length){
-  //         this.setState({
-  //           projectCards: ["No Projects yet"],
-  //           userName: data.data.user
-  //         });
-  //       }
-  //       else{
-  //         this.setState({
-  //           projectCards: data.data.projects,
-  //           userName: data.data.user
-  //         });
-  //       }
-        
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // }
+  componentWillMount() {
+    axios
+      .get("/members/info")
+      .then(data => {
+        // Test console.
+        console.log(data.data);
+        this.setState({
+          projectCards: data.data.projects,
+          userName: data.data.user
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 
   ProjectClick = event => {
     console.log(event.target);
@@ -442,7 +433,6 @@ class Members extends Component {
                     style={{ maxHeight: "60vh" }}
                   >
                     <div id="projectDiv" className="card-columns row">
-                      
                       {/* +++++++++++++++++ Project Card Container +++++++++++++++++ */}
                       {this.state.projectCards.map(project => {
                         return (
