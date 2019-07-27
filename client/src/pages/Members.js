@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import { useState } from 'react';
+import { useState } from "react";
 
 // ================================== Files Dependencies
 import ProjectCard from "../components/ProjectCard";
@@ -24,12 +24,11 @@ class Members extends Component {
       border: "",
       taskModal: {
         class: "modal fade bd-example-modal-xl",
-        style: {display: "none"},
-        modalState: "false",
-
+        style: { display: "none" },
+        modalState: "false"
       },
       isOpen: "false",
-      show: false, 
+      show: false,
       setShow: false,
       view: "none",
       show2: ""
@@ -53,6 +52,32 @@ class Members extends Component {
         console.log(error);
       });
   }
+  // =======
+
+  // componentWillMount() {
+  //   axios
+  //     .get("/members/info")
+  //     .then(data => {
+  //       // Test console.
+  //       console.log(data.data);
+  //       if(!data.data.projects.length){
+  //         this.setState({
+  //           projectCards: ["No Projects yet"],
+  //           userName: data.data.user
+  //         });
+  //       }
+  //       else{
+  //         this.setState({
+  //           projectCards: data.data.projects,
+  //           userName: data.data.user
+  //         });
+  //       }
+
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // }
 
   ProjectClick = event => {
     // Test console.
@@ -62,7 +87,7 @@ class Members extends Component {
     const projectId = event.target.getAttribute("data-id");
     const projectData = { project: event.target.getAttribute("data-id") };
 
-    this.setState({projectSelected: parseInt(projectId)});
+    this.setState({ projectSelected: parseInt(projectId) });
 
     axios
       .get("/members/info/" + projectId)
@@ -85,7 +110,7 @@ class Members extends Component {
         console.log(error);
       });
   };
-  
+
   CategoryClick = event => {
     // Test console.
     // console.log(event.target);
@@ -95,14 +120,15 @@ class Members extends Component {
     console.log(categoryId);
     const categoryData = { category: event.target.getAttribute("data-id") };
 
-    this.setState({categorySelected: parseInt(categoryId)});
-    
+    this.setState({ categorySelected: parseInt(categoryId) });
+
     axios
       .get(
         "/members/info/" +
-                this.state.projectSelected +
-                "/category/" +
-                categoryId + "/all_tasks"
+          this.state.projectSelected +
+          "/category/" +
+          categoryId +
+          "/all_tasks"
       )
       .then(data => {
         // Test console.
@@ -123,28 +149,25 @@ class Members extends Component {
         console.log(error);
       });
   };
-  
-  
 
   handleClose = () => {
-    this.setState({show2:""});
-    this.setState({view:"none"});
-    this.setState({show:false});
+    this.setState({ show2: "" });
+    this.setState({ view: "none" });
+    this.setState({ show: false });
   };
 
   handleShow = () => {
-    this.setState({show2:"show"});
-    this.setState({view:"block"});
-    this.setState({show:true});
-};
-handleView1 = () => {
-    this.setState({view:"none"});
+    this.setState({ show2: "show" });
+    this.setState({ view: "block" });
+    this.setState({ show: true });
+  };
+  handleView1 = () => {
+    this.setState({ view: "none" });
   };
 
   handleView2 = () => {
-    this.setState({view:"block"});
-};
-  
+    this.setState({ view: "block" });
+  };
 
   CategoryDoubleClick = event => {
     // Test console.
@@ -172,7 +195,6 @@ handleView1 = () => {
       isOpen: "true"
     });
     console.log(this.state.isOpen);
-    
   };
 
   render() {
@@ -446,7 +468,7 @@ handleView1 = () => {
 
         {/* +++++++++++++++++ TASK MODAL +++++++++++++++++ */}
 
-        <TaskModal 
+        <TaskModal
           // ref = { element => this.taskModal = element}
           // class = {this.state.taskModal.class}
           // style = {this.state.taskModal.style}
@@ -508,7 +530,9 @@ handleView1 = () => {
                           >
                             <div
                               className={
-                                project.projId === this.state.projectSelected ? "Wrapper border border-primary" : "Wrapper"
+                                project.projId === this.state.projectSelected
+                                  ? "Wrapper border border-primary"
+                                  : "Wrapper"
                               }
                               onClick={this.ProjectClick}
                               data-id={project.projId}
