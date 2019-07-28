@@ -109,7 +109,7 @@ class Members extends Component {
           this.setState({ tasksCards: data.data.tasks }, () => {
             
             // Test console.
-            console.log(this.state.tasksCards);
+            // console.log(this.state.tasksCards);
 
             axios
               .post("/api/users-selections", categoryData)

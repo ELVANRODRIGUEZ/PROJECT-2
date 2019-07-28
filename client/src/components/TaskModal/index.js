@@ -31,7 +31,7 @@ const TaskModal = function (props) {
           style={{ float: "right" }}
           dataToggle="collapse"
           href="#addTaskCollapsWindow"
-          ariaExpanded="false"
+          aria-expanded="false"
           ariaControls="addTaskCollapsWindow"
         >
           <i className="fa fa-plus fa-4" aria-hidden="true"></i>

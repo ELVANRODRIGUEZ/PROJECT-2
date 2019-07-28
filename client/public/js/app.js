@@ -473,88 +473,88 @@ $("#deleteProject").on('click', function () {
 // ----------------- Category
 
 // ---------- Click on Category Card
-$(document).on('click', '.categoryCard', function () {
+// $(document).on('click', '.categoryCard', function () {
 
-    $('.card').removeClass('border border-danger');
-    $(this).addClass('border border-danger');
+//     $('.card').removeClass('border border-danger');
+//     $(this).addClass('border border-danger');
 
-    var all = $('.border-danger').map(function () {
-        return this;
-    }).get();
+//     var all = $('.border-danger').map(function () {
+//         return this;
+//     }).get();
 
-    userSelections.category =
-        $(all[0]).data('id').toString();
+//     userSelections.category =
+//         $(all[0]).data('id').toString();
 
-    // Test console.
-    // console.log(categoryId);
+//     // Test console.
+//     // console.log(categoryId);
 
-    // $('#forProject').text(id);
-    $.ajax({
-            url: "/members/info/" +
-                userSelections.project +
-                "/category/" +
-                userSelections.category + "/all_tasks",
-            method: "GET"
-        })
-        .then(function (data) {
+//     // $('#forProject').text(id);
+//     $.ajax({
+//             url: "/members/info/" +
+//                 userSelections.project +
+//                 "/category/" +
+//                 userSelections.category + "/all_tasks",
+//             method: "GET"
+//         })
+//         .then(function (data) {
 
-            console.log(data);
+//             console.log(data);
 
-        });
+//         });
 
-})
+// })
 
 // ---------- Double Click on Category Card
-$(document).on('dblclick', '.categoryCard', function () {
+// $(document).on('dblclick', '.categoryCard', function () {
 
-    // Collapse Add Task window.
-    $("#addTaskCollapsWindow").collapse("hide");
+//     // Collapse Add Task window.
+//     $("#addTaskCollapsWindow").collapse("hide");
 
-    // // Show Task Modal window.
-    // $("#taskModal").modal({
-    //     show: true,
-    //     backdrop: 'static',
-    //     keyboard: false
-    // });
+//     // // Show Task Modal window.
+//     // $("#taskModal").modal({
+//     //     show: true,
+//     //     backdrop: 'static',
+//     //     keyboard: false
+//     // });
 
-    var all = $('.border-danger').map(function () {
-        return this;
-    }).get();
+//     var all = $('.border-danger').map(function () {
+//         return this;
+//     }).get();
 
-    var categoryId = $(all[0]).data('id').toString();
+//     var categoryId = $(all[0]).data('id').toString();
 
-    // Test console.
-    // console.log(categoryId);
+//     // Test console.
+//     // console.log(categoryId);
 
-    $.ajax({
-            url: "/members/info/" +
-                userSelections.project +
-                "/category/" + categoryId,
-            method: "GET"
-        })
-        .then(function (data) {
+//     $.ajax({
+//             url: "/members/info/" +
+//                 userSelections.project +
+//                 "/category/" + categoryId,
+//             method: "GET"
+//         })
+//         .then(function (data) {
 
-            userSelections.category = categoryId;
+//             userSelections.category = categoryId;
 
-            $.ajax({
-                url: "/api/users-selections",
-                method: "POST",
-                data: {
-                    category: categoryId
-                }
-            }).then(function (Selections) {
+//             $.ajax({
+//                 url: "/api/users-selections",
+//                 method: "POST",
+//                 data: {
+//                     category: categoryId
+//                 }
+//             }).then(function (Selections) {
 
-                // console.log(Selections);
+//                 // console.log(Selections);
 
-            });
+//             });
 
-            // console.log(data.tasks);
+//             // console.log(data.tasks);
 
-            $("#modal-container").html(data.tasks);
+//             $("#modal-container").html(data.tasks);
 
-        });
+//         });
 
-})
+// })
 
 // ---------- Add a category
 $("#categoryModalAdd").on("click", function (event) {
