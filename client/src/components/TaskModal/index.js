@@ -1,25 +1,25 @@
 // ================================== Packages Dependencies
 import React from "react";
 import Modal from "react-bootstrap/Modal";
-import ModalDialog from "react-bootstrap/ModalDialog";
+
 
 // ================================== Files Dependencies
 import TaskCard from "../TaskCard";
 
 
-const TaskModal = function(props) {
+const TaskModal = function (props) {
   return (
     // +++++++++++++++++ TASK MODAL +++++++++++++++++
     <Modal
       aria-labelledby="modal-dialog modal-xl"
       size="xl"
       show={props.show}
-      tabindex="-1"
+      tabIndex="-1"
       // role="dialog"
       id="taskModal"
       dialogClassName="elvan-modal"
-      // dialogAs="test"
-      // bsPrefix="test modal"
+    // dialogAs="test"
+    // bsPrefix="test modal"
     >
       {/* <Modal.Footer className="modal-dialog modal-xl" role="document"> */}
       {/* <Modal className="modal-content bg-dark"> */}
@@ -47,15 +47,20 @@ const TaskModal = function(props) {
         </button>
       </Modal.Header>
       {/* +++++++++++++++++ New Taks Collapse Window +++++++++++++++++ */}
-      
+
       <Modal.Body id="modal-container">
+
         {/* +++++++++++++++++ TASK CARD +++++++++++++++++ */}
-        <TaskCard
-          taskId="4"
-          taskDescription="This is a Component Test Task"
-          taskDeadline="21, July. 2019"
-          taskAccomplished={0.8}
-        ></TaskCard>
+        {props.tasksCards.map((task) => {
+          return (<TaskCard
+            key={task.task_id}
+            taskId={task.task_id}
+            taskDescription={task.task_description}
+            taskDeadline={task.task_deadline}
+            taskAccomplished={task.task_accomplished}
+          ></TaskCard>);
+        })}
+
       </Modal.Body>
       <Modal.Footer>
         <button
@@ -66,7 +71,7 @@ const TaskModal = function(props) {
           Close
         </button>
       </Modal.Footer>
-     
+
     </Modal>
   );
 };

@@ -349,15 +349,10 @@ module.exports = function(app) {
 
         // Getting all tasks from the selected category to create the HTML string.
 
-        var allTasks = "";
+        var allTasks = [];
 
         data.forEach(function(item) {
-          allTasks += taskModal(
-            item.task_id,
-            item.task_description,
-            moment(item.task_deadline).format("DD, MMMM. YYYY"),
-            item.task_accomplished
-          );
+          allTasks.push(item);
         });
 
         var sentResponse = {
@@ -381,6 +376,9 @@ module.exports = function(app) {
       // console.log(userId);
       // console.log(projectId);
       // console.log(categoryId);
+      console.log(
+        "I am here at '/members/info/:projectId/category/:categoryId/all_tasks' endpoint"
+        );
 
       var query =
         "SELECT " +

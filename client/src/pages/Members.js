@@ -78,43 +78,68 @@ class Members extends Component {
     // console.log(event.target.getAttribute("data-id"));
 
     const categoryId = event.target.getAttribute("data-id");
-    const categoryData = { category: event.target.getAttribute("data-id") };
+    const categoryData = {
+      category: event.target.getAttribute("data-id")
+    };
 
-    // React documentation enforces the use of "Functional SetState" to change State values instead of just passing an object to the "SetStte" function --this.setState({state: "state value"})--. This can be done like this:
-    this.setState((prevState, props) => {
-      return { categorySelected: parseInt(categoryId) };
+    /*
+    React documentation enforces the use of "Functional SetState" to change State values instead of just passing an object to the "SetState" function 
+      this.setState({state: "state value"}) 
+    This can be done like this:
+      this.setState((prevState, props) => {
+      return { categorySelected: categoryId };
     });
+    But that method proves not to have the State necessarily changed at desired moment either, that's why the safe method is to englobe every piece of code that depends on the State's new value inside a Callback within the "setState" method. Like this:
+      this.setState({ categorySelected: categoryId }, () => {});
+    */
 
-    axios
-      .get(
-        "/members/info/" +
-        this.state.projectSelected +
-        "/category/" +
-        categoryId +
-        "/all_tasks"
-      )
-      .then(data => {
-        // Test console.
-        console.log(data.data);
+    this.setState({ categorySelected: categoryId }, () => {
 
-        this.setState((prevState, props) => {
-          return { tasksCards: data.data.categories };
-        });
-
-        axios
-          .post("/api/users-selections", categoryData)
-          .then(data2 => {
+      axios
+        .get(
+          "/members/info/" +
+          this.state.projectSelected +
+          "/category/" +
+          this.state.categorySelected
+        )
+        .then(data => {
+          // Test console.
+          // console.log(data.data.tasks);
+          
+          this.setState({ tasksCards: data.data.tasks }, () => {
+            
             // Test console.
-            // console.log(data.data);
-          })
-          .catch(error => {
-            console.log(error);
+            console.log(this.state.tasksCards);
+
+            axios
+              .post("/api/users-selections", categoryData)
+              .then(data2 => {
+                // Test console.
+                // console.log(data2.data);
+  
+                axios
+                  .get("/members/info/" +
+                    this.state.projectSelected +
+                    "/category/" +
+                    this.state.categorySelected + "/all_tasks")
+                  .then(function (data3) {
+  
+                    // console.log(data3.data);
+  
+                  });
+              })
+              .catch(error => {
+                console.log(error);
+              });
+
           });
 
-      })
-      .catch(error => {
-        console.log(error);
-      });
+
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    })
   };
 
   taskModalClose = () => {
@@ -397,6 +422,7 @@ class Members extends Component {
         {/* +++++++++++++++++ TASK MODAL +++++++++++++++++ */}
 
         <TaskModal
+          tasksCards={this.state.tasksCards}
           show={this.state.taskModalShow}
           handleClose={this.taskModalClose}
         />
@@ -554,7 +580,6 @@ class Members extends Component {
                     <div id="categoryDiv" className="card-columns row">
                       {/* +++++++++++++++++ Categories Card Container +++++++++++++++++ */}
                       {this.state.categoryCards.map(category => {
-                        console.log(category.catId);
                         return (
                           <div
                             key={category.catId}

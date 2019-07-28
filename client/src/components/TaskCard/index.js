@@ -1,5 +1,6 @@
 // ================================== Packages Dependencies
 import React from "react";
+import Moment from "react-moment";
 
 const TaskCard = function(props) {
   return (
@@ -202,7 +203,10 @@ const TaskCard = function(props) {
         </h5>
         <h6 className='d-inline p-2 bg-danger rounded text-white'
         >
-            {`Deadline: ${props.taskDeadline}`} 
+            Deadline: <Moment
+                format= "DD, MMMM. YYYY">
+                {props.taskDeadline}
+                </Moment>
         </h6>
         <h6 
             id='modal-task-description' 

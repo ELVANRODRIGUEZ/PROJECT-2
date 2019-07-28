@@ -285,8 +285,10 @@ module.exports = function (app) {
   app.post("/api/users-selections", function (req, res) {
 
     // Test console.
-    // console.log("I am here at '/api/users-selections");
-    console.log(req.body.project);
+    console.log("I am here at '/api/users-selections' endpoint");
+    // console.log(req.body.project);
+    // console.log(req.body.category);
+
     if (req.body.project) {
 
       userSelections.project = req.body.project;
