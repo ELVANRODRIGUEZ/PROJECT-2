@@ -113,7 +113,7 @@ module.exports = function (app) {
     db.users.findAll({
       attributes: ["id", "user_name", "email"],
       where: {
-        id: { 
+        id: {
           [Op.ne]: "16"
         }
       }
@@ -340,17 +340,24 @@ module.exports = function (app) {
       include: [{
         model: db.users,
         attributes: [
-          ["user_name", "user_name"]
+          ["user_name", "user_name"],
+          ["id", "user_id"]
         ],
         include: [{
           model: db.project_users,
           attributes: [
-            ["project_name", "project_name"],
-            ["id", "project_id"]
+            ["project_name", "project_id"],
+            ["id", "relationship_project-user"]
           ],
           where: {
             project_name: userSelections.project
-          }
+          },
+          include: [{
+            model: db.projects,
+            attributes: [
+              ["project_name", "project_name"]
+            ]
+          }]
         }]
       }]
     }).then(function (users) {
@@ -632,14 +639,14 @@ module.exports = function (app) {
       description: req.body.description,
       dead_line: req.body.deadline
     }, {
-      where: {
-        id: req.params.id
-      }
-    }).then(function (data) {
+        where: {
+          id: req.params.id
+        }
+      }).then(function (data) {
 
-      res.json(data);
+        res.json(data);
 
-    });
+      });
 
   })
 
@@ -649,11 +656,11 @@ module.exports = function (app) {
     var bulk = JSON.parse(req.body.data)
 
     db.tasks_responsibles.bulkCreate(bulk).
-    then(function (data) {
+      then(function (data) {
 
-      res.send("Success!");
+        res.send("Success!");
 
-    });
+      });
 
   })
 
@@ -672,36 +679,36 @@ module.exports = function (app) {
         responsible: bulk
       }
     }).
-    then(function (data) {
+      then(function (data) {
 
-      var taskUserRel = [];
+        var taskUserRel = [];
 
-      data.forEach(function (item) {
+        data.forEach(function (item) {
 
-        taskUserRel.push(item.id);
+          taskUserRel.push(item.id);
+
+        })
+
+        db.tasks_responsibles.destroy({
+          where: {
+            id: taskUserRel
+          }
+        }).
+          then(function (data2) {
+
+            if (bulk.indexOf((req.user.id).toString()) == -1) {
+
+              res.send("Don't Reload Page");
+
+            } else {
+
+              res.send("Reload Page");
+
+            }
+
+          });
 
       })
-
-      db.tasks_responsibles.destroy({
-        where: {
-          id: taskUserRel
-        }
-      }).
-      then(function (data2) {
-
-        if (bulk.indexOf((req.user.id).toString()) == -1) {
-
-          res.send("Don't Reload Page");
-          
-        } else {
-          
-          res.send("Reload Page");
-
-        }
-
-      });
-
-    })
 
 
   })
@@ -718,39 +725,39 @@ module.exports = function (app) {
         task_id: taskId
       }
     }).
-    then(function () {
+      then(function () {
 
-      db.mail_mess_tasks.destroy({
-        where: {
-          task_id: taskId
-        }
+        db.mail_mess_tasks.destroy({
+          where: {
+            task_id: taskId
+          }
+        });
+
+      }).
+      then(function () {
+
+        db.tasks_responsibles.destroy({
+          where: {
+            task_id: taskId
+          }
+        });
+
+      }).
+      then(function () {
+
+        db.tasks.destroy({
+          where: {
+            id: taskId
+          }
+        });
+
+        res.send("Reload Page");
+
       });
-
-    }).
-    then(function () {
-
-      db.tasks_responsibles.destroy({
-        where: {
-          task_id: taskId
-        }
-      });
-
-    }).
-    then(function () {
-
-      db.tasks.destroy({
-        where: {
-          id: taskId
-        }
-      });
-
-      res.send("Reload Page");
-
-    });
 
 
   });
 
-  
+
 
 };

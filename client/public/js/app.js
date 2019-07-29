@@ -162,37 +162,37 @@ $('#categoryDel').on('click', function () {
 // ----------------- Task
 
 // ---------- Click on Add User inside New Task Modal
-$(document).on('click', '#addTaskUser', function () {
-    // Make sure to preventDefault on a submit event.
-    event.preventDefault();
+// $(document).on('click', '#addTaskUser', function () {
+//     // Make sure to preventDefault on a submit event.
+//     event.preventDefault();
 
-    var $taskUserList = $("#taskUserList");
-    var userId = $("#taskUsers option:selected").attr("userId");
-    var userName = $("#taskUsers option:selected").val();
+//     var $taskUserList = $("#taskUserList");
+//     var userId = $("#taskUsers option:selected").attr("userId");
+//     var userName = $("#taskUsers option:selected").val();
 
-    var newUser =
-        "<li class='taskUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
+//     var newUser =
+//         "<li class='taskUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
 
-    $taskUserList.append(newUser);
+//     $taskUserList.append(newUser);
 
-    // console.log(userId);
+//     // console.log(userId);
 
-    projectUsersArr.push(userId);
+//     projectUsersArr.push(userId);
 
-    $('#delTaskUser').on('click', function () {
-        // Make sure to preventDefault on a submit event.
-        event.preventDefault();
+//     $('#delTaskUser').on('click', function () {
+//         // Make sure to preventDefault on a submit event.
+//         event.preventDefault();
 
-        $('#taskUserList').empty();
+//         $('#taskUserList').empty();
 
-        projectUsersArr = [];
+//         projectUsersArr = [];
 
-    })
+//     })
 
-    // Test console.
-    // console.log(projectUsersArr);
+//     // Test console.
+//     // console.log(projectUsersArr);
 
-})
+// })
 
 // ---------- Click on Add User for Adding inside Task Edit Modal
 $(document).on('click', '.taskAddTskUserAdd', function () {
@@ -649,36 +649,36 @@ $("#deleteCategory").on('click', function () {
 // ---------- Get all Users in Add Task Modal 
 $(document).on("click", "#addTaskModal", function (event) {
 
-    // Empty the list for Project related users.
-    $("#taskUsers").html("");
+    // // Empty the list for Project related users.
+    // $("#taskUsers").html("");
 
-    // Empty the list array for Project related users.
-    projectUsersArr = [];
+    // // Empty the list array for Project related users.
+    // projectUsersArr = [];
 
-    // Send the GET request.
-    $.get("/api/project_users", function (data) {
+    // // Send the GET request.
+    // $.get("/api/project_users", function (data) {
 
-        // console.log(data);
+    //     // console.log(data);
 
-        var $taskUsers = $("#taskUsers");
-        var users = "<option selected>Select User</option>";
+    //     var $taskUsers = $("#taskUsers");
+    //     var users = "<option selected>Select User</option>";
 
-        // " +  + "
+    //     // " +  + "
 
-        data.forEach(function (item) {
+    //     data.forEach(function (item) {
 
-            // console.log(item.user_id);
-            // console.log(item.user.user_name);
+    //         // console.log(item.user_id);
+    //         // console.log(item.user.user_name);
 
-            users += "<option class='taksUsersArr' userId=" +
-                item.user_id +
-                ">" + item["user.user_name"] + "</option>";
+    //         users += "<option class='taksUsersArr' userId=" +
+    //             item.user_id +
+    //             ">" + item["user.user_name"] + "</option>";
 
-        })
+    //     })
 
-        $taskUsers.html(users);
+    //     $taskUsers.html(users);
 
-    });
+    // });
 
 });
 
