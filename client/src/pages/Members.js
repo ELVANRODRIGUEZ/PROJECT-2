@@ -13,6 +13,7 @@ class Members extends Component {
 
     this.state = {
       projectCards: [],
+      projectUsers: [],
       categoryCards: [],
       tasksCards: [],
       projectSelected: "",
@@ -48,29 +49,62 @@ class Members extends Component {
     const projectId = event.target.getAttribute("data-id");
     const projectData = { project: event.target.getAttribute("data-id") };
 
-    this.setState({ projectSelected: parseInt(projectId) });
+    this.setState({ projectSelected: parseInt(projectId) }, () => {
+      axios
+        //? This is to get the amount of Tasks in each Category according to the Project selected.
+        .get("/members/info/" + projectId)
+        .then(data => {
+          // Test console.
+          // console.log(data.data);
+
+          this.setState({ categoryCards: data.data.categories }, () => {
+
+            axios
+              //?  This is to set the selected Project on the Server. Just a "Hi" response is gotten after that.
+              .post("/api/users-selections", projectData)
+              .then(data2 => {
+                // Test console.
+                // console.log(data2.data);
+
+                this.loadProjectUsers();
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+    });
+
+
+  };
+
+  loadProjectUsers = () => {
+    // Test console.
+    // console.log(this.state.projectSelected);
 
     axios
-      .get("/members/info/" + projectId)
-      .then(data => {
+      //? According to the Project selected, and once that selection has been sent to the Server, this Get request will give back all that Project's Users.
+      .get("/api/project_users")
+      .then(users => {
         // Test console.
-        // console.log(data.data);
+        // console.log(users.data);
 
-        this.setState({ categoryCards: data.data.categories });
-        axios
-          .post("/api/users-selections", projectData)
-          .then(data2 => {
-            // Test console.
-            // console.log(data.data);
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        this.setState({ projectUsers: users.data }, () => {
+          // Test console.
+          // console.log(users.data);
+          // console.log(this.state.projectUsers);
+
+        });
+
       })
       .catch(error => {
         console.log(error);
       });
-  };
+  }
 
   CategoryClick = event => {
     // Test console.
@@ -96,6 +130,7 @@ class Members extends Component {
     this.setState({ categorySelected: categoryId }, () => {
 
       axios
+        //? This request is to retrieve the Tasks related to the selected Project and Category.
         .get(
           "/members/info/" +
           this.state.projectSelected +
@@ -105,27 +140,30 @@ class Members extends Component {
         .then(data => {
           // Test console.
           // console.log(data.data.tasks);
-          
+
           this.setState({ tasksCards: data.data.tasks }, () => {
-            
+
             // Test console.
             // console.log(this.state.tasksCards);
 
             axios
+              //?  This is to set the selected Category on the Server. Just a "Hi" response is gotten after that.
               .post("/api/users-selections", categoryData)
               .then(data2 => {
                 // Test console.
                 // console.log(data2.data);
-  
+
                 axios
+                  //? This is to get al the Task's Ids from the Selected Project and Category.
                   .get("/members/info/" +
                     this.state.projectSelected +
                     "/category/" +
                     this.state.categorySelected + "/all_tasks")
                   .then(function (data3) {
-  
+
+                    // Test console.
                     // console.log(data3.data);
-  
+
                   });
               })
               .catch(error => {
@@ -150,7 +188,16 @@ class Members extends Component {
     this.setState({ taskModalView: "block", taskModalShow: true });
   };
 
+
+  loadTaskModal = () => {
+    // this.loadProjectUsers();
+    this.taskModalShow();
+  }
+
+  transferUsersList 
+
   render() {
+    const users = this.state.projectUsers;
     return (
       <div id="profile">
         {/*! +++++++++++++++++ NAVBAR +++++++++++++++++ */}
@@ -421,10 +468,13 @@ class Members extends Component {
 
         {/* +++++++++++++++++ TASK MODAL +++++++++++++++++ */}
 
+        {/* {console.log(this.state.projectUsers)} */}
         <TaskModal
+          key={this.state.projectSelected}
           tasksCards={this.state.tasksCards}
           show={this.state.taskModalShow}
           handleClose={this.taskModalClose}
+          projectUsers={users}
         />
 
         {/* +++++++++++++++++ JUMBOTRON CONTAINER +++++++++++++++++ */}
@@ -597,7 +647,7 @@ class Members extends Component {
                                   : "Wrapper"
                               }
                               onClick={this.CategoryClick}
-                              onDoubleClick={this.taskModalShow}
+                              onDoubleClick={this.loadTaskModal}
                               data-id={category.catId}
                               style={{
                                 position: "absolute",
@@ -613,7 +663,7 @@ class Members extends Component {
                             <CategoryCard
                               style={{ position: "relative" }}
                               onClick={this.categoryClick}
-                              onDoubleClick={this.taskModalShow}
+                              onDoubleClick={this.loadTaskModal}
                               id={category.catId}
                               count={category.taskCount}
                               name={category.catName}

@@ -13,12 +13,36 @@ class NewTaskModal extends Component {
     this.state = {
       newTaskDescription: "",
       newTaskDeadline: "",
-      userToAdd: {
-        userId: "",
-        userName: ""
-      },
-      usersAdded: []
+      userToAdd: [],
+      // userToAdd: {
+      //   user_id: "",
+      //   user_name: ""
+      // },
+      projectUsers: this.props.projectUsers,
+      usersAdded: [],
+      usersSpliced: [],
+      test: [],
+      stateMouseIcon: "context-menu"
     };
+
+  }
+
+  componentDidUpdate = (prevProps) => {
+    // console.log(prevProps.projectUsers);
+    console.log(this.state.projectUsers);
+    // if(prevProps.projectUsers !== this.props.projectUsers) {
+    // Test console.
+    // console.log(this.props.projectUsers);
+
+    // this.setState({projectUsers:this.props.projectUsers}, () => {
+
+    // Test console.
+    // console.log(this.state.projectUsers);
+
+    // })
+    // }
+    // Test console.
+    // console.log(this.state.projectUsers);
   }
 
   chgDescription = (event) => {
@@ -49,43 +73,117 @@ class NewTaskModal extends Component {
     const optionSelected = event.target.childNodes[optionIndex];
     const userToAddName = event.target.value;
     //  Select a Named Attribute of a given node (Tag). In this case, the Tag is the Option selected.
-    const userToAddId = optionSelected.getAttribute("userid");
+    const userToAddId = parseInt(optionSelected.getAttribute("userid"));
 
     if (userToAddId) {
-
-      this.setState((prevState, props) => {
-        return {
-          userToAdd: {
-            userId: userToAddId,
-            userName: userToAddName
-          }
-        }
-      });
+      // console.log("here!");
+      this.setState({
+        userToAdd: this.state.projectUsers.filter(user => {
+          return (user["user.user_id"] === userToAddId);
+        })
+      }, () => {
+        console.log(this.state.userToAdd);
+      })
     }
 
-    // Test console.
-    // console.log(this.state.userToAdd);
+    // if (userToAddId) {
+    //   this.setState((prevState, props) => {
+    //     return {
+    //       userToAdd: {
+    //         user_id: userToAddId,
+    //         user_name: userToAddName
+    //       }
+    //     }
+    //   });
+    // }
+
   }
 
   addUser = (event) => {
 
     event.preventDefault();
 
+    // Test console.
     // console.log(this.state.userToAdd);
-    // console.log(this.state.usersAdded.length);
+    // console.log(this.state.userToAdd[0]["user.user_id"]);
 
+    let userToSplice = this.state.userToAdd[0]["user.user_id"];
+    // console.log(userToSplice);
 
-    this.setState({ usersAdded: this.state.usersAdded.concat([this.state.userToAdd]) },
+    if (this.state.userToAdd[0]["user.user_id"] !== "") {
+
+      this.setState({ usersAdded: this.state.usersAdded.concat(this.state.userToAdd) },
+        () => {
+
+          // Test console.
+          console.log(this.state.usersAdded);
+
+          this.setState({
+            projectUsers: this.state.projectUsers.filter((user) => {
+              // Test console.
+              console.log(user["user.user_id"]);
+              console.log(userToSplice);
+              return user["user.user_id"] !== userToSplice;
+            })
+          }, () => {
+            // Test console.
+            console.log(this.state.projectUsers);
+          })
+        })
+
+      // Test console.
+      // console.log(this.state.usersAdded);
+
+    }
+  }
+
+  deleteUser = (event) => {
+
+    event.preventDefault();
+
+    //  Since it matters where the exact clicking was made, we made sure to add the "userid" attribute to the Button as well as to the Times Icon so we can retrieve it from either one of them.
+    const userToDeleteId = event.target.getAttribute("userid");
+    // Test console.
+    // console.log(userToDeleteId);
+
+    const userToReturn = {
+      "user.user_id": parseInt(userToDeleteId),
+      "user.user_name": event.target.getAttribute("value")
+    };
+    // Test console.
+    console.log(userToReturn);
+
+    this.setState({
+      projectUsers: this.state.projectUsers.concat([userToReturn])
+    },
       () => {
+        // Test console.
+        console.log(this.state.projectUsers);
+      })
 
+    this.setState({
+      usersAdded: this.state.usersAdded.filter((user) => {
+        return user.user_id !== userToDeleteId;
+      })
+    },
+      () => {
         // Test console.
         console.log(this.state.usersAdded);
+      })
 
-      });
+  }
 
+  changeMouseIcon = () => {
 
-    // Test console.
-    console.log(this.state.usersAdded);
+    this.setState((prevState, props) => {
+      if (prevState.stateMouseIcon === "context-menu") {
+        return { stateMouseIcon: "pointer" }
+      }
+      else {
+        return { stateMouseIcon: "context-menu" }
+      }
+
+    })
 
   }
 
@@ -99,22 +197,32 @@ class NewTaskModal extends Component {
       usersToBeAdded =
         <ul id="taskUserList" className="list-group">
           {this.state.usersAdded.map((user) => {
-
-            console.log(user);
             return (
-                <li
-                  key={user.userId}
-                  className="taskUser list-group-item text-dark col-md-8"
-                  userid={user.userId}
-                >
-                  {user.userName}
-                </li>
+              <li
+                key={user["user.user_id"]}
+                className="taskUser list-group-item text-dark col-md-8"
+                style={{ lineHeight: 1, padding: "5px" }}
+              >
+                <button
+                  className='btn btn-dark pplus'
+                  userid={user["user.user_id"]}
+                  value={user["user.user_name"]}
+                  onClick={this.deleteUser}
+                  style={{ margin: 0, marginRight: "5px", display: "inline-block" }}>
+                  <i
+                    className='fa fa-times-circle'
+                    userid={user["user.user_id"]}
+                    value={user["user.user_name"]}
+                    aria-hidden='true'>
+                  </i>
+                </button>
+                {user["user.user_name"]}
+              </li>
             );
           })
           }
         </ul>
     } else {
-      console.log("here");
       usersToBeAdded =
         <ul id="taskUserList" className="list-group">
         </ul>
@@ -131,7 +239,16 @@ class NewTaskModal extends Component {
         <div className="modal-content bg-dark text-white">
           <div className="modal-header">
             <h5 className="modal-title">Add new Task</h5>
-            <span aria-hidden="true">&times;</span>
+            <span
+              aria-hidden="true"
+              style={{ fontSize: "26px", lineHeight: "1", fontWeight: 600, cursor: this.state.stateMouseIcon }}
+              onClick={this.props.newTaskModalToggle}
+              onMouseOver={this.changeMouseIcon}
+              onMouseOut={this.changeMouseIcon}
+
+            >
+              &times;
+            </span>
           </div>
           <div className="card card-body bg-dark text-white">
             <form>
@@ -168,8 +285,10 @@ class NewTaskModal extends Component {
                     onChange={this.selectUserToAdd}
                     defaultValue="Select User"
                   >
-                    {/* <option selected>Select User</option> */}
-                    {this.props.projectUsers.map((user) => {
+                    <option selected>Select User:</option>
+                    {/* {console.log(this.state.projectUsers2)} */}
+                    {this.state.projectUsers.map((user) => {
+                      // console.log(user)
                       return (
                         <option
                           key={user["user.user_id"]}
@@ -186,15 +305,13 @@ class NewTaskModal extends Component {
                   <button
                     className="btn btn-outline-success"
                     id="addTaskUser"
+                    // userid={
+                    //   this.state.userToAdd[0] ?
+                    //   this.state.userToAdd[0]["user.user_id"] : -1
+                    // }
                     onClick={this.addUser}
                   >
                     Add
-                  </button>
-                  <button
-                    className="btn btn btn-outline-danger"
-                    id="delTaskUser"
-                  >
-                    Delete
                   </button>
                 </div>
               </div>

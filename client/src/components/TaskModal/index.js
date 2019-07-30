@@ -19,32 +19,55 @@ class TaskModal extends Component {
     };
   }
 
+  componentDidUpdate = (prevProps) => {
+    // console.log(prevProps.projectUsers);
+    if(prevProps.projectUsers !== this.props.projectUsers) {
+      // Test console.
+      // console.log(this.props.projectUsers);
+      
+      this.setState({projectUsers:this.props.projectUsers}, () => {
+        
+        // Test console.
+        console.log(this.state.projectUsers);
+        
+      })
+    }
+    // Test console.
+    // console.log(this.state.projectUsers);
+  }
+
   newTaskModalToggle = () => {
 
     this.state.newTaskModalShow === false ?
-      this.setState({ newTaskModalShow: true },
-        () => this.getUsers()) :
-      this.setState({ newTaskModalShow: false },
-        () => this.getUsers())
+      this.setState({ newTaskModalShow: true })
+      :
+      this.setState({ newTaskModalShow: false })
 
   }
 
-  getUsers = () => {
+  // getUsers = () => {
 
-    axios
-      .get("/api/project_users")
-      .then(users => {
-        // Test console.
-        // console.log(users.data);
+  //   axios
+  //     .get("/api/project_users")
+  //     .then(users => {
+  //       // Test console.
+  //       // console.log(users.data);
 
-        this.setState((prevState, props) => {
-          return { projectUsers: users.data };
-        });
+  //       this.setState((prevState, props) => {
+  //         return { projectUsers: users.data };
+  //       });
 
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // }
+
+  closeAndToggleModals = () => {
+
+    this.props.handleClose();
+    this.newTaskModalToggle();
+
   }
 
   render() {
@@ -82,7 +105,7 @@ class TaskModal extends Component {
             className="close text-danger"
             dataDismiss="taskModal"
             ariaLabel="Close"
-            onClick={this.props.handleClose}
+            onClick={this.closeAndToggleModals}
           >
             <span ariaHidden="true">&times;</span>
           </button>
@@ -92,6 +115,7 @@ class TaskModal extends Component {
         <NewTaskModal
           newTaskModalView={this.state.newTaskModalShow}
           projectUsers={this.state.projectUsers}
+          newTaskModalToggle={this.newTaskModalToggle}
         >
         </NewTaskModal>
 
