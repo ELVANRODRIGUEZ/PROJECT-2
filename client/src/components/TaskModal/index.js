@@ -28,7 +28,7 @@ class TaskModal extends Component {
       this.setState({projectUsers:this.props.projectUsers}, () => {
         
         // Test console.
-        console.log(this.state.projectUsers);
+        // console.log(this.state.projectUsers);
         
       })
     }
@@ -44,24 +44,6 @@ class TaskModal extends Component {
       this.setState({ newTaskModalShow: false })
 
   }
-
-  // getUsers = () => {
-
-  //   axios
-  //     .get("/api/project_users")
-  //     .then(users => {
-  //       // Test console.
-  //       // console.log(users.data);
-
-  //       this.setState((prevState, props) => {
-  //         return { projectUsers: users.data };
-  //       });
-
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // }
 
   closeAndToggleModals = () => {
 

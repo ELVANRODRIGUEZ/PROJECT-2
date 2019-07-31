@@ -11,36 +11,23 @@ class NewTaskModal extends Component {
     super(props);
 
     this.state = {
+      // Gets whatever is typed on Description Text Area.
       newTaskDescription: "",
+      // Gets whatever Date is chosen on Description Text Area.
       newTaskDeadline: "",
+      // Capture the user selected from the dropdown menu and changes to whatever option is chosen from it. It is intended for always keeping one object value, but is an array for "concatenation" with the "usersAdded" array when the selected user is actually added.
       userToAdd: [],
-      // userToAdd: {
-      //   user_id: "",
-      //   user_name: ""
-      // },
+      //  This state inherits the Project related Users born in the Members Component at ProjecCard clicking time and is passed before to the TaskModal component.
       projectUsers: this.props.projectUsers,
+      // This array will keep all the Users added to be related to the New Task.
       usersAdded: [],
-      usersSpliced: [],
-      test: [],
+      // Sets the class for the mouse icon for the "over" event for the specified icons.
       stateMouseIcon: "context-menu"
     };
 
   }
 
   componentDidUpdate = (prevProps) => {
-    // console.log(prevProps.projectUsers);
-    console.log(this.state.projectUsers);
-    // if(prevProps.projectUsers !== this.props.projectUsers) {
-    // Test console.
-    // console.log(this.props.projectUsers);
-
-    // this.setState({projectUsers:this.props.projectUsers}, () => {
-
-    // Test console.
-    // console.log(this.state.projectUsers);
-
-    // })
-    // }
     // Test console.
     // console.log(this.state.projectUsers);
   }
@@ -68,34 +55,26 @@ class NewTaskModal extends Component {
   selectUserToAdd = (event) => {
 
     //  Select the index of the selected item in a dropdown menu.
-    const optionIndex = event.target.selectedIndex;
+    let optionIndex = event.target.selectedIndex;
+    //  Test console.
+    // console.log(optionIndex);
+
     //  Select the node (the whole Tag) given the index of a dropdown menu.
-    const optionSelected = event.target.childNodes[optionIndex];
-    const userToAddName = event.target.value;
-    //  Select a Named Attribute of a given node (Tag). In this case, the Tag is the Option selected.
-    const userToAddId = parseInt(optionSelected.getAttribute("userid"));
+    let optionSelected = event.target.childNodes[optionIndex];
+    //  Test console.
+    // console.log(optionSelected);
+    
+    //  Select a Named Attribute (userid) of a given node (similar to HTML Tag). In this case, the node is the Option selected.
+    let userToAddId = parseInt(optionSelected.getAttribute("userid"));
 
-    if (userToAddId) {
-      // console.log("here!");
-      this.setState({
-        userToAdd: this.state.projectUsers.filter(user => {
-          return (user["user.user_id"] === userToAddId);
-        })
-      }, () => {
-        console.log(this.state.userToAdd);
+    this.setState({
+      userToAdd: this.state.projectUsers.filter(user => {
+        return (user["user.user_id"] === userToAddId);
       })
-    }
-
-    // if (userToAddId) {
-    //   this.setState((prevState, props) => {
-    //     return {
-    //       userToAdd: {
-    //         user_id: userToAddId,
-    //         user_name: userToAddName
-    //       }
-    //     }
-    //   });
-    // }
+    }, () => {
+      //  Test console.
+      // console.log(this.state.userToAdd);
+    })
 
   }
 
@@ -107,6 +86,10 @@ class NewTaskModal extends Component {
     // console.log(this.state.userToAdd);
     // console.log(this.state.userToAdd[0]["user.user_id"]);
 
+    if (this.state.userToAdd.length === 0) {
+      return
+    }
+
     let userToSplice = this.state.userToAdd[0]["user.user_id"];
     // console.log(userToSplice);
 
@@ -115,19 +98,22 @@ class NewTaskModal extends Component {
       this.setState({ usersAdded: this.state.usersAdded.concat(this.state.userToAdd) },
         () => {
 
+          // Clears up the "userToAdd" state so clicking again the Add butto without having changed the dropdown menu (by selecting a new User) does not concatenate the previously added user once more.
+          this.setState({ userToAdd: [] });
+
           // Test console.
-          console.log(this.state.usersAdded);
+          // console.log(this.state.usersAdded);
 
           this.setState({
             projectUsers: this.state.projectUsers.filter((user) => {
               // Test console.
-              console.log(user["user.user_id"]);
-              console.log(userToSplice);
+              // console.log(user["user.user_id"]);
+              // console.log(userToSplice);
               return user["user.user_id"] !== userToSplice;
             })
           }, () => {
             // Test console.
-            console.log(this.state.projectUsers);
+            // console.log(this.state.projectUsers);
           })
         })
 
@@ -142,28 +128,33 @@ class NewTaskModal extends Component {
     event.preventDefault();
 
     //  Since it matters where the exact clicking was made, we made sure to add the "userid" attribute to the Button as well as to the Times Icon so we can retrieve it from either one of them.
-    const userToDeleteId = event.target.getAttribute("userid");
+    const userToDeleteId = parseInt(event.target.getAttribute("userid"));
     // Test console.
     // console.log(userToDeleteId);
 
-    const userToReturn = {
-      "user.user_id": parseInt(userToDeleteId),
-      "user.user_name": event.target.getAttribute("value")
-    };
+    // This variable will create the user deleted from the "usersAdded" list to later contatenating it back (thus it needs to be an array) to the "projectUsers" list to render it as available for choosing again.
+    let userToReturn = [];
+
+    userToReturn = this.state.usersAdded.filter((user) => {
+      // Test console.
+      // console.log(userToDeleteId);
+      // console.log(user["user.user_id"]);
+      return user["user.user_id"] === userToDeleteId;
+    });
+
     // Test console.
-    console.log(userToReturn);
+    // console.log(userToReturn);
 
     this.setState({
-      projectUsers: this.state.projectUsers.concat([userToReturn])
-    },
-      () => {
-        // Test console.
-        console.log(this.state.projectUsers);
-      })
+      projectUsers: this.state.projectUsers.concat(userToReturn)
+    }, () => {
+      // Test console.
+      console.log(this.state.projectUsers);
+    })
 
     this.setState({
       usersAdded: this.state.usersAdded.filter((user) => {
-        return user.user_id !== userToDeleteId;
+        return user["user.user_id"] !== userToDeleteId;
       })
     },
       () => {
