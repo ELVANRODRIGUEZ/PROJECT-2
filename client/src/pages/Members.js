@@ -200,7 +200,7 @@ class Members extends Component {
     const users = this.state.projectUsers;
     return (
       <div id="profile">
-        {/*! +++++++++++++++++ NAVBAR +++++++++++++++++ */}
+        {/*! +++++++++++++++++ NAVBAR  will bw updated+++++++++++++++++ */}
         <nav className="navbar  bg-dark navbarTitle">
           {/* Elvan */}
           <p id="userNameBanner" className="navbar-brand"></p>
