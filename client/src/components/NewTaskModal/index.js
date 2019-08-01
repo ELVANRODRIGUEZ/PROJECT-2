@@ -63,7 +63,7 @@ class NewTaskModal extends Component {
     let optionSelected = event.target.childNodes[optionIndex];
     //  Test console.
     // console.log(optionSelected);
-    
+
     //  Select a Named Attribute (userid) of a given node (similar to HTML Tag). In this case, the node is the Option selected.
     let userToAddId = parseInt(optionSelected.getAttribute("userid"));
 
@@ -175,6 +175,43 @@ class NewTaskModal extends Component {
       }
 
     })
+
+  }
+
+  saveNewTask = () => {
+
+    let newTask;
+
+    newTask = {
+      description: this.state.newTaskDescription,
+      deadline: this.state.newTaskDeadline,
+      other_users: JSON.stringify(this.state.usersAdded.map(user => {
+        return user["user.user_id"];
+      }))
+    };
+
+    console.log(newTask);
+
+    // axios
+    //   .post("/api/task/add", categoryData)
+    //   .then(data2 => {
+    //     // Test console.
+    //     // console.log(data2.data);
+
+    //     axios
+    //       .get("/members/info/" +
+    //         this.state.projectSelected +
+    //         "/category/" +
+    //         this.state.categorySelected + "/all_tasks")
+    //       .then(function (data3) {
+
+    //         // console.log(data3.data);
+
+    //       });
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
 
   }
 

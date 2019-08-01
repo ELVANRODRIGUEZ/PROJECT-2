@@ -236,45 +236,45 @@ $(document).on('click', '.taskAddTskUserAdd', function () {
 })
 
 // ---------- Click on Add User for Deleting inside Task Add Modal
-$(document).on('click', '.taskDelTskUserAdd', function () {
-    // Make sure to preventDefault on a submit event.
-    event.preventDefault();
+// $(document).on('click', '.taskDelTskUserAdd', function () {
+//     // Make sure to preventDefault on a submit event.
+//     event.preventDefault();
 
-    var taskForEdit = $(this).attr("task");
+//     var taskForEdit = $(this).attr("task");
 
-    var $taskUserList =
-        $("#" + "task" + taskForEdit + "UserListDel");
-    var userId =
-        $("#" + "task" + taskForEdit +
-            "UsersDel option:selected").attr("userId");
-    var userName =
-        $("#" + "task" + taskForEdit +
-            "UsersDel option:selected").val();
+//     var $taskUserList =
+//         $("#" + "task" + taskForEdit + "UserListDel");
+//     var userId =
+//         $("#" + "task" + taskForEdit +
+//             "UsersDel option:selected").attr("userId");
+//     var userName =
+//         $("#" + "task" + taskForEdit +
+//             "UsersDel option:selected").val();
 
-    var newUser =
-        "<li class='taskUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
+//     var newUser =
+//         "<li class='taskUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
 
-    $taskUserList.append(newUser);
+//     $taskUserList.append(newUser);
 
-    taskUsersToDel.push(userId);
+//     taskUsersToDel.push(userId);
 
-    $(document).on('click', '.taskDelTskUserDel', function () {
-        // Make sure to preventDefault on a submit event.
-        event.preventDefault();
+//     $(document).on('click', '.taskDelTskUserDel', function () {
+//         // Make sure to preventDefault on a submit event.
+//         event.preventDefault();
 
-        if ($(this).attr("task") == taskForEdit) {
+//         if ($(this).attr("task") == taskForEdit) {
 
-            $taskUserList.empty();
+//             $taskUserList.empty();
 
-            taskUsersToDel = [];
-        };
+//             taskUsersToDel = [];
+//         };
 
-    });
+//     });
 
-    // Test console.
-    // console.log(taskUsersToDel);
+//     // Test console.
+//     // console.log(taskUsersToDel);
 
-})
+// })
 
 // ---------- Click on Task Increase Accomplishment Button
 $('.pminus').on('click', function () {
@@ -647,7 +647,7 @@ $("#deleteCategory").on('click', function () {
 // ----------------- Task
 
 // ---------- Get all Users in Add Task Modal 
-$(document).on("click", "#addTaskModal", function (event) {
+// $(document).on("click", "#addTaskModal", function (event) {
 
     // // Empty the list for Project related users.
     // $("#taskUsers").html("");
@@ -680,7 +680,7 @@ $(document).on("click", "#addTaskModal", function (event) {
 
     // });
 
-});
+// });
 
 // ---------- Add a New Task
 $(document).on("click", "#addTask", function (event) {
