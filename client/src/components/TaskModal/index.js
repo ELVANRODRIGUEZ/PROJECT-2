@@ -6,7 +6,7 @@ import Modal from "react-bootstrap/Modal";
 // ================================== Files Dependencies
 import TaskCard from "../TaskCard";
 import NewTaskModal from "../NewTaskModal";
-import axios from "axios";
+// import axios from "axios";
 
 
 class TaskModal extends Component {
@@ -15,14 +15,17 @@ class TaskModal extends Component {
 
     this.state = {
       newTaskModalShow: false,
-      projectUsers: []
+      projectUsers: [],
+      userId: this.props.userId
     };
   }
 
   componentDidUpdate = (prevProps) => {
     // Test console.
     // console.log(prevProps.projectUsers);
+    // console.log(prevProps.userId);
 
+    // Assigns the "state.projectUsers" the "props.projectUsers" value. (So far, it was not possible to just assign the value right from the sarte in the state declaration inside the constructor).
     if(prevProps.projectUsers !== this.props.projectUsers) {
       // Test console.
       // console.log(this.props.projectUsers);
@@ -34,23 +37,24 @@ class TaskModal extends Component {
         
       })
     }
-    // Test console.
-    // console.log(this.state.projectUsers);
+ 
   }
 
+  // Toggle the NewTaskModal inside the TaskModal.
   newTaskModalToggle = () => {
-
+    
     this.state.newTaskModalShow === false ?
-      this.setState({ newTaskModalShow: true })
-      :
-      this.setState({ newTaskModalShow: false })
-
+    this.setState({ newTaskModalShow: true })
+    :
+    this.setState({ newTaskModalShow: false })
+    
   }
-
-  closeAndToggleModals = () => {
+  
+  // Closes the askModal and the NewTaskModal.
+  newTaskModalClose = () => {
 
     this.props.handleClose();
-    this.newTaskModalToggle();
+    this.setState({newTaskModalShow: false});
 
   }
 
@@ -64,7 +68,7 @@ class TaskModal extends Component {
         tabIndex="-1"
         // role="dialog"
         id="taskModal"
-        dialogClassName="elvan-modal"
+        // dialogClassName="elvan-modal"
       // dialogAs="test"
       // bsPrefix="test modal"
       >
@@ -89,7 +93,7 @@ class TaskModal extends Component {
             className="close text-danger"
             dataDismiss="taskModal"
             ariaLabel="Close"
-            onClick={this.closeAndToggleModals}
+            onClick={this.newTaskModalClose}
           >
             <span ariaHidden="true">&times;</span>
           </button>
@@ -100,6 +104,8 @@ class TaskModal extends Component {
           newTaskModalView={this.state.newTaskModalShow}
           projectUsers={this.state.projectUsers}
           newTaskModalToggle={this.newTaskModalToggle}
+          userId = {this.state.userId}
+          renderForNewTasks = {this.props.renderForNewTasks}
         >
         </NewTaskModal>
 

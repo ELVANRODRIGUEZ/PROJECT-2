@@ -19,6 +19,7 @@ class Members extends Component {
       projectSelected: "",
       categorySelected: "",
       userName: "",
+      userId: "",
       projectCardBorder: "",
       taskModalShow: false,
       taskModalView: "none"
@@ -33,7 +34,8 @@ class Members extends Component {
         // console.log(data.data);
         this.setState({
           projectCards: data.data.projects,
-          userName: data.data.user
+          userName: data.data.user,
+          userId: data.data.userId
         });
       })
       .catch(error => {
@@ -93,7 +95,11 @@ class Members extends Component {
         // Test console.
         // console.log(users.data);
 
-        this.setState({ projectUsers: users.data }, () => {
+        this.setState({
+          projectUsers: users.data.filter((user) => {
+            return user["user.user_id"] !== this.state.userId
+          })
+        }, () => {
           // Test console.
           // console.log(users.data);
           // console.log(this.state.projectUsers);
@@ -154,7 +160,7 @@ class Members extends Component {
                 // console.log(data2.data);
 
                 axios
-                  //? This is to get al the Task's Ids from the Selected Project and Category.
+                  //? This is to get all the Task's Ids from the Selected Project and Category.
                   .get("/members/info/" +
                     this.state.projectSelected +
                     "/category/" +
@@ -194,10 +200,48 @@ class Members extends Component {
     this.taskModalShow();
   }
 
-  transferUsersList
+  renderForNewTasks = () => {
+
+    axios
+      //? This is to get the amount of Tasks once a new Task has been added from the NewTaskModal. Project and Category selected are expected to remain the same.
+      .get("/members/info/" + this.state.projectSelected)
+      .then(data => {
+        // Test console.
+        // console.log(data.data);
+
+        this.setState({ categoryCards: data.data.categories });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    axios
+      //? This request is to retrieve the new Task once it has been added from the NewTaskModal.
+      .get(
+        "/members/info/" +
+        this.state.projectSelected +
+        "/category/" +
+        this.state.categorySelected
+      )
+      .then(data => {
+        // Test console.
+        // console.log(data.data.tasks);
+
+        this.setState({ tasksCards: data.data.tasks }, () => {
+
+          // Test console.
+          // console.log(this.state.tasksCards);
+
+        });
+
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+  }
 
   render() {
-    const users = this.state.projectUsers;
     return (
       <div id="profile">
         {/*! +++++++++++++++++ NAVBAR +++++++++++++++++ */}
@@ -473,7 +517,9 @@ class Members extends Component {
           tasksCards={this.state.tasksCards}
           show={this.state.taskModalShow}
           handleClose={this.taskModalClose}
-          projectUsers={users}
+          projectUsers={this.state.projectUsers}
+          userId={this.state.userId}
+          renderForNewTasks = {this.renderForNewTasks}
         />
 
         {/* +++++++++++++++++ JUMBOTRON CONTAINER +++++++++++++++++ */}

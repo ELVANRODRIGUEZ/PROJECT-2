@@ -442,10 +442,10 @@ module.exports = function (app) {
 
         var taskRel = [];
 
-        taskRel.push({
-          task_id: task.id,
-          responsible: req.user.id
-        });
+        // taskRel.push({
+        //   task_id: task.id,
+        //   responsible: req.user.id
+        // });
 
         otherUsers.forEach(function (item) {
 

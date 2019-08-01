@@ -10,7 +10,10 @@ class NewTaskModal extends Component {
   constructor(props) {
     super(props);
 
+    // States.
     this.state = {
+      // Get the logged User's Id from the "props".
+      userId: this.props.userId,
       // Gets whatever is typed on Description Text Area.
       newTaskDescription: "",
       // Gets whatever Date is chosen on Description Text Area.
@@ -25,11 +28,15 @@ class NewTaskModal extends Component {
       stateMouseIcon: "context-menu"
     };
 
+    // Refs.
+    this.NewTaskDesc = React.createRef();
+    this.NewTaskDeadline = React.createRef();
   }
 
   componentDidUpdate = (prevProps) => {
     // Test console.
     // console.log(this.state.projectUsers);
+    // console.log(this.state.userId);
   }
 
   chgDescription = (event) => {
@@ -180,7 +187,7 @@ class NewTaskModal extends Component {
 
   saveNewTask = (event) => {
 
-    event.preventDefault();
+    // event.preventDefault();
 
     let newTask;
 
@@ -189,31 +196,37 @@ class NewTaskModal extends Component {
       deadline: this.state.newTaskDeadline,
       other_users: JSON.stringify(this.state.usersAdded.map(user => {
         return user["user.user_id"];
-      }))
+      }).concat([parseInt(this.state.userId)]))
     };
 
-    console.log(newTask);
+    // Test console.
+    // console.log(newTask);
 
-    // axios
-    //   .post("/api/task/add", categoryData)
-    //   .then(data2 => {
-    //     // Test console.
-    //     // console.log(data2.data);
+    axios
+      .post("/api/task/add", newTask)
+      .then(data => {
+        // Test console.
+        // console.log(data.data);
 
-    //     axios
-    //       .get("/members/info/" +
-    //         this.state.projectSelected +
-    //         "/category/" +
-    //         this.state.categorySelected + "/all_tasks")
-    //       .then(function (data3) {
+        this.NewTaskDesc.current.value = "";
+        this.NewTaskDeadline.current.value = "";
 
-    //         // console.log(data3.data);
+        this.setState({
+          newTaskDescription: "",
+          newTaskDeadline: "",
+          userToAdd: [],
+          usersAdded: [],
+        }, () => {
+          //  Toggles the NewTaskModal.
+          this.props.newTaskModalToggle();
+          //  Rerenders the TaskCards to include the newly created one.
+          this.props.renderForNewTasks();
+        })
 
-    //       });
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
   }
 
@@ -290,6 +303,7 @@ class NewTaskModal extends Component {
                   className="form-control"
                   id="taskDesc"
                   rows="3"
+                  ref={this.NewTaskDesc}
                   onChange={this.chgDescription}
                 ></textarea>
               </div>
@@ -301,6 +315,7 @@ class NewTaskModal extends Component {
                   type="date"
                   name="deadline"
                   id="taskDeadline"
+                  ref={this.NewTaskDeadline}
                   onChange={this.chgDeadline}
                 />
               </div>
@@ -352,10 +367,10 @@ class NewTaskModal extends Component {
             </form>
           </div>
           <div className="modal-footer">
-            <button 
-            className="btn btn-outline-success" 
-            id="addTask"
-            onClick={this.saveNewTask}>
+            <button
+              className="btn btn-outline-success"
+              id="addTask"
+              onClick={this.saveNewTask}>
               Add task!
             </button>
           </div>
