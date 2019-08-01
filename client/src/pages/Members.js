@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import axios from "axios";
 
 // ================================== Files Dependencies
+import Navbar from "../components/Navbar";
 import ProjectCard from "../components/ProjectCard";
 import CategoryCard from "../components/CategoryCard";
 import TaskModal from "../components/TaskModal";
@@ -200,12 +201,13 @@ class Members extends Component {
     const users = this.state.projectUsers;
     return (
       <div id="profile">
-        {/*! +++++++++++++++++ NAVBAR  will bw updated+++++++++++++++++ */}
-        <nav className="navbar  bg-dark navbarTitle">
+{/*! +++++++++++++++++ NAVBAR  Moved to Navbar component+++++++++++++++++ */}
+        <Navbar userName={this.state.userName}/>
+        {/* <nav className="navbar  bg-dark navbarTitle"> */}
           {/* Elvan */}
-          <p id="userNameBanner" className="navbar-brand"></p>
+          {/* <p id="userNameBanner" className="navbar-brand"></p> */}
           {/* Elvan added id="userNameBaner" */}
-          <form className="form-inline">
+          {/* <form className="form-inline">
             <a
               className="btn btn-outline-danger my-2 my-sm-0"
               role="button"
@@ -215,7 +217,7 @@ class Members extends Component {
               Sign Out
             </a>
           </form>
-        </nav>
+        </nav> */}
 
         {/* +++++++++++++++++ MODAL: Delete Modal For Projects +++++++++++++++++ */}
         <div
