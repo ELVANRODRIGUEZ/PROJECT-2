@@ -178,7 +178,9 @@ class NewTaskModal extends Component {
 
   }
 
-  saveNewTask = () => {
+  saveNewTask = (event) => {
+
+    event.preventDefault();
 
     let newTask;
 
@@ -350,7 +352,10 @@ class NewTaskModal extends Component {
             </form>
           </div>
           <div className="modal-footer">
-            <button className="btn btn-outline-success" id="addTask">
+            <button 
+            className="btn btn-outline-success" 
+            id="addTask"
+            onClick={this.saveNewTask}>
               Add task!
             </button>
           </div>

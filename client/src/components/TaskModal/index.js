@@ -20,7 +20,9 @@ class TaskModal extends Component {
   }
 
   componentDidUpdate = (prevProps) => {
+    // Test console.
     // console.log(prevProps.projectUsers);
+
     if(prevProps.projectUsers !== this.props.projectUsers) {
       // Test console.
       // console.log(this.props.projectUsers);

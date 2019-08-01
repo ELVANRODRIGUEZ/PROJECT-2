@@ -683,42 +683,42 @@ $("#deleteCategory").on('click', function () {
 // });
 
 // ---------- Add a New Task
-$(document).on("click", "#addTask", function (event) {
-    // Make sure to preventDefault on a submit event.
-    event.preventDefault();
+// $(document).on("click", "#addTask", function (event) {
+//     // Make sure to preventDefault on a submit event.
+//     event.preventDefault();
 
-    // console.log(projectUsersArr);
+//     // console.log(projectUsersArr);
 
-    var newTask = {
-        description: $("#taskDesc").val(),
-        deadline: $("#taskDeadline").val(),
-        other_users: JSON.stringify(projectUsersArr)
-    };
+//     var newTask = {
+//         description: $("#taskDesc").val(),
+//         deadline: $("#taskDeadline").val(),
+//         other_users: JSON.stringify(projectUsersArr)
+//     };
 
-    // Send the POST request.
-    $.ajax("/api/task/add", {
-        type: "POST",
-        data: newTask
-    }).then(
-        function (data) {
+//     // Send the POST request.
+//     $.ajax("/api/task/add", {
+//         type: "POST",
+//         data: newTask
+//     }).then(
+//         function (data) {
 
-            // console.log(data.task);
+//             // console.log(data.task);
 
-            // Collapse Add Task window.
-            $("#addTaskCollapsWindow").collapse("hide");
+//             // Collapse Add Task window.
+//             $("#addTaskCollapsWindow").collapse("hide");
 
-            // Empty values for Task creation.
-            $("#taskDesc").val("");
-            $("#taskDeadline").val("");
-            $('#taskUserList').empty();
-            projectUsersArr = [];
+//             // Empty values for Task creation.
+//             $("#taskDesc").val("");
+//             $("#taskDeadline").val("");
+//             $('#taskUserList').empty();
+//             projectUsersArr = [];
 
-            // Prepend new Task.
-            $("#modal-container").prepend(data.task);
+//             // Prepend new Task.
+//             $("#modal-container").prepend(data.task);
 
-        });
+//         });
 
-});
+// });
 
 // ---------- Click on Edit Task button inside the Task Card
 $(document).on("click", ".editTaskButton", function (event) {
