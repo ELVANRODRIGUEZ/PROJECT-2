@@ -245,23 +245,8 @@ class Members extends Component {
   render() {
     return (
       <div id="profile">
-{/*! +++++++++++++++++ NAVBAR  Moved to Navbar component+++++++++++++++++ */}
-        <Navbar userName={this.state.userName}/>
-        {/* <nav className="navbar  bg-dark navbarTitle"> */}
-          {/* Elvan */}
-          {/* <p id="userNameBanner" className="navbar-brand"></p> */}
-          {/* Elvan added id="userNameBaner" */}
-          {/* <form className="form-inline">
-            <a
-              className="btn btn-outline-danger my-2 my-sm-0"
-              role="button"
-              aria-disabled="true"
-              href="/logout"
-            >
-              Sign Out
-            </a>
-          </form>
-        </nav> */}
+        {/*! +++++++++++++++++ NAVBAR  Moved to Navbar component+++++++++++++++++ */}
+        <Navbar userName={this.state.userName} />
 
         {/* +++++++++++++++++ MODAL: Delete Modal For Projects +++++++++++++++++ */}
         <div
@@ -521,7 +506,7 @@ class Members extends Component {
           handleClose={this.taskModalClose}
           projectUsers={this.state.projectUsers}
           userId={this.state.userId}
-          renderForNewTasks = {this.renderForNewTasks}
+          renderForNewTasks={this.renderForNewTasks}
         />
 
         {/* +++++++++++++++++ JUMBOTRON CONTAINER +++++++++++++++++ */}

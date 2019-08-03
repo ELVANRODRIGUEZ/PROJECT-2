@@ -25,7 +25,11 @@ class NewTaskModal extends Component {
       // This array will keep all the Users added to be related to the New Task.
       usersAdded: [],
       // Sets the class for the mouse icon for the "over" event for the specified icons.
-      stateMouseIcon: "context-menu"
+      stateMouseIcon: "context-menu",
+      //  For Error Alert display control.
+      display: "none",
+      opacity: "0",
+      errorMessage: ""
     };
 
     // Refs.
@@ -37,6 +41,22 @@ class NewTaskModal extends Component {
     // Test console.
     // console.log(this.state.projectUsers);
     // console.log(this.state.userId);
+  }
+
+  newTaskModalToggle = () => {
+
+    this.setState({
+      newTaskDescription: "",
+      newTaskDeadline: "",
+      userToAdd: [],
+      projectUsers: this.props.projectUsers,
+      usersAdded: [],
+    }, () => {
+      this.NewTaskDesc.current.value = "";
+      this.NewTaskDeadline.current.value = "";
+      this.props.newTaskModalToggle();
+    })
+
   }
 
   chgDescription = (event) => {
@@ -189,45 +209,93 @@ class NewTaskModal extends Component {
 
     // event.preventDefault();
 
-    let newTask;
+    if (this.state.newTaskDescription === "") {
+      this.alertMessage("No Description")
+    } else if (this.state.newTaskDeadline === "") {
+      this.alertMessage("No Deadline")
+    } else {
 
-    newTask = {
-      description: this.state.newTaskDescription,
-      deadline: this.state.newTaskDeadline,
-      other_users: JSON.stringify(this.state.usersAdded.map(user => {
-        return user["user.user_id"];
-      }).concat([parseInt(this.state.userId)]))
+      let newTask;
+
+      newTask = {
+        description: this.state.newTaskDescription,
+        deadline: this.state.newTaskDeadline,
+        other_users: JSON.stringify(this.state.usersAdded.map(user => {
+          return user["user.user_id"];
+        }).concat([parseInt(this.state.userId)]))
+      };
+
+      // Test console.
+      // console.log(newTask);
+
+      axios
+        .post("/api/task/add", newTask)
+        .then(data => {
+          // Test console.
+          // console.log(data.data);
+
+          this.NewTaskDesc.current.value = "";
+          this.NewTaskDeadline.current.value = "";
+
+          this.setState({
+            newTaskDescription: "",
+            newTaskDeadline: "",
+            userToAdd: [],
+            usersAdded: [],
+          }, () => {
+            //  Toggles the NewTaskModal.
+            this.props.newTaskModalToggle();
+            //  Rerenders the TaskCards to include the newly created one.
+            this.props.renderForNewTasks();
+          })
+
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+
+
+  }
+
+  alertMessage = (msg) => {
+
+    if (msg === "No Description") {
+      ;
+      return this.setState({
+        errorMessage: "Please type a Task Description"
+      },
+        () => this.showAlertMessage());
+    } else if (msg === "No Deadline") {
+      return this.setState({
+        errorMessage: "Please type a Task Deadline"
+      },
+        () => this.showAlertMessage());
+    }
+
+  }
+
+  showAlertMessage = () => {
+
+    let opacityRate = 0;
+
+    this.setState({ display: "block" });
+
+    let increase = () => {
+      opacityRate += 0.25;
+      this.setState({ opacity: opacityRate.toString() });
     };
 
-    // Test console.
-    // console.log(newTask);
+    let increaseOpacity = setInterval(increase, 250);
 
-    axios
-      .post("/api/task/add", newTask)
-      .then(data => {
-        // Test console.
-        // console.log(data.data);
-
-        this.NewTaskDesc.current.value = "";
-        this.NewTaskDeadline.current.value = "";
-
-        this.setState({
-          newTaskDescription: "",
-          newTaskDeadline: "",
-          userToAdd: [],
-          usersAdded: [],
-        }, () => {
-          //  Toggles the NewTaskModal.
-          this.props.newTaskModalToggle();
-          //  Rerenders the TaskCards to include the newly created one.
-          this.props.renderForNewTasks();
-        })
-
-      })
-      .catch(error => {
-        console.log(error);
+    setTimeout(() => {
+      this.setState({
+        display: "none",
+        opacity: "0",
+        errorMessage: ""
       });
-
+      clearInterval(increaseOpacity);
+    }, 3000);
   }
 
   render() {
@@ -280,19 +348,20 @@ class NewTaskModal extends Component {
         style={{ margin: "auto", width: "100vh" }}
       >
         <div className="modal-content bg-dark text-white">
+          {/* +++++++++++++++++ HEADER +++++++++++++++++ */}
           <div className="modal-header">
             <h5 className="modal-title">Add new Task</h5>
             <span
               aria-hidden="true"
               style={{ fontSize: "26px", lineHeight: "1", fontWeight: 600, cursor: this.state.stateMouseIcon }}
-              onClick={this.props.newTaskModalToggle}
+              onClick={this.newTaskModalToggle}
               onMouseOver={this.changeMouseIcon}
               onMouseOut={this.changeMouseIcon}
-
             >
               &times;
             </span>
           </div>
+          {/* +++++++++++++++++ BODY +++++++++++++++++ */}
           <div className="card card-body bg-dark text-white">
             <form>
               {/* +++++++++++++++++ New Task Description +++++++++++++++++ */}
@@ -366,8 +435,37 @@ class NewTaskModal extends Component {
               {usersToBeAdded}
             </form>
           </div>
-          <div className="modal-footer">
+          {/* +++++++++++++++++ FOOTER +++++++++++++++++ */}
+          <div
+            className="modal-footer"
+            style={{
+              display: "block",
+              padding: "1.25rem"
+            }}
+          >
+            {/*! +++++++++++++++++ Error Dialog +++++++++++++++++ */}
+            <div
+              style={{
+                transition: "opacity 2s",
+                display: this.state.display,
+                opacity: this.state.opacity,
+                margin: 0
+              }}
+              id="newTaskAlert"
+              className="alert alert-danger"
+              role="alert"
+            >
+              <i className="fa fa-exclamation-circle"></i>
+              <span className="msg">
+                &nbsp; {this.state.errorMessage}
+              </span>
+            </div>
             <button
+              style={{
+                margin: 0,
+                marginTop: "1rem",
+                float: "right"
+              }}
               className="btn btn-outline-success"
               id="addTask"
               onClick={this.saveNewTask}>

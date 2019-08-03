@@ -142,11 +142,6 @@ class Signup extends Component {
     });
   }
 
-
-
-
-
-
   onSubmit = event => {
     event.preventDefault();
     const phoneMask = /^\+?([0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
@@ -206,8 +201,6 @@ class Signup extends Component {
         }
       });
   };
-
-
 
   showAlert = () => {
     let opacityRate = 0;
