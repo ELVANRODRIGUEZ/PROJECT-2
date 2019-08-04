@@ -1,7 +1,11 @@
 .list-group-item {
   line-height: 2.5;
 }
-
+#multiCollapseExample4{
+  height: 400px;
+  overflow:scroll;
+  overflow-x: hidden;
+}
 .messages{
   height: 400px;
   overflow:scroll;
