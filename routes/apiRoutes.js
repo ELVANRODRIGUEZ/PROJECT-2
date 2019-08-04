@@ -24,7 +24,7 @@ module.exports = function (app) {
     console.log("I am here at '/api/login' endpoint");
     // console.log(`Email: ${req.body.email} \nPassword: ${req.body.password}`);
 
-    res.redirect("/members");
+    res.send("Successful");
 
   });
 
@@ -104,7 +104,7 @@ module.exports = function (app) {
 
   });
 
-  // Route for getting all users data but just show part of it.
+  //! Route for getting all users data but just show part of it.
   app.get("/api/all_users", function (req, res) {
 
     // Test console.
@@ -135,7 +135,7 @@ module.exports = function (app) {
         ["user_name", "user"]
       ],
       where: {
-        id: 5
+        id: req.user.id
       },
       include: [{
         model: db.tasks,
@@ -168,7 +168,7 @@ module.exports = function (app) {
         ["user_name", "user"]
       ],
       where: {
-        id: 5
+        id: req.user.id
       },
       include: [{
         model: db.tasks,
@@ -279,7 +279,7 @@ module.exports = function (app) {
   // Creating arrays for Project selected Users (that gets populated when a Project is selected).
   var allProjectUsersId = [];
   // Creating arrays for Task selected Users (that gets populated when a Task is selected).
-  var allTaskUsersId = [];
+  //! var allTaskUsersId = [];
 
   // Route for storing Project and Category here in Server instead of the Client.
   app.post("/api/users-selections", function (req, res) {
@@ -480,11 +480,12 @@ module.exports = function (app) {
   }
 
   // Route for getting all Task Users depending on the Project selected.
-  app.get("/api/project/task/users", function (req, res) {
+  app.get("/api/project/:task/users", function (req, res) {
 
     var userId = req.user.id;
-    var taskId = userSelections.task;
-    allTaskUsersId = [];
+    var taskId = req.params.task;
+    var allTaskUsers = [];
+    var allUsersForAdding = [];
 
     var query =
       'SELECT ' +
@@ -504,129 +505,121 @@ module.exports = function (app) {
       if (err) throw err;
 
       // Test console.
+      console.log(data[0]);
       // console.log(data[0].task_id);
       // console.log(allTaskUsers);
       // console.log(allProjectUsers);
 
-      // Create an array containing all Users for the selected Task (including the logged User).
-      data.forEach(function (item) {
-
-        allTaskUsersId.push(item.user_id);
-
-      })
-
-      // Create an array containing all the Users_id in the Project that can be added to the Task. (including the ones that already belong the it).
-      var forTaskAddingId = [];
-      allProjectUsersId.forEach(function (item) {
-        forTaskAddingId.push(item);
-      })
-
-      // Test console.
-      // console.log(allProjectUsersId);
-
-      // Now we "splice" the users that already belong to the selected Task.
-      allTaskUsersId.forEach(function (tU) {
-        forTaskAddingId.forEach(function (pU) {
-          if (tU == pU) {
-            forTaskAddingId.splice(forTaskAddingId.indexOf(pU), 1);
-          }
-        })
-      })
-
-      var query2 =
-        'SELECT ' +
-        'users.id, ' +
-        'users.user_name ' +
-        'FROM users ' +
-        'WHERE users.id IN (' +
-        allProjectUsersId.toString() + ')';
-
-      connection.query(query2, function (err, data) {
-
-        if (err) throw err;
-
-        // Test console.
-        // console.log(data);
-
-        // We create the final arrays that will store Id's and Names of the Users that are related to the selected Project...
-        var forTaskAddComplete = [];
-        // And to the selected Task.
-        var allTaskUsersComplete = [];
-
-        // Then we populate 'Users available for adding to Task' array with the data retrieved by this query that contains "id" and "user_name". 
-        forTaskAddingId.forEach(function (userId) {
-
-          data.forEach(function (dataId) {
-
-            // We first will select from the "data" array just the id's from the Users available for adding to the Task, that is, the Users that belong to the Project but are do not belong to the Task already.
-            if (userId == dataId.id) {
-
-              forTaskAddComplete
-                .push(dataId);
-
-            }
-
-          })
-
-        });
-
-        // Then we populate the 'Users available for deleting from the Task' array with the data retrieved by this query that contains "id" and "user_name". 
-        allTaskUsersId.forEach(function (userId) {
-
-          data.forEach(function (dataId) {
-
-            // We first will select from the "data" array just the id's from the Users available for deleting from the Task, that is, the Users that belong to the selected Task already.
-            if (userId == dataId.id) {
-
-              allTaskUsersComplete
-                .push(dataId);
-
-            }
-
-          })
-
-        });
-
-        // We will build the HTML for both lists (Users to add and Users to delte from a Task) and then send it as a response.
-        var usersToAddHtml = "";
-        var usersToDeleteHtml = "";
-
-        // for each User in the 'Users to add' array we will call the imported function "userLis.userList" that generate the tags to fill the list on the Front End.
-        forTaskAddComplete
-          .forEach(function (item) {
-
-            usersToAddHtml +=
-              userList.userList(item.id, item.user_name).toString();
-
+      // Create an array containing all Users for the selected Task (including the Session User).
+      allTaskUsers = data.map(user => {
+          return ({
+            user_id: user.user_id,
+            user_name: user.user_name
           });
+      })
 
-        // for each User in the 'Users to delete' array we will call the imported function "userLis.userList" that generate the tags to fill the list on the Front End.
-        allTaskUsersComplete
-          .forEach(function (item) {
+      // Filter Session User to send a clean "ready to use" Users to Add array.
+      forTaskAddingId = allTaskUsers.filter(users => {
+        return users.user_id !== req.user.id;
+      })
 
-            usersToDeleteHtml +=
-              userList.userList(item.id, item.user_name).toString();
+      res.json(forTaskAddingId);
 
-          });
 
-        // Test console.
-        // console.log("=====================");
-        // console.log(usersToAddHtml);
-        // console.log("---------------------");
-        // console.log(usersToDeleteHtml);
-        // console.log("=====================");
+      //   var query2 =
+      //     'SELECT ' +
+      //     'users.id, ' +
+      //     'users.user_name ' +
+      //     'FROM users ' +
+      //     'WHERE users.id IN (' +
+      //     allProjectUsersId.toString() + ')';
 
-        var sentResponse = {
-          usersToAdd: usersToAddHtml,
-          usersToDelete: usersToDeleteHtml
-        };
+      //   connection.query(query2, function (err, data) {
 
-        // Test console.
-        // console.log(forTaskAdding);
+      //     if (err) throw err;
 
-        res.json(sentResponse);
+      //     // Test console.
+      //     // console.log(data);
 
-      });
+      //     // We create the final arrays that will store Id's and Names of the Users that are related to the selected Project...
+      //     var forTaskAddComplete = [];
+      //     // And to the selected Task.
+      //     var allTaskUsersComplete = [];
+
+      //     // Then we populate 'Users available for adding to Task' array with the data retrieved by this query that contains "id" and "user_name". 
+      //     forTaskAddingId.forEach(function (userId) {
+
+      //       data.forEach(function (dataId) {
+
+      //         // We first will select from the "data" array just the id's from the Users available for adding to the Task, that is, the Users that belong to the Project but are do not belong to the Task already.
+      //         if (userId == dataId.id) {
+
+      //           forTaskAddComplete
+      //             .push(dataId);
+
+      //         }
+
+      //       })
+
+      //     });
+
+      //     // Then we populate the 'Users available for deleting from the Task' array with the data retrieved by this query that contains "id" and "user_name". 
+      //     allTaskUsersId.forEach(function (userId) {
+
+      //       data.forEach(function (dataId) {
+
+      //         // We first will select from the "data" array just the id's from the Users available for deleting from the Task, that is, the Users that belong to the selected Task already.
+      //         if (userId == dataId.id) {
+
+      //           allTaskUsersComplete
+      //             .push(dataId);
+
+      //         }
+
+      //       })
+
+      //     });
+
+      //     // We will build the HTML for both lists (Users to add and Users to delte from a Task) and then send it as a response.
+      //     var usersToAddHtml = "";
+      //     var usersToDeleteHtml = "";
+
+      //     // for each User in the 'Users to add' array we will call the imported function "userLis.userList" that generate the tags to fill the list on the Front End.
+      //     forTaskAddComplete
+      //       .forEach(function (item) {
+
+      //         usersToAddHtml +=
+      //           userList.userList(item.id, item.user_name).toString();
+
+      //       });
+
+      //     // for each User in the 'Users to delete' array we will call the imported function "userLis.userList" that generate the tags to fill the list on the Front End.
+      //     allTaskUsersComplete
+      //       .forEach(function (item) {
+
+      //         usersToDeleteHtml +=
+      //           userList.userList(item.id, item.user_name).toString();
+
+      //       });
+
+      //     // Test console.
+      //     // console.log("=====================");
+      //     // console.log(usersToAddHtml);
+      //     // console.log("---------------------");
+      //     // console.log(usersToDeleteHtml);
+      //     // console.log("=====================");
+
+      //     var sentResponse = {
+      //       usersToAdd: usersToAddHtml,
+      //       usersToDelete: usersToDeleteHtml
+      //     };
+
+      //     // Test console.
+      //     // console.log(forTaskAdding);
+
+      //     res.json(sentResponse);
+
+      //   });
 
     });
 

@@ -10,6 +10,11 @@ const cors = require("cors");
 const PORT = process.env.PORT || 3300;
 const db = require("./models").db;
 
+// Serve up static assets (usually on heroku)
+if (process.env.NODE_ENV === "production") {
+ app.use(express.static(path.join(__dirname, "/client/build")));
+}
+
 // Middleware
 /* 
 ! ===================== React Change
@@ -26,7 +31,7 @@ var bodyParser = require('body-parser') // Importing "body-parser" nmp package f
 app.use(bodyParser.urlencoded({ extended: false })) //  Using it as shown.
 */
 
-app.use(express.static(path.join(__dirname, "/client/public"))); //? New
+// app.use(express.static(path.join(__dirname, "/client/public"))); //? New
 app.use(express.json());
 app.use(cors());  // This ensures access from client requests to backend endpoints.
 

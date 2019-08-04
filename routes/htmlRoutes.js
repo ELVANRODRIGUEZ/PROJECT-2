@@ -51,19 +51,19 @@ module.exports = function(app) {
 
   // Here we've add our isAuthenticated middleware to this route.
   // If a user who is not logged in tries to access this route they will be redirected to the signup page
-  app.get("/members", isAuthenticated, function(req, res) {
-    console.log("I am here at '/members' endpoint.");
-    if (req.user) {
+  // app.get("/members", isAuthenticated, function(req, res) {
+  //   console.log("I am here at '/members' endpoint.");
+  //   if (req.user) {
 
-      res.send("Successful");
+  //     res.send("Successful");
       
-    } else {
+  //   } else {
       
-      res.send("Not logged");
+  //     res.send("Not logged");
 
-    }
+  //   }
     
-  });
+  // });
 
   app.get("/members/info", isAuthenticated, function(req, res) {
     // Test console.

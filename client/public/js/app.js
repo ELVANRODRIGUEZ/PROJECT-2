@@ -195,45 +195,45 @@ $('#categoryDel').on('click', function () {
 // })
 
 // ---------- Click on Add User for Adding inside Task Edit Modal
-$(document).on('click', '.taskAddTskUserAdd', function () {
-    // Make sure to preventDefault on a submit event.
-    event.preventDefault();
+// $(document).on('click', '.taskAddTskUserAdd', function () {
+//     // Make sure to preventDefault on a submit event.
+//     event.preventDefault();
 
-    var taskForEdit = $(this).attr("task");
+//     var taskForEdit = $(this).attr("task");
 
-    var $taskUserList =
-        $("#" + "task" + taskForEdit + "UserList");
-    var userId =
-        $("#" + "task" + taskForEdit +
-            "Users option:selected").attr("userId");
-    var userName =
-        $("#" + "task" + taskForEdit +
-            "Users option:selected").val();
+//     var $taskUserList =
+//         $("#" + "task" + taskForEdit + "UserList");
+//     var userId =
+//         $("#" + "task" + taskForEdit +
+//             "Users option:selected").attr("userId");
+//     var userName =
+//         $("#" + "task" + taskForEdit +
+//             "Users option:selected").val();
 
-    var newUser =
-        "<li class='taskUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
+//     var newUser =
+//         "<li class='taskUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
 
-    $taskUserList.append(newUser);
+//     $taskUserList.append(newUser);
 
-    taskUsersToAdd.push(userId);
+//     taskUsersToAdd.push(userId);
 
-    $(document).on('click', '.taskAddTskUserDel', function () {
-        // Make sure to preventDefault on a submit event.
-        event.preventDefault();
+//     $(document).on('click', '.taskAddTskUserDel', function () {
+//         // Make sure to preventDefault on a submit event.
+//         event.preventDefault();
 
-        if ($(this).attr("task") == taskForEdit) {
+//         if ($(this).attr("task") == taskForEdit) {
 
-            $taskUserList.empty();
+//             $taskUserList.empty();
 
-            taskUsersToAdd = [];
-        };
+//             taskUsersToAdd = [];
+//         };
 
-    });
+//     });
 
-    // Test console.
-    // console.log(taskUsersToAdd);
+//     // Test console.
+//     // console.log(taskUsersToAdd);
 
-})
+// })
 
 // ---------- Click on Add User for Deleting inside Task Add Modal
 // $(document).on('click', '.taskDelTskUserAdd', function () {
@@ -721,240 +721,240 @@ $("#deleteCategory").on('click', function () {
 // });
 
 // ---------- Click on Edit Task button inside the Task Card
-$(document).on("click", ".editTaskButton", function (event) {
+// $(document).on("click", ".editTaskButton", function (event) {
 
-    var taskSelected = $(this).attr("task");
+//     var taskSelected = $(this).attr("task");
 
-    // Test console.
-    // console.log(taskSelected);
+//     // Test console.
+//     // console.log(taskSelected);
 
-    // Close all "editTask" collapse windows.
+//     // Close all "editTask" collapse windows.
 
-    // Select all "editTask" buttons which "task" attribute does not match the clicked one and set "aria-expanded" attribute to "false" and add the "collapsed" class.
-    $(".editTaskButton[task != " + taskSelected + "]")
-        .attr("aria-expanded", "false")
-        .addClass("collapsed");
+//     // Select all "editTask" buttons which "task" attribute does not match the clicked one and set "aria-expanded" attribute to "false" and add the "collapsed" class.
+//     $(".editTaskButton[task != " + taskSelected + "]")
+//         .attr("aria-expanded", "false")
+//         .addClass("collapsed");
 
-    // Select all "editTask" collapse window which "task" attribute does not match the clicked one and remove the "show" class to collapse it.
-    $(".editTaskCollapse[task != " + taskSelected + "]")
-        .removeClass("show");
+//     // Select all "editTask" collapse window which "task" attribute does not match the clicked one and remove the "show" class to collapse it.
+//     $(".editTaskCollapse[task != " + taskSelected + "]")
+//         .removeClass("show");
 
-    // Remove probable content in the "AddUsers" and "DeleteUsers" lists.
-    $(".taskUsersAddList")
-        .html("");
-    $(".taskUsersDelList")
-        .html("");
+//     // Remove probable content in the "AddUsers" and "DeleteUsers" lists.
+//     $(".taskUsersAddList")
+//         .html("");
+//     $(".taskUsersDelList")
+//         .html("");
 
-    // Remove probable content in the "AddUsers" and "DeleteUsers" arrays.
-    taskUsersToAdd = [];
-    taskUsersToDel = [];
+//     // Remove probable content in the "AddUsers" and "DeleteUsers" arrays.
+//     taskUsersToAdd = [];
+//     taskUsersToDel = [];
 
-    // Create selectors for Add and Delete Dropdown Lists.
-    var $taskUsers =
-        $("#" + "task" + taskSelected + "Users");
-    var $taskUsersDel =
-        $("#" + "task" + taskSelected + "UsersDel");
+//     // Create selectors for Add and Delete Dropdown Lists.
+//     var $taskUsers =
+//         $("#" + "task" + taskSelected + "Users");
+//     var $taskUsersDel =
+//         $("#" + "task" + taskSelected + "UsersDel");
 
-    // Empty Description and Deadline fields.
-    $("#" + "editTask" + taskSelected + "Description")
-    .val("");
-    $("#" + "editTask" + taskSelected + "Deadline")
-    .val("");
+//     // Empty Description and Deadline fields.
+//     $("#" + "editTask" + taskSelected + "Description")
+//     .val("");
+//     $("#" + "editTask" + taskSelected + "Deadline")
+//     .val("");
 
-    // Empty the select list for Project related users.
-    $("#" + "task" + taskSelected + "Users").html("");
-    $("#" + "task" + taskSelected + "UsersDel").html("");
+//     // Empty the select list for Project related users.
+//     $("#" + "task" + taskSelected + "Users").html("");
+//     $("#" + "task" + taskSelected + "UsersDel").html("");
 
-    // Empty the list array for Project related users.
-    projectUsersArr = [];
+//     // Empty the list array for Project related users.
+//     projectUsersArr = [];
 
-    // Send the GET request.
-    $.get("/api/project_users", function (data) {
+//     // Send the GET request.
+//     $.get("/api/project_users", function (data) {
 
-        // console.log(data);
+//         // console.log(data);
 
-        // Create the HTML containers for the lists.
-        var usersToAdd = "<option selected>Select User</option> ";
-        var usersToDelete = "<option selected>Select User</option> ";
+//         // Create the HTML containers for the lists.
+//         var usersToAdd = "<option selected>Select User</option> ";
+//         var usersToDelete = "<option selected>Select User</option> ";
 
-        $.ajax({
-            url: "/api/users-selections",
-            method: "POST",
-            data: {
-                task: taskSelected
-            }
-        }).then(function (Selections) {
+//         $.ajax({
+//             url: "/api/users-selections",
+//             method: "POST",
+//             data: {
+//                 task: taskSelected
+//             }
+//         }).then(function (Selections) {
 
-            // Test console.
-            // console.log(Selections);
+//             // Test console.
+//             // console.log(Selections);
 
-            $.get("/api/project/task/users", function (users) {
+//             $.get("/api/project/task/users", function (users) {
 
-                // Test console.
-                // console.log(users.usersToAdd);
-                // console.log(users.usersToDelete);
+//                 // Test console.
+//                 // console.log(users.usersToAdd);
+//                 // console.log(users.usersToDelete);
 
-                // Add the data response to the HTML containers.
-                usersToAdd += users.usersToAdd;
-                usersToDelete += users.usersToDelete;
+//                 // Add the data response to the HTML containers.
+//                 usersToAdd += users.usersToAdd;
+//                 usersToDelete += users.usersToDelete;
 
-                // Add the complete HTML code to the Users lists.
-                $taskUsers.html(usersToAdd);
-                $taskUsersDel.html(usersToDelete);
+//                 // Add the complete HTML code to the Users lists.
+//                 $taskUsers.html(usersToAdd);
+//                 $taskUsersDel.html(usersToDelete);
 
-            });
+//             });
 
-        });
+//         });
 
 
 
-    });
+//     });
 
-});
+// });
 
 // ---------- Click on Accept Edition button inside the Task Card Edit Modal
-$(document).on("click", ".acceptEdition", function (event) {
+// $(document).on("click", ".acceptEdition", function (event) {
 
-    // Test console.
-    // console.log(taskUsersToAdd);
-    // console.log(taskUsersToDel);
+//     // Test console.
+//     // console.log(taskUsersToAdd);
+//     // console.log(taskUsersToDel);
 
-    var taskId = $(this).attr("task");
+//     var taskId = $(this).attr("task");
 
-    var taskDescription =
-        $("#" + "editTask" + taskId + "Description").val();
-    var taskDeadline =
-        $("#" + "editTask" + taskId + "Deadline").val();
-
-
-    // Test data.
-    // taskDescription = "Have trucks to extract excavation soil.";
-    // taskDeadline = "2019-07-30";
-    // -------------------
-    // taskDescription = "Task decription changes test.";
-    // taskDeadline = "2019-01-01";
-
-    var taskEdit = {
-        description: taskDescription,
-        deadline: taskDeadline
-    };
-
-    // Send the PUT request.
-    $.ajax("/api/project/task/" + taskId, {
-        type: "PUT",
-        data: taskEdit
-    }).then(
-        function (data) {
-
-            // Test console.
-            // console.log(data);
-
-            if (taskUsersToAdd.length > 0) {
-
-                var taskResp = [];
-
-                taskUsersToAdd.forEach(function (item) {
-
-                    taskResp.push({
-                        task_id: taskId.toString(),
-                        responsible: item.toString()
-                    });
-
-                });
-
-                var sentData = JSON.stringify(taskResp)
-
-                // Test console.
-                // console.log(taskResp);
-
-                // Send the POST request.
-                $.ajax({
-                    url: "/api/project/task/responsible/" + taskId,
-                    type: "POST",
-                    data: {
-                        data: sentData
-                    }
-                }).then(
-                    function (data) {
-
-                        // Test console.
-                        // console.log(data);
-
-                        var taskSelected = $(this).attr("task");
-
-                        // Test console.
-                        // console.log(taskSelected);
-
-                        // Close "editTask" collapse windows.
-
-                        // Select the "editTask" button which "task" attribute matches the clicked one and set "aria-expanded" attribute to "false" and add the "collapsed" class.
-                        $(".editTaskButton[task = " + taskId + "]")
-                            .attr("aria-expanded", "false")
-                            .addClass("collapsed");
-
-                        // Select the "editTask" button which "task" attribute matches the clicked one and remove the "show" class to collapse it.
-                        $(".editTaskCollapse[task = " + taskId + "]")
-                            .removeClass("show");
-
-                    });
-
-            } else {
-
-                // Close "editTask" collapse windows.
-
-                // Select the "editTask" button which "task" attribute matches the clicked one and set "aria-expanded" attribute to "false" and add the "collapsed" class.
-                $(".editTaskButton[task = " + taskId + "]")
-                    .attr("aria-expanded", "false")
-                    .addClass("collapsed");
-
-                // Select the "editTask" button which "task" attribute matches the clicked one and remove the "show" class to collapse it.
-                $(".editTaskCollapse[task = " + taskId + "]")
-                    .removeClass("show");
-
-            }
-
-            if (taskUsersToDel.length > 0) {
-
-                // var taskRespDel = [];
-
-                // taskUsersToDel.forEach(function (item) {
-
-                //     taskRespDel.push(item);
-
-                // });
-
-                var sentData2 = JSON.stringify(taskUsersToDel)
-
-                // Test console.
-                // console.log(taskUsersToDel);
-
-                // Send the DELETE request.
-                $.ajax({
-                    url: "/api/project/task/responsible/delete/" + taskId,
-                    type: "DELETE",
-                    data: {
-                        data: sentData2
-                    }
-                }).then(
-                    function (data) {
-
-                        // Test console.
-                        // console.log(data);
-
-                        if (data == "Reload Page") {
-
-                            location.reload();
-
-                        }
-
-                    });
-
-            }
+//     var taskDescription =
+//         $("#" + "editTask" + taskId + "Description").val();
+//     var taskDeadline =
+//         $("#" + "editTask" + taskId + "Deadline").val();
 
 
-        });
+//     // Test data.
+//     // taskDescription = "Have trucks to extract excavation soil.";
+//     // taskDeadline = "2019-07-30";
+//     // -------------------
+//     // taskDescription = "Task decription changes test.";
+//     // taskDeadline = "2019-01-01";
 
-});
+//     var taskEdit = {
+//         description: taskDescription,
+//         deadline: taskDeadline
+//     };
+
+//     // Send the PUT request.
+//     $.ajax("/api/project/task/" + taskId, {
+//         type: "PUT",
+//         data: taskEdit
+//     }).then(
+//         function (data) {
+
+//             // Test console.
+//             // console.log(data);
+
+//             if (taskUsersToAdd.length > 0) {
+
+//                 var taskResp = [];
+
+//                 taskUsersToAdd.forEach(function (item) {
+
+//                     taskResp.push({
+//                         task_id: taskId.toString(),
+//                         responsible: item.toString()
+//                     });
+
+//                 });
+
+//                 var sentData = JSON.stringify(taskResp)
+
+//                 // Test console.
+//                 // console.log(taskResp);
+
+//                 // Send the POST request.
+//                 $.ajax({
+//                     url: "/api/project/task/responsible/" + taskId,
+//                     type: "POST",
+//                     data: {
+//                         data: sentData
+//                     }
+//                 }).then(
+//                     function (data) {
+
+//                         // Test console.
+//                         // console.log(data);
+
+//                         var taskSelected = $(this).attr("task");
+
+//                         // Test console.
+//                         // console.log(taskSelected);
+
+//                         // Close "editTask" collapse windows.
+
+//                         // Select the "editTask" button which "task" attribute matches the clicked one and set "aria-expanded" attribute to "false" and add the "collapsed" class.
+//                         $(".editTaskButton[task = " + taskId + "]")
+//                             .attr("aria-expanded", "false")
+//                             .addClass("collapsed");
+
+//                         // Select the "editTask" button which "task" attribute matches the clicked one and remove the "show" class to collapse it.
+//                         $(".editTaskCollapse[task = " + taskId + "]")
+//                             .removeClass("show");
+
+//                     });
+
+//             } else {
+
+//                 // Close "editTask" collapse windows.
+
+//                 // Select the "editTask" button which "task" attribute matches the clicked one and set "aria-expanded" attribute to "false" and add the "collapsed" class.
+//                 $(".editTaskButton[task = " + taskId + "]")
+//                     .attr("aria-expanded", "false")
+//                     .addClass("collapsed");
+
+//                 // Select the "editTask" button which "task" attribute matches the clicked one and remove the "show" class to collapse it.
+//                 $(".editTaskCollapse[task = " + taskId + "]")
+//                     .removeClass("show");
+
+//             }
+
+//             if (taskUsersToDel.length > 0) {
+
+//                 // var taskRespDel = [];
+
+//                 // taskUsersToDel.forEach(function (item) {
+
+//                 //     taskRespDel.push(item);
+
+//                 // });
+
+//                 var sentData2 = JSON.stringify(taskUsersToDel)
+
+//                 // Test console.
+//                 // console.log(taskUsersToDel);
+
+//                 // Send the DELETE request.
+//                 $.ajax({
+//                     url: "/api/project/task/responsible/delete/" + taskId,
+//                     type: "DELETE",
+//                     data: {
+//                         data: sentData2
+//                     }
+//                 }).then(
+//                     function (data) {
+
+//                         // Test console.
+//                         // console.log(data);
+
+//                         if (data == "Reload Page") {
+
+//                             location.reload();
+
+//                         }
+
+//                     });
+
+//             }
+
+
+//         });
+
+// });
 
 // ---------- Click on Accept Taks Deletion
 $(document).on("click", ".eraseOneTask", function (event) {

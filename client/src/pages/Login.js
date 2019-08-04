@@ -41,14 +41,9 @@ class Login extends Component {
       .post("/api/login", userData)
       .then(res => {
         if ((res = "Successful")) {
-          window.location = "/members";
+          this.props.history.push("/members")
         } else {
-          // console.log(res);
-          // this.setState({ style: { display: "block", opacity: "0" } });
-          // setTimeout(function() {
-          //   console.log("hola");
-          //   this.setState({ style: { display: "block", opacity: "1" } });
-          // }, 2000);
+          this.props.history.push("/")
         }
       })
       .catch(err => {
