@@ -118,6 +118,8 @@ class TaskModal extends Component {
               taskId={task.task_id}
               projectUsers={this.props.projectUsers}
               userId={this.state.userId}
+              // userName={}
+              // userEmail={}
               taskDescription={task.task_description}
               taskDeadline={task.task_deadline}
               taskAccomplished={task.task_accomplished}

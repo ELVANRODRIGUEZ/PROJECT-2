@@ -21,6 +21,7 @@ class Members extends Component {
       categorySelected: "",
       userName: "",
       userId: "",
+      userMail: "",
       projectCardBorder: "",
       taskModalShow: false,
       taskModalView: "none"
@@ -32,7 +33,7 @@ class Members extends Component {
       .get("/members/info")
       .then(data => {
         // Test console.
-        // console.log(data.data);
+        console.log(data.data);
         this.setState({
           projectCards: data.data.projects,
           userName: data.data.user,

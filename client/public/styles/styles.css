@@ -1,6 +1,19 @@
 .list-group-item {
   line-height: 2.5;
 }
+#multiCollapseExample4{
+  height: 400px;
+  overflow:scroll;
+  overflow-x: hidden;
+}
+.messages{
+  height: 400px;
+  overflow:scroll;
+  overflow-x: hidden;
+}
+.container{ margin:auto;}
+img{ max-width:10%;
+  border-radius: 50%;}
 
 select{margin:5px;}
 /* form.signup, form.login {

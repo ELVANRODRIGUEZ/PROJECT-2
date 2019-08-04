@@ -114,5 +114,7 @@ db.Sequelize = Sequelize;
 module.exports = {
   "Op": Op,
   "db": db,
-  "connection": connection
+  "connection": connection,
+  Chats: require("./mongo/chats"),
+  Mails: require("./mongo/mails")
 }
