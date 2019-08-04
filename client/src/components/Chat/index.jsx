@@ -78,14 +78,14 @@ class Chat extends React.Component {
     if (this.props.taskUsersIds !== prevProps.taskUsersIds) {
       //  Test console.
       //  Selected Task Id.
-      console.log(`From the Chat: ${this.props.taskId}`);
-      //  Logged User Name.
-      console.log(`From the Chat: ${this.props.userName}`);
+      // console.log(`From the Chat: ${this.props.taskId}`);
+      // //  Logged User Name.
+      // console.log(`From the Chat: ${this.props.userName}`);
       //  This will show all the Task Users except for the logged user.
-      console.log("From the Chat:");
-      console.log(this.props.taskUsers);
+      // console.log("From the Chat:");
+      // console.log(this.props.taskUsers);
       //  This will show all the Task Users Ids including the logged user.
-      console.log(`From the Chat: ${this.props.taskUsersIds}`);
+      // console.log(`From the Chat: ${this.props.taskUsersIds}`);
     }
   };
 

@@ -153,8 +153,8 @@ class TaskCard extends Component {
             taskId={this.props.taskId}
             projectUsers={this.props.projectUsers}
             userId={this.props.userId}
-            taskUsers=""
-            taskPotentialUsers=""
+            taskUsers={this.state.taskUsers}
+            notTaskUsers={this.state.notTaskUsers}
             taskDescription={this.props.taskDescription}
             taskDeadline={this.props.taskDeadline}
           ></EditTaskModal>
