@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import API from "../../utils/API";
 import axios from 'axios';
-import MailRetrieve from "../MailRetrieve"
+
+
 
 class MailForm extends Component {
 
@@ -22,27 +23,28 @@ class MailForm extends Component {
 
         axios({
             method: "POST",
-            url: "http://localhost:3002/send",
+            url: "/send",
             data: mailData
         })
-        .then((response) => {
-            console.log(response.data);
-            if (response.data.msg === 'success') {
-                //Save mail
-                API.saveMail(mailData)
-                    .then(() => {
-                        console.log("Mail Saved");
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
-                alert("Message Sent.");
+            .then((response) => {
+                console.log(response.data);
+                if (response.data.msg === 'success') {
+                    //Save mail
+                    console.log(mailData)
+                    API.saveMail(mailData)
+                        .then(() => {
+                            console.log("Mail Saved");
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                    alert("Message Sent.");
 
-                this.resetForm()
-            } else if (response.data.msg === 'fail') {
-                alert("Message failed to send.")
-            }
-        });
+                    this.resetForm()
+                } else if (response.data.msg === 'fail') {
+                    alert("Message failed to send.")
+                }
+            });
     }
 
     resetForm() {
@@ -70,8 +72,6 @@ class MailForm extends Component {
                         <button type="submit" className="btn btn-primary">Submit</button>
                     </form>
                 </div>
-                <br></br>
-                <MailRetrieve />
             </div>
         )
     }

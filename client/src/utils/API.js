@@ -9,4 +9,12 @@ export default {
   getSavedChats(taskId) {
     return axios.get(`/api/chat/${taskId}`);
   },
+
+  saveMail(mailData) {
+    console.log(mailData)
+    return axios.post("/api/mail", mailData);
+  },
+  getSavedMails(taskId) {
+    return axios.get(`/api/mail/${taskId}`);
+  },
 };

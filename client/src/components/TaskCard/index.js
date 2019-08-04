@@ -1,5 +1,7 @@
 // ================================== Packages Dependencies
 import React, { Component } from "react";
+import MailForm from "../Mail";
+import MailRetrieve from "../MailRetrieve"
 import Moment from "react-moment";
 import Chat from "../Chat";
 class TaskCard extends Component {
@@ -306,63 +308,20 @@ class TaskCard extends Component {
                             <div className='collapse' id='multiCollapseExample2'>
                                <Chat/>
                             </div>
+                            {/* ----email Form------ */}
                             <div className='collapse' id='multiCollapseExample3'>
                                 <div className='card card-body bg-dark'>
                                     <div className='container'>
-                                        <form>
-                                            <div className='form-group'>
-                                                <label for='exampleFormControlInput1'>Email address</label>
-                                                <input type='email' className='form-control' id='exampleFormControlInput1'
-                                                    placeholder='name@example.com' />
-                                            </div>
-                                            <div className='form-group'>
-                                                <label for='exampleFormControlInput1'>Subject</label>
-                                                <input type='text' className='form-control' id='exampleFormControlInput1'
-                                                    placeholder='Subject' />
-                                            </div>
-                                            <div className='form-group'>
-                                                <label for='exampleFormControlTextarea1'>Example textarea</label>
-                                                <textarea type='text' className='form-control' id='exampleFormControlTextarea1'
-                                                    rows='3'></textarea>
-                                            </div>
-                                        </form>
+                                    <MailForm/>
                                     </div>
                                 </div>
                             </div>
+                               {/* ----email retrieve---- */}
                             <div className='collapse' id='multiCollapseExample4'>
                                 <div className='card card-body bg-dark'>
                                     <div className='container'>
                                         <div className='list-group'>
-                                            <a href='#' className='list-group-item list-group-item-action'>
-                                                <div className='d-flex w-100 justify-content-between'>
-                                                    <h5 className='mb-1'>List group item heading</h5>
-                                                    <small>3 days ago</small>
-                                                </div>
-                                                <p className='mb-1'>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam
-                                                    eget risus
-                                        varius blandit.</p>
-                                                <small>Donec id elit non mi porta.</small>
-                                            </a>
-                                            <a href='#' className='list-group-item list-group-item-action'>
-                                                <div className='d-flex w-100 justify-content-between'>
-                                                    <h5 className='mb-1'>List group item heading</h5>
-                                                    <small className='text-muted'>3 days ago</small>
-                                                </div>
-                                                <p className='mb-1'>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam
-                                                    eget risus
-                                        varius blandit.</p>
-                                                <small className='text-muted'>Donec id elit non mi porta.</small>
-                                            </a>
-                                            <a href='#' className='list-group-item list-group-item-action'>
-                                                <div className='d-flex w-100 justify-content-between'>
-                                                    <h5 className='mb-1'>List group item heading</h5>
-                                                    <small className='text-muted'>3 days ago</small>
-                                                </div>
-                                                <p className='mb-1'>Donec id elit non mi porta gravida at eget metus. Maecenas sed diam
-                                                    eget risus
-                                        varius blandit.</p>
-                                                <small className='text-muted'>Donec id elit non mi porta.</small>
-                                            </a>
+                                        <MailRetrieve/>
                                         </div>
                                     </div>
                                 </div>

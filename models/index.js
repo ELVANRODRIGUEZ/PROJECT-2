@@ -115,6 +115,9 @@ module.exports = {
   "Op": Op,
   "db": db,
   "connection": connection,
+<<<<<<< HEAD
   Chats: require("./mongo/chats"),
+=======
+>>>>>>> 1bb955dbcf87d0cf110d7758a8b199e00df26648
   Mails: require("./mongo/mails")
 }

@@ -13,6 +13,10 @@ module.exports = {
   },
 
   saveMail(req, res) {
+<<<<<<< HEAD
+=======
+    console.log(req.body)
+>>>>>>> 1bb955dbcf87d0cf110d7758a8b199e00df26648
     mongo.Mails.create(req.body)
       .then(mongoMails => res.json(mongoMails))
       .catch((err) => {
