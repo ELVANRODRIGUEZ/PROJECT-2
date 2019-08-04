@@ -1,6 +1,7 @@
 // ================================== Packages Dependencies
 import React, { Component } from "react";
 import Moment from "react-moment";
+import axios from "axios";
 
 // ================================== Files Dependencies
 import MailForm from "../Mail";
@@ -13,7 +14,10 @@ class TaskCard extends Component {
     super(props);
 
     this.state = {
-      taskId: this.props.taskId,
+      //  This stores the available Users for deletion that will be rendered in the dropdown list.
+      taskUsers: [],
+      taskUsersIds: [],
+      notTaskUsers: [],
       // For toggling the EditTaskModal window.
       editTaskModalShow: false
     };
@@ -21,6 +25,61 @@ class TaskCard extends Component {
     // This is how we define an attribute inside a class:
     this.timeRemaing = new Date(this.props.taskDeadline) - new Date();
   }
+
+  componentDidMount = prevProps => {
+    //  Test console.
+    // console.log(this.props.projectUsers);
+
+    this.getUsers();
+  };
+
+  getUsers = () => {
+    axios
+      .get(`/api/project/${this.props.taskId}/users`)
+      .then(users => {
+        //  Test console.
+        // console.log(users.data);
+
+        this.setState({ taskUsers: users.data }, () => {
+          //  Test console.
+          // console.log(this.state.taskUsers);
+
+          this.setState(
+            {
+              taskUsersIds: this.state.taskUsers
+                .map(user => {
+                  return user.user_id;
+                })
+                .concat([this.props.userId])
+            },
+            () => {
+              //  Test console.
+              // console.log(this.state.taskUsersIds);
+
+              axios
+                .post(`/api/${this.props.projectId}/users`, {
+                  usersIds: this.state.taskUsersIds
+                })
+                .then(users2 => {
+                  //  Test console.
+                  // console.log(users.data);
+
+                  this.setState({ notTaskUsers: users2.data }, () => {
+                    //  Test console.
+                    // console.log(this.state.notTaskUsers);
+                  });
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            }
+          );
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   // Toggle the NewTaskModal inside the TaskModal.
   editTaskModalToggle = () => {
@@ -228,14 +287,27 @@ class TaskCard extends Component {
 
               {/* ---- Chat Form------ */}
               <div className="collapse" id="multiCollapseExample2">
-                <Chat />
+                <Chat
+                  taskId={this.props.taskId}
+                  userName={this.props.userName}
+                  taskUsers={this.state.taskUsers}
+                  taskUsersIds={this.state.taskUsersIds}
+                />
               </div>
 
               {/* ----email Form------ */}
               <div className="collapse" id="multiCollapseExample3">
                 <div className="card card-body bg-dark">
                   <div className="container">
-                    <MailForm />
+                    {/* {console.log(this.state.taskUsers)} */}
+                    {/* {console.log(this.state.taskUsersIds)} */}
+                    <MailForm
+                      taskId={this.props.taskId}
+                      userName={this.props.userName}
+                      userEmail={this.props.userEmail}
+                      taskUsers={this.state.taskUsers}
+                      taskUsersIds={this.state.taskUsersIds}
+                    />
                   </div>
                 </div>
               </div>
@@ -244,7 +316,7 @@ class TaskCard extends Component {
                 <div className="card card-body bg-dark">
                   <div className="container">
                     <div className="list-group">
-                      <MailRetrieve />
+                      <MailRetrieve taskId={this.props.taskId} />
                     </div>
                   </div>
                 </div>

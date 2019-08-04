@@ -115,11 +115,12 @@ class TaskModal extends Component {
           {this.props.tasksCards.map((task) => {
             return (<TaskCard
               key={task.task_id}
+              projectId={task.project_id}
               taskId={task.task_id}
               projectUsers={this.props.projectUsers}
               userId={this.state.userId}
-              // userName={}
-              // userEmail={}
+              userName={this.props.userName}
+              userEmail={this.props.userEmail}
               taskDescription={task.task_description}
               taskDeadline={task.task_deadline}
               taskAccomplished={task.task_accomplished}

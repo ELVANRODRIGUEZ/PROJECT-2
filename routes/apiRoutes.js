@@ -625,6 +625,55 @@ module.exports = function (app) {
 
   })
 
+  // Route for getting all users that are releted to the selected Project but filtering out the already existing ones related to the selected Task
+  app.post("/api/:project/users", function (req, res) {
+
+    console.log("------------------------");
+    console.log(req.body.usersIds);
+
+    db.project_users.findAll({
+      attributes: [
+        ["user_name", "user_id"]
+      ],
+      where: {
+        project_name: req.params.project,
+        user_name: { [Op.notIn]: req.body.usersIds}
+      },
+      raw: true,
+      include: [{
+        model: db.users,
+        attributes: [
+          ["user_name", "user_name"],
+          ["id", "user_id"]
+        ],
+        include: [{
+          model: db.project_users,
+          attributes: [
+            ["project_name", "project_id"],
+            ["id", "relationship_project-user"]
+          ],
+          where: {
+            project_name: userSelections.project
+          },
+          include: [{
+            model: db.projects,
+            attributes: [
+              ["project_name", "project_name"]
+            ]
+          }]
+        }]
+      }]
+    }).then(function (users) {
+
+      // Test console.
+      console.log(users);
+
+      res.json(users);
+
+    });
+
+  })
+
   // Route to edit a Task and all its Relationships.
   app.put("/api/project/task/:id", function (req, res) {
 

@@ -21,7 +21,7 @@ class Members extends Component {
       categorySelected: "",
       userName: "",
       userId: "",
-      userMail: "",
+      userEmail: "",
       projectCardBorder: "",
       taskModalShow: false,
       taskModalView: "none"
@@ -33,11 +33,13 @@ class Members extends Component {
       .get("/members/info")
       .then(data => {
         // Test console.
-        console.log(data.data);
+        // console.log(data.data);
+        
         this.setState({
           projectCards: data.data.projects,
-          userName: data.data.user,
-          userId: data.data.userId
+          userName: data.data.user_Name,
+          userId: data.data.user_Id,
+          userEmail: data.data.user_Email
         });
       })
       .catch(error => {
@@ -507,6 +509,8 @@ class Members extends Component {
           handleClose={this.taskModalClose}
           projectUsers={this.state.projectUsers}
           userId={this.state.userId}
+          userName={this.state.userName}
+          userEmail={this.state.userEmail}
           renderForNewTasks={this.renderForNewTasks}
         />
 

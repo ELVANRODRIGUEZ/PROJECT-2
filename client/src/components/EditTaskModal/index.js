@@ -24,8 +24,6 @@ class EditTaskModal extends Component {
             userToDelete: [],
             //  This state inherits the Project related Users born in the Members Component at ProjecCard clicking time and is passed before to the TaskModal component.
             projectUsers: this.props.projectUsers,
-            //  This stores the available Users for deletion that will be rendered in the dropdown list.
-            taskUsers: [],
             // This array will keep all the Users added to be related to the New Task.
             usersAdded: [],
             // This array will keep all the Users to be deleted the Edited Task.
@@ -57,28 +55,6 @@ class EditTaskModal extends Component {
         // console.log(this.props.taskDeadline);
 
         this.taskDeadline(this.props.taskDeadline)
-        this.getUsers();
-    }
-
-    getUsers = () => {
-
-        axios
-            .get(`/api/project/${this.props.taskId}/users`)
-            .then(users => {
-                //  Test console.
-                // console.log(users.data);
-                
-                this.setState({taskUsers:users.data},
-                    () => {
-                        //  Test console.
-                        console.log(this.state.taskUsers)
-                    })
-
-            })
-            .catch(error => {
-                console.log(error);
-            });
-
     }
 
     editTaskModalToggle = () => {

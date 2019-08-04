@@ -75,6 +75,7 @@ module.exports = function(app) {
       "SELECT " +
       'up.user as "user", ' +
       'up.user_id as "user_id", ' +
+      'up.user_email as "user_email", ' +
       'up.project as "projects", ' +
       'up.project_description as "project_description", ' +
       'up.project_id as "projects_id", ' +
@@ -85,6 +86,7 @@ module.exports = function(app) {
       "FROM " +
       '(SELECT u.user_name as "user", ' +
       'u.id as "user_id", ' +
+      'u.email as "user_email", ' +
       'p.project_name as "project", ' +
       'p.description as "project_description", ' +
       'p.id as "project_id" ' +
@@ -168,8 +170,9 @@ module.exports = function(app) {
         // Creating a JSON object to send as response.
         var sentResponse = {
           projects: allProjects,
-          user: userName,
-          userId: data[0].user_id,
+          user_Name: userName,
+          user_Id: data[0].user_id,
+          user_Email: data[0].user_email,
         };
 
         // Sendig response.
