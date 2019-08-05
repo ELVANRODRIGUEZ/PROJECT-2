@@ -150,6 +150,7 @@ class TaskCard extends Component {
           {/* +++++++++++++++++ EDIT TASK MODAL +++++++++++++++++ */}
           <EditTaskModal
             editTaskModalView={this.state.editTaskModalShow}
+            editTaskModalToggle={this.editTaskModalToggle}
             taskId={this.props.taskId}
             projectUsers={this.props.projectUsers}
             userId={this.props.userId}

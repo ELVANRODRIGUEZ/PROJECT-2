@@ -915,13 +915,13 @@ $("#deleteCategory").on('click', function () {
 
 //             if (taskUsersToDel.length > 0) {
 
-//                 // var taskRespDel = [];
+                // var taskRespDel = [];
 
-//                 // taskUsersToDel.forEach(function (item) {
+                // taskUsersToDel.forEach(function (item) {
 
-//                 //     taskRespDel.push(item);
+                //     taskRespDel.push(item);
 
-//                 // });
+                // });
 
 //                 var sentData2 = JSON.stringify(taskUsersToDel)
 

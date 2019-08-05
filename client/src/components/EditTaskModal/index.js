@@ -14,9 +14,9 @@ class EditTaskModal extends Component {
       // Get the logged User's Id from the "props".
       userId: this.props.userId,
       // Gets whatever is typed on Description Text Area.
-      newTaskDescription: "",
+      newTaskDescription: this.props.taskDescription,
       // Gets whatever Date is chosen on Description Text Area.
-      newTaskDeadline: "",
+      newTaskDeadline: this.props.taskDeadline,
       // Capture the user selected from the dropdown menu and changes to whatever option is chosen from it. It is intended for always keeping one object value, but is an array for "concatenation" with the "usersAdded" array when the selected user is actually added.
       userToAdd: [],
       // Capture the user selected from the dropdown menu and changes to whatever option is chosen from it. It is intended for always keeping one object value, but is an array for "concatenation" with the "usersDeleted" array when the selected user is actually added.
@@ -380,7 +380,7 @@ class EditTaskModal extends Component {
     });
   };
 
-  saveNewTask = event => {
+  updateTask = event => {
     // event.preventDefault();
 
     if (this.state.newTaskDescription === "") {
@@ -388,46 +388,90 @@ class EditTaskModal extends Component {
     } else if (this.state.newTaskDeadline === "") {
       this.alertMessage("No Deadline");
     } else {
-      let newTask;
+      let editedTask;
 
-      newTask = {
+      editedTask = {
         description: this.state.newTaskDescription,
-        deadline: this.state.newTaskDeadline,
-        other_users: JSON.stringify(
-          this.state.usersAdded
-            .map(user => {
-              return user["user.user_id"];
-            })
-            .concat([parseInt(this.state.userId)])
-        )
+        deadline: this.state.newTaskDeadline
       };
 
       // Test console.
       // console.log(newTask);
 
+      // Request to update the Task.
       axios
-        .post("/api/task/add", newTask)
+        .put(`/api/project/task/${this.props.taskId}`, editedTask)
         .then(data => {
           // Test console.
-          // console.log(data.data);
+          //   console.log(data.data);
 
-          this.NewTaskDesc.current.value = "";
-          this.NewTaskDeadline.current.value = "";
+          // Test whether there are users to Add to the Task.
+          if (this.state.usersAdded.length > 0) {
+            let newTaskResp;
 
+            newTaskResp = this.state.usersAdded.map(user => {
+              return {
+                task_id: this.props.taskId.toString(),
+                responsible: user.user_id.toString()
+              };
+            });
+            console.log(newTaskResp)
+            // Request to add Users to the Task.
+            axios
+              .post(
+                `/api/project/task/responsible/${this.props.taskId}`,
+                newTaskResp
+              )
+              .then(data2 => {
+                // Test console.
+                console.log(data2.data);
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
+
+          // Test whether there are users to Delete from the Task.
+          if (this.state.usersDeleted.length > 0) {
+            let taskRespToRemove;
+            taskRespToRemove = this.state.usersDeleted.map(user => {
+                return user.user_id.toString();
+            });
+            
+            console.log(taskRespToRemove);
+            // Request to delete Users from the Task.
+            axios
+              .delete(
+                `/api/project/task/responsible/delete/${this.props.taskId}`,
+                {data: {data:taskRespToRemove}}
+              )
+              .then(data3 => {
+                // Test console.
+                console.log(data3.data);
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
+
+          // Reset states.
           this.setState(
             {
               newTaskDescription: "",
               newTaskDeadline: "",
               userToAdd: [],
-              usersAdded: []
+              userToDelete: [],
+              usersAdded: [],
+              usersDeleted: []
             },
             () => {
-              //  Toggles the NewTaskModal.
-              this.props.newTaskModalToggle();
-              //  Rerenders the TaskCards to include the newly created one.
-              this.props.renderForNewTasks();
+              //  Toggles the EditTaskModal.
+              this.props.editTaskModalToggle();
+              //  Rerenders the TaskCards to include the editions.
+              // this.props.renderForNewTasks();
             }
           );
+
         })
         .catch(error => {
           console.log(error);
@@ -726,7 +770,7 @@ class EditTaskModal extends Component {
               }}
               className="btn btn-outline-success"
               id="addTask"
-              onClick={this.saveNewTask}
+              onClick={this.updateTask}
             >
               Accept Edition
             </button>
