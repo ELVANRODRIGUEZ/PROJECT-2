@@ -72,18 +72,23 @@ class EditTaskModal extends Component {
   };
 
   editTaskModalToggle = () => {
+    // Reseting States.
     this.setState(
       {
-        newTaskDescription: "",
-        newTaskDeadline: "",
+        newTaskDescription: this.props.taskDescription,
+        // newTaskDeadline: this.props.taskDeadline,
         userToAdd: [],
-        projectUsers: this.props.projectUsers,
-        usersAdded: []
+        userToDelete: [],
+        usersAdded: [],
+        usersDeleted: []
       },
       () => {
-        this.NewTaskDesc.current.value = "";
-        this.NewTaskDeadline.current.value = "";
-        this.props.newTaskModalToggle();
+        // Reassingning the Text Area vaule with the method "this.<<reference>>.current.value" to show the origninal Task Description.
+        this.NewTaskDesc.current.value = this.props.taskDescription;
+
+        this.taskDeadline(this.props.taskDeadline);
+
+        this.props.editTaskModalToggle();
       }
     );
   };
@@ -120,6 +125,9 @@ class EditTaskModal extends Component {
         newTaskDeadline: `${year}-${month}-${day}`
       },
       () => {
+        this.NewTaskDeadline.current.value = this.state.newTaskDeadline;
+
+        // Test console.
         // console.log(this.props.taskDeadline);
         // console.log(this.state.newTaskDeadline);
       }
@@ -415,7 +423,7 @@ class EditTaskModal extends Component {
                 responsible: user.user_id.toString()
               };
             });
-            console.log(newTaskResp)
+
             // Request to add Users to the Task.
             axios
               .post(
@@ -424,7 +432,19 @@ class EditTaskModal extends Component {
               )
               .then(data2 => {
                 // Test console.
-                console.log(data2.data);
+                // console.log(data2.data);
+
+                //  Rerenders the TaskCards to include the editions.
+                this.props.getUsers();
+                // Reset states.
+                this.setState({
+                  userToAdd: [],
+                  userToDelete: [],
+                  usersAdded: [],
+                  usersDeleted: []
+                });
+                //  Rerender for Edited Tasks.
+                this.props.renderForEditedTasks();
               })
               .catch(error => {
                 console.log(error);
@@ -435,43 +455,44 @@ class EditTaskModal extends Component {
           if (this.state.usersDeleted.length > 0) {
             let taskRespToRemove;
             taskRespToRemove = this.state.usersDeleted.map(user => {
-                return user.user_id.toString();
+              return user.user_id.toString();
             });
-            
-            console.log(taskRespToRemove);
+
             // Request to delete Users from the Task.
             axios
               .delete(
                 `/api/project/task/responsible/delete/${this.props.taskId}`,
-                {data: {data:taskRespToRemove}}
+                { data: { data: taskRespToRemove } }
               )
               .then(data3 => {
                 // Test console.
-                console.log(data3.data);
+                // console.log(data3.data);
+
+                //  Rerenders the TaskCards to include the editions.
+                this.props.getUsers();
+                // Reset states.
+                this.setState({
+                  userToAdd: [],
+                  userToDelete: [],
+                  usersAdded: [],
+                  usersDeleted: []
+                });
+                //  Rerender for Edited Tasks.
+                this.props.renderForEditedTasks();
               })
               .catch(error => {
                 console.log(error);
               });
           }
-
           // Reset states.
-          this.setState(
-            {
-              newTaskDescription: "",
-              newTaskDeadline: "",
-              userToAdd: [],
-              userToDelete: [],
-              usersAdded: [],
-              usersDeleted: []
-            },
-            () => {
-              //  Toggles the EditTaskModal.
-              this.props.editTaskModalToggle();
-              //  Rerenders the TaskCards to include the editions.
-              // this.props.renderForNewTasks();
-            }
-          );
-
+          this.setState({
+            userToAdd: [],
+            userToDelete: []
+          });
+          //  Rerender for Edited Tasks.
+          this.props.renderForEditedTasks();
+          //  Toggles the EditTaskModal.
+          this.props.editTaskModalToggle();
         })
         .catch(error => {
           console.log(error);
@@ -604,7 +625,7 @@ class EditTaskModal extends Component {
     return (
       <Collapse
         in={this.props.editTaskModalView}
-        id="addTaskCollapsWindow"
+        id="editTaskCollapsWindow"
         style={{ margin: "auto", width: "100%" }}
       >
         <div className="modal-content bg-dark text-white">
@@ -619,7 +640,7 @@ class EditTaskModal extends Component {
                 fontWeight: 600,
                 cursor: this.state.stateMouseIcon
               }}
-              onClick={this.EditTaskModalToggle}
+              onClick={this.editTaskModalToggle}
               onMouseOver={this.changeMouseIcon}
               onMouseOut={this.changeMouseIcon}
             >
@@ -639,8 +660,9 @@ class EditTaskModal extends Component {
                   rows="3"
                   ref={this.NewTaskDesc}
                   onChange={this.chgDescription}
+                  defaultValue={this.props.taskDescription}
                 >
-                  {this.props.taskDescription}
+                  {/* {this.props.taskDescription} */}
                 </textarea>
               </div>
               {/* +++++++++++++++++ New Task Deadline +++++++++++++++++ */}
@@ -654,6 +676,7 @@ class EditTaskModal extends Component {
                   ref={this.NewTaskDeadline}
                   onChange={this.chgDeadline}
                   //! Although in simple HTML, the attribute would be "value" for Default Value declaration, JSX does not work if "defaultValue" is not used for that purpose.
+                  //* In this case, "defaultValue" could be not used for this input since its initial value is always set by the "taskDeadline" function. Is left here for referential purposes.
                   defaultValue={this.state.newTaskDeadline}
                 ></input>
               </div>

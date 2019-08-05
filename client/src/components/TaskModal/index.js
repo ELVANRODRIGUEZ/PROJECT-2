@@ -80,10 +80,10 @@ class TaskModal extends Component {
             id="addTaskModal"
             className="btn btn-secondary"
             style={{ float: "right" }}
-            dataToggle="collapse"
+            datatoggle="collapse"
             href="#addTaskCollapsWindow"
             aria-expanded="false"
-            ariaControls="addTaskCollapsWindow"
+            aria-controls="addTaskCollapsWindow"
             onClick={this.newTaskModalToggle}
           >
             <i className="fa fa-plus fa-4" aria-hidden="true"></i>
@@ -91,11 +91,11 @@ class TaskModal extends Component {
           <button
             type="button"
             className="close text-danger"
-            dataDismiss="taskModal"
-            ariaLabel="Close"
+            data-dismiss="taskModal"
+            aria-label="Close"
             onClick={this.newTaskModalClose}
           >
-            <span ariaHidden="true">&times;</span>
+            <span aria-hidden="true">&times;</span>
           </button>
         </Modal.Header>
         {/* +++++++++++++++++ New Taks Collapse Window +++++++++++++++++ */}
@@ -124,6 +124,7 @@ class TaskModal extends Component {
               taskDescription={task.task_description}
               taskDeadline={task.task_deadline}
               taskAccomplished={task.task_accomplished}
+              renderForEditedTasks={this.props.renderForNewTasks}
             ></TaskCard>);
           })}
 

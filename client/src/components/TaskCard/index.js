@@ -33,7 +33,8 @@ class TaskCard extends Component {
     this.getUsers();
   };
 
-  getUsers = () => {
+  getUsers = (params, callback) => {
+
     axios
       .get(`/api/project/${this.props.taskId}/users`)
       .then(users => {
@@ -68,6 +69,7 @@ class TaskCard extends Component {
                     //  Test console.
                     // console.log(this.state.notTaskUsers);
                   });
+
                 })
                 .catch(error => {
                   console.log(error);
@@ -151,6 +153,7 @@ class TaskCard extends Component {
           <EditTaskModal
             editTaskModalView={this.state.editTaskModalShow}
             editTaskModalToggle={this.editTaskModalToggle}
+            renderForEditedTasks={this.props.renderForEditedTasks}
             taskId={this.props.taskId}
             projectUsers={this.props.projectUsers}
             userId={this.props.userId}
@@ -158,6 +161,7 @@ class TaskCard extends Component {
             notTaskUsers={this.state.notTaskUsers}
             taskDescription={this.props.taskDescription}
             taskDeadline={this.props.taskDeadline}
+            getUsers={this.getUsers}
           ></EditTaskModal>
 
           {/* +++++++++++++++++ TASK INFO +++++++++++++++++ */}
@@ -215,7 +219,7 @@ class TaskCard extends Component {
               value={`${parseFloat(this.props.taskAccomplished) * 100}%`}
               id="total"
               className="field left form-control col-sm-1 text-dark"
-              readonly=""
+              readOnly=""
               style={{ margin: "5px" }}
             />
             <button className="btn btn-dark pminus">
