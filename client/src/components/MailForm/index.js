@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import API from "../../utils/API";
 import axios from "axios";
+import API from "../../utils/API";
+import "./style.css";
 
 class MailForm extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   componentDidUpdate = prevProps => {
     if (this.props.taskUsersIds !== prevProps.taskUsersIds) {
@@ -26,17 +27,18 @@ class MailForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    
     const mailSubject = document.getElementById("subject").value;
     const email = document.getElementById("email").value;
-    const message = document.getElementById("message").value;
-
+    const message = document.getElementById('mailMessage').value;
+    
     let mailData = {
-      senderName: "Harcoded now sender Name",
-      senderEmail: "teamorganizer@outlook.com",
+      senderName: this.props.userName,
+      senderEmail: this.props.userEmail,
       email: email,
       mailSubject: mailSubject,
       message: message,
-      taskId: "01"
+      taskId: this.props.taskId
     };
 
     axios({
@@ -74,7 +76,7 @@ class MailForm extends Component {
   render() {
     return (
       <div>
-        <div className="col-sm-4 offset-sm-4">
+        <div className="col-sm-8 offset-sm-2">
           <form
             id="contact-form"
             onSubmit={this.handleSubmit.bind(this)}
@@ -94,13 +96,10 @@ class MailForm extends Component {
               <input type="text" className="form-control" id="subject" />
             </div>
             <div className="form-group">
-              <label htmlFor="message">Message</label>
-              <textarea
-                className="form-control"
-                rows="5"
-                id="message"
-              ></textarea>
-            </div>
+                            <label htmlFor="mailMessage">Message</label>
+                            <textarea type="text" className="form-control" rows="5" id="mailMessage"></textarea>
+                        </div>
+            
             <button type="submit" className="btn btn-primary">
               Submit
             </button>

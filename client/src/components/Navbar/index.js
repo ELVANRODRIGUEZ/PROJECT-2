@@ -9,8 +9,8 @@ class Navbar extends Component {
     axios
       .get("/logout")
       .then(res => {
-        // window.location = "/";
-        this.props.history.push("/")
+        window.location = "/";
+        // this.props.history.push("/")
       })
       .catch(err => {
         console.log(err);

@@ -35,12 +35,12 @@ body, #root, #profile {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 98%;
+  height: 100%;
 }
 
 #most-outter {
   width: 100%;
-  height: 98%;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
