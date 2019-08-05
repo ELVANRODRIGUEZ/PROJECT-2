@@ -4,10 +4,12 @@ import Moment from "react-moment";
 import axios from "axios";
 
 // ================================== Files Dependencies
-import MailForm from "../Mail";
+import MailForm from "../MailForm";
 import MailRetrieve from "../MailRetrieve";
 import EditTaskModal from "../EditTaskModal";
 import Chat from "../Chat";
+import API from "../../utils/API";
+import './style.css';
 
 class TaskCard extends Component {
   constructor(props) {
@@ -18,8 +20,14 @@ class TaskCard extends Component {
       taskUsers: [],
       taskUsersIds: [],
       notTaskUsers: [],
+      savedMails: [],
       // For toggling the EditTaskModal window.
-      editTaskModalShow: false
+      editTaskModalShow: false,
+      // For toggling the Tabs.
+      usersHide: false,
+      chatHide: false,
+      mailFormHide: false,
+      mailHistoryHide: false,
     };
 
     // This is how we define an attribute inside a class:
@@ -83,6 +91,18 @@ class TaskCard extends Component {
       });
   };
 
+  getSavedMails = (taskId) => {
+    API.getSavedMails(taskId)
+      .then(res => {
+        // Test console.
+        // console.log(res.data)
+        this.setState({ savedMails: res.data })
+        console.log("saved mails\n" +
+       this.state.savedMails)
+      })
+      .catch(err => console.log(err));
+  };
+  
   // Toggle the NewTaskModal inside the TaskModal.
   editTaskModalToggle = () => {
     this.state.editTaskModalShow === false
@@ -96,7 +116,47 @@ class TaskCard extends Component {
     this.setState({ editTaskModalShow: false });
   };
 
-  render() {
+  toggleUsers = ()=>{
+    this.setState({usersHide: !this.state.usersHide});
+    if(this.state.chatHide || this.state.mailFormHide || this.state.mailHistoryHide ){
+        this.setState({chatHide : false});
+        this.setState({mailFormHide : false});
+        this.setState({mailHistoryHide : false});
+    
+    }
+}
+
+toggleChat = ()=>{
+  this.setState({chatHide: !this.state.chatHide});
+    if(this.state.usersHide || this.state.mailFormHide || this.state.mailHistoryHide ){
+        this.setState({usersHide : false});
+        this.setState({mailFormHide : false});
+        this.setState({mailHistoryHide : false});
+    
+    }
+}
+
+toggleMailForm = ()=>{
+  this.setState({mailFormHide: !this.state.mailFormHide});
+       if(this.state.usersHide || this.state.chatHide || this.state.mailHistoryHide ){
+        this.setState({usersHide : false});
+        this.setState({chatHide : false});
+        this.setState({mailHistoryHide : false});
+    }
+}
+
+toggleMailHistory = ()=>{
+  this.setState({mailHistoryHide: !this.state.mailHistoryHide});
+  this.getSavedMails(this.props.taskId)
+ 
+    if(this.state.usersHide || this.state.chatHide || this.state.mailFormHide ){
+     this.setState({usersHide : false});
+     this.setState({chatHide : false});
+     this.setState({mailFormHide : false});
+ }
+}
+  
+render() {
     return (
       // +++++++++++++++++ TASK CARD +++++++++++++++++
       <div
@@ -235,8 +295,7 @@ class TaskCard extends Component {
                     data-toggle="collapse"
                     href="#multiCollapseExample1"
                     role="button"
-                    aria-expanded="false"
-                    aria-controls="multiCollapseExample1"
+                    onClick={this.toggleUsers}
                   >
                     Users
                   </a>
@@ -247,8 +306,7 @@ class TaskCard extends Component {
                     data-toggle="collapse"
                     href="#multiCollapseExample2"
                     role="button"
-                    aria-expanded="false"
-                    aria-controls="multiCollapseExample2"
+                    onClick={this.toggleChat}
                   >
                     Chat
                   </a>
@@ -259,8 +317,7 @@ class TaskCard extends Component {
                     data-toggle="collapse"
                     href="#multiCollapseExample3"
                     role="button"
-                    aria-expanded="false"
-                    aria-controls="multiCollapseExample3"
+                    onClick={this.toggleMailForm}
                   >
                     New Email
                   </a>
@@ -271,8 +328,7 @@ class TaskCard extends Component {
                     data-toggle="collapse"
                     href="#multiCollapseExample4"
                     role="button"
-                    aria-expanded="false"
-                    aria-controls="multiCollapseExample4"
+                    onClick={this.toggleMailHistory}
                   >
                     Email History
                   </a>
@@ -289,9 +345,8 @@ class TaskCard extends Component {
                   </ul>
                 </div>
               </div>
-
-              {/* ---- Chat Form------ */}
-              <div className="collapse" id="multiCollapseExample2">
+{/* ---- Chat Form------ */}
+              <div className={'hide-' + this.state.chatHide} id="multiCollapseExample2">
                 <Chat
                   taskId={this.props.taskId}
                   userName={this.props.userName}
@@ -299,9 +354,8 @@ class TaskCard extends Component {
                   taskUsersIds={this.state.taskUsersIds}
                 />
               </div>
-
               {/* ----email Form------ */}
-              <div className="collapse" id="multiCollapseExample3">
+              <div className={'hide-' + this.state.mailFormHide} id="multiCollapseExample3">
                 <div className="card card-body bg-dark">
                   <div className="container">
                     {/* {console.log(this.state.taskUsers)} */}
@@ -317,11 +371,13 @@ class TaskCard extends Component {
                 </div>
               </div>
               {/* ----email retrieve---- */}
-              <div className="collapse" id="multiCollapseExample4">
+              <div className={'hide-' + this.state.mailHistoryHide} id="multiCollapseExample4">
                 <div className="card card-body bg-dark">
                   <div className="container">
                     <div className="list-group">
-                      <MailRetrieve taskId={this.props.taskId} />
+                      <MailRetrieve
+                        savedMails={this.state.savedMails}
+                      />
                     </div>
                   </div>
                 </div>
