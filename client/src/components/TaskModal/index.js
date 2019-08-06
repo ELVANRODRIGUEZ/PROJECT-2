@@ -2,12 +2,10 @@
 import React, { Component } from "react";
 import Modal from "react-bootstrap/Modal";
 
-
 // ================================== Files Dependencies
 import TaskCard from "../TaskCard";
 import NewTaskModal from "../NewTaskModal";
 // import axios from "axios";
-
 
 class TaskModal extends Component {
   constructor(props) {
@@ -15,12 +13,23 @@ class TaskModal extends Component {
 
     this.state = {
       newTaskModalShow: false,
+      // For toggling the EditTaskModal window according to the selected Task
+      openedTask: "",
       projectUsers: [],
       userId: this.props.userId
     };
   }
+  
+  openTask = (task) => {
 
-  componentDidUpdate = (prevProps) => {
+    this.setState({openedTask: parseInt(task)}, () => {
+
+      //  Test console.
+      // console.log(this.state.openedTask);
+    })
+  }
+
+  componentDidUpdate = prevProps => {
     // Test console.
     // console.log(prevProps.projectUsers);
     // console.log(prevProps.userId);
@@ -31,32 +40,24 @@ class TaskModal extends Component {
       // console.log(this.props.projectUsers);
 
       this.setState({ projectUsers: this.props.projectUsers }, () => {
-
         // Test console.
         // console.log(this.state.projectUsers);
-
-      })
+      });
     }
-
-  }
+  };
 
   // Toggle the NewTaskModal inside the TaskModal.
   newTaskModalToggle = () => {
-
-    this.state.newTaskModalShow === false ?
-      this.setState({ newTaskModalShow: true })
-      :
-      this.setState({ newTaskModalShow: false })
-
-  }
+    this.state.newTaskModalShow === false
+      ? this.setState({ newTaskModalShow: true })
+      : this.setState({ newTaskModalShow: false });
+  };
 
   // Closes the askModal and the NewTaskModal.
   newTaskModalClose = () => {
-
     this.props.handleClose();
     this.setState({ newTaskModalShow: false });
-
-  }
+  };
 
   render() {
     return (
@@ -68,9 +69,9 @@ class TaskModal extends Component {
         tabIndex="-1"
         // role="dialog"
         id="taskModal"
-      // dialogClassName="elvan-modal"
-      // dialogAs="test"
-      // bsPrefix="test modal"
+        // dialogClassName="elvan-modal"
+        // dialogAs="test"
+        // bsPrefix="test modal"
       >
         {/* <Modal.Footer className="modal-dialog modal-xl" role="document"> */}
         {/* <Modal className="modal-content bg-dark"> */}
@@ -106,28 +107,33 @@ class TaskModal extends Component {
           newTaskModalToggle={this.newTaskModalToggle}
           userId={this.state.userId}
           renderForNewTasks={this.props.renderForNewTasks}
-        >
-        </NewTaskModal>
+        ></NewTaskModal>
 
         <Modal.Body id="modal-container">
-
           {/* +++++++++++++++++ TASK CARD +++++++++++++++++ */}
-          {this.props.tasksCards.map((task) => {
-            return (<TaskCard
-              key={task.task_id}
-              projectId={task.project_id}
-              taskId={task.task_id}
-              projectUsers={this.props.projectUsers}
-              userId={this.state.userId}
-              userName={this.props.userName}
-              userEmail={this.props.userEmail}
-              taskDescription={task.task_description}
-              taskDeadline={task.task_deadline}
-              taskAccomplished={task.task_accomplished}
-              renderForEditedTasks={this.props.renderForNewTasks}
-            ></TaskCard>);
-          })}
+          {this.props.tasksCards.map(task => {
+            return (
+              <TaskCard
+                key={task.task_id}
+                projectId={task.project_id}
+                taskId={task.task_id}
+                projectUsers={this.props.projectUsers}
+                userId={this.state.userId}
+                userName={this.props.userName}
+                userEmail={this.props.userEmail}
+                taskDescription={task.task_description}
+                taskDeadline={task.task_deadline}
+                taskAccomplished={task.task_accomplished}
+                renderForEditedTasks={this.props.renderForNewTasks}
+                editTaskModalShow = {task.task_id === this.state.openedTask ? true:false}
+                taskOpened = {parseInt(this.state.openedTask)}
+                openTask = {this.openTask}
 
+                // handleClose = {this.props.handleClose}
+
+              ></TaskCard>
+            );
+          })}
         </Modal.Body>
         <Modal.Footer>
           <button
@@ -136,9 +142,8 @@ class TaskModal extends Component {
             dataDismiss="modal"
           >
             Close
-        </button>
+          </button>
         </Modal.Footer>
-
       </Modal>
     );
   }

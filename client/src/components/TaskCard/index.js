@@ -9,7 +9,7 @@ import MailRetrieve from "../MailRetrieve";
 import EditTaskModal from "../EditTaskModal";
 import Chat from "../Chat";
 import API from "../../utils/API";
-import './style.css';
+import "./style.css";
 
 class TaskCard extends Component {
   constructor(props) {
@@ -21,8 +21,6 @@ class TaskCard extends Component {
       taskUsersIds: [],
       notTaskUsers: [],
       savedMails: [],
-      // For toggling the EditTaskModal window.
-      editTaskModalShow: false,
       // For toggling the Tabs.
       usersHide: false,
       chatHide: false,
@@ -42,7 +40,6 @@ class TaskCard extends Component {
   };
 
   getUsers = (params, callback) => {
-
     axios
       .get(`/api/project/${this.props.taskId}/users`)
       .then(users => {
@@ -71,13 +68,12 @@ class TaskCard extends Component {
                 })
                 .then(users2 => {
                   //  Test console.
-                  // console.log(users.data);
+                  // console.log(users2.data);
 
                   this.setState({ notTaskUsers: users2.data }, () => {
                     //  Test console.
                     // console.log(this.state.notTaskUsers);
                   });
-
                 })
                 .catch(error => {
                   console.log(error);
@@ -91,72 +87,88 @@ class TaskCard extends Component {
       });
   };
 
-  getSavedMails = (taskId) => {
+  getSavedMails = taskId => {
     API.getSavedMails(taskId)
       .then(res => {
         // Test console.
         // console.log(res.data)
-        this.setState({ savedMails: res.data })
-        console.log("saved mails\n" +
-       this.state.savedMails)
+        this.setState({ savedMails: res.data });
+        console.log("saved mails\n" + this.state.savedMails);
       })
       .catch(err => console.log(err));
   };
-  
-  // Toggle the NewTaskModal inside the TaskModal.
-  editTaskModalToggle = () => {
-    this.state.editTaskModalShow === false
-      ? this.setState({ editTaskModalShow: true })
-      : this.setState({ editTaskModalShow: false });
+
+  editTaskModalToggle = event => {
+    const target = event.target;
+    let task = parseInt(target.getAttribute("task"));
+    if (this.props.taskOpened === task) {
+      this.props.openTask(0);
+    } else {
+      this.props.openTask(task);
+    }
   };
 
   // Closes the askModal and the NewTaskModal.
-  editTaskModalClose = () => {
-    this.props.handleClose();
-    this.setState({ editTaskModalShow: false });
+  // editTaskModalClose = () => {
+    //   this.props.handleClose();
+  //   this.setState({ editTaskModalShow: false });
+  // };
+
+  toggleUsers = () => {
+    this.setState({ usersHide: !this.state.usersHide });
+    if (
+      this.state.chatHide ||
+      this.state.mailFormHide ||
+      this.state.mailHistoryHide
+    ) {
+      this.setState({ chatHide: false });
+      this.setState({ mailFormHide: false });
+      this.setState({ mailHistoryHide: false });
+    }
   };
 
-  toggleUsers = ()=>{
-    this.setState({usersHide: !this.state.usersHide});
-    if(this.state.chatHide || this.state.mailFormHide || this.state.mailHistoryHide ){
-        this.setState({chatHide : false});
-        this.setState({mailFormHide : false});
-        this.setState({mailHistoryHide : false});
-    
+  toggleChat = () => {
+    this.setState({ chatHide: !this.state.chatHide });
+    if (
+      this.state.usersHide ||
+      this.state.mailFormHide ||
+      this.state.mailHistoryHide
+    ) {
+      this.setState({ usersHide: false });
+      this.setState({ mailFormHide: false });
+      this.setState({ mailHistoryHide: false });
     }
-}
+  };
 
-toggleChat = ()=>{
-  this.setState({chatHide: !this.state.chatHide});
-    if(this.state.usersHide || this.state.mailFormHide || this.state.mailHistoryHide ){
-        this.setState({usersHide : false});
-        this.setState({mailFormHide : false});
-        this.setState({mailHistoryHide : false});
-    
+  toggleMailForm = () => {
+    this.setState({ mailFormHide: !this.state.mailFormHide });
+    if (
+      this.state.usersHide ||
+      this.state.chatHide ||
+      this.state.mailHistoryHide
+    ) {
+      this.setState({ usersHide: false });
+      this.setState({ chatHide: false });
+      this.setState({ mailHistoryHide: false });
     }
-}
+  };
 
-toggleMailForm = ()=>{
-  this.setState({mailFormHide: !this.state.mailFormHide});
-       if(this.state.usersHide || this.state.chatHide || this.state.mailHistoryHide ){
-        this.setState({usersHide : false});
-        this.setState({chatHide : false});
-        this.setState({mailHistoryHide : false});
+  toggleMailHistory = () => {
+    this.setState({ mailHistoryHide: !this.state.mailHistoryHide });
+    this.getSavedMails(this.props.taskId);
+
+    if (
+      this.state.usersHide ||
+      this.state.chatHide ||
+      this.state.mailFormHide
+    ) {
+      this.setState({ usersHide: false });
+      this.setState({ chatHide: false });
+      this.setState({ mailFormHide: false });
     }
-}
+  };
 
-toggleMailHistory = ()=>{
-  this.setState({mailHistoryHide: !this.state.mailHistoryHide});
-  this.getSavedMails(this.props.taskId)
- 
-    if(this.state.usersHide || this.state.chatHide || this.state.mailFormHide ){
-     this.setState({usersHide : false});
-     this.setState({chatHide : false});
-     this.setState({mailFormHide : false});
- }
-}
-  
-render() {
+  render() {
     return (
       // +++++++++++++++++ TASK CARD +++++++++++++++++
       <div
@@ -206,13 +218,17 @@ render() {
             style={{ float: "right", margin: "0 2px" }}
             onClick={this.editTaskModalToggle}
           >
-            <i className="fa fa-pencil fa-4" aria-hidden="true"></i>
+            <i
+              className="fa fa-pencil fa-4"
+              task={this.props.taskId}
+              aria-hidden="true"
+            ></i>
           </button>
 
           {/* +++++++++++++++++ EDIT TASK MODAL +++++++++++++++++ */}
           <EditTaskModal
-            editTaskModalView={this.state.editTaskModalShow}
-            editTaskModalToggle={this.editTaskModalToggle}
+            editTaskModalView={this.props.editTaskModalShow}
+            editTaskModalToggle={this.props.openTask}
             renderForEditedTasks={this.props.renderForEditedTasks}
             taskId={this.props.taskId}
             projectUsers={this.props.projectUsers}
@@ -345,8 +361,11 @@ render() {
                   </ul>
                 </div>
               </div>
-{/* ---- Chat Form------ */}
-              <div className={'hide-' + this.state.chatHide} id="multiCollapseExample2">
+              {/* ---- Chat Form------ */}
+              <div
+                className={"hide-" + this.state.chatHide}
+                id="multiCollapseExample2"
+              >
                 <Chat
                   taskId={this.props.taskId}
                   userName={this.props.userName}
@@ -355,7 +374,10 @@ render() {
                 />
               </div>
               {/* ----email Form------ */}
-              <div className={'hide-' + this.state.mailFormHide} id="multiCollapseExample3">
+              <div
+                className={"hide-" + this.state.mailFormHide}
+                id="multiCollapseExample3"
+              >
                 <div className="card card-body bg-dark">
                   <div className="container">
                     {/* {console.log(this.state.taskUsers)} */}
@@ -371,13 +393,14 @@ render() {
                 </div>
               </div>
               {/* ----email retrieve---- */}
-              <div className={'hide-' + this.state.mailHistoryHide} id="multiCollapseExample4">
+              <div
+                className={"hide-" + this.state.mailHistoryHide}
+                id="multiCollapseExample4"
+              >
                 <div className="card card-body bg-dark">
                   <div className="container">
                     <div className="list-group">
-                      <MailRetrieve
-                        savedMails={this.state.savedMails}
-                      />
+                      <MailRetrieve savedMails={this.state.savedMails} />
                     </div>
                   </div>
                 </div>

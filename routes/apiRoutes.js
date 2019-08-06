@@ -438,6 +438,7 @@ module.exports = function(app) {
       't.id as "task_id", ' +
       't.description as "task_description", ' +
       'u.user_name as "user_name", ' +
+      'u.email as "user_mail", ' +
       'tr.responsible as "user_id" ' +
       "FROM tasks_responsibles tr " +
       "LEFT JOIN tasks t " +
@@ -460,7 +461,8 @@ module.exports = function(app) {
       allTaskUsers = data.map(user => {
         return {
           user_id: user.user_id,
-          user_name: user.user_name
+          user_name: user.user_name,
+          user_mail: user.user_mail
         };
       });
 
@@ -471,107 +473,13 @@ module.exports = function(app) {
 
       res.json(forTaskAddingId);
 
-      //   var query2 =
-      //     'SELECT ' +
-      //     'users.id, ' +
-      //     'users.user_name ' +
-      //     'FROM users ' +
-      //     'WHERE users.id IN (' +
-      //     allProjectUsersId.toString() + ')';
-
-      //   connection.query(query2, function (err, data) {
-
-      //     if (err) throw err;
-
-      //     // Test console.
-      //     // console.log(data);
-
-      //     // We create the final arrays that will store Id's and Names of the Users that are related to the selected Project...
-      //     var forTaskAddComplete = [];
-      //     // And to the selected Task.
-      //     var allTaskUsersComplete = [];
-
-      //     // Then we populate 'Users available for adding to Task' array with the data retrieved by this query that contains "id" and "user_name".
-      //     forTaskAddingId.forEach(function (userId) {
-
-      //       data.forEach(function (dataId) {
-
-      //         // We first will select from the "data" array just the id's from the Users available for adding to the Task, that is, the Users that belong to the Project but are do not belong to the Task already.
-      //         if (userId == dataId.id) {
-
-      //           forTaskAddComplete
-      //             .push(dataId);
-
-      //         }
-
-      //       })
-
-      //     });
-
-      //     // Then we populate the 'Users available for deleting from the Task' array with the data retrieved by this query that contains "id" and "user_name".
-      //     allTaskUsersId.forEach(function (userId) {
-
-      //       data.forEach(function (dataId) {
-
-      //         // We first will select from the "data" array just the id's from the Users available for deleting from the Task, that is, the Users that belong to the selected Task already.
-      //         if (userId == dataId.id) {
-
-      //           allTaskUsersComplete
-      //             .push(dataId);
-
-      //         }
-
-      //       })
-
-      //     });
-
-      //     // We will build the HTML for both lists (Users to add and Users to delte from a Task) and then send it as a response.
-      //     var usersToAddHtml = "";
-      //     var usersToDeleteHtml = "";
-
-      //     // for each User in the 'Users to add' array we will call the imported function "userLis.userList" that generate the tags to fill the list on the Front End.
-      //     forTaskAddComplete
-      //       .forEach(function (item) {
-
-      //         usersToAddHtml +=
-      //           userList.userList(item.id, item.user_name).toString();
-
-      //       });
-
-      //     // for each User in the 'Users to delete' array we will call the imported function "userLis.userList" that generate the tags to fill the list on the Front End.
-      //     allTaskUsersComplete
-      //       .forEach(function (item) {
-
-      //         usersToDeleteHtml +=
-      //           userList.userList(item.id, item.user_name).toString();
-
-      //       });
-
-      //     // Test console.
-      //     // console.log("=====================");
-      //     // console.log(usersToAddHtml);
-      //     // console.log("---------------------");
-      //     // console.log(usersToDeleteHtml);
-      //     // console.log("=====================");
-
-      //     var sentResponse = {
-      //       usersToAdd: usersToAddHtml,
-      //       usersToDelete: usersToDeleteHtml
-      //     };
-
-      //     // Test console.
-      //     // console.log(forTaskAdding);
-
-      //     res.json(sentResponse);
-
-      //   });
     });
   });
 
   // Route for getting all users that are releted to the selected Project but filtering out the already existing ones related to the selected Task
   app.post("/api/:project/users", function(req, res) {
-    console.log("------------------------");
-    console.log(req.body.usersIds);
+    // console.log("------------------------");
+    // console.log(req.body.usersIds);
 
     db.project_users
       .findAll({
@@ -584,7 +492,7 @@ module.exports = function(app) {
         include: [
           {
             model: db.users,
-            attributes: [["user_name", "user_name"], ["id", "user_id"]],
+            attributes: [["user_name", "user_name"], ["id", "user_id"], ["email", "user_mail"]],
             include: [
               {
                 model: db.project_users,
@@ -608,7 +516,7 @@ module.exports = function(app) {
       })
       .then(function(users) {
         // Test console.
-        console.log(users);
+        // console.log(users);
 
         res.json(users);
       });

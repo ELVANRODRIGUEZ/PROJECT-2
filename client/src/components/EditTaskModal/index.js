@@ -71,7 +71,12 @@ class EditTaskModal extends Component {
     this.taskDeadline(this.props.taskDeadline);
   };
 
-  editTaskModalToggle = () => {
+  editTaskModalToggle = event => {
+    //!  Although the following variable is not used here, I left it for referential purposes to remember that the "event" information needs to be assigned before using it in deeper or asynchronous functions since it cannot be brought about inside them as the parameter the function took in.
+    let taskToClose = event.target.getAttribute("task");
+    //  Test console.
+    // console.log(taskToClose);
+
     // Reseting States.
     this.setState(
       {
@@ -86,9 +91,13 @@ class EditTaskModal extends Component {
         // Reassingning the Text Area vaule with the method "this.<<reference>>.current.value" to show the origninal Task Description.
         this.NewTaskDesc.current.value = this.props.taskDescription;
 
+        // Runs the "taskDeadline" function to reformat the original Task Deadline.
         this.taskDeadline(this.props.taskDeadline);
 
-        this.props.editTaskModalToggle();
+        //  Runs the "editTaskModalToggle" from the TaskModal component (where is named "openTask") with a parameter of "0" so all the Task Edit Modals get closed.
+        this.props.editTaskModalToggle(0);
+        //  Rund the "getUsers" from the TaskCard component to retrieve the original Task Users and Task Not Users.
+        this.props.getUsers();
       }
     );
   };
@@ -640,6 +649,7 @@ class EditTaskModal extends Component {
                 fontWeight: 600,
                 cursor: this.state.stateMouseIcon
               }}
+              task={this.props.taskId}
               onClick={this.editTaskModalToggle}
               onMouseOver={this.changeMouseIcon}
               onMouseOut={this.changeMouseIcon}
