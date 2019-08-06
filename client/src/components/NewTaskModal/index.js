@@ -341,7 +341,7 @@ class NewTaskModal extends Component {
 
 
     return (
-
+      // +++++++++++++++++ NEW TASK MODAL +++++++++++++++++
       <Collapse
         in={this.props.newTaskModalView}
         id="addTaskCollapsWindow"

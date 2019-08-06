@@ -19,15 +19,13 @@ class TaskModal extends Component {
       userId: this.props.userId
     };
   }
-  
-  openTask = (task) => {
 
-    this.setState({openedTask: parseInt(task)}, () => {
-
+  openTask = task => {
+    this.setState({ openedTask: parseInt(task) }, () => {
       //  Test console.
       // console.log(this.state.openedTask);
-    })
-  }
+    });
+  };
 
   componentDidUpdate = prevProps => {
     // Test console.
@@ -48,13 +46,19 @@ class TaskModal extends Component {
 
   // Toggle the NewTaskModal inside the TaskModal.
   newTaskModalToggle = () => {
-    this.state.newTaskModalShow === false
-      ? this.setState({ newTaskModalShow: true })
-      : this.setState({ newTaskModalShow: false });
+    if (this.state.newTaskModalShow === false) {
+      this.setState({ 
+        newTaskModalShow: true, 
+        // This will cause a remapping to close any possible opened Task Edit Modal.
+        openedTask: 0 
+      });
+    } else {
+      this.setState({ newTaskModalShow: false });
+    }
   };
 
-  // Closes the askModal and the NewTaskModal.
-  newTaskModalClose = () => {
+  // Closes the TaskModal and the NewTaskModal.
+  wholeTaskModalClose = () => {
     this.props.handleClose();
     this.setState({ newTaskModalShow: false });
   };
@@ -67,14 +71,9 @@ class TaskModal extends Component {
         size="xl"
         show={this.props.show}
         tabIndex="-1"
-        // role="dialog"
         id="taskModal"
-        // dialogClassName="elvan-modal"
-        // dialogAs="test"
-        // bsPrefix="test modal"
       >
-        {/* <Modal.Footer className="modal-dialog modal-xl" role="document"> */}
-        {/* <Modal className="modal-content bg-dark"> */}
+        {/* +++++++++++++++++ HEADER +++++++++++++++++ */}
         <Modal.Header>
           <h5 className="modal-title text-white"></h5>
           <button
@@ -94,13 +93,13 @@ class TaskModal extends Component {
             className="close text-danger"
             data-dismiss="taskModal"
             aria-label="Close"
-            onClick={this.newTaskModalClose}
+            onClick={this.wholeTaskModalClose}
           >
             <span aria-hidden="true">&times;</span>
           </button>
         </Modal.Header>
-        {/* +++++++++++++++++ New Taks Collapse Window +++++++++++++++++ */}
 
+        {/* +++++++++++++++++ New Taks Collapse Window +++++++++++++++++ */}
         <NewTaskModal
           newTaskModalView={this.state.newTaskModalShow}
           projectUsers={this.state.projectUsers}
@@ -109,6 +108,7 @@ class TaskModal extends Component {
           renderForNewTasks={this.props.renderForNewTasks}
         ></NewTaskModal>
 
+        {/* +++++++++++++++++ BODY +++++++++++++++++ */}
         <Modal.Body id="modal-container">
           {/* +++++++++++++++++ TASK CARD +++++++++++++++++ */}
           {this.props.tasksCards.map(task => {
@@ -125,16 +125,18 @@ class TaskModal extends Component {
                 taskDeadline={task.task_deadline}
                 taskAccomplished={task.task_accomplished}
                 renderForEditedTasks={this.props.renderForNewTasks}
-                editTaskModalShow = {task.task_id === this.state.openedTask ? true:false}
-                taskOpened = {parseInt(this.state.openedTask)}
-                openTask = {this.openTask}
-
-                // handleClose = {this.props.handleClose}
-
+                // This will compare all The existing Task Cards with the "openedTask" state which should cointained any Task Id that is supposed to be open, or "0" to shut them all.
+                editTaskModalShow={
+                  task.task_id === this.state.openedTask ? true : false
+                }
+                taskOpened={parseInt(this.state.openedTask)}
+                openTask={this.openTask}
               ></TaskCard>
             );
           })}
         </Modal.Body>
+
+        {/* +++++++++++++++++ FOOTER +++++++++++++++++ */}
         <Modal.Footer>
           <button
             type="button"

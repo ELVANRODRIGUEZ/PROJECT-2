@@ -20,8 +20,8 @@ class MailForm extends Component {
       //  This will show all the Task Users except for the logged user.
       // console.log(`From the Mail: `);
       // console.log(this.props.taskUsers);
-      console.log(`From the Mail: `);
-      console.log(this.props.taskUsers.map((u) => u.user_mail));
+      // console.log(`From the Mail: `);
+      // console.log(this.props.taskUsers.map((u) => u.user_mail));
       //  This will show all the Task Users Ids including the logged user.
       // console.log(`From the Mail: ${this.props.taskUsersIds}`);
     }
