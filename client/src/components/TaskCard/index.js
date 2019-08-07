@@ -7,6 +7,7 @@ import axios from "axios";
 import MailForm from "../MailForm";
 import MailRetrieve from "../MailRetrieve";
 import EditTaskModal from "../EditTaskModal";
+import EraseTaskModal from "../EraseTaskModal";
 import Chat from "../Chat";
 import API from "../../utils/API";
 import "./style.css";
@@ -25,7 +26,7 @@ class TaskCard extends Component {
       usersHide: false,
       chatHide: false,
       mailFormHide: false,
-      mailHistoryHide: false,
+      mailHistoryHide: false
     };
 
     // This is how we define an attribute inside a class:
@@ -97,7 +98,8 @@ class TaskCard extends Component {
       })
       .catch(err => console.log(err));
   };
-
+  
+  // Toggles the Edit Task Modal and the Erase Task Modal accordingly.
   editTaskModalToggle = event => {
     const target = event.target;
     let task = parseInt(target.getAttribute("task"));
@@ -108,11 +110,16 @@ class TaskCard extends Component {
     }
   };
 
-  // Closes the askModal and the NewTaskModal.
-  // editTaskModalClose = () => {
-    //   this.props.handleClose();
-  //   this.setState({ editTaskModalShow: false });
-  // };
+  // Toggles the Erase Task Modal and the Edit Task Modal accordingly.
+  eraseTaskModalToggle = event => {
+    const target = event.target;
+    let task = parseInt(target.getAttribute("task"));
+    if (this.props.eraseTaskOpened === task) {
+      this.props.openTask(0, 0);
+    } else {
+      this.props.openTask(0, task);
+    }
+  };
 
   toggleUsers = () => {
     this.setState({ usersHide: !this.state.usersHide });
@@ -176,7 +183,7 @@ class TaskCard extends Component {
         style={{ margin: "5px" }}
       >
         <div className="card-body">
-          {/* +++++++++++++++++ Erase Task Button +++++++++++++++++ */}
+          {/* Erase Task Button */}
           <button
             className="btn btn-secondary"
             data-toggle="collapse"
@@ -185,36 +192,23 @@ class TaskCard extends Component {
             aria-expanded="false"
             aria-controls={`eraseTask${this.props.taskId}`}
             style={{ float: "right", margin: "0 2px" }}
+            onClick={this.eraseTaskModalToggle}
           >
-            <i className="fa fa-trash-o fa-4" aria-hidden="true"></i>
+            <i
+              task={`${this.props.taskId}`}
+              className="fa fa-trash-o fa-4"
+              aria-hidden="true"
+            ></i>
           </button>
-
-          {/* Erase Task Modal */}
-          <div className="collapse" id={`eraseTask${this.props.taskId}`}>
-            <div
-              className="card card-title bg-secondary h4"
-              style={{ border: "0px" }}
-            >
-              {`Confirm to delete Task ${this.props.taskId}?`}
-            </div>
-            <div className="card-body bg-dark" style={{ textAlign: "right" }}>
-              <button
-                className="btn btn-outline-success eraseOneTask"
-                task={this.props.taskId}
-              >
-                Erase Task and all it's relationships
-              </button>
-            </div>
-          </div>
 
           {/* Edit Task Button */}
           <button
             className="btn btn-secondary editTaskButton"
             data-toggle="collapse"
-            href={`#editTask${this.props.taskId}`}
+            // href={`#editTask${this.props.taskId}`}
             task={this.props.taskId}
             aria-expanded="false"
-            aria-controls={`editTask${this.props.taskId}`}
+            // aria-controls={`editTask${this.props.taskId}`}
             style={{ float: "right", margin: "0 2px" }}
             onClick={this.editTaskModalToggle}
           >
@@ -224,6 +218,13 @@ class TaskCard extends Component {
               aria-hidden="true"
             ></i>
           </button>
+
+          {/* +++++++++++++++++ ERASE TASK MODAL +++++++++++++++++ */}
+          <EraseTaskModal
+            eraseTaskModalView={this.props.eraseTaskModalShow}
+            taskId={this.props.taskId}
+            eraseTaskModalToggle={this.eraseTaskModalToggle}
+          ></EraseTaskModal>
 
           {/* +++++++++++++++++ EDIT TASK MODAL +++++++++++++++++ */}
           <EditTaskModal

@@ -15,15 +15,20 @@ class TaskModal extends Component {
       newTaskModalShow: false,
       // For toggling the EditTaskModal window according to the selected Task
       openedTask: "",
+      openEraseTask: "",
       projectUsers: [],
       userId: this.props.userId
     };
   }
 
-  openTask = task => {
-    this.setState({ openedTask: parseInt(task) }, () => {
+  openTask = (task, eraseTask) => {
+    this.setState({ 
+      openedTask: parseInt(task), 
+      openEraseTask: parseInt(eraseTask) 
+    }, () => {
       //  Test console.
       // console.log(this.state.openedTask);
+      // console.log(this.state.openEraseTask);
     });
   };
 
@@ -50,7 +55,9 @@ class TaskModal extends Component {
       this.setState({ 
         newTaskModalShow: true, 
         // This will cause a remapping to close any possible opened Task Edit Modal.
-        openedTask: 0 
+        openedTask: 0,
+        // This will cause a remapping to close any possible opened Task Erase Modal.
+        openEraseTask: 0 
       });
     } else {
       this.setState({ newTaskModalShow: false });
@@ -129,7 +136,11 @@ class TaskModal extends Component {
                 editTaskModalShow={
                   task.task_id === this.state.openedTask ? true : false
                 }
+                eraseTaskModalShow={
+                  task.task_id === this.state.openEraseTask ? true : false
+                }
                 taskOpened={parseInt(this.state.openedTask)}
+                eraseTaskOpened={parseInt(this.state.openEraseTask)}
                 openTask={this.openTask}
               ></TaskCard>
             );

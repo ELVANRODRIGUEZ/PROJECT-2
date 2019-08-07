@@ -73,7 +73,7 @@ class EditTaskModal extends Component {
 
   editTaskModalToggle = event => {
     //!  Although the following variable is not used here, I left it for referential purposes to remember that the "event" information needs to be assigned before using it in deeper or asynchronous functions since it cannot be brought about inside them as the parameter the function took in.
-    let taskToClose = event.target.getAttribute("task");
+    // let taskToClose = event.target.getAttribute("task");
     //  Test console.
     // console.log(taskToClose);
 
