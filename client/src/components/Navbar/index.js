@@ -21,7 +21,8 @@ class Navbar extends Component {
     return (
       <nav className="navbar  bg-dark navbarTitle">
         <p id="userNameBanner" className="navbar-brand">
-          Welcome {this.props.userName}
+        Team Organizer™  <span style= {{marginLeft: "20px"}}>Welcome {this.props.userName}</span>
+
         </p>
         <form className="form-inline">
           <button

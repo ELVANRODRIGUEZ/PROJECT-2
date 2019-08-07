@@ -70,9 +70,9 @@ class Login extends Component {
   render() {
     return (
       <div id="most-outter">
+        <h1 style = {{color: "white", marginTop: "5px"}}>Team Organizer™ </h1>
         <div id="outter">
-          This is from the component
-          <div id="login-form" className="container text-white">
+           <div id="login-form" className="container text-white">
             <div className="row login-form bg-dark">
               <div className="col-md-12">
                 <h2>Login Form</h2>

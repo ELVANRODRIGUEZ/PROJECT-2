@@ -23,7 +23,7 @@ class TaskUsers extends Component {
                 key={user.user_id}
                 userid={user.user_id}
                 className="taskUser list-group-item text-dark col-md-8"
-                style={{ lineHeight: 1, padding: "5px" }}
+                style={{ lineHeight: 1, padding: "5px", backgroundColor: "#6c757d", color: "white", border: "1px solid white" }}
               >
                 {user.user_name}
               </li>

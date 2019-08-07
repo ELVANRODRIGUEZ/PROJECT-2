@@ -223,9 +223,9 @@ class Signup extends Component {
   render() {
     return (
       <div id="most-outter">
+        <h1 style = {{color: "white", marginTop: "5px"}}>Team Organizer™ </h1>
         <div id="outter">
-          This is from the component
-          <div className="container text-white">
+            <div className="container text-white">
             <div className="row login-form bg-dark">
               <div className="col">
                 <h2>Sign Up Form</h2>

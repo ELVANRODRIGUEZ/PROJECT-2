@@ -16,9 +16,7 @@ img{ max-width:10%;
   border-radius: 50%;}
 
 select{margin:5px;}
-/* form.signup, form.login {
-  margin-top: 50px;
-} */
+
 
 ul, li {
   margin: 0;
@@ -28,6 +26,7 @@ ul, li {
 
 html {
   height: 100%;
+  background-color: #343a40;
 }
 
 
