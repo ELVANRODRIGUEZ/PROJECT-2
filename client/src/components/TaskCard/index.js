@@ -9,6 +9,7 @@ import MailRetrieve from "../MailRetrieve";
 import EditTaskModal from "../EditTaskModal";
 import EraseTaskModal from "../EraseTaskModal";
 import TaskInfo from "./TaskInfo";
+import TaskUsers from "./TaskUsers";
 import Chat from "../Chat";
 import API from "../../utils/API";
 import "./style.css";
@@ -18,8 +19,10 @@ class TaskCard extends Component {
     super(props);
 
     this.state = {
-      //  This stores the available Users for deletion that will be rendered in the dropdown list.
+      //  This stores the available Users for deletion that will be rendered in the dropdown list. This will not include the logged user.
       taskUsers: [],
+      //  This stores all the users including the logged user.
+      allTaskUsers: [],
       taskUsersIds: [],
       notTaskUsers: [],
       savedMails: [],
@@ -29,8 +32,6 @@ class TaskCard extends Component {
       mailFormHide: false,
       mailHistoryHide: false
     };
-
-    
   }
 
   componentDidMount = prevProps => {
@@ -51,17 +52,31 @@ class TaskCard extends Component {
           //  Test console.
           // console.log(this.state.taskUsers);
 
+          let loggedUseer = [
+            {
+              user_id: this.props.userId,
+              user_name: this.props.userName,
+              user_mail: this.props.userEmail
+            }
+          ];
+
           this.setState(
             {
               taskUsersIds: this.state.taskUsers
                 .map(user => {
                   return user.user_id;
                 })
-                .concat([this.props.userId])
+                .concat([this.props.userId]),
+              allTaskUsers: loggedUseer.concat(
+                this.state.taskUsers.map(user => {
+                  return user;
+                })
+              )
             },
             () => {
               //  Test console.
               // console.log(this.state.taskUsersIds);
+              // console.log(this.state.allTaskUsers);
 
               axios
                 .post(`/api/${this.props.projectId}/users`, {
@@ -298,17 +313,14 @@ class TaskCard extends Component {
                   </a>
                 </li>
               </ul>
-              {/* +++++++++++++++++ BODY USERS +++++++++++++++++ */}
-              <div className="collapse" id="multiCollapseExample1">
-                <div className="card card-body bg-dark">
-                  <h6>Users: </h6>
-                  <ul>
-                    <li>Nacho</li>
-                    <li>Manu</li>
-                    <li>Elvan</li>
-                  </ul>
-                </div>
+              {/* ---- Task Users------ */}
+              <div
+                className={"hide-" + this.state.usersHide}
+                id="multiCollapseExample1"
+              >
+                <TaskUsers allTaskUsers={this.state.allTaskUsers}></TaskUsers>
               </div>
+
               {/* ---- Chat Form------ */}
               <div
                 className={"hide-" + this.state.chatHide}
@@ -321,6 +333,7 @@ class TaskCard extends Component {
                   taskUsersIds={this.state.taskUsersIds}
                 />
               </div>
+
               {/* ----email Form------ */}
               <div
                 className={"hide-" + this.state.mailFormHide}
@@ -340,6 +353,7 @@ class TaskCard extends Component {
                   </div>
                 </div>
               </div>
+
               {/* ----email retrieve---- */}
               <div
                 className={"hide-" + this.state.mailHistoryHide}
