@@ -26,12 +26,13 @@ if (config.use_env_variable) {
 
     process.env.DATABASE_2,
     process.env.USER_NAME_2,
+    
     process.env.PASSWORD_2, {
+      logging: false,
       host: "localhost",
       dialect: "mysql"
     }
-
-  );
+    );
 
 }
 

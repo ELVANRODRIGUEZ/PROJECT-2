@@ -43,7 +43,7 @@
     "react-bootstrap": "^1.0.0-beta.10",
     "react-moment": "^0.9.2",
     "sequelize": "^5.10.3",
-    "socket.io": "^2.2.0",
+    "socket.io": "1.7.3",
     "body-parser": "^1.19.0",
     "http-proxy-middleware": "^0.19.1",
     "jade": "~1.11.0",

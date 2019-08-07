@@ -12,8 +12,8 @@ class Chat extends React.Component {
       message: "",
       messages: []
     };
-
-    this.socket = io("localhost:5000");
+    //this.socket = io.connect("/", {transports:['websocket'], upgrade: false}, {'force new connection': true})
+    this.socket = io("/");
 
     API.getSavedChats("Task2").then(res => {
       //  Test console.

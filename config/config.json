@@ -3,6 +3,7 @@
   "development": {
     "username": "process.env.USER_NAME_2",
     "password": "process.env.PASSWORD_2",
+    "logging" : false,
     "database": "process.env.DATABASE_2",
     "port": 3306,
     "host": "process.env.HOST_2",
@@ -10,7 +11,8 @@
   },
   "production": {
     "use_env_variable": "JAWSDB_URL",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": false
   }
 }
 
