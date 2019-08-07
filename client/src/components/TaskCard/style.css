@@ -1,3 +1,7 @@
 .hide-false  {
     display: none;
   }
+
+  #total{
+    color: white;
+      }

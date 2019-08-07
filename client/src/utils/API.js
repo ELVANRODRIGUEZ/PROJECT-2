@@ -3,7 +3,7 @@ import axios from "axios";
 export default {
 
   saveChat(chatData) {
-    console.log(chatData);
+    //console.log(chatData);
       return axios.post("/api/chat", chatData);
   },
   getSavedChats(taskId) {
@@ -11,7 +11,7 @@ export default {
   },
 
   saveMail(mailData) {
-    console.log(mailData)
+    //console.log(mailData)
     return axios.post("/api/mail", mailData);
   },
   getSavedMails(taskId) {

@@ -146,7 +146,7 @@ class TaskInfo extends Component {
             type="text"
             value={`${this.state.taskAccomplished}%`}
             id="total"
-            className="field left form-control col-sm-1 text-dark"
+            className="field left form-control col-sm-1"
             readOnly=""
             style={{ margin: "5px" }}
           />

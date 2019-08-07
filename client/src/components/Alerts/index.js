@@ -15,7 +15,7 @@ class Alerts extends Component {
         role="alert"
         // onChange = {this.onChange}
       >
-        
+         <i className="fa fa-exclamation-circle"></i>
         <span>Error:</span> <span id="alertmsg" className="msg">{this.props.alert}</span>
       </div>
     );

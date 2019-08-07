@@ -14,7 +14,8 @@ class MailForm extends Component {
       usersToMail: [],
      display: "none",
       opacity: "0",
-      errorMessage: ""
+      errorMessage: "",
+      alertType: ""
     }
   }
 
@@ -190,29 +191,57 @@ this.setState((state)=>({
 // }else if (message === "") {
 //     this.alertMessage("No messagge");
   ///
-alertMessage = msg => {
-  if (msg === "No email TO:") {
+alertMessage = (msg,) => {
+  if (msg === "Mail Sent") {
     return this.setState(
       {
-        errorMessage: "Please select a user"
-      }, 
-      () => this.showAlertMessage()
-    );
-  } if (msg === "No Subject") {
-    return this.setState(
-      {
-        errorMessage: "Please type the Subject"
-      },
-      () => this.showAlertMessage()
-    );
-  } else if (msg === "No messagge") {
-    return this.setState(
-      {
-        errorMessage: "Please type a messager"
+        errorMessage: "Mail sent",
+        alertType: "alert alert-success"
       }, 
       () => this.showAlertMessage()
     );
   }
+  if (msg === "No email TO:") {
+    return this.setState(
+      {
+        errorMessage: "Please select a user",
+        alertType: "alert alert-danger"
+      }, 
+      () => this.showAlertMessage()
+    );
+  } 
+  if (msg === "No Subject") {
+    return this.setState(
+      {
+        errorMessage: "Please type the Subject",
+        alertType: "alert alert-danger"
+      },
+      () => this.showAlertMessage()
+    );
+  }
+  
+  if (msg === "No messagge") {
+    return this.setState(
+      {
+        errorMessage: "Please type a message",
+        alertType: "alert alert-danger"
+      }, 
+      () => this.showAlertMessage()
+    );
+  }
+  if (msg === "mail error") {
+    return this.setState(
+      {
+        errorMessage: "Sending error, try again",
+        alertType: "alert alert-danger"
+      }, 
+      () => this.showAlertMessage()
+    );
+  }
+
+  
+
+
 };
 
 showAlertMessage = () => {
@@ -239,16 +268,17 @@ showAlertMessage = () => {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log("users aded\n"+this.state.usersAdded)
+    // console.log("users aded\n"+this.state.usersAdded)
     const mailSubject = document.getElementById("subject").value;
     const email = document.getElementById("email").value;
    // const email = this.state.usersAdded.map((u) => u.user_mail);
     const message = document.getElementById('mailMessage').value;
     console.log("userstomail are:\n" +email )
-    if (mailSubject === "") {
-      this.alertMessage("No Subject");
-    } else if (email === "") {
+    
+    if (email === "") {
       this.alertMessage("No email TO:");
+    } else if (mailSubject === "") {
+      this.alertMessage("No Subject");
     }else if (message === "") {
         this.alertMessage("No messagge");
     } else {
@@ -285,11 +315,11 @@ showAlertMessage = () => {
           .catch(err => {
             console.log(err);
           });
-        alert("Message Sent.");
+          this.alertMessage("Mail Sent");
 
         this.resetForm();
       } else if (response.data.msg === "fail") {
-        alert("Message failed to send.");
+        this.alertMessage("mail error");
       }
     });
   }
@@ -431,7 +461,7 @@ showAlertMessage = () => {
               margin: 0
             }}
             id="newTaskAlert"
-            className="alert alert-danger"
+            className= {this.state.alertType}
             role="alert"
           >
             <i className="fa fa-exclamation-circle"></i>
