@@ -8,6 +8,7 @@ import MailForm from "../MailForm";
 import MailRetrieve from "../MailRetrieve";
 import EditTaskModal from "../EditTaskModal";
 import EraseTaskModal from "../EraseTaskModal";
+import TaskInfo from "./TaskInfo";
 import Chat from "../Chat";
 import API from "../../utils/API";
 import "./style.css";
@@ -29,8 +30,7 @@ class TaskCard extends Component {
       mailHistoryHide: false
     };
 
-    // This is how we define an attribute inside a class:
-    this.timeRemaing = new Date(this.props.taskDeadline) - new Date();
+    
   }
 
   componentDidMount = prevProps => {
@@ -98,7 +98,7 @@ class TaskCard extends Component {
       })
       .catch(err => console.log(err));
   };
-  
+
   // Toggles the Edit Task Modal and the Erase Task Modal accordingly.
   editTaskModalToggle = event => {
     const target = event.target;
@@ -224,6 +224,7 @@ class TaskCard extends Component {
             eraseTaskModalView={this.props.eraseTaskModalShow}
             taskId={this.props.taskId}
             eraseTaskModalToggle={this.eraseTaskModalToggle}
+            renderForNewTasks={this.props.renderForNewTasks}
           ></EraseTaskModal>
 
           {/* +++++++++++++++++ EDIT TASK MODAL +++++++++++++++++ */}
@@ -242,67 +243,13 @@ class TaskCard extends Component {
           ></EditTaskModal>
 
           {/* +++++++++++++++++ TASK INFO +++++++++++++++++ */}
-          <h5 id="modal-task-id" className="card-title">
-            {`Task: ${this.props.taskId}`}
-          </h5>
-          <div style={{ marginTop: "1rem" }}>
-            {this.timeRemaing < 0 ? (
-              <h6 className="d-inline p-2 bg-danger rounded text-white">
-                Deadline:{" "}
-                <Moment format="DD, MMMM. YYYY">
-                  {this.props.taskDeadline}
-                </Moment>
-                <br />
-              </h6>
-            ) : (
-              <h6 className="d-inline p-2 bg-success rounded text-white">
-                Deadline:{" "}
-                <Moment format="DD, MMMM. YYYY">
-                  {this.props.taskDeadline}
-                </Moment>
-                <br />
-              </h6>
-            )}
-          </div>
-          <h6
-            id="modal-task-description"
-            className="card-subtitle mb-2 text-white"
-            style={{ marginTop: "15px" }}
-          >
-            {this.props.taskDescription}
-          </h6>
-          <h6>Progress (%):</h6>
-          <div className="progress" style={{ marginBottom: ".5rem" }}>
-            <div
-              className="progress-bar"
-              role="progressbar"
-              style={{
-                width: `${parseFloat(this.props.taskAccomplished) * 100}%`
-              }}
-              aria-valuenow={parseFloat(this.props.taskAccomplished) * 100}
-              aria-valuemin="0"
-              aria-valuemax="100"
-            ></div>
-          </div>
-          <div
-            className="row"
-            style={{ margin: "auto", marginBottom: ".5rem" }}
-          >
-            <button className="btn btn-dark pplus" style={{ marginLeft: 0 }}>
-              <i className="fa fa-minus-circle" aria-hidden="true"></i>
-            </button>
-            <input
-              type="text"
-              value={`${parseFloat(this.props.taskAccomplished) * 100}%`}
-              id="total"
-              className="field left form-control col-sm-1 text-dark"
-              readOnly=""
-              style={{ margin: "5px" }}
-            />
-            <button className="btn btn-dark pminus">
-              <i className="fa fa-plus-circle" aria-hidden="true"></i>
-            </button>
-          </div>
+          <TaskInfo
+            taskId={this.props.taskId}
+            taskDeadline={this.props.taskDeadline}
+            taskDescription={this.props.taskDescription}
+          ></TaskInfo>
+
+          {/* +++++++++++++++++ TASK CONVERSATION +++++++++++++++++ */}
           <div className="card bg-dark text-white task">
             <div className="card-body">
               <ul className="nav nav-tabs nav-pills card-title">

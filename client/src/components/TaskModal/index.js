@@ -22,14 +22,17 @@ class TaskModal extends Component {
   }
 
   openTask = (task, eraseTask) => {
-    this.setState({ 
-      openedTask: parseInt(task), 
-      openEraseTask: parseInt(eraseTask) 
-    }, () => {
-      //  Test console.
-      // console.log(this.state.openedTask);
-      // console.log(this.state.openEraseTask);
-    });
+    this.setState(
+      {
+        openedTask: parseInt(task),
+        openEraseTask: parseInt(eraseTask)
+      },
+      () => {
+        //  Test console.
+        // console.log(this.state.openedTask);
+        // console.log(this.state.openEraseTask);
+      }
+    );
   };
 
   componentDidUpdate = prevProps => {
@@ -52,12 +55,12 @@ class TaskModal extends Component {
   // Toggle the NewTaskModal inside the TaskModal.
   newTaskModalToggle = () => {
     if (this.state.newTaskModalShow === false) {
-      this.setState({ 
-        newTaskModalShow: true, 
+      this.setState({
+        newTaskModalShow: true,
         // This will cause a remapping to close any possible opened Task Edit Modal.
         openedTask: 0,
         // This will cause a remapping to close any possible opened Task Erase Modal.
-        openEraseTask: 0 
+        openEraseTask: 0
       });
     } else {
       this.setState({ newTaskModalShow: false });
@@ -130,8 +133,8 @@ class TaskModal extends Component {
                 userEmail={this.props.userEmail}
                 taskDescription={task.task_description}
                 taskDeadline={task.task_deadline}
-                taskAccomplished={task.task_accomplished}
                 renderForEditedTasks={this.props.renderForNewTasks}
+                renderForNewTasks={this.props.renderForNewTasks}
                 // This will compare all The existing Task Cards with the "openedTask" state which should cointained any Task Id that is supposed to be open, or "0" to shut them all.
                 editTaskModalShow={
                   task.task_id === this.state.openedTask ? true : false

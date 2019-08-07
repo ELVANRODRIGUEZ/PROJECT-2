@@ -596,7 +596,7 @@ module.exports = function(app) {
   app.delete("/api/task/:id/delete_all", function(req, res) {
     var taskId = req.params.id;
 
-    console.log(taskId);
+    // console.log(taskId);
 
     db.chat_mess_tasks
       .destroy({
@@ -626,6 +626,48 @@ module.exports = function(app) {
         });
 
         res.send("Reload Page");
+      });
+  });
+  
+  // Route to get Task progress.
+  app.get("/api/task/:id/progress", function(req, res) {
+
+    console.log(req.body.dead_line);
+    console.log(req.params.id);
+
+    db.tasks
+      .findOne(
+        {
+          where: {
+            id: req.params.id
+          },
+          attributes: ["accomplished"]
+        }
+      )
+      .then(function(data) {
+        res.json(data);
+      });
+  });
+  
+  // Route to update Task progress.
+  app.put("/api/task/:id/update", function(req, res) {
+
+    console.log(req.body.dead_line);
+    console.log(req.params.id);
+
+    db.tasks
+      .update(
+        {
+          accomplished: req.body.accomplished,
+        },
+        {
+          where: {
+            id: req.params.id
+          }
+        }
+      )
+      .then(function(data) {
+        res.json(data);
       });
   });
 };

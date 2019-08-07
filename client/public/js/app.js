@@ -157,37 +157,11 @@ $('#categoryDel').on('click', function () {
 })
 
 
-// ----------------- Task
-
-// ---------- Click on Task Increase Accomplishment Button
-$('.pminus').on('click', function () {
-    x += 25;
-    if (x > 100) {
-        x = 100
-    } else {
-        $('.progress-bar').width(x + "%");
-        $('#total').attr('value', x);
-        $('.progress-bar').attr('aria-valuenow', x);
-    }
-})
-
-// ---------- Click on Task Decrease Accomplishment Button
-$('.pplus').on('click', function () {
-    x -= 25;
-    if (x < 0) {
-        x = 0
-    } else {
-        $('.progress-bar').width(x + "%");
-        $('.progress-bar').attr('aria-valuenow', x);
-        $('#total').attr('value', x);
-    }
-})
-
 
 // ========================= Ajax Calls Button Events
 
 
-// ----------------- Category
+// ----------------- Project
 
 // ---------- Get all Users in Add Project Modal
 $("#projectAddButton").on("click", function (event) {
@@ -393,30 +367,3 @@ $("#deleteCategory").on('click', function () {
         });
 
 });
-
-
-// ----------------- Task
-
-// ---------- Click on Accept Taks Deletion
-// $(document).on("click", ".eraseOneTask", function (event) {
-
-//     var taskId = $(this).attr("task");
-
-//     $.ajax({
-//         url: "/api/task/" + taskId + "/delete_all",
-//         type: "DELETE"
-//     }).then(
-//         function (data) {
-
-//             // Test console.
-//             // console.log(data);
-
-//             if (data == "Reload Page") {
-
-//                 location.reload();
-
-//             }
-
-//         });
-
-// });
