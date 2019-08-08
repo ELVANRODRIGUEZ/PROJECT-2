@@ -11,12 +11,11 @@ class MailForm extends Component {
       userToAdd: [],
       taskUsers: this.props.taskUsers,
       usersAdded: [],
-      usersToMail: [],
-     display: "none",
+      display: "none",
       opacity: "0",
       errorMessage: "",
       alertType: ""
-    }
+    };
   }
 
   componentDidUpdate = prevProps => {
@@ -37,7 +36,7 @@ class MailForm extends Component {
       // console.log(`From the Mail: ${this.props.taskUsersIds}`);
       this.setState(
         {
-            taskUsers: this.props.taskUsers
+          taskUsers: this.props.taskUsers
         },
         () => {
           //  Test console.
@@ -90,18 +89,15 @@ class MailForm extends Component {
     // console.log(userToSplice);
 
     if (this.state.userToAdd[0]["user_id"] !== "") {
-      
-      
       this.setState(
         {
-          usersAdded: this.state.usersAdded.concat(this.state.userToAdd),
-                  },
+          usersAdded: this.state.usersAdded.concat(this.state.userToAdd)
+        },
         () => {
           // Clears up the "userToAdd" state so clicking again the Add butto without having changed the dropdown menu (by selecting a new User) does not concatenate the previously added user once more.
           this.setState({ userToAdd: [] });
           // Test console.
           console.log(JSON.stringify(this.state.usersAdded));
-         
 
           this.setState(
             {
@@ -155,243 +151,229 @@ class MailForm extends Component {
         console.log(this.state.taskUsers);
       }
     );
-this.setState((state)=>({ 
-  usersAdded: state.usersAdded.filter(user => {
-    return user.user_id !== userToAddId;
-  }),
- 
-
-}))
-
+    this.setState(state => ({
+      usersAdded: state.usersAdded.filter(user => {
+        return user.user_id !== userToAddId;
+      })
+    }));
 
     // this.setState(
     //   {
     //     usersAdded: this.state.usersAdded.filter(user => {
     //       return user.user_id !== userToAddId;
     //     })
-        
-      // },
-      // () => {
-      //   // Test console.
-      //   // console.log("usersAdded"+ this.state.usersAdded.map((u) => u.user_mail));
-      //   // console.log("usersToMail"+ this.state.usersToMail);
-      // }
+
+    // },
+    // () => {
+    //   // Test console.
+    //   // console.log("usersAdded"+ this.state.usersAdded.map((u) => u.user_mail));
+    //   // console.log("usersToMail"+ this.state.usersToMail);
+    // }
     // );
     // this.setState({ usersToMail: this.state.usersAdded});
     console.log(JSON.stringify(this.state.usersAdded));
-                    
   };
-
-
 
   ////
-//   this.alertMessage("No Subject");
-// } else if (email === "") {
-//   this.alertMessage("No email TO:");
-// }else if (message === "") {
-//     this.alertMessage("No messagge");
+  //   this.alertMessage("No Subject");
+  // } else if (email === "") {
+  //   this.alertMessage("No email TO:");
+  // }else if (message === "") {
+  //     this.alertMessage("No messagge");
   ///
-alertMessage = (msg,) => {
-  if (msg === "Mail Sent") {
-    return this.setState(
-      {
-        errorMessage: "Mail sent",
-        alertType: "alert alert-success"
-      }, 
-      () => this.showAlertMessage()
-    );
-  }
-  if (msg === "No email TO:") {
-    return this.setState(
-      {
-        errorMessage: "Please select a user",
-        alertType: "alert alert-danger"
-      }, 
-      () => this.showAlertMessage()
-    );
-  } 
-  if (msg === "No Subject") {
-    return this.setState(
-      {
-        errorMessage: "Please type the Subject",
-        alertType: "alert alert-danger"
-      },
-      () => this.showAlertMessage()
-    );
-  }
-  
-  if (msg === "No messagge") {
-    return this.setState(
-      {
-        errorMessage: "Please type a message",
-        alertType: "alert alert-danger"
-      }, 
-      () => this.showAlertMessage()
-    );
-  }
-  if (msg === "mail error") {
-    return this.setState(
-      {
-        errorMessage: "Sending error, try again",
-        alertType: "alert alert-danger"
-      }, 
-      () => this.showAlertMessage()
-    );
-  }
+  alertMessage = msg => {
+    if (msg === "Mail Sent") {
+      return this.setState(
+        {
+          errorMessage: "Mail sent",
+          alertType: "alert alert-success"
+        },
+        () => this.showAlertMessage()
+      );
+    }
+    if (msg === "No email TO:") {
+      return this.setState(
+        {
+          errorMessage: "Please select a user",
+          alertType: "alert alert-danger"
+        },
+        () => this.showAlertMessage()
+      );
+    }
+    if (msg === "No Subject") {
+      return this.setState(
+        {
+          errorMessage: "Please type the Subject",
+          alertType: "alert alert-danger"
+        },
+        () => this.showAlertMessage()
+      );
+    }
 
-  
-
-
-};
-
-showAlertMessage = () => {
-  let opacityRate = 0;
-
-  this.setState({ display: "block" });
-
-  let increase = () => {
-    opacityRate += 0.25;
-    this.setState({ opacity: opacityRate.toString() });
+    if (msg === "No messagge") {
+      return this.setState(
+        {
+          errorMessage: "Please type a message",
+          alertType: "alert alert-danger"
+        },
+        () => this.showAlertMessage()
+      );
+    }
+    if (msg === "mail error") {
+      return this.setState(
+        {
+          errorMessage: "Sending error, try again",
+          alertType: "alert alert-danger"
+        },
+        () => this.showAlertMessage()
+      );
+    }
   };
 
-  let increaseOpacity = setInterval(increase, 250);
+  showAlertMessage = () => {
+    let opacityRate = 0;
 
-  setTimeout(() => {
-    this.setState({
-      display: "none",
-      opacity: "0",
-      errorMessage: ""
-    });
-    clearInterval(increaseOpacity);
-  }, 3000);
-};
+    this.setState({ display: "block" });
+
+    let increase = () => {
+      opacityRate += 0.25;
+      this.setState({ opacity: opacityRate.toString() });
+    };
+
+    let increaseOpacity = setInterval(increase, 250);
+
+    setTimeout(() => {
+      this.setState({
+        display: "none",
+        opacity: "0",
+        errorMessage: ""
+      });
+      clearInterval(increaseOpacity);
+    }, 3000);
+  };
 
   handleSubmit(event) {
     event.preventDefault();
+    console.log("cualquiera");
     // console.log("users aded\n"+this.state.usersAdded)
     const mailSubject = document.getElementById("subject").value;
     const email = document.getElementById("email").value;
-   // const email = this.state.usersAdded.map((u) => u.user_mail);
-    const message = document.getElementById('mailMessage').value;
-    console.log("userstomail are:\n" +email )
-    
+    // const email = this.state.usersAdded.map((u) => u.user_mail);
+    const message = document.getElementById("mailMessage").value;
+    console.log("userstomail are:\n" + email);
+
     if (email === "") {
       this.alertMessage("No email TO:");
     } else if (mailSubject === "") {
       this.alertMessage("No Subject");
-    }else if (message === "") {
-        this.alertMessage("No messagge");
+    } else if (message === "") {
+      this.alertMessage("No messagge");
     } else {
       let mailData;
 
-
-    mailData = {
-      senderName: this.props.userName,
-      senderEmail: this.props.userEmail,
-      //for testing porpouses email is harcoded, in production use:
-      // email: email
-      //see log to chechk the real variable
-      email: "manucastle@hotmail.com,mecastilloc@gmail.com,me_castillo@hotmail.com",
-      mailSubject: mailSubject,
-      message: message,
-      taskId: this.props.taskId
-    };
-    axios({
-      method: "POST",
-      url: "/send",
-      data: mailData
-    }).then(response => {
-      //  Test console.
-      //   console.log(response.data);
-      if (response.data.msg === "success") {
-        //Save mail
+      mailData = {
+        senderName: this.props.userName,
+        senderEmail: this.props.userEmail,
+        //for testing porpouses email is harcoded, in production use:
+        // email: email
+        //see log to chechk the real variable
+        //email: "manucastle@hotmail.com,mecastilloc@gmail.com,me_castillo@hotmail.com",
+        email: email,
+        mailSubject: mailSubject,
+        message: message,
+        taskId: this.props.taskId
+      };
+      console.log(mailData);
+      axios({
+        method: "POST",
+        url: "/send",
+        data: mailData
+      }).then(response => {
         //  Test console.
-        // console.log(mailData);
-        API.saveMail(mailData)
-          .then(() => {
-            //  Test console.
-            // console.log("Mail Saved");
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        //   console.log(response.data);
+        if (response.data.msg === "success") {
+          //Save mail
+          //  Test console.
+          // console.log(mailData);
+          API.saveMail(mailData)
+            .then(() => {
+              //  Test console.
+              // console.log("Mail Saved");
+            })
+            .catch(err => {
+              console.log(err);
+            });
           this.alertMessage("Mail Sent");
 
-        this.resetForm();
-      } else if (response.data.msg === "fail") {
-        this.alertMessage("mail error");
-      }
-    });
+          this.resetForm();
+        } else if (response.data.msg === "fail") {
+          this.alertMessage("mail error");
+        }
+      });
+    }
   }
-}
 
-  resetForm=() =>{
+  resetForm = () => {
     document.getElementById("contact-form").reset();
-    this.setState(
-      {
-        userToAdd: [],
-        usersAdded: [],
-        usersToMail: []
-         });
-
-  }
+    this.setState({
+      userToAdd: [],
+      usersAdded: [],
+      taskUsers: this.props.taskUsers
+    });
+  };
 
   render() {
-  
-  let usersToBeAdded;
+    let usersToBeAdded;
 
-  if (this.state.usersAdded.length > 0) {
-    // console.log(this.state.usersAdded);
-    usersToBeAdded = (
-      <ul id="notTaskUserList" className="list-group">
-        {this.state.usersAdded.map(user => {
-          return (
-            <li
-              key={user.user_id}
-              className="taskUser list-group-item text-dark col-md-8"
-              style={{ lineHeight: 1, padding: "5px" }}
-            >
-              <button
-                className="btn btn-dark pplus"
-                userid={user.user_id}
-                value={user.user_name}
-                onClick={this.delFromAddList}
-                style={{
-                  margin: 0,
-                  marginRight: "5px",
-                  display: "inline-block"
-                }}
+    if (this.state.usersAdded.length > 0) {
+      // console.log(this.state.usersAdded);
+      usersToBeAdded = (
+        <ul id="notTaskUserList" className="list-group">
+          {this.state.usersAdded.map(user => {
+            return (
+              <li
+                key={user.user_id}
+                className="taskUser list-group-item text-dark col-md-8"
+                style={{ lineHeight: 1, padding: "5px" }}
               >
-                <i
-                  className="fa fa-times-circle"
+                <button
+                  className="btn btn-dark pplus"
                   userid={user.user_id}
                   value={user.user_name}
-                  aria-hidden="true"
-                ></i>
-              </button>
-              {user.user_name}
-            </li>
-          );
-        })}
-      </ul>
-    );
-  } else {
-    usersToBeAdded = <ul id="notTaskUserList" className="list-group"></ul>;
-  }
+                  onClick={this.delFromAddList}
+                  style={{
+                    margin: 0,
+                    marginRight: "5px",
+                    display: "inline-block"
+                  }}
+                >
+                  <i
+                    className="fa fa-times-circle"
+                    userid={user.user_id}
+                    value={user.user_name}
+                    aria-hidden="true"
+                  ></i>
+                </button>
+                {user.user_name}
+              </li>
+            );
+          })}
+        </ul>
+      );
+    } else {
+      usersToBeAdded = <ul id="notTaskUserList" className="list-group"></ul>;
+    }
 
-
-
-
-  return (
-    <div>
-      <div className="col-sm-8 offset-sm-2">
-        <form
-          id="contact-form"
-          onSubmit={this.handleSubmit.bind(this)}
-          method="POST"
-        >
-{/* +++++++++++++++++ New Task Users deletion +++++++++++++++++ */}
-<label htmlFor="taskUsers">Select Users To eMail</label>
+    return (
+      <div>
+        <div className="col-sm-8 offset-sm-2">
+          <form
+            id="contact-form"
+            onSubmit={this.handleSubmit.bind(this)}
+            method="POST"
+          >
+            {/* +++++++++++++++++ New Task Users deletion +++++++++++++++++ */}
+            <label htmlFor="taskUsers">Select Users To eMail</label>
             <div className="row noMargin">
               <select
                 className="form-control col-md-6 usersAvailables"
@@ -430,52 +412,53 @@ showAlertMessage = () => {
             {/* +++++++++++++++++ to be filled +++++++++++++++++ */}
             {usersToBeAdded}
 
-
-
-
-
-          <div style={{display: "none"}} className="form-group">
-            <label htmlFor="exampleInputEmail1">Email address</label>
-            <input
-              type="text"
-              className="form-control"
-              id="email"
-              aria-describedby="emailHelp"
-              value ={this.state.usersAdded.map((u) => u.user_mail)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="subject">Subject</label>
-            <input type="text" className="form-control" id="subject" />
-          </div>
-          <div className="form-group">
-                          <label htmlFor="mailMessage">Message</label>
-                          <textarea type="text" className="form-control" rows="5" id="mailMessage"></textarea>
-                      </div>
+            <div style={{display: "none"}} className="form-group">
+            {/* <div className="form-group"> */}
+              <label htmlFor="exampleInputEmail1">Email address</label>
+              <input
+                type="text"
+                className="form-control"
+                id="email"
+                aria-describedby="emailHelp"
+                value ={this.state.usersAdded.map((u) => u.user_mail)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="subject">Subject</label>
+              <input type="text" className="form-control" id="subject" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="mailMessage">Message</label>
+              <textarea
+                type="text"
+                className="form-control"
+                rows="5"
+                id="mailMessage"
+              ></textarea>
+            </div>
             {/*! +++++++++++++++++ Error Dialog +++++++++++++++++ */}
-                      <div
-            style={{
-              transition: "opacity 2s",
-              display: this.state.display,
-              opacity: this.state.opacity,
-              margin: 0
-            }}
-            id="newTaskAlert"
-            className= {this.state.alertType}
-            role="alert"
-          >
-            <i className="fa fa-exclamation-circle"></i>
-            <span className="msg">&nbsp; {this.state.errorMessage}</span>
-          </div>
+            <div
+              style={{
+                transition: "opacity 2s",
+                display: this.state.display,
+                opacity: this.state.opacity,
+                margin: 0
+              }}
+              id="newTaskAlert"
+              className={this.state.alertType}
+              role="alert"
+            >
+              <i className="fa fa-exclamation-circle"></i>
+              <span className="msg">&nbsp; {this.state.errorMessage}</span>
+            </div>
 
-
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
-        </form>
+            <button type="submit" className="btn btn-primary">
+              Submit
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 }
 export default MailForm;
