@@ -152,10 +152,10 @@ class TaskModal extends Component {
 
         {/* +++++++++++++++++ FOOTER +++++++++++++++++ */}
         <Modal.Footer>
-          <button
+                <button
             type="button"
             className="btn btn btn-outline-danger"
-            dataDismiss="modal"
+            dataDismiss="taskModal"
             onClick={this.wholeTaskModalClose}
           >
             Close

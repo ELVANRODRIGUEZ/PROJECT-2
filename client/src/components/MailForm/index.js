@@ -268,6 +268,7 @@ showAlertMessage = () => {
 
   handleSubmit(event) {
     event.preventDefault();
+    console.log("cualquiera")
     // console.log("users aded\n"+this.state.usersAdded)
     const mailSubject = document.getElementById("subject").value;
     const email = document.getElementById("email").value;
@@ -291,11 +292,13 @@ showAlertMessage = () => {
       //for testing porpouses email is harcoded, in production use:
       // email: email
       //see log to chechk the real variable
-      email: "manucastle@hotmail.com,mecastilloc@gmail.com,me_castillo@hotmail.com",
+      //email: "manucastle@hotmail.com,mecastilloc@gmail.com,me_castillo@hotmail.com",
+      email: email,
       mailSubject: mailSubject,
       message: message,
       taskId: this.props.taskId
     };
+    console.log(mailData)
     axios({
       method: "POST",
       url: "/send",
@@ -331,7 +334,8 @@ showAlertMessage = () => {
       {
         userToAdd: [],
         usersAdded: [],
-        usersToMail: []
+        taskUsers: this.props.taskUsers
+        //usersToMail: []
          });
 
   }
@@ -434,14 +438,16 @@ showAlertMessage = () => {
 
 
 
-          <div style={{display: "none"}} className="form-group">
+          {/* <div style={{display: "none"}} className="form-group"> */}
+          <div className="form-group">
             <label htmlFor="exampleInputEmail1">Email address</label>
             <input
-              type="email"
+              type="text"
               className="form-control"
               id="email"
               aria-describedby="emailHelp"
-              value ={this.state.usersAdded.map((u) => u.user_mail)}
+              //value ={this.state.usersAdded.map((u) => u.user_mail)}
+              value = {["manucastle@hotmail.com","mecastilloc@gmail.com","me_castillo@hotmail.com"]}
             />
           </div>
           <div className="form-group">

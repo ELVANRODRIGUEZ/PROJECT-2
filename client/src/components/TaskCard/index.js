@@ -329,8 +329,8 @@ class TaskCard extends Component {
                 <Chat
                   taskId={this.props.taskId}
                   userName={this.props.userName}
-                  taskUsers={this.state.taskUsers}
-                  taskUsersIds={this.state.taskUsersIds}
+                  // taskUsers={this.state.taskUsers}
+                  // taskUsersIds={this.state.taskUsersIds}
                 />
               </div>
 

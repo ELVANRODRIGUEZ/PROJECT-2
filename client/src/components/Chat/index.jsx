@@ -8,14 +8,14 @@ class Chat extends React.Component {
     super(props);
 
     this.state = {
-      username: "",
+      username: this.props.userName,
       message: "",
       messages: []
     };
     //this.socket = io.connect("/", {transports:['websocket'], upgrade: false}, {'force new connection': true})
     this.socket = io("/");
 
-    API.getSavedChats("Task2").then(res => {
+    API.getSavedChats(this.props.taskId).then(res => {
       //  Test console.
       // console.log(res.data);
       this.setState({ messages: res.data });
@@ -26,7 +26,7 @@ class Chat extends React.Component {
     });
 
     const addMessage = data => {
-      API.getSavedChats("Task2").then(res => {
+      API.getSavedChats(this.props.taskId).then(res => {
         //  Test console.
         // console.log(res.data);
         this.setState({ messages: res.data });
@@ -35,44 +35,56 @@ class Chat extends React.Component {
       //console.log(data);
     };
 
-    this.sendMessage = ev => {
-      ev.preventDefault();
-      const message = document.getElementById("message").value;
-      const author = document.getElementById("author").value;
-      const task = "Task2";
-      const day = new Date().getDate();
-      const month = new Date().getMonth() + 1;
-      const hours = new Date().getHours();
-      const minutes = new Date().getMinutes();
-      let chatData = {
-        author: author,
-        message: message,
-        task: task,
-        day: day,
-        month: month,
-        hours: hours,
-        minutes: minutes
-      };
-      //  Test console.
-      //   console.log("chat data ");
-      //   console.log(chatData);
-      API.saveChat(chatData)
-        .then(res => {
-          //  Test console.
-          //   console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    
+  }
 
-      this.socket.emit("SEND_MESSAGE", {
-        author: this.state.username,
-        message: this.state.message
+// authorOnChange = ev => {
+
+// }
+
+// messageOnChange = ev => {
+
+// }
+
+sendMessage = ev => {
+    ev.preventDefault();
+    const message = this.state.message;
+    const author = this.state.username;
+    const taskId = this.props.taskId;
+    const day = new Date().getDate();
+    const month = new Date().getMonth() + 1;
+    const hours = new Date().getHours();
+    const minutes = new Date().getMinutes();
+    let chatData = {
+      author: author,
+      message: message,
+      taskId: taskId,
+      day: day,
+      month: month,
+      hours: hours,
+      minutes: minutes
+    };
+    //  Test console.
+    //   console.log("chat data ");
+    console.log(chatData);
+    API.saveChat(chatData)
+      .then(res => {
+        //  Test console.
+        //   console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
       });
 
-      this.setState({ message: "" });
-    };
-  }
+    this.socket.emit("SEND_MESSAGE", {
+      author: this.state.username,
+      message: this.state.message,
+      taskId: this.props.taskId
+    });
+
+    this.setState({ message: "" });
+  };
+
 
   componentDidUpdate = prevProps => {
     if (this.props.taskUsersIds !== prevProps.taskUsersIds) {
@@ -103,19 +115,19 @@ class Chat extends React.Component {
                     return (
                       <div
                         className={
-                          message.author !== "Nacho"
+                          message.author !== this.props.userName
                             ? "received_withd_msg"
                             : "outgoing_msg"
                         }
                       >
-                        {message.author !== "Nacho" ? (
+                        {message.author !== this.props.userName ? (
                           <Initials className="avatar" name={message.author} />
                         ) : (
                           ""
                         )}
                         <div
                           className={
-                            message.author !== "Nacho"
+                            message.author !== this.props.userName
                               ? "received_msg"
                               : "sent_msg"
                           }
@@ -134,16 +146,19 @@ class Chat extends React.Component {
                 </div>
               </div>
               <div className="card-footer">
-                <input
+                {/* <input
                   id="author"
                   type="text"
                   placeholder="Username"
-                  value={this.state.username}
+                  value={this.props.userName}
                   onChange={ev => this.setState({ username: ev.target.value })}
                   className="form-control"
-                />
+                /> */}
+
+
                 <br />
-                <input
+                <textarea
+                  rows="4"
                   id="message"
                   type="text"
                   placeholder="Message"
