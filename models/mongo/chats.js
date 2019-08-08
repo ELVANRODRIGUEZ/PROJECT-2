@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const ChatSchema = new Schema({
     author: String,
     message: String,
-    task: String,
+    taskId: String,
     month:Number,
     day:Number,
     hours:Number,
