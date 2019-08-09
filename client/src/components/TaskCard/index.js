@@ -107,9 +107,8 @@ class TaskCard extends Component {
     API.getSavedMails(taskId)
       .then(res => {
         // Test console.
-        // console.log(res.data)
         this.setState({ savedMails: res.data });
-        console.log("saved mails\n" + this.state.savedMails);
+        //console.log("saved mails\n" + this.state.savedMails);
       })
       .catch(err => console.log(err));
   };

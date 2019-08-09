@@ -259,14 +259,14 @@ class MailForm extends Component {
     }, 3000);
   };
 
-  buildFileTag() {
-    //console.log (this.state.fileURI)
-    let fileTag = null;
-    if (this.state.fileURI !== null)
-      fileTag = this.state.fileURI
+  // buildFileTag() {
+  //   //console.log (this.state.fileURI)
+  //   let fileTag = null;
+  //   if (this.state.fileURI !== null)
+  //     fileTag = this.state.fileURI
 
-    return fileTag;
-  }
+  //   return fileTag;
+  // }
 
   readURI(e) {
     // console.log(e.target.files);
@@ -275,12 +275,12 @@ class MailForm extends Component {
       let middle = []
       Object.keys(e.target.files).forEach(item =>{
        middle.push(e.target.files[item].name); 
-        console.log(e.target.files[item].name);
+        //console.log(e.target.files[item].name);
         let reader = new FileReader();
         reader.onload = function (ev) {
           // console.log(ev.target.result)
           this.setState({fileURI: this.state.fileURI.concat([ev.target.result]) } , ()=>{
-            console.log(this.state.fileURI);
+           // console.log(this.state.fileURI);
           } );
         }.bind(this);
         reader.readAsDataURL(e.target.files[item]);
@@ -288,16 +288,19 @@ class MailForm extends Component {
       
       
       this.setState({ fileName: middle  } , ()=>{
-        console.log(this.state.fileName);
+       console.log(this.state.fileName);
+       const label = JSON.stringify(this.state.fileName);
+       console.log(label)
+       this.setState({ buttonLabel: label.replace(/\[|]|/g, "").replace(",", ", ") })
     })
     }
   }
 
   handleChange(e) {
     e.preventDefault();
-    console.log()
-    const label = document.getElementById("fileUpload").value.replace(/([^\\]*\\)*/, '');
-    this.setState({ buttonLabel: label })
+        //const label = document.getElementById("fileUpload").value.replace(/([^\\]*\\)*/, '');
+    // const label = this.state.fileName
+    // this.setState({ buttonLabel: label })
     this.readURI(e);
     if (this.props.onChange !== undefined)
       this.props.onChange(e); // propagate to parent component
@@ -340,7 +343,9 @@ class MailForm extends Component {
         fileUri: fileTag,
         fileName: fileName
       };
-      console.log(mailData);
+      //console.log(mailData.fileName);
+
+
       axios({
         method: "POST",
         url: "/send",
@@ -356,6 +361,7 @@ class MailForm extends Component {
             senderName: this.props.userName,
         senderEmail: this.props.userEmail,
         mailSubject: mailSubject,
+        email: email,
         message: message,
         taskId: this.props.taskId,
         fileName: JSON.stringify(fileName) 

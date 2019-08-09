@@ -46,11 +46,11 @@ router.post('/send', (req, res, next) => {
   // var content = `From: ${senderName} \n email: ${email} \n message: ${message} `
   let attachments=[]
 fileName.forEach((item, index)=>{
-  // console.log(item)
+  console.log(item)
   // console.log(fileURI[index])
   
   let temp =  {
-    fileName : item, 
+    filename : item, 
     path: fileURI[index]
   }
   
@@ -58,7 +58,7 @@ fileName.forEach((item, index)=>{
    temp
   )
 })
-// console.log(attachments);
+//  console.log(attachments);
   var mail = {
     from: senderName,
     replyTo: senderEmail,
@@ -68,7 +68,7 @@ fileName.forEach((item, index)=>{
     + message + "\n\nAttachments: "+ fileName,
     attachments: attachments
   }
-  // console.log(mail);
+  console.log(mail);
   transporter.sendMail(mail, (err, data) => {
     if (err) {
       console.log("mail error is:\n"+ err)
