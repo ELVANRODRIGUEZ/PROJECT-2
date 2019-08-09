@@ -136,14 +136,17 @@ module.exports = function(app) {
       if (err) throw err;
 
       // Test console.
+      console.log("=================");
       // console.log(data);
+      // console.log(req.user);
+      console.log("=================");
 
       if (data.length == 0) {
         var sentResponse = {
           projectsHtml: "You have no Projects yet.",
-          userTagHtml: userProfile.userNameTag(req.user.user_name),
-          user_id: req.user.id,
-          user_name: req.user.user_name
+          user_Id: req.user.id,
+          user_Name: req.user.user_name,
+          user_Email: req.user.email
         };
 
         res.send(sentResponse);

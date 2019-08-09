@@ -59,7 +59,8 @@ class Signup extends Component {
     this.setState({
       password: event.target.value
     });
-    console.log(event.target.value);
+    //  Test console.
+    // console.log(event.target.value);
     var length;
     var letter;
     var capital;
@@ -188,7 +189,7 @@ class Signup extends Component {
       .then(res => {
         console.log(res)
         if (res.data === "Successful") {
-          window.location = "/members";
+          this.props.history.push("/members");
         } else if (res.data.errors[0].message === "email must be unique") {
           this.setState({
             alertmsg: "email already exists"
