@@ -14,8 +14,8 @@ class MailForm extends Component {
       usersAdded: [],
       //File attach
       id: "fileUpload",
-      fileURI: null,
-      fileName: null,
+      fileURI: [],
+      fileName: [],
       buttonLabel: "Select File",
       // Alerts
       display: "none",
@@ -269,19 +269,33 @@ class MailForm extends Component {
   }
 
   readURI(e) {
+    // console.log(e.target.files);
+
     if (e.target.files && e.target.files[0]) {
-      let reader = new FileReader();
-      reader.onload = function (ev) {
-        //   console.log(ev.target.result)
-        this.setState({ fileURI: ev.target.result });
-      }.bind(this);
-      this.setState({ fileName: e.target.files[0].name })
-      reader.readAsDataURL(e.target.files[0]);
+      let middle = []
+      Object.keys(e.target.files).forEach(item =>{
+       middle.push(e.target.files[item].name); 
+        console.log(e.target.files[item].name);
+        let reader = new FileReader();
+        reader.onload = function (ev) {
+          // console.log(ev.target.result)
+          this.setState({fileURI: this.state.fileURI.concat([ev.target.result]) } , ()=>{
+            console.log(this.state.fileURI);
+          } );
+        }.bind(this);
+        reader.readAsDataURL(e.target.files[item]);
+      })
+      
+      
+      this.setState({ fileName: middle  } , ()=>{
+        console.log(this.state.fileName);
+    })
     }
   }
 
   handleChange(e) {
     e.preventDefault();
+    console.log()
     const label = document.getElementById("fileUpload").value.replace(/([^\\]*\\)*/, '');
     this.setState({ buttonLabel: label })
     this.readURI(e);
@@ -293,7 +307,7 @@ class MailForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const fileTag = this.buildFileTag();
+    const fileTag = this.state.fileURI;
     const fileName = this.state.fileName;
     const mailSubject = document.getElementById("subject").value;
     const email = document.getElementById("email").value;
@@ -326,7 +340,7 @@ class MailForm extends Component {
         fileUri: fileTag,
         fileName: fileName
       };
-      // console.log(mailData);
+      console.log(mailData);
       axios({
         method: "POST",
         url: "/send",
@@ -338,7 +352,15 @@ class MailForm extends Component {
           //Save mail
           //  Test console.
           // console.log(mailData);
-          API.saveMail(mailData)
+          let mailMongo ={
+            senderName: this.props.userName,
+        senderEmail: this.props.userEmail,
+        mailSubject: mailSubject,
+        message: message,
+        taskId: this.props.taskId,
+        fileName: JSON.stringify(fileName) 
+          }
+          API.saveMail(mailMongo)
             // .then(() => {
             //   //  Test console.
             //   // console.log("Mail Saved");
@@ -492,6 +514,7 @@ class MailForm extends Component {
                 type="file"
                 onChange={this.handleChange.bind(this)}
                 className="show-for-sr" 
+                multiple = "multiple"
                 />
             </div>
 
