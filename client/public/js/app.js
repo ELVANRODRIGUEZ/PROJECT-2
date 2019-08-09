@@ -17,17 +17,6 @@ var taskUsersToDel = [];
 
 // ----------------- Project
 
-// ---------- Click on Project Add Button
-$('.projectAdd').on('click', function () {
-    $("#projectName").val("");
-    $("#projectDesc").val("");
-    $("#projectModal").modal({
-        show: true,
-        backdrop: 'static',
-        keyboard: false
-    });
-})
-
 // ---------- Click on Project Delete Button
 $('.projectDel').on('click', function () {
 
@@ -69,34 +58,6 @@ $('.projectDel').on('click', function () {
         });
 
     }
-
-})
-
-// ---------- Click on Add User inside Project Add Modal
-$('#addUser').on('click', function () {
-    // Make sure to preventDefault on a submit event.
-    event.preventDefault();
-
-    var $userList = $("#userList");
-    var userId = $("#projectUsers option:selected").attr("userId");
-    var userName = $("#projectUsers option:selected").val();
-
-    var newUser =
-        "<li class='projectUser list-group-item text-dark col-md-8' userId=" + userId + ">" + userName + "</li>";
-
-    $userList.append(newUser);
-
-    generalUsersArr.push(userId);
-
-    $('#delUser').on('click', function () {
-        // Make sure to preventDefault on a submit event.
-        event.preventDefault();
-
-        $('#userList').empty();
-
-        generalUsersArr = [];
-
-    })
 
 })
 
@@ -162,41 +123,6 @@ $('#categoryDel').on('click', function () {
 
 
 // ----------------- Project
-
-// ---------- Get all Users in Add Project Modal
-$("#projectAddButton").on("click", function (event) {
-
-    // Empty the list for general users.
-    $("#userList").html("");
-
-    // Empty the list array for general users.
-    generalUsersArr = [];
-
-    // Send the GET request.
-    $.get("/api/all_users", function (data) {
-
-        console.log(data);
-
-        // var project = data.description;
-        // var id = data.id;
-        var $projectUsers = $("#projectUsers");
-        var users = "<option selected>Select User</option>";
-
-        // " +  + "
-
-        data.forEach(function (item) {
-
-            users += "<option class='usersArr' userId=" +
-                item.id +
-                ">" + item.user_name + "</option>";
-
-        })
-
-        $projectUsers.html(users);
-
-    });
-
-});
 
 // ---------- Add Project
 $("#projectModalAdd").on("click", function (event) {

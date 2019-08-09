@@ -5,6 +5,7 @@ import axios from "axios";
 // ================================== Files Dependencies
 import Navbar from "../components/Navbar";
 import ProjectCard from "../components/ProjectCard";
+import NewProjectModal from "../components/NewProjectModal";
 import CategoryCard from "../components/CategoryCard";
 import TaskModal from "../components/TaskModal";
 
@@ -13,6 +14,7 @@ class Members extends Component {
     super(props);
 
     this.state = {
+      allUsers: [],
       projectCards: [],
       projectUsers: [],
       categoryCards: [],
@@ -24,17 +26,45 @@ class Members extends Component {
       userEmail: "",
       projectCardBorder: "",
       taskModalShow: false,
-      taskModalView: "none"
+      taskModalView: "none",
+      newProjModalShow: false,
+      newProjModalView: "none"
     };
   }
 
   componentWillMount() {
+    //? Get all members so they can be added to a new Project.
+    axios
+      .get("/members/allMembers")
+      .then(data => {
+        // Test console.
+        // console.log(data.data);
+
+        this.setState(
+          {
+            allUsers: data.data
+          },
+          () => {
+            // Test console.
+            // console.log(this.state.allUsers);
+          }
+        );
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    this.userInfo();
+  }
+
+  userInfo = () => {
+    //? Get all info about the logged member.
     axios
       .get("/members/info")
       .then(data => {
         // Test console.
         // console.log(data.data);
-        
+
         this.setState({
           projectCards: data.data.projects,
           userName: data.data.user_Name,
@@ -45,7 +75,7 @@ class Members extends Component {
       .catch(error => {
         console.log(error);
       });
-  }
+  };
 
   ProjectClick = event => {
     // Test console.
@@ -64,7 +94,6 @@ class Members extends Component {
           // console.log(data.data);
 
           this.setState({ categoryCards: data.data.categories }, () => {
-
             axios
               //?  This is to set the selected Project on the Server. Just a "Hi" response is gotten after that.
               .post("/api/users-selections", projectData)
@@ -82,10 +111,7 @@ class Members extends Component {
         .catch(error => {
           console.log(error);
         });
-
     });
-
-
   };
 
   loadProjectUsers = () => {
@@ -99,22 +125,23 @@ class Members extends Component {
         // Test console.
         // console.log(users.data);
 
-        this.setState({
-          projectUsers: users.data.filter((user) => {
-            return user["user.user_id"] !== this.state.userId
-          })
-        }, () => {
-          // Test console.
-          // console.log(users.data);
-          // console.log(this.state.projectUsers);
-
-        });
-
+        this.setState(
+          {
+            projectUsers: users.data.filter(user => {
+              return user["user.user_id"] !== this.state.userId;
+            })
+          },
+          () => {
+            // Test console.
+            // console.log(users.data);
+            // console.log(this.state.projectUsers);
+          }
+        );
       })
       .catch(error => {
         console.log(error);
       });
-  }
+  };
 
   CategoryClick = event => {
     // Test console.
@@ -138,21 +165,19 @@ class Members extends Component {
     */
 
     this.setState({ categorySelected: categoryId }, () => {
-
       axios
         //? This request is to retrieve the Tasks related to the selected Project and Category.
         .get(
           "/members/info/" +
-          this.state.projectSelected +
-          "/category/" +
-          this.state.categorySelected
+            this.state.projectSelected +
+            "/category/" +
+            this.state.categorySelected
         )
         .then(data => {
           // Test console.
           // console.log(data.data.tasks);
 
           this.setState({ tasksCards: data.data.tasks }, () => {
-
             // Test console.
             // console.log(this.state.tasksCards);
 
@@ -165,29 +190,35 @@ class Members extends Component {
 
                 axios
                   //? This is to get all the Task's Ids from the Selected Project and Category.
-                  .get("/members/info/" +
-                    this.state.projectSelected +
-                    "/category/" +
-                    this.state.categorySelected + "/all_tasks")
-                  .then(function (data3) {
-
+                  .get(
+                    "/members/info/" +
+                      this.state.projectSelected +
+                      "/category/" +
+                      this.state.categorySelected +
+                      "/all_tasks"
+                  )
+                  .then(function(data3) {
                     // Test console.
                     // console.log(data3.data);
-
                   });
               })
               .catch(error => {
                 console.log(error);
               });
-
           });
-
-
         })
         .catch(error => {
           console.log(error);
         });
-    })
+    });
+  };
+
+  newProjModalClose = () => {
+    this.setState({ newProjModalView: "none", newProjModalShow: false });
+  };
+
+  newProjModalShow = () => {
+    this.setState({ newProjModalView: "block", newProjModalShow: true });
   };
 
   taskModalClose = () => {
@@ -198,14 +229,14 @@ class Members extends Component {
     this.setState({ taskModalView: "block", taskModalShow: true });
   };
 
-
-  loadTaskModal = () => {
-    // this.loadProjectUsers();
-    this.taskModalShow();
-  }
+  //! ++++++++++++++++++++++++++++++
+  // loadTaskModal = () => {
+  //   // this.loadProjectUsers();
+  //   this.taskModalShow();
+  // }
+  //! ++++++++++++++++++++++++++++++
 
   renderForNewTasks = () => {
-
     axios
       //? This is to get the amount of Tasks once a new Task has been added from the NewTaskModal. Project and Category selected are expected to remain the same.
       .get("/members/info/" + this.state.projectSelected)
@@ -223,27 +254,23 @@ class Members extends Component {
       //? This request is to retrieve the new Task once it has been added from the NewTaskModal.
       .get(
         "/members/info/" +
-        this.state.projectSelected +
-        "/category/" +
-        this.state.categorySelected
+          this.state.projectSelected +
+          "/category/" +
+          this.state.categorySelected
       )
       .then(data => {
         // Test console.
         // console.log(data.data.tasks);
 
         this.setState({ tasksCards: data.data.tasks }, () => {
-
           // Test console.
           // console.log(this.state.tasksCards);
-
         });
-
       })
       .catch(error => {
         console.log(error);
       });
-
-  }
+  };
 
   render() {
     return (
@@ -321,81 +348,14 @@ class Members extends Component {
         </div>
 
         {/* +++++++++++++++++ MODAL: Add New Project +++++++++++++++++ */}
-        <div className="modal" tabIndex="-1" role="dialog" id="projectModal">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content bg-dark text-white">
-              <div className="modal-header">
-                <h5 className="modal-title">Add a new Project</h5>
-                <button
-                  type="button"
-                  className="close text-danger"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <form>
-                  <div className="form-group">
-                    <label htmlFor="projectName">Project Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="projectName"
-                      placeholder="Project Name"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="projectDesc">Project Description</label>
-                    <textarea
-                      type="text"
-                      className="form-control"
-                      id="projectDesc"
-                      rows="3"
-                    ></textarea>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="projectUsers">Add Users</label>
-                    <div className="row noMargin">
-                      <select
-                        className="form-control col-md-6 usersAvailables"
-                        id="projectUsers"
-                        type="list"
-                      ></select>
-                      <button className="btn btn-outline-success" id="addUser">
-                        Add
-                      </button>
-                      <button
-                        className="btn btn btn-outline-danger"
-                        id="delUser"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                  <h5>Users Added: </h5>
-                  <ul id="userList" className="list-group"></ul>
-                </form>
-              </div>
-              <div className="modal-footer">
-                <button
-                  className="btn btn-outline-success"
-                  id="projectModalAdd"
-                  data-dismiss="modal"
-                >
-                  Add
-                </button>
-                <button
-                  className="btn btn btn-outline-danger"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <NewProjectModal
+          show={this.state.newProjModalShow}
+          handleClose={this.newProjModalClose}
+          allUsers={this.state.allUsers}  
+          userId={this.state.userId}
+          userName={this.state.userName}
+          renderForNewProjects={this.userInfo}
+        />
 
         {/* +++++++++++++++++ MODAL: New Category Modal +++++++++++++++++ */}
         <div className="modal" tabIndex="-1" role="dialog" id="categoryModal">
@@ -542,8 +502,13 @@ class Members extends Component {
                       id="projectAddButton"
                       className="btn btn-secondary  projectAdd"
                       style={{ float: "right", margin: "0 2px" }}
+                      onClick={this.newProjModalShow}
                     >
-                      <i className="fa fa-plus fa-4" aria-hidden="true"></i>
+                      <i
+                        className="fa fa-plus fa-4"
+                        aria-hidden="true"
+                        onClick={this.newProjModalShow}
+                      ></i>
                     </button>
                   </div>
                   <div
@@ -555,77 +520,77 @@ class Members extends Component {
 
                       {this.state.projectCards
                         ? this.state.projectCards.map(project => {
-                          return (
-                            <div
-                              key={project.projId}
-                              style={{
-                                position: "relative",
-                                zIndex: "0",
-                                width: "100%"
-                              }}
-                            >
+                            return (
                               <div
-                                className={
-                                  project.projId ===
+                                key={project.projId}
+                                style={{
+                                  position: "relative",
+                                  zIndex: "0",
+                                  width: "100%"
+                                }}
+                              >
+                                <div
+                                  className={
+                                    project.projId ===
                                     this.state.projectSelected
-                                    ? "Wrapper border border-primary"
-                                    : "Wrapper"
-                                }
-                                onClick={this.ProjectClick}
-                                data-id={project.projId}
-                                style={{
-                                  position: "absolute",
-                                  top: "0",
-                                  left: "0",
-                                  bottom: "0",
-                                  right: "0",
-                                  borderRadius: "5px",
-                                  marginBottom: "1.1rem",
-                                  zIndex: "3"
-                                }}
-                              ></div>
-                              <ProjectCard
-                                style={{ position: "relative" }}
-                                onClick={this.ProjectClick}
-                                id={project.projId}
-                                name={project.projName}
-                                description={project.projDescription}
-                              />
-                            </div>
-                          );
-                        })
+                                      ? "Wrapper border border-primary"
+                                      : "Wrapper"
+                                  }
+                                  onClick={this.ProjectClick}
+                                  data-id={project.projId}
+                                  style={{
+                                    position: "absolute",
+                                    top: "0",
+                                    left: "0",
+                                    bottom: "0",
+                                    right: "0",
+                                    borderRadius: "5px",
+                                    marginBottom: "1.1rem",
+                                    zIndex: "3"
+                                  }}
+                                ></div>
+                                <ProjectCard
+                                  style={{ position: "relative" }}
+                                  onClick={this.ProjectClick}
+                                  id={project.projId}
+                                  name={project.projName}
+                                  description={project.projDescription}
+                                />
+                              </div>
+                            );
+                          })
                         : () => {
-                          return (
-                            <div
-                              style={{
-                                position: "relative",
-                                zIndex: "0",
-                                width: "100%"
-                              }}
-                            >
+                            return (
                               <div
-                                className="Wrapper"
-                                onClick={this.ProjectClick}
-                                data-id=""
                                 style={{
-                                  position: "absolute",
-                                  top: "0",
-                                  left: "0",
-                                  bottom: "0",
-                                  right: "0",
-                                  zIndex: "3"
+                                  position: "relative",
+                                  zIndex: "0",
+                                  width: "100%"
                                 }}
-                              ></div>
-                              <ProjectCard
-                                style={{ position: "relative" }}
-                                onClick={this.ProjectClick}
-                                id=""
-                                name="Project nam?"
-                                description="Description"
-                              />
-                            </div>
-                          );
-                        }}
+                              >
+                                <div
+                                  className="Wrapper"
+                                  onClick={this.ProjectClick}
+                                  data-id=""
+                                  style={{
+                                    position: "absolute",
+                                    top: "0",
+                                    left: "0",
+                                    bottom: "0",
+                                    right: "0",
+                                    zIndex: "3"
+                                  }}
+                                ></div>
+                                <ProjectCard
+                                  style={{ position: "relative" }}
+                                  onClick={this.ProjectClick}
+                                  id=""
+                                  name="Project nam?"
+                                  description="Description"
+                                />
+                              </div>
+                            );
+                          }}
                     </div>
                   </div>
                 </div>
@@ -678,13 +643,12 @@ class Members extends Component {
                           >
                             <div
                               className={
-                                category.catId ===
-                                  this.state.categorySelected
+                                category.catId === this.state.categorySelected
                                   ? "Wrapper border border-danger"
                                   : "Wrapper"
                               }
                               onClick={this.CategoryClick}
-                              onDoubleClick={this.loadTaskModal}
+                              onDoubleClick={this.taskModalShow}
                               data-id={category.catId}
                               style={{
                                 position: "absolute",
@@ -700,7 +664,7 @@ class Members extends Component {
                             <CategoryCard
                               style={{ position: "relative" }}
                               onClick={this.categoryClick}
-                              onDoubleClick={this.loadTaskModal}
+                              onDoubleClick={this.taskModalShow}
                               id={category.catId}
                               count={category.taskCount}
                               name={category.catName}

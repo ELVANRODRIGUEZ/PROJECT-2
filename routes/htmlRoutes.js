@@ -27,18 +27,13 @@ module.exports = function(app) {
     if (req.user) {
       res.redirect("/members");
     }
-    //! ===================== React Change
-    // res.render("index");
-    // console.log(__dirname + "../client/build/index.html");
-    //  res.sendFile(path.join(__dirname + "/../client/build/index.html"));
   });
 
-  app.post("/test", function(req,res) {
+  app.post("/test", function(req, res) {
     console.log(req.body.message);
     let message = req.body.message;
     res.send(`From the backend, we send this message: "${message}"`);
-
-  })
+  });
 
   app.get("/signup", function(req, res) {
     // If the user already has an account send them to the members page
@@ -56,14 +51,37 @@ module.exports = function(app) {
   //   if (req.user) {
 
   //     res.send("Successful");
-      
+
   //   } else {
-      
+
   //     res.send("Not logged");
 
   //   }
-    
+
   // });
+
+  app.get("/members/allMembers", isAuthenticated, function(req, res) {
+    // Test console.
+    // console.log(req.user);
+
+    var id = req.user.id;
+
+    var query =
+      "SELECT " +
+      'up.id as "user_id", ' +
+      'up.user_name as "user_name", ' +
+      'up.email as "user_email" ' +
+      'FROM users up ' +
+      'WHERE up.id != ' + id +
+      ' ORDER BY user_id;';
+
+    connection.query(query, function(err, data) {
+      // Test console.
+      console.log(data);
+
+      res.send(data);
+    });
+  });
 
   app.get("/members/info", isAuthenticated, function(req, res) {
     // Test console.
@@ -143,18 +161,6 @@ module.exports = function(app) {
 
         var project = "first";
 
-        // data.forEach(function(item) {
-        //   if (project !== item.projects_id) {
-        //     project = item.projects_id;
-
-        //     allProjects += userProfile.projectCard(
-        //       item.projects_id,
-        //       item.projects,
-        //       item.project_description
-        //     );
-        //   }
-        // });
-
         data.forEach(function(item) {
           if (project !== item.projects_id) {
             project = item.projects_id;
@@ -172,15 +178,13 @@ module.exports = function(app) {
           projects: allProjects,
           user_Name: userName,
           user_Id: data[0].user_id,
-          user_Email: data[0].user_email,
+          user_Email: data[0].user_email
         };
 
         // Sendig response.
         res.send(sentResponse);
       }
     });
-
-    // }
   });
 
   app.get("/members/info/:projectId", isAuthenticated, function(req, res) {
@@ -381,7 +385,7 @@ module.exports = function(app) {
       // console.log(categoryId);
       console.log(
         "I am here at '/members/info/:projectId/category/:categoryId/all_tasks' endpoint"
-        );
+      );
 
       var query =
         "SELECT " +

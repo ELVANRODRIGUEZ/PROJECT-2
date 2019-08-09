@@ -181,11 +181,11 @@ module.exports = function(app) {
 
   // Route for adding a project.
   app.post("/api/projects/add", function(req, res) {
-    var proyName = req.body.project_name;
+    var proyName = req.body.name;
     var proyDesc = req.body.description;
-    var otherUsers = JSON.parse(req.body.other_users);
+    var proyUsers = JSON.parse(req.body.project_users);
 
-    // console.log(otherUsers);
+    // console.log(proyUsers);
     // console.log(proyDesc);
     // console.log(proyName);
 
@@ -204,7 +204,7 @@ module.exports = function(app) {
           user_name: req.user.id
         });
 
-        otherUsers.forEach(function(item) {
+        proyUsers.forEach(function(item) {
           projectRel.push({
             project_name: project.id,
             user_name: item

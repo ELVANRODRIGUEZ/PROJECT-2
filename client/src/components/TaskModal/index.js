@@ -119,7 +119,7 @@ class TaskModal extends Component {
         ></NewTaskModal>
 
         {/* +++++++++++++++++ BODY +++++++++++++++++ */}
-        <Modal.Body id="modal-container">
+        <Modal.Body id="taskModal-container">
           {/* +++++++++++++++++ TASK CARD +++++++++++++++++ */}
           {this.props.tasksCards.map(task => {
             return (

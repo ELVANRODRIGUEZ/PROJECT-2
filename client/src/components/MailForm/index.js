@@ -97,7 +97,7 @@ class MailForm extends Component {
           // Clears up the "userToAdd" state so clicking again the Add butto without having changed the dropdown menu (by selecting a new User) does not concatenate the previously added user once more.
           this.setState({ userToAdd: [] });
           // Test console.
-          console.log(JSON.stringify(this.state.usersAdded));
+          console.log(this.state.usersAdded);
 
           this.setState(
             {

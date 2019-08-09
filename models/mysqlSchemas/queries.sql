@@ -1,5 +1,15 @@
 use wycgc3g4apmhrsf3;
 
+
+-- ++++++++++++++++++++++++++++ All App Users "au"
+SELECT
+up.id as "user_id",
+up.user_name as "user_name",
+up.email as "user_email"
+FROM users up
+WHERE up.id != 1
+ORDER BY user_id;
+
 -- ++++++++++++++++++++++++++++ Tasks by Creator "tc"
 SELECT 
 	users.user_name as "user", 

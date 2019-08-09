@@ -518,3 +518,9 @@ img {
 #taskModal > .modal-content {
   background-color:#343a40;
 }
+
+/* Adding style to the immediate child of the "newProjectModal" id tag. */
+#newProjectModal > .modal-content {
+  background-color:#343a40;
+  color:white;
+}
