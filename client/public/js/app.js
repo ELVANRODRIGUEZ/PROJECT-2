@@ -1,18 +1,5 @@
 // ========================= Declare Global Variables
 
-var x = 0;
-
-var userSelections = {
-    project: "",
-    category: "",
-    description: ""
-}
-
-var generalUsersArr = [];
-var projectUsersArr = [];
-var taskUsersToAdd = [];
-var taskUsersToDel = [];
-
 // ========================= Simple Button Events
 
 // ----------------- Project
@@ -63,15 +50,6 @@ $('.projectDel').on('click', function () {
 
 
 // ----------------- Category
-
-// ---------- Click on Category Add Button
-$('#categoryAdd').on('click', function () {
-    $("#categoryModal").modal({
-        show: true,
-        backdrop: 'static',
-        keyboard: false
-    });
-})
 
 // ---------- Click on Category Delete Button
 $('#categoryDel').on('click', function () {
@@ -151,67 +129,6 @@ $("#deleteProject").on('click', function () {
 
 
 // ----------------- Category
-
-// ---------- Add a category
-$("#categoryModalAdd").on("click", function (event) {
-    // Make sure to preventDefault on a submit event.
-    event.preventDefault();
-
-    var newCategory = {
-        category_name: $("#categoryName").val().trim(),
-        description: $("#categoryDesc").val(),
-    };
-
-
-    // Send the POST request.
-    $.ajax("/api/category/add", {
-        type: "POST",
-        data: newCategory
-    }).then(
-        function (data) {
-
-            // console.log(data);
-            // location.reload();
-
-            $("#categoryAddMessage").text(data);
-
-            $("#categorySuccessModal").modal({
-                show: true,
-                backdrop: 'static',
-                keyboard: false
-            });
-
-            category_name: $("#categoryName").val("");
-            description: $("#categoryDesc").val("");
-
-            // Populate Categories div with newly created Category by making a nested Ajax call to retrieve the bulk of Categories.
-
-            var $categoryDiv = $("#categoryDiv");
-
-            // Test if there is a Project selected.
-
-            if (userSelections.project != "") {
-
-                var projectId = userSelections.project;
-
-                $.ajax({
-                        url: "/members/info/" + projectId,
-                        method: "GET"
-                    })
-                    .then(function (data) {
-
-                        // Test response:
-                        // console.log(data.categories);
-
-                        $categoryDiv.html(data.categories);
-
-                    })
-
-            }
-
-        }
-    );
-});
 
 // ---------- Delete category
 $("#deleteCategory").on('click', function () {

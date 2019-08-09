@@ -16,6 +16,7 @@ class Members extends Component {
 
     this.state = {
       allUsers: [],
+      ifNoProjects: null,
       projectCards: [],
       projectUsers: [],
       categoryCards: [],
@@ -69,6 +70,7 @@ class Members extends Component {
         // console.log(data.data);
 
         this.setState({
+          ifNoProjects: data.data.projectsHtml,
           projectCards: data.data.projects,
           userName: data.data.user_Name,
           userId: data.data.user_Id,
@@ -469,7 +471,7 @@ class Members extends Component {
                   <div
                     className="card-body bg-dark overflow-auto"
                     style={{ maxHeight: "60vh" }}
-                  >
+                  >{this.state.ifNoProjects}
                     <div id="projectDiv" className="card-columns row">
                       {/* +++++++++++++++++ Project Card Container +++++++++++++++++ */}
 
@@ -599,7 +601,7 @@ class Members extends Component {
                           >
                             <div
                               className={
-                                category.catId === this.state.categorySelected
+                                category.catId === parseInt(this.state.categorySelected)
                                   ? "Wrapper border border-danger"
                                   : "Wrapper"
                               }
@@ -620,7 +622,7 @@ class Members extends Component {
                             <CategoryCard
                               style={{ position: "relative" }}
                               onClick={this.categoryClick}
-                              onDoubleClick={this.taskModalShow}
+                              // onDoubleClick={this.taskModalShow}
                               id={category.catId}
                               count={category.taskCount}
                               name={category.catName}
