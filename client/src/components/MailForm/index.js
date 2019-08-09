@@ -11,6 +11,9 @@ class MailForm extends Component {
       userToAdd: [],
       taskUsers: this.props.taskUsers,
       usersAdded: [],
+      id: "fileUpload",
+      fileURI: null,
+      fileName: null,
       display: "none",
       opacity: "0",
       errorMessage: "",
@@ -252,10 +255,42 @@ class MailForm extends Component {
     }, 3000);
   };
 
+  buildFileTag() {
+    //console.log (this.state.fileURI)
+    let fileTag = null;
+    if (this.state.fileURI !== null)
+      fileTag = this.state.fileURI
+
+    return fileTag;
+  }
+
+  readURI(e) {
+    if (e.target.files && e.target.files[0]) {
+      let reader = new FileReader();
+      reader.onload = function (ev) {
+        //   console.log(ev.target.result)
+        this.setState({ fileURI: ev.target.result });
+      }.bind(this);
+      this.setState({ fileName: e.target.files[0].name })
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  }
+
+  handleChange(e) {
+    e.preventDefault();
+    this.readURI(e); // maybe call this with webworker or async library?
+    if (this.props.onChange !== undefined)
+      this.props.onChange(e); // propagate to parent component
+  }
+
+
+
   handleSubmit(event) {
     event.preventDefault();
     console.log("cualquiera");
     // console.log("users aded\n"+this.state.usersAdded)
+    const fileTag = this.buildFileTag();
+    const fileName = this.state.fileName;
     const mailSubject = document.getElementById("subject").value;
     const email = document.getElementById("email").value;
     // const email = this.state.usersAdded.map((u) => u.user_mail);
@@ -281,7 +316,9 @@ class MailForm extends Component {
         email: email,
         mailSubject: mailSubject,
         message: message,
-        taskId: this.props.taskId
+        taskId: this.props.taskId,
+        fileUri: fileTag,
+        fileName: fileName
       };
       console.log(mailData);
       axios({
@@ -367,11 +404,12 @@ class MailForm extends Component {
     return (
       <div>
         <div className="col-sm-8 offset-sm-2">
-          <form
+          {/* <form
             id="contact-form"
             onSubmit={this.handleSubmit.bind(this)}
             method="POST"
-          >
+          > */}
+          <form id="contact-form" >
             {/* +++++++++++++++++ New Task Users deletion +++++++++++++++++ */}
             <label htmlFor="taskUsers">Select Users To eMail</label>
             <div className="row noMargin">
@@ -412,15 +450,15 @@ class MailForm extends Component {
             {/* +++++++++++++++++ to be filled +++++++++++++++++ */}
             {usersToBeAdded}
 
-            <div style={{display: "none"}} className="form-group">
-            {/* <div className="form-group"> */}
+            <div style={{ display: "none" }} className="form-group">
+              {/* <div className="form-group"> */}
               <label htmlFor="exampleInputEmail1">Email address</label>
               <input
                 type="text"
                 className="form-control"
                 id="email"
                 aria-describedby="emailHelp"
-                value ={this.state.usersAdded.map((u) => u.user_mail)}
+                value={this.state.usersAdded.map((u) => u.user_mail)}
               />
             </div>
             <div className="form-group">
@@ -436,6 +474,20 @@ class MailForm extends Component {
                 id="mailMessage"
               ></textarea>
             </div>
+            <div className="form-group">
+              <label
+                htmlFor={this.state.id}
+              //className="button"
+              >
+
+              </label>
+              <input
+                id={this.state.id}
+                type="file"
+                onChange={this.handleChange.bind(this)}
+                className="show-for-sr" />
+            </div>
+
             {/*! +++++++++++++++++ Error Dialog +++++++++++++++++ */}
             <div
               style={{
@@ -452,9 +504,12 @@ class MailForm extends Component {
               <span className="msg">&nbsp; {this.state.errorMessage}</span>
             </div>
 
-            <button type="submit" className="btn btn-primary">
+           
+
+            {/* <button type="submit" className="btn btn-primary">
               Submit
-            </button>
+            </button> */}
+            <button type="submit" className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Submit</button>
           </form>
         </div>
       </div>
