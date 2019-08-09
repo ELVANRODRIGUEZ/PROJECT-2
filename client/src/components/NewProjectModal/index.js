@@ -303,10 +303,10 @@ class NewProjectModal extends Component {
               <li
                 key={user.user_id}
                 className="taskUser list-group-item text-dark col-md-8"
-                style={{ lineHeight: 1, padding: "5px" }}
+                style={{backgroundColor: "lightgrey", lineHeight: 1, padding: "5px" }}
               >
                 <button
-                  className="btn btn-dark pplus"
+                  className="btn btn-danger pplus"
                   userid={user.user_id}
                   value={user.user_name}
                   onClick={this.deleteUser}

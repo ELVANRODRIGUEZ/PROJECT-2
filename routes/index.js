@@ -35,6 +35,7 @@ transporter.verify((error, success) => {
 });
 
 router.post('/send', (req, res, next) => {
+  // console.log(req.body)
   var senderName = req.body.senderName
   var senderEmail = req.body.senderEmail
   var mailSubject = req.body.mailSubject
@@ -49,14 +50,15 @@ router.post('/send', (req, res, next) => {
     replyTo: senderEmail,
     to: email,  //Change to email address that you want to receive messages on
     subject: mailSubject,
-    text: "From: " + senderName + " <"+ senderEmail+ ">\n\n" +  message,
+    text: "From: " + senderName + " <"+ senderEmail+ ">\n\n"
+    + message + "\n\nAttachments: "+ fileName,
     attachments: [
       {
         filename: fileName,
         path: fileURI}
     ]
   }
-
+  console.log(mail);
   transporter.sendMail(mail, (err, data) => {
     if (err) {
       console.log("mail error is:\n"+ err)

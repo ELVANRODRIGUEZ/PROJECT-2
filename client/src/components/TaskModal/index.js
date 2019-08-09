@@ -85,7 +85,7 @@ class TaskModal extends Component {
       >
         {/* +++++++++++++++++ HEADER +++++++++++++++++ */}
         <Modal.Header>
-          <h5 className="modal-title text-white"></h5>
+          {/* <h5 className="modal-title text-white"></h5> */}
           <button
             id="addTaskModal"
             className="btn btn-secondary"

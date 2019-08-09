@@ -7,9 +7,9 @@ import axios from "axios";
 // import "../TaskCard/style.css";
 
 class EraseTaskModal extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   eraseTask = () => {
     axios.delete(`/api/task/${this.props.taskId}/delete_all`).then(data => {

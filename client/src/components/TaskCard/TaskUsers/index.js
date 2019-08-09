@@ -16,6 +16,8 @@ class TaskUsers extends Component {
       
       // +++++++++++++++++ TASK USERS +++++++++++++++++
       <div className="card card-body bg-dark">
+        <div class="row justify-content-center">
+          <div class="col-sm-6">
         <ul>
           {this.props.allTaskUsers.map(user => {
             return (
@@ -23,13 +25,15 @@ class TaskUsers extends Component {
                 key={user.user_id}
                 userid={user.user_id}
                 className="taskUser list-group-item col-md-8"
-                style={{ lineHeight: 1, padding: "5px", backgroundColor: "#6c757d", color: "white", border: "1px solid white" }}
+                style={{ lineHeight: 1, padding: "5px", backgroundColor: "#6c757d", color: "white"}}
               >
                 {user.user_name}
               </li>
             );
           })}
         </ul>
+        </div>
+        </div>
       </div>
     );
   }

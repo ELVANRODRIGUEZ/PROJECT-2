@@ -7,13 +7,17 @@ class MailForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // Select Users
       userId: this.props.userId,
       userToAdd: [],
       taskUsers: this.props.taskUsers,
       usersAdded: [],
+      //File attach
       id: "fileUpload",
       fileURI: null,
       fileName: null,
+      buttonLabel: "Select File",
+      // Alerts
       display: "none",
       opacity: "0",
       errorMessage: "",
@@ -278,7 +282,9 @@ class MailForm extends Component {
 
   handleChange(e) {
     e.preventDefault();
-    this.readURI(e); // maybe call this with webworker or async library?
+    const label = document.getElementById("fileUpload").value.replace(/([^\\]*\\)*/, '');
+    this.setState({ buttonLabel: label })
+    this.readURI(e);
     if (this.props.onChange !== undefined)
       this.props.onChange(e); // propagate to parent component
   }
@@ -287,15 +293,15 @@ class MailForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log("cualquiera");
-    // console.log("users aded\n"+this.state.usersAdded)
     const fileTag = this.buildFileTag();
     const fileName = this.state.fileName;
     const mailSubject = document.getElementById("subject").value;
     const email = document.getElementById("email").value;
     // const email = this.state.usersAdded.map((u) => u.user_mail);
     const message = document.getElementById("mailMessage").value;
-    console.log("userstomail are:\n" + email);
+    // console.log(fileTag)
+    // console.log(fileName)
+    console.log("users to mail are:\n" + email);
 
     if (email === "") {
       this.alertMessage("No email TO:");
@@ -320,7 +326,7 @@ class MailForm extends Component {
         fileUri: fileTag,
         fileName: fileName
       };
-      console.log(mailData);
+      // console.log(mailData);
       axios({
         method: "POST",
         url: "/send",
@@ -333,18 +339,17 @@ class MailForm extends Component {
           //  Test console.
           // console.log(mailData);
           API.saveMail(mailData)
-            .then(() => {
-              //  Test console.
-              // console.log("Mail Saved");
-            })
+            // .then(() => {
+            //   //  Test console.
+            //   // console.log("Mail Saved");
+            // })
             .catch(err => {
               console.log(err);
             });
           this.alertMessage("Mail Sent");
-
           this.resetForm();
         } else if (response.data.msg === "fail") {
-          this.alertMessage("mail error");
+          this.alertMessage("mail sending error");
         }
       });
     }
@@ -355,7 +360,8 @@ class MailForm extends Component {
     this.setState({
       userToAdd: [],
       usersAdded: [],
-      taskUsers: this.props.taskUsers
+      taskUsers: this.props.taskUsers,
+      buttonLabel: "Select File"
     });
   };
 
@@ -370,11 +376,11 @@ class MailForm extends Component {
             return (
               <li
                 key={user.user_id}
-                className="taskUser list-group-item text-dark col-md-8"
-                style={{ lineHeight: 1, padding: "5px" }}
+                className="userAdded taskUser list-group-item text-dark col-md-8"
+                style={{backgroundColor: "lightgrey", lineHeight: 1, padding: "5px" }}
               >
                 <button
-                  className="btn btn-dark pplus"
+                  className="btn btn-danger pplus"
                   userid={user.user_id}
                   value={user.user_name}
                   onClick={this.delFromAddList}
@@ -450,9 +456,8 @@ class MailForm extends Component {
             {/* +++++++++++++++++ to be filled +++++++++++++++++ */}
             {usersToBeAdded}
 
-            <div style={{ display: "none" }} className="form-group">
-              {/* <div className="form-group"> */}
-              <label htmlFor="exampleInputEmail1">Email address</label>
+            <div className="form-group email">
+              <label htmlFor="email">Email address</label>
               <input
                 type="text"
                 className="form-control"
@@ -461,7 +466,7 @@ class MailForm extends Component {
                 value={this.state.usersAdded.map((u) => u.user_mail)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group subject">
               <label htmlFor="subject">Subject</label>
               <input type="text" className="form-control" id="subject" />
             </div>
@@ -477,15 +482,17 @@ class MailForm extends Component {
             <div className="form-group">
               <label
                 htmlFor={this.state.id}
-              //className="button"
+                className="btn btn-outline-success btn-sm"
               >
-
+                <i className="fa fa-arrow-circle-o-up"></i>
+                {!this.state.buttonLabel ? "Select File" : this.state.buttonLabel}
               </label>
               <input
                 id={this.state.id}
                 type="file"
                 onChange={this.handleChange.bind(this)}
-                className="show-for-sr" />
+                className="show-for-sr" 
+                />
             </div>
 
             {/*! +++++++++++++++++ Error Dialog +++++++++++++++++ */}
@@ -504,12 +511,14 @@ class MailForm extends Component {
               <span className="msg">&nbsp; {this.state.errorMessage}</span>
             </div>
 
-           
+
 
             {/* <button type="submit" className="btn btn-primary">
               Submit
             </button> */}
-            <button type="submit" className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Submit</button>
+            <button type="submit" className="btn btn-outline-primary" 
+            onClick={this.handleSubmit.bind(this)}>Submit
+            </button>
           </form>
         </div>
       </div>
