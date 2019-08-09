@@ -229,7 +229,7 @@ class NewTaskModal extends Component {
       // console.log(newTask);
 
       axios
-        .post("/api/task/add", newTask)
+        .post(`/api/${this.props.projectSelected}/${this.props.categorySelected}/task/add`, newTask)
         .then(data => {
           // Test console.
           // console.log(data.data);

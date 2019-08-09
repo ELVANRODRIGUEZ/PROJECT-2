@@ -524,3 +524,9 @@ img {
   background-color:#343a40;
   color:white;
 }
+
+/* Adding style to the immediate child of the "newProjectModal" id tag. */
+#newCategoryModal > .modal-content {
+  background-color:#343a40;
+  color:white;
+}

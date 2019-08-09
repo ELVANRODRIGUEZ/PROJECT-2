@@ -6,6 +6,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import ProjectCard from "../components/ProjectCard";
 import NewProjectModal from "../components/NewProjectModal";
+import NewCategoryModal from "../components/NewCategoryModal";
 import CategoryCard from "../components/CategoryCard";
 import TaskModal from "../components/TaskModal";
 
@@ -28,7 +29,9 @@ class Members extends Component {
       taskModalShow: false,
       taskModalView: "none",
       newProjModalShow: false,
-      newProjModalView: "none"
+      newProjModalView: "none",
+      newCatModalShow: false,
+      newCatModalView: "none"
     };
   }
 
@@ -94,18 +97,18 @@ class Members extends Component {
           // console.log(data.data);
 
           this.setState({ categoryCards: data.data.categories }, () => {
-            axios
-              //?  This is to set the selected Project on the Server. Just a "Hi" response is gotten after that.
-              .post("/api/users-selections", projectData)
-              .then(data2 => {
-                // Test console.
-                // console.log(data2.data);
+            // axios
+            //   //?  This is to set the selected Project on the Server. Just a "Hi" response is gotten after that.
+            //   .post("/api/users-selections", projectData)
+            //   .then(data2 => {
+            //     // Test console.
+            //     // console.log(data2.data);
 
-                this.loadProjectUsers();
-              })
-              .catch(error => {
-                console.log(error);
-              });
+            this.loadProjectUsers();
+            // })
+            // .catch(error => {
+            //   console.log(error);
+            // });
           });
         })
         .catch(error => {
@@ -120,7 +123,7 @@ class Members extends Component {
 
     axios
       //? According to the Project selected, and once that selection has been sent to the Server, this Get request will give back all that Project's Users.
-      .get("/api/project_users")
+      .get(`/api/project_users/${this.state.projectSelected}`)
       .then(users => {
         // Test console.
         // console.log(users.data);
@@ -149,9 +152,6 @@ class Members extends Component {
     // console.log(event.target.getAttribute("data-id"));
 
     const categoryId = event.target.getAttribute("data-id");
-    const categoryData = {
-      category: event.target.getAttribute("data-id")
-    };
 
     /*
     React documentation enforces the use of "Functional SetState" to change State values instead of just passing an object to the "SetState" function 
@@ -182,25 +182,17 @@ class Members extends Component {
             // console.log(this.state.tasksCards);
 
             axios
-              //?  This is to set the selected Category on the Server. Just a "Hi" response is gotten after that.
-              .post("/api/users-selections", categoryData)
-              .then(data2 => {
+              //? This is to get all the Task's Ids from the Selected Project and Category.
+              .get(
+                "/members/info/" +
+                  this.state.projectSelected +
+                  "/category/" +
+                  this.state.categorySelected +
+                  "/all_tasks"
+              )
+              .then(function(data3) {
                 // Test console.
-                // console.log(data2.data);
-
-                axios
-                  //? This is to get all the Task's Ids from the Selected Project and Category.
-                  .get(
-                    "/members/info/" +
-                      this.state.projectSelected +
-                      "/category/" +
-                      this.state.categorySelected +
-                      "/all_tasks"
-                  )
-                  .then(function(data3) {
-                    // Test console.
-                    // console.log(data3.data);
-                  });
+                // console.log(data3.data);
               })
               .catch(error => {
                 console.log(error);
@@ -221,6 +213,14 @@ class Members extends Component {
     this.setState({ newProjModalView: "block", newProjModalShow: true });
   };
 
+  newCatModalClose = () => {
+    this.setState({ newCatModalView: "none", newCatModalShow: false });
+  };
+
+  newCatModalShow = () => {
+    this.setState({ newCatModalView: "block", newCatModalShow: true });
+  };
+
   taskModalClose = () => {
     this.setState({ taskModalView: "none", taskModalShow: false });
   };
@@ -228,13 +228,6 @@ class Members extends Component {
   taskModalShow = () => {
     this.setState({ taskModalView: "block", taskModalShow: true });
   };
-
-  //! ++++++++++++++++++++++++++++++
-  // loadTaskModal = () => {
-  //   // this.loadProjectUsers();
-  //   this.taskModalShow();
-  // }
-  //! ++++++++++++++++++++++++++++++
 
   renderForNewTasks = () => {
     axios
@@ -250,13 +243,22 @@ class Members extends Component {
         console.log(error);
       });
 
+    let category;
+
+    //! This is just so when a new Category is added without a Category Card has been clicked, "0" is passed instead in the following Axios Call so it does not return an erro.
+    if (this.state.categorySelected === "") {
+      category = 1;
+    } else {
+      category = this.state.categorySelected;
+    }
+
     axios
       //? This request is to retrieve the new Task once it has been added from the NewTaskModal.
       .get(
         "/members/info/" +
           this.state.projectSelected +
           "/category/" +
-          this.state.categorySelected
+          category
       )
       .then(data => {
         // Test console.
@@ -351,69 +353,21 @@ class Members extends Component {
         <NewProjectModal
           show={this.state.newProjModalShow}
           handleClose={this.newProjModalClose}
-          allUsers={this.state.allUsers}  
+          allUsers={this.state.allUsers}
           userId={this.state.userId}
           userName={this.state.userName}
           renderForNewProjects={this.userInfo}
         />
 
         {/* +++++++++++++++++ MODAL: New Category Modal +++++++++++++++++ */}
-        <div className="modal" tabIndex="-1" role="dialog" id="categoryModal">
-          <div className="modal-dialog" role="document">
-            <div className="modal-content bg-dark text-white">
-              <div className="modal-header">
-                <h5 className="modal-title">Add a new category</h5>
-                <button
-                  type="button"
-                  className="close text-danger"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <form>
-                  <div className="form-group">
-                    <label htmlFor="categoryName">Category name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="categoryName"
-                      placeholder="Task group name"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="categoryDesc">Category Description</label>
-                    <textarea
-                      type="text"
-                      className="form-control"
-                      id="categoryDesc"
-                      rows="3"
-                    ></textarea>
-                  </div>
-                </form>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn btn-outline-success"
-                  data-dismiss="modal"
-                  id="categoryModalAdd"
-                >
-                  Add
-                </button>
-                <button
-                  type="button"
-                  className="btn btn btn-outline-danger"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <NewCategoryModal
+          show={this.state.newCatModalShow}
+          handleClose={this.newCatModalClose}
+          allUsers={this.state.allUsers}
+          userId={this.state.userId}
+          userName={this.state.userName}
+          renderForNewCategories={this.renderForNewTasks}
+        ></NewCategoryModal>
 
         {/* +++++++++++++++++ MODAL: Successfully added category +++++++++++++++++ */}
         <div
@@ -468,6 +422,8 @@ class Members extends Component {
           show={this.state.taskModalShow}
           handleClose={this.taskModalClose}
           projectUsers={this.state.projectUsers}
+          projectSelected={this.state.projectSelected}
+          categorySelected={this.state.categorySelected}
           userId={this.state.userId}
           userName={this.state.userName}
           userEmail={this.state.userEmail}
@@ -615,6 +571,7 @@ class Members extends Component {
                       className="btn btn-secondary"
                       id="categoryAdd"
                       style={{ float: "right", margin: "0 2px" }}
+                      onClick={this.newCatModalShow}
                     >
                       <i className="fa fa-plus fa-4" aria-hidden="true"></i>
                     </button>

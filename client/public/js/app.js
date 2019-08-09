@@ -124,62 +124,6 @@ $('#categoryDel').on('click', function () {
 
 // ----------------- Project
 
-// ---------- Add Project
-$("#projectModalAdd").on("click", function (event) {
-    // Make sure to preventDefault on a submit event.
-    event.preventDefault();
-    console.log(generalUsersArr);
-    var newProject = {
-        other_users: JSON.stringify(generalUsersArr),
-        project_name: $("#projectName").val().trim(),
-        description: $("#projectDesc").val()
-    };
-
-
-    // Send the POST request.
-    $.ajax("/api/projects/add", {
-        type: "POST",
-        data: newProject
-    }).then(function (data) {
-
-        // console.log(data);
-
-        var project = data.description;
-        var name = data.project_name;
-        var id = data.id;
-        var $projectDiv = $("#projectDiv");
-        var projectCard;
-
-        // " +  + "
-
-        projectCard =
-            // Manuel CSS a las cards
-            "<div class='card  bg-secondary projectCard col-md-5 overflow-auto' " +
-            // "style=' margin:5px; min-width: 120px' " +
-            "data-id='" + id + "'>" +
-            "<div class='card-header'>P id: " + id +
-            " -" + name +
-            "</div> " +
-            "<div class='card-body'> " +
-            "<h6 class='card-title'> " +
-            project +
-            "</h6> " +
-            "<p class='card-text'> " +
-            "<small class='text-dark'> " +
-            "Last updated 3 mins ago" +
-            "</small> " +
-            "</p> " +
-            "</div> " +
-            "</div>";
-
-        $projectDiv.append(projectCard);
-
-        location.reload();
-
-    });
-
-});
-
 // ---------- Delete project
 $("#deleteProject").on('click', function () {
 

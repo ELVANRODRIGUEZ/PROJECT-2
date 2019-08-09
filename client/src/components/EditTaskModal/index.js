@@ -57,7 +57,7 @@ class EditTaskModal extends Component {
         () => {
           //  Test console.
           //   console.log(this.state.taskUsers);
-          //   console.log(this.state.notTaskUsers);
+            console.log(this.state.notTaskUsers);
         }
       );
     }
