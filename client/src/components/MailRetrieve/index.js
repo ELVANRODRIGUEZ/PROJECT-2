@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import "./style.css"
 
 class MailRetrieve extends Component {
  
@@ -14,10 +15,13 @@ class MailRetrieve extends Component {
            <h2 >No History Yet</h2>
          ) : (
              <div>
-               <h2>Task Mail History</h2>
+               <h2 id="title">Task Mail History</h2>
                {this.props.savedMails.map(mail => {
                  return (
-                   <div key={mail._id}>
+                   <div id="mailList" key={mail._id}>
+                     <p  id="firstLine" >
+                        <strong>Sended On: </strong> {mail.createdAt}
+                      </p>
                      <p >
                        <strong>From:</strong> {mail.senderName + " <" + mail.senderEmail + "> "}{" "}
                      </p>
@@ -30,6 +34,9 @@ class MailRetrieve extends Component {
                      <p >
                        <strong>Message:</strong> {mail.message}{" "}
                      </p>
+                     <p >
+                        <strong>Attachments:</strong> {mail.fileName}{" "}
+                      </p>
                      <hr />
                    </div>
                  );

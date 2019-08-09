@@ -562,10 +562,10 @@ class EditTaskModal extends Component {
               <li
                 key={user["user.user_id"]}
                 className="taskUser list-group-item text-dark col-md-8"
-                style={{ lineHeight: 1, padding: "5px" }}
+                style={{backgroundColor: "lightgrey", lineHeight: 1, padding: "5px" }}
               >
                 <button
-                  className="btn btn-dark pplus"
+                  className="btn btn-danger pplus"
                   userid={user["user.user_id"]}
                   value={user["user.user_name"]}
                   onClick={this.delFromAddList}
@@ -601,10 +601,10 @@ class EditTaskModal extends Component {
               <li
                 key={user.user_id}
                 className="taskUser list-group-item text-dark col-md-8"
-                style={{ lineHeight: 1, padding: "5px" }}
+                style={{backgroundColor: "lightgrey", lineHeight: 1, padding: "5px" }}
               >
                 <button
-                  className="btn btn-dark pplus"
+                  className="btn btn-danger pplus"
                   userid={user.user_id}
                   value={user.user_name}
                   onClick={this.delFromDeleteList}
@@ -645,8 +645,10 @@ class EditTaskModal extends Component {
               aria-hidden="true"
               style={{
                 fontSize: "26px",
+                color: "darkred",
+                textShadow: "0px 2px grey",
                 lineHeight: "1",
-                fontWeight: 600,
+                fontWeight: 500,
                 cursor: this.state.stateMouseIcon
               }}
               task={this.props.taskId}

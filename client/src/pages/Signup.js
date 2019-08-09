@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import React, { Component } from "react";
 import axios from "axios";  // We import "axios" to be able to make requests to the Backend Endpoints.
 import { Link } from 'react-router-dom';  //  We import "Link" from "react-router-dom" to be able to link to other Route Components.

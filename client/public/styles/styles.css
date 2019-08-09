@@ -153,8 +153,8 @@ input#taskDeadline[type="date"] {
 /* create a new arrow, because we are going to mess up the native one
 see "List of symbols" below if you want another, you could also try to add a font-awesome icon.. */
 input#taskDeadline[type="date"]:after {
-  content: "\25BC"; 
-  color: #555;
+  content: "\25BE"; 
+  color: white;
   /* color: blue; */
   padding: 0 5px;
 }

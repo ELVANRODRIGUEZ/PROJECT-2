@@ -115,7 +115,7 @@ class TaskInfo extends Component {
         <h6>Progress (%):</h6>
         <div className="progress" style={{ marginBottom: ".5rem" }}>
           <div
-            className="progress-bar"
+            className="progress-bar progress-bar-striped"
             role="progressbar"
             style={{
               width: `${this.state.taskAccomplished}%`

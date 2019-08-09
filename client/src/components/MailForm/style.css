@@ -1,9 +1,15 @@
-#subject, #mailMessage, #email{
+#subject, #mailMessage{
     width: 100%;
 }
-
-/* .form-group{
-
-    width: 300%;
-
-} */
+#fileUpload, .email
+{
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.subject{
+	margin-top: 5px;
+}
