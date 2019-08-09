@@ -479,7 +479,6 @@ class Members extends Component {
           className="jumbotron bg-secondary "
           style={{ backgroundColor: "#aaa" }}
         >
-          This is from the component
           <div className="row">
             {/* +++++++++++++++++ PROJECTS +++++++++++++++++ */}
             <div className="col-sm-6">

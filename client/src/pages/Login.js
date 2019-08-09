@@ -9,9 +9,6 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      //   hide: [{ display: "none"}, {transition: "opacity 0.5s"}, {opacity: "1" }],
-      //   show: [{ display: "block"}, {transition: "opacity 0.5s"}, {opacity: "0" }]
-      // }
       display: "none",
       opacity: "0"
     };
@@ -70,6 +67,7 @@ class Login extends Component {
   render() {
     return (
       <div id="most-outter">
+
         <h1 style = {{color: "white", marginTop: "5px"}}>Team Organizer™ 4.5 </h1>
         <div id="outter">
            <div id="login-form" className="container text-white">
@@ -146,3 +144,4 @@ class Login extends Component {
 }
 
 export default Login;
+
