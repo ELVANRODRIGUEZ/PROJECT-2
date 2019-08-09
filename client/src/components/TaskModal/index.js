@@ -112,6 +112,8 @@ class TaskModal extends Component {
         {/* +++++++++++++++++ New Taks Collapse Window +++++++++++++++++ */}
         <NewTaskModal
           newTaskModalView={this.state.newTaskModalShow}
+          projectSelected={this.props.projectSelected}
+          categorySelected={this.props.categorySelected}
           projectUsers={this.state.projectUsers}
           newTaskModalToggle={this.newTaskModalToggle}
           userId={this.state.userId}

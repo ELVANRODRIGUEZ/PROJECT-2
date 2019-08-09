@@ -283,11 +283,11 @@ module.exports = function(app) {
     });
   });
 
+  //! This one goes in apiRoutes.
   app.get(
     "/members/info/:projectId/category/:categoryId",
     isAuthenticated,
     function(req, res) {
-      // function test(cb) {
 
       var userId = req.user.id;
       var categoryId = req.params.categoryId;
@@ -352,7 +352,7 @@ module.exports = function(app) {
       connection.query(query, function(err, data) {
         if (err) throw err;
 
-        // console.log(data);
+        console.log(data);
 
         // Getting all tasks from the selected category to create the HTML string.
 

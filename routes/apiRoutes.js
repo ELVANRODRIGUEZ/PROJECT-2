@@ -225,7 +225,7 @@ module.exports = function(app) {
   }
 
   app.post("/api/category/add", function(req, res) {
-    var catName = req.body.category_name;
+    var catName = req.body.name;
     var catDescription = req.body.description;
 
     // console.log(CatName);
@@ -240,7 +240,18 @@ module.exports = function(app) {
           description: catDescription
         })
         .then(function(category) {
-          res.send("New Category successfully added.");
+          
+          var categoryRel = [];
+          
+          categoryRel.push({
+            category_id: category.id,
+            category_name: category.category_name
+          });
+          
+          console.log(categoryRel);
+          
+          res.send(category);
+
         });
     }
   });
@@ -292,12 +303,12 @@ module.exports = function(app) {
   });
 
   // Route for getting all users that will be releted to the selected project.
-  app.get("/api/project_users", function(req, res) {
+  app.get("/api/project_users/:project", function(req, res) {
     db.project_users
       .findAll({
         attributes: [["user_name", "user_id"]],
         where: {
-          project_name: userSelections.project
+          project_name: req.params.project
         },
         raw: true,
         include: [
@@ -312,7 +323,7 @@ module.exports = function(app) {
                   ["id", "relationship_project-user"]
                 ],
                 where: {
-                  project_name: userSelections.project
+                  project_name: req.params.project
                 },
                 include: [
                   {
@@ -340,13 +351,13 @@ module.exports = function(app) {
   });
 
   // Route for task adding.
-  app.post("/api/task/add", function(req, res) {
+  app.post("/api/:project/:category/task/add", function(req, res) {
     var taskDescription = req.body.description;
     var taskDeadline = req.body.deadline;
     var taskAccomplishment = 0;
-    var taskProject = userSelections.project;
+    var taskProject = req.params.project;
     var userId = req.user.id;
-    var taskCategory = userSelections.category;
+    var taskCategory = req.params.category;
     var taskParent = null;
 
     var otherUsers = JSON.parse(req.body.other_users);
@@ -501,7 +512,7 @@ module.exports = function(app) {
                   ["id", "relationship_project-user"]
                 ],
                 where: {
-                  project_name: userSelections.project
+                  project_name: req.params.project
                 },
                 include: [
                   {
