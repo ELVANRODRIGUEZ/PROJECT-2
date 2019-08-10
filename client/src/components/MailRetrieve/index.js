@@ -35,9 +35,9 @@ class MailRetrieve extends Component {
                        <strong>Message:</strong> {mail.message}{" "}
                      </p>
                      <p >
-                        <strong>Attachments:</strong> {mail.fileName}{" "}
+                        <strong>Attachments:</strong> {mail.fileName.replace(/\[|]|/g, "").replace(",", ", ")}{" "}
                       </p>
-                     <hr />
+                     <hr/>
                    </div>
                  );
                })

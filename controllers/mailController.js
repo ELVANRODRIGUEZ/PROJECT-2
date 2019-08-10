@@ -13,7 +13,7 @@ module.exports = {
   },
 
   saveMail(req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     mongo.Mails.create(req.body)
       .then(mongoMails => res.json(mongoMails))
       .catch((err) => {

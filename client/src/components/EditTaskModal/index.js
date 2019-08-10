@@ -57,7 +57,7 @@ class EditTaskModal extends Component {
         () => {
           //  Test console.
           //   console.log(this.state.taskUsers);
-            console.log(this.state.notTaskUsers);
+            // console.log(this.state.notTaskUsers);
         }
       );
     }
@@ -326,7 +326,7 @@ class EditTaskModal extends Component {
       },
       () => {
         // Test console.
-        console.log(this.state.notTaskUsers);
+        // console.log(this.state.notTaskUsers);
       }
     );
 
@@ -338,7 +338,7 @@ class EditTaskModal extends Component {
       },
       () => {
         // Test console.
-        console.log(this.state.usersAdded);
+        // console.log(this.state.usersAdded);
       }
     );
   };
@@ -349,7 +349,7 @@ class EditTaskModal extends Component {
     //  Since it matters where the exact clicking was made, we made sure to add the "userid" attribute to the Button as well as to the Times Icon so we can retrieve it from either one of them.
     const userToDeleteId = parseInt(event.target.getAttribute("userid"));
     // Test console.
-    console.log(userToDeleteId);
+    // console.log(userToDeleteId);
 
     // This variable will create the user deleted from the "usersAdded" list to later contatenating it back (thus it needs to be an array) to the "projectUsers" list to render it as available for choosing again.
     let userToReturn = [];
@@ -370,7 +370,7 @@ class EditTaskModal extends Component {
       },
       () => {
         // Test console.
-        console.log(this.state.taskUsers);
+        // console.log(this.state.taskUsers);
       }
     );
 
@@ -382,7 +382,7 @@ class EditTaskModal extends Component {
       },
       () => {
         // Test console.
-        console.log(this.state.usersDeleted);
+        // console.log(this.state.usersDeleted);
       }
     );
   };
