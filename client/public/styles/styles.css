@@ -525,7 +525,13 @@ img {
   color:white;
 }
 
-/* Adding style to the immediate child of the "newProjectModal" id tag. */
+/* Adding style to the immediate child of the "delProjectModal" id tag. */
+#delProjectModal > .modal-content {
+  background-color:#343a40;
+  color:white;
+}
+
+/* Adding style to the immediate child of the "newCategoryModal" id tag. */
 #newCategoryModal > .modal-content {
   background-color:#343a40;
   color:white;

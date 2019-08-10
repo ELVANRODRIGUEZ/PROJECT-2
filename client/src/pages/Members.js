@@ -6,6 +6,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import ProjectCard from "../components/ProjectCard";
 import NewProjectModal from "../components/NewProjectModal";
+import DeleteProjectModal from "../components/DeleteProjectModal";
 import NewCategoryModal from "../components/NewCategoryModal";
 import CategoryCard from "../components/CategoryCard";
 import TaskModal from "../components/TaskModal";
@@ -22,6 +23,7 @@ class Members extends Component {
       categoryCards: [],
       tasksCards: [],
       projectSelected: "",
+      projectSelectedName: "",
       categorySelected: "",
       userName: "",
       userId: "",
@@ -31,6 +33,8 @@ class Members extends Component {
       taskModalView: "none",
       newProjModalShow: false,
       newProjModalView: "none",
+      delProjModalShow: false,
+      delProjModalView: "none",
       newCatModalShow: false,
       newCatModalView: "none"
     };
@@ -88,9 +92,13 @@ class Members extends Component {
     // console.log(event.target.getAttribute("data-id"));
 
     const projectId = event.target.getAttribute("data-id");
-    const projectData = { project: event.target.getAttribute("data-id") };
+    const projectName = event.target.getAttribute("name");
+    // const projectData = { project: event.target.getAttribute("data-id") };
 
-    this.setState({ projectSelected: parseInt(projectId) }, () => {
+    this.setState({ 
+      projectSelected: parseInt(projectId), 
+      projectSelectedName: projectName 
+    }, () => {
       axios
         //? This is to get the amount of Tasks in each Category according to the Project selected.
         .get("/members/info/" + projectId)
@@ -215,6 +223,14 @@ class Members extends Component {
     this.setState({ newProjModalView: "block", newProjModalShow: true });
   };
 
+  delProjModalClose = () => {
+    this.setState({ delProjModalView: "none", delProjModalShow: false });
+  };
+
+  delProjModalShow = () => {
+    this.setState({ delProjModalView: "block", delProjModalShow: true });
+  };
+
   newCatModalClose = () => {
     this.setState({ newCatModalView: "none", newCatModalShow: false });
   };
@@ -257,10 +273,7 @@ class Members extends Component {
     axios
       //? This request is to retrieve the new Task once it has been added from the NewTaskModal.
       .get(
-        "/members/info/" +
-          this.state.projectSelected +
-          "/category/" +
-          category
+        "/members/info/" + this.state.projectSelected + "/category/" + category
       )
       .then(data => {
         // Test console.
@@ -277,46 +290,26 @@ class Members extends Component {
   };
 
   render() {
+
+    let delProjectButton;
+
+    if (this.state.projectSelected) {
+     delProjectButton = this.delProjModalShow;
+    }
+
     return (
       <div id="profile">
         {/*! +++++++++++++++++ NAVBAR  Moved to Navbar component+++++++++++++++++ */}
         <Navbar userName={this.state.userName} />
 
         {/* +++++++++++++++++ MODAL: Delete Modal For Projects +++++++++++++++++ */}
-        <div
-          className="modal"
-          tabIndex="-1"
-          role="dialog"
-          id="deleteProjectModal"
-        >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content bg-dark text-white">
-              <div className="modal-header">
-                <h5 className="modal-title" id="eraseProjModalTitle">
-                  Are you sure you want to delete?
-                </h5>
-                <button
-                  type="button"
-                  className="close text-danger"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-outline-success"
-                  data-dismiss="modal"
-                  id="deleteProject"
-                >
-                  Erase Project's Tasks
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <DeleteProjectModal
+          show={this.state.delProjModalShow}
+          handleClose={this.delProjModalClose}
+          projectSelected={this.state.projectSelected}
+          projectSelectedName={this.state.projectSelectedName}
+          renderForCategories={this.renderForNewTasks}
+        ></DeleteProjectModal>
         {/* +++++++++++++++++ MODAL: Delete Modal For Categories +++++++++++++++++ */}
         <div
           className="modal"
@@ -449,9 +442,12 @@ class Members extends Component {
                     <span className="display-3">
                       <b>Projects</b>
                     </span>
+                    
                     <button
                       className="btn btn-secondary  projectDel"
                       style={{ float: "right", margin: "0 2px" }}
+                      // onClick={this.state.projectSelected ? this.delProjModalShow : ""}
+                      onClick={delProjectButton}
                     >
                       <i className="fa fa-trash-o fa-4" aria-hidden="true"></i>
                     </button>
@@ -471,7 +467,8 @@ class Members extends Component {
                   <div
                     className="card-body bg-dark overflow-auto"
                     style={{ maxHeight: "60vh" }}
-                  >{this.state.ifNoProjects}
+                  >
+                    {this.state.ifNoProjects}
                     <div id="projectDiv" className="card-columns row">
                       {/* +++++++++++++++++ Project Card Container +++++++++++++++++ */}
 
@@ -495,6 +492,7 @@ class Members extends Component {
                                   }
                                   onClick={this.ProjectClick}
                                   data-id={project.projId}
+                                  name={project.projName}
                                   style={{
                                     position: "absolute",
                                     top: "0",
@@ -601,7 +599,8 @@ class Members extends Component {
                           >
                             <div
                               className={
-                                category.catId === parseInt(this.state.categorySelected)
+                                category.catId ===
+                                parseInt(this.state.categorySelected)
                                   ? "Wrapper border border-danger"
                                   : "Wrapper"
                               }
