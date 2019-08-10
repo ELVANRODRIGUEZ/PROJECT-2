@@ -234,9 +234,8 @@ sendMessage = ev => {
           <div className="col-12">
             <div className="card text-white bg-secondary">
             <div className="card-title text-center">
-            <h3 className="text-white">Task Chat</h3>
+
            </div>
-            <hr />
               <div className="card-body">
                 <div id={this.state.uniqueConId} className="messages">
                <p name={this.state.uniqueElementTop}></p>
@@ -262,7 +261,7 @@ sendMessage = ev => {
                           }
                         >
                           <p>
-                            {message.author}: {message.message}{" "}
+                            {message.author}:{message.message}{" "}
                             <span className="time_date">
                               Sent {message.day}/{message.month} at{" "}
                               {message.hours}:{message.minutes}

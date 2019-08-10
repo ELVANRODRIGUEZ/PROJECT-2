@@ -149,7 +149,7 @@ class TaskModal extends Component {
                 openTask={this.openTask}
               ></TaskCard>
             );
-          })}
+          })}{this.props.tasksCards >0 ? (""):(<h1 className="E404">No tasks yet</h1>)}
         </Modal.Body>
 
         {/* +++++++++++++++++ FOOTER +++++++++++++++++ */}
