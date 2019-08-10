@@ -538,3 +538,9 @@ img {
   background-color:#343a40;
   color:white;
 }
+
+/* Adding style to the immediate child of the "delProjectModal" id tag. */
+#delCategoryModal > .modal-content {
+  background-color:#343a40;
+  color:white;
+}

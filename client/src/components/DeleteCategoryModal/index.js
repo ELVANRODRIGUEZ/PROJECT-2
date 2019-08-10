@@ -5,17 +5,17 @@ import axios from "axios";
 
 // ================================== Files Dependencies
 
-class DeleteProjectModal extends Component {
+class DeleteCategoryModal extends Component {
   constructor(props) {
     super(props);
 
     this.state = {};
   }
 
-  deleteProject = () => {
+  deleteCategory = () => {
 
     axios
-    .delete(`/members/info/${this.props.projectSelected}/delete_all_tasks`)
+    .delete(`/members/info/${this.props.projectSelected}/${this.props.categorySelected}/delete_all_tasks`)
     .then(data => {
         //  Test console.
         // console.log(data.data);
@@ -35,12 +35,12 @@ class DeleteProjectModal extends Component {
         size="xl"
         show={this.props.show}
         tabIndex="-1"
-        id="delProjectModal"
+        id="delCategoryModal"
       >
         <Modal.Header>
-          <h5 className="modal-title" id="eraseProjModalTitle">
+          <h5 className="modal-title" id="eraseCategoryModalTitle">
             Delete all Tasks you are related to in 
-            <b> {this.props.projectSelectedName}?</b>
+            <b> {this.props.categorySelectedName}?</b>
           </h5>
           <button
             type="button"
@@ -66,11 +66,11 @@ class DeleteProjectModal extends Component {
               float: "right"
             }}
             className="btn btn-outline-success"
-            id="deleteProject"
+            id="deleteCategory"
             data-dismiss="modal"
-            onClick={this.deleteProject}
+            onClick={this.deleteCategory}
           >
-            Delete Tasks in Project
+            Delete Tasks in Category
           </button>
         </Modal.Footer>
       </Modal>
@@ -78,4 +78,4 @@ class DeleteProjectModal extends Component {
   }
 }
 
-export default DeleteProjectModal;
+export default DeleteCategoryModal;
