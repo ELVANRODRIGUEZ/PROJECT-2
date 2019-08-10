@@ -23,6 +23,7 @@ class TaskInfo extends Component {
 
   // This makes the Axios Request to retrieve the Tasks Progress.
   componentDidMount = () => {
+   // console.log(this.props.taskDeadline)
     axios.get(`/api/task/${this.props.taskId}/progress`).then(data => {
       //  Test console.
       //   console.log(data.data.accomplished);

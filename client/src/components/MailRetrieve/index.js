@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Moment from "react-moment";
 import "./style.css"
 
 class MailRetrieve extends Component {
@@ -20,7 +21,8 @@ class MailRetrieve extends Component {
                  return (
                    <div id="mailList" key={mail._id}>
                      <p  id="firstLine" >
-                        <strong>Sended On: </strong> {mail.createdAt}
+                        <strong>Sended On: </strong> 
+                        <Moment format="DD, MMMM. YYYY HH:mm">{mail.createdAt}</Moment>
                       </p>
                      <p >
                        <strong>From:</strong> {mail.senderName + " <" + mail.senderEmail + "> "}{" "}

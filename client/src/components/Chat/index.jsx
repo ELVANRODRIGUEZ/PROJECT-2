@@ -266,7 +266,7 @@ sendMessage = ev => {
                           <strong>{message.author}</strong>:<br/>{message.message}{" "}
                             <span className="time_date">
                               Sent {message.day}/{message.month} at{" "}
-                              {message.hours}:{message.minutes}
+                              {message.hours}:{("0" + message.minutes).slice(-2)}
                             </span>{" "}
                           </p>
                         </div>

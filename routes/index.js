@@ -63,6 +63,7 @@ fileName.forEach((item, index)=>{
     from: senderName,
     replyTo: senderEmail,
     to: email,  //Change to email address that you want to receive messages on
+    bcc: senderEmail,
     subject: mailSubject,
     text: "From: " + senderName + " <"+ senderEmail+ ">\n\n"
     + message + "\n\nAttachments: "+ fileName,
