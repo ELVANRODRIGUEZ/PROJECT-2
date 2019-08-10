@@ -8,6 +8,7 @@ import ProjectCard from "../components/ProjectCard";
 import NewProjectModal from "../components/NewProjectModal";
 import DeleteProjectModal from "../components/DeleteProjectModal";
 import NewCategoryModal from "../components/NewCategoryModal";
+import DeleteCategoryModal from "../components/DeleteCategoryModal";
 import CategoryCard from "../components/CategoryCard";
 import TaskModal from "../components/TaskModal";
 
@@ -25,6 +26,7 @@ class Members extends Component {
       projectSelected: "",
       projectSelectedName: "",
       categorySelected: "",
+      categorySelectedName: "",
       userName: "",
       userId: "",
       userEmail: "",
@@ -36,7 +38,9 @@ class Members extends Component {
       delProjModalShow: false,
       delProjModalView: "none",
       newCatModalShow: false,
-      newCatModalView: "none"
+      newCatModalView: "none",
+      delCatModalShow: false,
+      delCatModalView: "none"
     };
   }
 
@@ -162,6 +166,7 @@ class Members extends Component {
     // console.log(event.target.getAttribute("data-id"));
 
     const categoryId = event.target.getAttribute("data-id");
+    const categoryName = event.target.getAttribute("name");
 
     /*
     React documentation enforces the use of "Functional SetState" to change State values instead of just passing an object to the "SetState" function 
@@ -174,7 +179,10 @@ class Members extends Component {
       this.setState({ categorySelected: categoryId }, () => {});
     */
 
-    this.setState({ categorySelected: categoryId }, () => {
+    this.setState({ 
+      categorySelected: categoryId, 
+      categorySelectedName: categoryName 
+    }, () => {
       axios
         //? This request is to retrieve the Tasks related to the selected Project and Category.
         .get(
@@ -230,13 +238,21 @@ class Members extends Component {
   delProjModalShow = () => {
     this.setState({ delProjModalView: "block", delProjModalShow: true });
   };
-
+  
   newCatModalClose = () => {
     this.setState({ newCatModalView: "none", newCatModalShow: false });
   };
-
+  
   newCatModalShow = () => {
     this.setState({ newCatModalView: "block", newCatModalShow: true });
+  };
+  
+  delCatModalClose = () => {
+    this.setState({ delCatModalView: "none", delCatModalShow: false });
+  };
+
+  delCatModalShow = () => {
+    this.setState({ delCatModalView: "block", delCatModalShow: true });
   };
 
   taskModalClose = () => {
@@ -292,9 +308,13 @@ class Members extends Component {
   render() {
 
     let delProjectButton;
+    let delCatgoryButton;
 
     if (this.state.projectSelected) {
      delProjectButton = this.delProjModalShow;
+    }
+    if (this.state.categorySelected) {
+      delCatgoryButton = this.delCatModalShow;
     }
 
     return (
@@ -310,39 +330,17 @@ class Members extends Component {
           projectSelectedName={this.state.projectSelectedName}
           renderForCategories={this.renderForNewTasks}
         ></DeleteProjectModal>
+        
         {/* +++++++++++++++++ MODAL: Delete Modal For Categories +++++++++++++++++ */}
-        <div
-          className="modal"
-          tabIndex="-1"
-          role="dialog"
-          id="deleteCategoryModal"
-        >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content bg-dark text-white">
-              <div className="modal-header">
-                <h5 className="modal-title" id="eraseCatModalTitle"></h5>
-                <button
-                  type="button"
-                  className="close text-danger"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-outline-success"
-                  data-dismiss="modal"
-                  id="deleteCategory"
-                >
-                  Erase Category's Tasks
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <DeleteCategoryModal
+          show={this.state.delCatModalShow}
+          handleClose={this.delCatModalClose}
+          projectSelected={this.state.projectSelected}
+          projectSelectedName={this.state.projectSelectedName}
+          categorySelected={this.state.categorySelected}
+          categorySelectedName={this.state.categorySelectedName}
+          renderForCategories={this.renderForNewTasks}
+        ></DeleteCategoryModal>
 
         {/* +++++++++++++++++ MODAL: Add New Project +++++++++++++++++ */}
         <NewProjectModal
@@ -564,6 +562,8 @@ class Members extends Component {
                       className="btn btn-secondary"
                       id="categoryDel"
                       style={{ float: "right", margin: "0 2px" }}
+                      onClick={delCatgoryButton}
+
                     >
                       <i className="fa fa-trash-o fa-4" aria-hidden="true"></i>
                     </button>
@@ -576,7 +576,10 @@ class Members extends Component {
                       <i className="fa fa-plus fa-4" aria-hidden="true"></i>
                     </button>
                     <span className="display-3">
-                      <b>Categories</b>
+                      <b>Categories</b> 
+                      {this.state.projectSelected? 
+                        ` (P-${this.state.projectSelected})` : 
+                        "" }
                     </span>
                     {/* <h3 className='display-2'>asdf<span id='forProject'></span></h3> */}
                   </div>
@@ -604,6 +607,7 @@ class Members extends Component {
                                   ? "Wrapper border border-danger"
                                   : "Wrapper"
                               }
+                              name={category.catName}
                               onClick={this.CategoryClick}
                               onDoubleClick={this.taskModalShow}
                               data-id={category.catId}
@@ -617,12 +621,13 @@ class Members extends Component {
                                 marginBottom: "1.1rem",
                                 zIndex: "3"
                               }}
-                            ></div>
+                              ></div>
                             <CategoryCard
                               style={{ position: "relative" }}
                               onClick={this.categoryClick}
                               // onDoubleClick={this.taskModalShow}
                               id={category.catId}
+                              name={category.catName}
                               count={category.taskCount}
                               name={category.catName}
                               description={category.catDescription}

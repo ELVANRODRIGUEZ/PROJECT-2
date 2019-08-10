@@ -6,13 +6,21 @@
   overflow:scroll;
   overflow-x: hidden;
 }
+
+.E404{
+  margin:10% 0 10%;
+  color:white;
+  text-align: center;
+}
 .messages{
   height: 400px;
   overflow:scroll;
   overflow-x: hidden;
 }
 .container{ margin:auto;}
-img{ max-width:10%;
+img{ 
+ margin: 5px;
+  max-width:40px;
   border-radius: 50%;}
 
 select{margin:5px;}
@@ -215,8 +223,6 @@ select:-webkit-autofill:focus {
   padding: 10px 10px;
   border: 1px solid #d5d9da;
   border-radius: 5px;
-  -webkit-box-shadow: 0 0 5px #e8e9eb inset;
-  box-shadow: 0 0 5px #e8e9eb inset;
 }
 
 .navbarTitle{
@@ -395,9 +401,7 @@ padding: 0px;
   margin: auto;
 }
 
-img {
-  max-width: 100%;
-}
+
 
 .headind_srch {
   padding: 10px 29px 10px 20px;
@@ -414,7 +418,7 @@ img {
   display: inline-block;
   padding: 0 0 0 10px;
   vertical-align: top;
-  width: 92%;
+  width: auto;
 }
 
 .received_withd_msg p {
@@ -425,7 +429,6 @@ img {
   font-size: 14px;
   margin: 0;
   padding: 5px 10px 5px 12px;
-  width: 100%;
 }
 
 .time_date {
@@ -436,7 +439,7 @@ img {
 }
 
 .received_withd_msg {
-  width: 57%;
+  max-width: 70%;
 }
 
 .mesgs {
@@ -463,7 +466,7 @@ img {
 
 .sent_msg {
   float: right;
-  width: 46%;
+  max-width: 70%;
 }
 
 .input_msg_write input {
@@ -535,6 +538,12 @@ img {
 
 /* Adding style to the immediate child of the "newCategoryModal" id tag. */
 #newCategoryModal > .modal-content {
+  background-color:#343a40;
+  color:white;
+}
+
+/* Adding style to the immediate child of the "delProjectModal" id tag. */
+#delCategoryModal > .modal-content {
   background-color:#343a40;
   color:white;
 }

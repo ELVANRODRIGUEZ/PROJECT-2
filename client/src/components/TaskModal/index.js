@@ -123,6 +123,7 @@ class TaskModal extends Component {
         {/* +++++++++++++++++ BODY +++++++++++++++++ */}
         <Modal.Body id="taskModal-container">
           {/* +++++++++++++++++ TASK CARD +++++++++++++++++ */}
+        
           {this.props.tasksCards.map(task => {
             return (
               <TaskCard
@@ -150,6 +151,8 @@ class TaskModal extends Component {
               ></TaskCard>
             );
           })}
+        
+        {this.props.tasksCards.length >0 ? (""):(<h3 className="E404">You have no Tasks yet</h3>)}
         </Modal.Body>
 
         {/* +++++++++++++++++ FOOTER +++++++++++++++++ */}

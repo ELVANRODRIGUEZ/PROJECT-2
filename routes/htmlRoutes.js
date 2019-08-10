@@ -466,37 +466,33 @@ module.exports = function(app) {
   );
 
   // Route to delete a Tasks (and all relationships) nested in a Category.
-  app.delete("/members/info/category/delete_all_tasks", function(req, res) {
-    console.log(allTasksInCategory);
-
-    db.chat_mess_tasks
-      .destroy({
+  app.delete("/members/info/:project/:category/delete_all_tasks", function(req, res) {
+    db.tasks
+      .findAll({
         where: {
-          task_id: allTasksInCategory
+          task_project: req.params.project,
+          task_category: req.params.category
         }
       })
-      .then(function() {
-        db.mail_mess_tasks.destroy({
-          where: {
-            task_id: allTasksInCategory
-          }
+      .then(function(data) {
+        let allProjCatTasks = data.map(task => {
+          return task.dataValues.id;
         });
-      })
-      .then(function() {
-        db.tasks_responsibles.destroy({
-          where: {
-            task_id: allTasksInCategory
-          }
-        });
-      })
-      .then(function() {
-        db.tasks.destroy({
-          where: {
-            id: allTasksInCategory
-          }
-        });
+        //  Test console.
+        console.log(allProjCatTasks);
 
-        res.send("Reload Page");
+        db.tasks_responsibles
+          .destroy({
+            where: {
+              task_id: {
+                [Op.in]: allProjCatTasks
+              },
+              responsible: req.user.id
+            }
+          })
+          .then(function(data2) {
+            res.send("all User's Project's Category Tasks Deleted");
+          });
       });
   });
 
@@ -512,26 +508,20 @@ module.exports = function(app) {
         let allprojectTasks = data.map(task => {
           return task.dataValues.id;
         });
-        console.log(allprojectTasks);
-        // res.send(allprojectTasks);
+        //  Test console.
+        // console.log(allprojectTasks);
 
         db.tasks_responsibles
-        .destroy({
-          where: {
-            task_id: {
-              [Op.in]: allprojectTasks
-            },
-            responsible: req.user.id
-          }
-        })
-        .then(function(data2) {
-          // let allUserProjTasks = data2.map(task => {
-          //   return task.dataValues;
-          // });
-          // console.log("++++++");
-          // console.log(data2.dataValues);
-          // console.log("++++++");
-            res.send("allUserProjTasks");
+          .destroy({
+            where: {
+              task_id: {
+                [Op.in]: allprojectTasks
+              },
+              responsible: req.user.id
+            }
+          })
+          .then(function(data2) {
+            res.send("all User's Project Tasks Deleted");
           });
       });
   });
