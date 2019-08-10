@@ -125,7 +125,7 @@ select[type=list]:focus{
 } 
 
 input[type=email]::placeholder, input[type=password]::placeholder, input[type=text]::placeholder, input[type=tel]::placeholder {
-  color: #005fc4;
+  color: #00397a;
 }
 
 /* input#taskDeadline::-webkit-calendar-picker-indicator { 

@@ -13,19 +13,40 @@ class MailForm extends Component {
       taskUsers: this.props.taskUsers,
       usersAdded: [],
       //File attach
-      id: "fileUpload",
+      id: "fileUpload" + this.props.taskId,
       fileURI: [],
       fileName: [],
       buttonLabel: "Select File",
+      //File attach Unique Ids
+      emailsId:`emails-${this.props.taskId}`,
+      subjectId:`mailMessage-${this.props.taskId}`,
+      messageId:`message-${this.props.taskId}`,
+      fileUploadID:`fileUpload-${this.props.taskId}`,
+      formId: `formId-${this.props.taskId}`,
       // Alerts
       display: "none",
       opacity: "0",
       errorMessage: "",
       alertType: ""
+      
     };
   }
 
   componentDidUpdate = prevProps => {
+    
+    if (this.props.showMailModal !== prevProps.showMailModal) {
+      document.getElementById(this.state.formId).reset();
+      this.setState({
+        userToAdd: [],
+        usersAdded: [],
+        taskUsers: this.props.taskUsers,
+        buttonLabel: "Select File"
+      });
+    }
+  
+    
+    
+    
     if (this.props.taskUsersIds !== prevProps.taskUsersIds) {
       //  Test console.
       //  Selected Task Id.
@@ -278,9 +299,9 @@ class MailForm extends Component {
         //console.log(e.target.files[item].name);
         let reader = new FileReader();
         reader.onload = function (ev) {
-          // console.log(ev.target.result)
+           //console.log(ev.target.result)
           this.setState({fileURI: this.state.fileURI.concat([ev.target.result]) } , ()=>{
-           // console.log(this.state.fileURI);
+           //console.log(this.state.fileURI);
           } );
         }.bind(this);
         reader.readAsDataURL(e.target.files[item]);
@@ -288,9 +309,9 @@ class MailForm extends Component {
       
       
       this.setState({ fileName: middle  } , ()=>{
-       console.log(this.state.fileName);
+       //console.log(this.state.fileName);
        const label = JSON.stringify(this.state.fileName);
-       console.log(label)
+       //console.log(label)
        this.setState({ buttonLabel: label.replace(/\[|]|/g, "").replace(",", ", ") })
     })
     }
@@ -312,12 +333,12 @@ class MailForm extends Component {
     event.preventDefault();
     const fileTag = this.state.fileURI;
     const fileName = this.state.fileName;
-    const mailSubject = document.getElementById("subject").value;
-    const email = document.getElementById("email").value;
+    const mailSubject = document.getElementById(this.state.subjectId).value;
+    const email = document.getElementById(this.state.emailsId).value;
     // const email = this.state.usersAdded.map((u) => u.user_mail);
-    const message = document.getElementById("mailMessage").value;
-    // console.log(fileTag)
-    // console.log(fileName)
+    const message = document.getElementById(this.state.messageId).value;
+    console.log(fileTag)
+    console.log(fileName)
     console.log("users to mail are:\n" + email);
 
     if (email === "") {
@@ -329,7 +350,7 @@ class MailForm extends Component {
     } else {
       let mailData;
 
-      mailData = {
+mailData = {
         senderName: this.props.userName,
         senderEmail: this.props.userEmail,
         //for testing porpouses email is harcoded, in production use:
@@ -343,7 +364,7 @@ class MailForm extends Component {
         fileUri: fileTag,
         fileName: fileName
       };
-      //console.log(mailData.fileName);
+      console.log(mailData);
 
 
       axios({
@@ -384,7 +405,7 @@ class MailForm extends Component {
   }
 
   resetForm = () => {
-    document.getElementById("contact-form").reset();
+    document.getElementById(this.state.formId).reset();
     this.setState({
       userToAdd: [],
       usersAdded: [],
@@ -395,7 +416,10 @@ class MailForm extends Component {
 
   render() {
     let usersToBeAdded;
-
+// let attachedFiles;
+// if(this.state.buttonLabel){
+//   attachedFiles=this.state.buttonLabel;
+// }
     if (this.state.usersAdded.length > 0) {
       // console.log(this.state.usersAdded);
       usersToBeAdded = (
@@ -439,11 +463,11 @@ class MailForm extends Component {
       <div>
         <div className="col-sm-8 offset-sm-2">
           {/* <form
-            id="contact-form"
+            id=this.state.formId
             onSubmit={this.handleSubmit.bind(this)}
             method="POST"
           > */}
-          <form id="contact-form" >
+          <form id={this.state.formId} >
             {/* +++++++++++++++++ New Task Users deletion +++++++++++++++++ */}
             <label htmlFor="taskUsers">Select Users To eMail</label>
             <div className="row noMargin">
@@ -489,34 +513,35 @@ class MailForm extends Component {
               <input
                 type="text"
                 className="form-control"
-                id="email"
+                id={this.state.emailsId}
                 aria-describedby="emailHelp"
                 value={this.state.usersAdded.map((u) => u.user_mail)}
               />
             </div>
             <div className="form-group subject">
               <label htmlFor="subject">Subject</label>
-              <input type="text" className="form-control" id="subject" />
+              <input type="text" className="form-control" id={this.state.subjectId} />
             </div>
-            <div className="form-group">
+            <div className="form-group message">
               <label htmlFor="mailMessage">Message</label>
               <textarea
                 type="text"
                 className="form-control"
                 rows="5"
-                id="mailMessage"
+                id={this.state.messageId}
               ></textarea>
             </div>
-            <div className="form-group">
+            <div className="form-group fileUpload">
               <label
-                htmlFor={this.state.id}
+                htmlFor={this.state.fileUploadID}
                 className="btn btn-outline-success btn-sm"
-              >
+                >
                 <i className="fa fa-arrow-circle-o-up"></i>
+                {/* {attachedFiles} */}
                 {!this.state.buttonLabel ? "Select File" : this.state.buttonLabel}
               </label>
               <input
-                id={this.state.id}
+                id={this.state.fileUploadID}
                 type="file"
                 onChange={this.handleChange.bind(this)}
                 className="show-for-sr" 

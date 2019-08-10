@@ -78,7 +78,7 @@ sendMessage = ev => {
     };
     //  Test console.
     //   console.log("chat data ");
-    console.log(chatData);
+    // console.log(chatData);
     API.saveChat(chatData)
       .then(res => {
         //  Test console.
@@ -101,16 +101,21 @@ sendMessage = ev => {
 
   componentDidUpdate = prevProps => {
     this.scrollBottom()
+    if (this.props.showChatModal !== prevProps.showChatModal) {
+            this.setState({
+        message: ""
+      });
+    }
   };
 
   componentDidMount() {
 
     Events.scrollEvent.register('begin', function () {
-      console.log("begin", arguments);
+      // console.log("begin", arguments);
     });
 
     Events.scrollEvent.register('end', function () {
-      console.log("end", arguments);
+      // console.log("end", arguments);
     });
     
     

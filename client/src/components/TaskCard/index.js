@@ -326,6 +326,7 @@ class TaskCard extends Component {
                 id="multiCollapseExample2"
               >
                 <Chat
+                  showChatModal={this.state.chatHide}
                   taskId={this.props.taskId}
                   userName={this.props.userName}
                   // taskUsers={this.state.taskUsers}
@@ -343,6 +344,7 @@ class TaskCard extends Component {
                     {/* {console.log(this.state.taskUsers)} */}
                     {/* {console.log(this.state.taskUsersIds)} */}
                     <MailForm
+                     showMailModal={this.state.mailFormHide}
                       taskId={this.props.taskId}
                       userName={this.props.userName}
                       userEmail={this.props.userEmail}

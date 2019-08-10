@@ -312,10 +312,10 @@ class NewTaskModal extends Component {
               <li
                 key={user["user.user_id"]}
                 className="taskUser list-group-item text-dark col-md-8"
-                style={{ lineHeight: 1, padding: "5px" }}
+                style={{backgroundColor: "lightGrey",  lineHeight: 1, padding: "5px" }}
               >
                 <button
-                  className='btn btn-dark pplus'
+                  className='btn btn-danger pplus'
                   userid={user["user.user_id"]}
                   value={user["user.user_name"]}
                   onClick={this.deleteUser}
@@ -353,7 +353,7 @@ class NewTaskModal extends Component {
             <h5 className="modal-title">Add new Task</h5>
             <span
               aria-hidden="true"
-              style={{ fontSize: "26px", lineHeight: "1", fontWeight: 600, cursor: this.state.stateMouseIcon }}
+              style={{ fontSize: "26px", color:" darkred", textShadow: "lightgrey 0px 2px", lineHeight: "1", fontWeight: 600, cursor: this.state.stateMouseIcon }}
               onClick={this.newTaskModalToggle}
               onMouseOver={this.changeMouseIcon}
               onMouseOut={this.changeMouseIcon}
