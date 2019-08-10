@@ -116,14 +116,7 @@ sendMessage = ev => {
 
     Events.scrollEvent.register('end', function () {
       // console.log("end", arguments);
-    });
-
-    Events.scrollEvent.register('end', function () {
-     // console.log("end", arguments);
-    });
-    
-    
-  
+    }); 
   }
 
   scrollBottom() {
@@ -270,7 +263,7 @@ sendMessage = ev => {
                           }
                         >
                           <p>
-                            {message.author}:{message.message}{" "}
+                          <strong>{message.author}</strong>:<br/>{message.message}{" "}
                             <span className="time_date">
                               Sent {message.day}/{message.month} at{" "}
                               {message.hours}:{message.minutes}
