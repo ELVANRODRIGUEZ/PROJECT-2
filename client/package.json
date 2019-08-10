@@ -9,6 +9,8 @@
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "react-scroll": "^1.7.12",
+    "save": "^2.4.0",
     "socket.io-client": "1.7.3"
   },
   "scripts": {
