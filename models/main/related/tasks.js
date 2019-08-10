@@ -11,7 +11,7 @@ module.exports = function (sequelize, DataTypes) {
             },
             defaultValue: 0
         }
-    });
+    }); 
 
     tasks.associate = function (models) {
         tasks.belongsTo(models.users, {
@@ -38,7 +38,7 @@ module.exports = function (sequelize, DataTypes) {
             }
         });
     };
-    
+
     return tasks;
 
 };
