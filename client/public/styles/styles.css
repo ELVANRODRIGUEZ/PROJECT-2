@@ -68,10 +68,10 @@ body, #root, #profile {
   padding: 10px 15px 15px 15px;
 }
 
-.btn {
-  /* display: inline-block; */
+/* .btn {
+  display: inline-block;
   display: block
-}
+} */
 
 input[type=date], input[type=email], input[type=password], input[type=text], input[type=tel], textarea[type=text], select[type=list] {
   padding: 10px 10px;
@@ -418,9 +418,10 @@ img {
 }
 
 .received_withd_msg p {
-  background: #ebebeb none repeat scroll 0 0;
+  background: #bedfff none repeat scroll 0 0;
   border-radius: 3px;
-  color: #646464;
+  color: black;
+  /* color: #646464; */
   font-size: 14px;
   margin: 0;
   padding: 5px 10px 5px 12px;
@@ -445,11 +446,12 @@ img {
 }
 
 .sent_msg p {
-  background: #05728f none repeat scroll 0 0;
+  background: #ccffc1 none repeat scroll 0 0;
   border-radius: 3px;
   font-size: 14px;
   margin: 0;
-  color: #fff;
+  color:black;
+  /* color: #fff; */
   padding: 5px 10px 5px 12px;
   width: 100%;
 }

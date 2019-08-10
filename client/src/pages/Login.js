@@ -68,7 +68,7 @@ class Login extends Component {
     return (
       <div id="most-outter">
 
-        <h1 style = {{color: "white", marginTop: "5px"}}>Team Organizer™ 5.4 </h1>
+        <h1 style = {{color: "white", marginTop: "5px"}}>Team Organizer™ 5.5 </h1>
         <div id="outter">
            <div id="login-form" className="container text-white">
             <div className="row login-form bg-dark">

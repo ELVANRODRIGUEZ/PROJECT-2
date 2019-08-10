@@ -49,13 +49,13 @@ fileName.forEach((item, index)=>{
   console.log(item)
   // console.log(fileURI[index])
   
-  let temp =  {
+  let attchmentConstrution =  {
     filename : item, 
     path: fileURI[index]
   }
   
   attachments.push(
-   temp
+    attchmentConstrution
   )
 })
 //  console.log(attachments);

@@ -1,4 +1,6 @@
 import React from "react";
+import { Events, animateScroll as scroll, scroller } from 'react-scroll'
+
 import io from "socket.io-client";
 import API from "../../utils/API";
 import Initials from "../Initials/initials";
@@ -10,44 +12,54 @@ class Chat extends React.Component {
     this.state = {
       username: this.props.userName,
       message: "",
-      messages: []
+      messages: [],
+      uniqueConId: "scroll-container"+this.props.taskId,
+      uniqueElementBottom: "scroll-container-second-element"+this.props.taskId,
+      uniqueElementTop: "scroll-container-first-element"+this.props.taskId
     };
+
+    // this.scrollToTop = this.scrollToTop.bind(this);
     //this.socket = io.connect("/", {transports:['websocket'], upgrade: false}, {'force new connection': true})
     this.socket = io("/");
 
     API.getSavedChats(this.props.taskId).then(res => {
+      
       //  Test console.
       // console.log(res.data);
-      this.setState({ messages: res.data });
+     
+      this.setState({ messages: res.data })
+      this.scrollBottom()
+      scroll.scrollToBottom()
+       
     });
-
+    
     this.socket.on("RECEIVE_MESSAGE", function(data) {
       addMessage(data);
+      
     });
 
     const addMessage = data => {
       API.getSavedChats(this.props.taskId).then(res => {
         //  Test console.
         // console.log(res.data);
+        
         this.setState({ messages: res.data });
+        this.scrollBottom()
+        scroll.scrollToBottom()
         //console.log(this.state.messages);
       });
       //console.log(data);
+      
     };
 
     
   }
 
-// authorOnChange = ev => {
 
-// }
-
-// messageOnChange = ev => {
-
-// }
 
 sendMessage = ev => {
     ev.preventDefault();
+    
     const message = this.state.message;
     const author = this.state.username;
     const taskId = this.props.taskId;
@@ -71,6 +83,7 @@ sendMessage = ev => {
       .then(res => {
         //  Test console.
         //   console.log(res);
+      
       })
       .catch(err => {
         console.log(err);
@@ -87,30 +100,146 @@ sendMessage = ev => {
 
 
   componentDidUpdate = prevProps => {
-    if (this.props.taskUsersIds !== prevProps.taskUsersIds) {
-      //  Test console.
-      //  Selected Task Id.
-      // console.log(`From the Chat: ${this.props.taskId}`);
-      // //  Logged User Name.
-      // console.log(`From the Chat: ${this.props.userName}`);
-      //  This will show all the Task Users except for the logged user.
-      // console.log("From the Chat:");
-      // console.log(this.props.taskUsers);
-      //  This will show all the Task Users Ids including the logged user.
-      // console.log(`From the Chat: ${this.props.taskUsersIds}`);
-    }
+    this.scrollBottom()
   };
 
+  componentDidMount() {
+
+    Events.scrollEvent.register('begin', function () {
+      console.log("begin", arguments);
+    });
+
+    Events.scrollEvent.register('end', function () {
+      console.log("end", arguments);
+    });
+    
+    
+  
+  }
+
+  scrollBottom() {
+
+    let goToContainer = new Promise((resolve, reject) => {
+      Events.scrollEvent.register('end', () => {
+        resolve();
+        Events.scrollEvent.remove('end');
+      });
+
+      scroller.scrollTo(this.state.uniqueConId, {
+        duration:250,
+        delay: 250,
+        smooth: 'easeInOutQuart'
+      });
+
+    });
+
+    goToContainer.then(() =>
+      scroller.scrollTo(this.state.uniqueElementBottom, {
+        duration: 250,
+        delay: 250,
+        smooth: 'easeInOutQuart',
+        containerId: this.state.uniqueConId
+      }));
+  }
+//To next part
+  // scrollTop() {
+
+  //   let goToContainer = new Promise((resolve, reject) => {
+
+  //     Events.scrollEvent.register('end', () => {
+  //       resolve();
+  //       Events.scrollEvent.remove('end');
+  //     });
+
+  //     scroller.scrollTo(this.state.uniqueConId, {
+  //       duration: 200,
+  //       delay: 200,
+  //       smooth: 'easeInOutQuart'
+  //     });
+
+  //   });
+
+  //   goToContainer.then(() =>
+  //     scroller.scrollTo(this.state.uniqueElementTop, {
+  //       duration: 200,
+  //       delay: 200,
+  //       smooth: 'easeInOutQuart',
+  //       containerId: this.state.uniqueConId
+  //     }));
+  // }
+
+  // scrollUp() {
+
+  //   let goToContainer = new Promise((resolve, reject) => {
+
+  //     Events.scrollEvent.register('end', () => {
+  //       resolve();
+  //       Events.scrollEvent.remove('end');
+  //     });
+
+  //     scroller.scrollTo(this.state.uniqueConId, {
+  //       duration: 10,
+  //       delay: 10,
+  //       smooth: 'easeInOutQuart'
+  //     });
+
+  //   });
+
+  //   goToContainer.then(() =>
+  //   scroll.scrollMore({
+  //       duration: 100,
+  //       delay: 1,
+  //       smooth: 'easeInOutQuart',
+  //      // containerId: this.state.uniqueConId
+  //     }));
+  // }
+
+  // scrollDown() {
+
+  //   let goToContainer = new Promise((resolve, reject) => {
+
+  //     Events.scrollEvent.register('end', () => {
+  //       resolve();
+  //       Events.scrollEvent.remove('end');
+  //     });
+
+  //     scroller.scrollTo(this.state.uniqueConId, {
+  //       duration: 10,
+  //       delay: 10,
+  //       smooth: 'easeInOutQuart'
+  //     });
+
+  //   });
+
+  //   goToContainer.then(() =>
+  //   scroll.scrollMore(500)
+  //     );
+  // }
+
+  componentWillUnmount() {
+    Events.scrollEvent.remove('begin');
+    Events.scrollEvent.remove('end');
+  }
+
+  componentWillUpdate(){
+    this.scrollBottom();
+  }
+
   render() {
+    
     return (
+      
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <div className="card">
+            <div className="card text-white bg-secondary">
+            <div className="card-title text-center">
+            <h3 className="text-white">Task Chat</h3>
+           </div>
+            <hr />
               <div className="card-body">
-                <div className="card-title">Global Chat</div>
-                <hr />
-                <div className="messages">
+                <div id={this.state.uniqueConId} className="messages">
+               <p name={this.state.uniqueElementTop}></p>
                   {this.state.messages.map(message => {
                     return (
                       <div
@@ -143,9 +272,11 @@ sendMessage = ev => {
                       </div>
                     );
                   })}
+                  <p name={this.state.uniqueElementBottom}></p>
                 </div>
               </div>
-              <div className="card-footer">
+              <div className="card-footer text-center">
+              
                 {/* <input
                   id="author"
                   type="text"
@@ -154,15 +285,25 @@ sendMessage = ev => {
                   onChange={ev => this.setState({ username: ev.target.value })}
                   className="form-control"
                 /> */}
-
-
+                {/* <div className="navButtons text-canter"> 
+<button className="btn btn-outline-success btn-sm" to="test1" 
+            onClick={() => this.scrollUp(-500)} ><i class="fa fa-arrow-circle-o-up"><span>Scroll Up</span></i></button>
+            */}
+            {/* <button className="btn btn-outline-warning btn-sm" to="test1" 
+            onClick={() => this.scrollTop()} ><i class="fa fa-arrow-circle-o-up"><i class="fa fa-arrow-circle-o-up"></i><span>Top</span></i></button>
+             */}
+            {/* <button className="btn btn-outline-success btn-sm" to="test1" 
+            onClick={() => this.scrollUp(500)} ><i class="fa fa-arrow-circle-o-down"><span>Scroll</span></i></button>
+            </div> */}
+            
                 <br />
                 <textarea
                   rows="4"
                   id="message"
                   type="text"
+                  
                   placeholder="Message"
-                  className="form-control"
+                  className="form-control bg-dark"
                   value={this.state.message}
                   onChange={ev => this.setState({ message: ev.target.value })}
                 />
