@@ -1,12 +1,12 @@
 {
  
   "development": {
-    "username": "process.env.USER_NAME_2",
-    "password": "process.env.PASSWORD_2",
+    "username": "process.env.USER_NAME",
+    "password": "process.env.PASSWORD",
     "logging" : false,
-    "database": "process.env.DATABASE_2",
-    "port": 3306,
-    "host": "process.env.HOST_2",
+    "database": "process.env.DATABASE",
+    "port": "process.env.dbPORT",
+    "host": "process.env.HOST",
     "dialect": "mysql"
   },
   "production": {

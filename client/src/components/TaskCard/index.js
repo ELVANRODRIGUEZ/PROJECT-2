@@ -329,8 +329,7 @@ class TaskCard extends Component {
                   showChatModal={this.state.chatHide}
                   taskId={this.props.taskId}
                   userName={this.props.userName}
-                  // taskUsers={this.state.taskUsers}
-                  // taskUsersIds={this.state.taskUsersIds}
+                  socket={this.props.socket}
                 />
               </div>
 

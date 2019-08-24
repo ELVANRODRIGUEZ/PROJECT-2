@@ -12,7 +12,7 @@ var config = require(__dirname + "/../config/config.json")[env];
 var db = {};
 
 
-// asdfasdfasdfasdfasd
+// console.log("config\n",config);
 
 //  Generate database connection through Sequelize.
 
@@ -24,12 +24,11 @@ if (config.use_env_variable) {
 
   var sequelize = new Sequelize(
 
-    process.env.DATABASE_2,
-    process.env.USER_NAME_2,
-    
-    process.env.PASSWORD_2, {
+    process.env.DATABASE,
+    process.env.USER_NAME,
+    process.env.PASSWORD, {
       logging: false,
-      host: "localhost",
+      host: process.env.HOST,
       dialect: "mysql"
     }
     );
@@ -45,11 +44,11 @@ if (config.use_env_variable) {
 } else {
 
   var connection = mysql.createConnection({
-    host: "localhost",
-    port: process.env.PORT_2,
-    user: process.env.USER_NAME_2,
-    password: process.env.PASSWORD_2,
-    database: process.env.DATABASE_2
+    host: process.env.HOST,
+    port: process.env.dbPORT,
+    user: process.env.USER_NAME,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE
   });
 
 }

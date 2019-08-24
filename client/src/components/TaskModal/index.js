@@ -148,6 +148,7 @@ class TaskModal extends Component {
                 taskOpened={parseInt(this.state.openedTask)}
                 eraseTaskOpened={parseInt(this.state.openEraseTask)}
                 openTask={this.openTask}
+                socket={this.props.socket}
               ></TaskCard>
             );
           })}

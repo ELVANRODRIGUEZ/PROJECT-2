@@ -11,10 +11,16 @@ import NewCategoryModal from "../components/NewCategoryModal";
 import DeleteCategoryModal from "../components/DeleteCategoryModal";
 import CategoryCard from "../components/CategoryCard";
 import TaskModal from "../components/TaskModal";
+import io from "socket.io-client";
+
+// const socketUrl = `http://localhost:${PORT}`;
+const socketUrl = "/";
 
 class Members extends Component {
   constructor(props) {
     super(props);
+
+
 
     this.state = {
       allUsers: [],
@@ -40,7 +46,9 @@ class Members extends Component {
       newCatModalShow: false,
       newCatModalView: "none",
       delCatModalShow: false,
-      delCatModalView: "none"
+      delCatModalView: "none",
+      //"socket" will store the particular "socket session".
+      socket: null,
     };
   }
 
@@ -68,6 +76,26 @@ class Members extends Component {
 
     this.userInfo();
   }
+
+  /*
+    This was originally "componentWillMount", although it seemps it is depricated now, so it was renamed to componentDidMount. "UNSAFE_componentWillMount" could have been used as well according to the React development team recommendation.
+    Right after the component has mounted and before it is rendered, we initialize the socket with "this.initSocket".
+    */
+   componentDidMount() {
+    this.initSocket();
+  }
+
+  initSocket = () => {
+    //Calling the "io" function imported from "socket.io-client" and we pass the URL to listen to onto it.
+    const socket = io(socketUrl);
+    //Then we trigger a connect event after which we set "this.state.socket" equals to the by then listening socket.
+    socket.on("connect", () => {
+        //Production console.
+        console.log("Socket connected");
+    });
+    //This is a syntax to avoid this redundancy: "this.setState({socket:socket})"
+    this.setState({ socket });
+  };
 
   userInfo = () => {
     //? Get all info about the logged member.
@@ -421,6 +449,7 @@ class Members extends Component {
           userName={this.state.userName}
           userEmail={this.state.userEmail}
           renderForNewTasks={this.renderForNewTasks}
+          socket={this.state.socket}
         />
 
         {/* +++++++++++++++++ JUMBOTRON CONTAINER +++++++++++++++++ */}

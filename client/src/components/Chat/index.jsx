@@ -1,7 +1,7 @@
 import React from "react";
-import { Events, animateScroll as scroll, scroller } from 'react-scroll'
+import { Events, animateScroll as scroll, scroller } from "react-scroll";
 
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import API from "../../utils/API";
 import Initials from "../Initials/initials";
 
@@ -13,53 +13,61 @@ class Chat extends React.Component {
       username: this.props.userName,
       message: "",
       messages: [],
-      uniqueConId: "scroll-container"+this.props.taskId,
-      uniqueElementBottom: "scroll-container-second-element"+this.props.taskId,
-      uniqueElementTop: "scroll-container-first-element"+this.props.taskId
+      uniqueConId: "scroll-container" + this.props.taskId,
+      uniqueElementBottom:
+        "scroll-container-second-element" + this.props.taskId,
+      uniqueElementTop: "scroll-container-first-element" + this.props.taskId
     };
 
-    // this.scrollToTop = this.scrollToTop.bind(this);
-    //this.socket = io.connect("/", {transports:['websocket'], upgrade: false}, {'force new connection': true})
-    this.socket = io("/");
+    // API.getSavedChats(this.props.taskId).then(res => {
+    //   //  Test console.
+    //   // console.log(res.data);
 
-    API.getSavedChats(this.props.taskId).then(res => {
-      
-      //  Test console.
-      // console.log(res.data);
-     
-      this.setState({ messages: res.data })
-      this.scrollBottom()
-      scroll.scrollToBottom()
-       
-    });
-    
-    this.socket.on("RECEIVE_MESSAGE", function(data) {
-      addMessage(data);
-      
-    });
+    //   this.setState({ messages: res.data });
+    //   this.scrollBottom();
+    //   scroll.scrollToBottom();
+    // });
 
-    const addMessage = data => {
-      API.getSavedChats(this.props.taskId).then(res => {
-        //  Test console.
-        // console.log(res.data);
-        
-        this.setState({ messages: res.data });
-        this.scrollBottom()
-        scroll.scrollToBottom()
-        //console.log(this.state.messages);
-      });
-      //console.log(data);
-      
-    };
-
-    
   }
 
+  componentDidUpdate = prevProps => {
+    // this.scrollBottom()
+    if (this.props.showChatModal !== prevProps.showChatModal) {
+      this.setState({
+        message: ""
+      });
+    }
+  };
 
+  componentDidMount() {
+    this.getMessages();
 
-sendMessage = ev => {
+    Events.scrollEvent.register("begin", function() {
+      // console.log("begin", arguments);
+    });
+
+    Events.scrollEvent.register("end", function() {
+      // console.log("end", arguments);
+    });
+  }
+
+  getMessages = () => {
+    API.getSavedChats(this.props.taskId).then(res => {
+      //  Test console.
+      // console.log(res.data);
+
+      this.setState({ messages: res.data }, () => {
+        //  Test console.
+        //console.log(this.state.messages);
+      });
+      this.scrollBottom();
+      scroll.scrollToBottom();
+    });
+  };
+
+  sendMessage = ev => {
     ev.preventDefault();
-    
+
     const message = this.state.message;
     const author = this.state.username;
     const taskId = this.props.taskId;
@@ -76,171 +84,84 @@ sendMessage = ev => {
       hours: hours,
       minutes: minutes
     };
-    //  Test console.
-    //   console.log("chat data ");
+    //Test console.
+    // console.log("chat data ");
     // console.log(chatData);
     API.saveChat(chatData)
       .then(res => {
-        //  Test console.
+        //Test console.
         //   console.log(res);
-      
       })
       .catch(err => {
         console.log(err);
       });
 
-    this.socket.emit("SEND_MESSAGE", {
+    const { socket } = this.props;
+    socket.emit("SEND_MESSAGE", {
+      // testmessage: "This is a test message from the client emit."
       author: this.state.username,
       message: this.state.message,
       taskId: this.props.taskId
     });
+    socket.on("RECEIVE_MESSAGE", msg => {
+      //Test console.
+      console.log(
+        "+++++++++++++++++++++++++++++\nI, the client, am getting the 'msg' back from the Server:\n",
+        msg
+      );
 
-    this.setState({ message: "" });
-  };
-
-
-  componentDidUpdate = prevProps => {
-    this.scrollBottom()
-    if (this.props.showChatModal !== prevProps.showChatModal) {
-            this.setState({
-        message: ""
+      this.setState({ message: "" }, () => {
+        this.getMessages();
       });
-    }
+    });
+    this.getMessages();
   };
 
-  componentDidMount() {
-
-    Events.scrollEvent.register('begin', function () {
-      // console.log("begin", arguments);
-    });
-
-    Events.scrollEvent.register('end', function () {
-      // console.log("end", arguments);
-    }); 
-  }
+  
 
   scrollBottom() {
-
     let goToContainer = new Promise((resolve, reject) => {
-      Events.scrollEvent.register('end', () => {
+      Events.scrollEvent.register("end", () => {
         resolve();
-        Events.scrollEvent.remove('end');
+        Events.scrollEvent.remove("end");
       });
 
       scroller.scrollTo(this.state.uniqueConId, {
-        duration:250,
+        duration: 250,
         delay: 250,
-        smooth: 'easeInOutQuart'
+        smooth: "easeInOutQuart"
       });
-
     });
 
     goToContainer.then(() =>
       scroller.scrollTo(this.state.uniqueElementBottom, {
         duration: 250,
         delay: 250,
-        smooth: 'easeInOutQuart',
+        smooth: "easeInOutQuart",
         containerId: this.state.uniqueConId
-      }));
+      })
+    );
   }
-//To next part
-  // scrollTop() {
-
-  //   let goToContainer = new Promise((resolve, reject) => {
-
-  //     Events.scrollEvent.register('end', () => {
-  //       resolve();
-  //       Events.scrollEvent.remove('end');
-  //     });
-
-  //     scroller.scrollTo(this.state.uniqueConId, {
-  //       duration: 200,
-  //       delay: 200,
-  //       smooth: 'easeInOutQuart'
-  //     });
-
-  //   });
-
-  //   goToContainer.then(() =>
-  //     scroller.scrollTo(this.state.uniqueElementTop, {
-  //       duration: 200,
-  //       delay: 200,
-  //       smooth: 'easeInOutQuart',
-  //       containerId: this.state.uniqueConId
-  //     }));
-  // }
-
-  // scrollUp() {
-
-  //   let goToContainer = new Promise((resolve, reject) => {
-
-  //     Events.scrollEvent.register('end', () => {
-  //       resolve();
-  //       Events.scrollEvent.remove('end');
-  //     });
-
-  //     scroller.scrollTo(this.state.uniqueConId, {
-  //       duration: 10,
-  //       delay: 10,
-  //       smooth: 'easeInOutQuart'
-  //     });
-
-  //   });
-
-  //   goToContainer.then(() =>
-  //   scroll.scrollMore({
-  //       duration: 100,
-  //       delay: 1,
-  //       smooth: 'easeInOutQuart',
-  //      // containerId: this.state.uniqueConId
-  //     }));
-  // }
-
-  // scrollDown() {
-
-  //   let goToContainer = new Promise((resolve, reject) => {
-
-  //     Events.scrollEvent.register('end', () => {
-  //       resolve();
-  //       Events.scrollEvent.remove('end');
-  //     });
-
-  //     scroller.scrollTo(this.state.uniqueConId, {
-  //       duration: 10,
-  //       delay: 10,
-  //       smooth: 'easeInOutQuart'
-  //     });
-
-  //   });
-
-  //   goToContainer.then(() =>
-  //   scroll.scrollMore(500)
-  //     );
-  // }
 
   componentWillUnmount() {
-    Events.scrollEvent.remove('begin');
-    Events.scrollEvent.remove('end');
+    Events.scrollEvent.remove("begin");
+    Events.scrollEvent.remove("end");
   }
 
-  componentWillUpdate(){
+  componentWillUpdate() {
     this.scrollBottom();
   }
 
   render() {
-    
     return (
-      
       <div className="container">
         <div className="row">
           <div className="col-12">
             <div className="card text-white bg-secondary">
-            <div className="card-title text-center">
-
-           </div>
+              <div className="card-title text-center"></div>
               <div className="card-body">
                 <div id={this.state.uniqueConId} className="messages">
-               <p name={this.state.uniqueElementTop}></p>
+                  <p name={this.state.uniqueElementTop}></p>
                   {this.state.messages.map(message => {
                     return (
                       <div
@@ -263,10 +184,12 @@ sendMessage = ev => {
                           }
                         >
                           <p>
-                          <strong>{message.author}</strong>:<br/>{message.message}{" "}
+                            <strong>{message.author}</strong>:<br />
+                            {message.message}{" "}
                             <span className="time_date">
                               Sent {message.day}/{message.month} at{" "}
-                              {message.hours}:{("0" + message.minutes).slice(-2)}
+                              {message.hours}:
+                              {("0" + message.minutes).slice(-2)}
                             </span>{" "}
                           </p>
                         </div>
@@ -277,32 +200,11 @@ sendMessage = ev => {
                 </div>
               </div>
               <div className="card-footer text-center">
-              
-                {/* <input
-                  id="author"
-                  type="text"
-                  placeholder="Username"
-                  value={this.props.userName}
-                  onChange={ev => this.setState({ username: ev.target.value })}
-                  className="form-control"
-                /> */}
-                {/* <div className="navButtons text-canter"> 
-<button className="btn btn-outline-success btn-sm" to="test1" 
-            onClick={() => this.scrollUp(-500)} ><i class="fa fa-arrow-circle-o-up"><span>Scroll Up</span></i></button>
-            */}
-            {/* <button className="btn btn-outline-warning btn-sm" to="test1" 
-            onClick={() => this.scrollTop()} ><i class="fa fa-arrow-circle-o-up"><i class="fa fa-arrow-circle-o-up"></i><span>Top</span></i></button>
-             */}
-            {/* <button className="btn btn-outline-success btn-sm" to="test1" 
-            onClick={() => this.scrollUp(500)} ><i class="fa fa-arrow-circle-o-down"><span>Scroll</span></i></button>
-            </div> */}
-            
                 <br />
                 <textarea
                   rows="4"
                   id="message"
                   type="text"
-                  
                   placeholder="Message"
                   className="form-control bg-dark"
                   value={this.state.message}

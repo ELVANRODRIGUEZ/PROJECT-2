@@ -6,24 +6,30 @@ const mongoose = require("mongoose");
 const logger = require('morgan');
 const bodyParser = require('body-parser')
 const app = express();
+
+// app.use(passport.initialize());
+// app.use(passport.session());
+
 const path = require("path");
 const PORT = process.env.PORT || 3300;
 const routes = require('./routes');
 const db = require("./models").db;
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
-io.on('connection', function(socket){
-  console.log("Socket user Connected"+ socket.id);
-  // socket.on('reconnect_attempt', () => {
-  //   socket.io.opts.transports = ['polling', 'websocket'];
-  // });
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-  socket.on('SEND_MESSAGE', function(msg){
-    io.emit('RECEIVE_MESSAGE', msg);
-  });
-});
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+// io.on('connection', function(socket){
+//   console.log("Socket user Connected"+ socket.id);
+//   // socket.on('reconnect_attempt', () => {
+//   //   socket.io.opts.transports = ['polling', 'websocket'];
+//   // });
+//   socket.on('disconnect', () => {
+//     console.log('user disconnected');
+//   });
+//   socket.on('SEND_MESSAGE', function(msg){
+//     console.log("+++++++++++++++++++++++++++++\nI, the server, am getting the msg from the Client:\n",msg)
+//     // io.emit('RECEIVE_MESSAGE', {msgFromServer:"This is from the server"});
+//   });
+// });
 
 
 // Serve up static assets (usually on heroku)
@@ -48,11 +54,31 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 // Routes
 app.use('/', routes);
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
+io.on('connection', function(socket){
+  console.log("Socket user Connected"+ socket.id);
+  // socket.on('reconnect_attempt', () => {
+  //   socket.io.opts.transports = ['polling', 'websocket'];
+  // });
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+  socket.on('SEND_MESSAGE', (msg) => {
+    //Test console.
+    // console.log(
+      // "+++++++++++++++++++++++++++++\nI, the server, am getting this msg from the Client:\n",
+      // msg, 
+      // "\n+++++++++++++++++++++++++++++");
+    
+    io.emit('RECEIVE_MESSAGE', msg);
+
+  });
+});
 
 // Send every request to the React app
 // Define any API routes before this runs
@@ -65,7 +91,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/teamorgan
 
 // Starting the server, syncing our models ------------------------------------/
 db.sequelize.sync().then(function() {
-  http.listen(PORT, function() {
+  server.listen(PORT, function() {
     console.log(
       "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
       PORT,
