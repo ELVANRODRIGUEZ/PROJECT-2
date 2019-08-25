@@ -7,30 +7,12 @@ const logger = require('morgan');
 const bodyParser = require('body-parser')
 const app = express();
 
-// app.use(passport.initialize());
-// app.use(passport.session());
-
 const path = require("path");
 const PORT = process.env.PORT || 3300;
 const routes = require('./routes');
 const db = require("./models").db;
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-
-// io.on('connection', function(socket){
-//   console.log("Socket user Connected"+ socket.id);
-//   // socket.on('reconnect_attempt', () => {
-//   //   socket.io.opts.transports = ['polling', 'websocket'];
-//   // });
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected');
-//   });
-//   socket.on('SEND_MESSAGE', function(msg){
-//     console.log("+++++++++++++++++++++++++++++\nI, the server, am getting the msg from the Client:\n",msg)
-//     // io.emit('RECEIVE_MESSAGE', {msgFromServer:"This is from the server"});
-//   });
-// });
-
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {

@@ -397,9 +397,9 @@ class NewTaskModal extends Component {
                     id="taskUsers"
                     type="list"
                     onChange={this.selectUserToAdd}
-                    defaultValue="Select User"
+                    defaultValue="Default"
                   >
-                    <option selected>Select User:</option>
+                    <option value="Default">Select User:</option>
                     {/* {console.log(this.state.projectUsers2)} */}
                     {this.state.projectUsers.map((user) => {
                       // console.log(user)

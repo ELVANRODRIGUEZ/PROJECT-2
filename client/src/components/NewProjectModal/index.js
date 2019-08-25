@@ -386,12 +386,10 @@ class NewProjectModal extends Component {
                   id="projectUsers"
                   type="list"
                   onChange={this.selectUserToAdd}
-                  defaultValue="Select User"
+                  defaultValue="Default"
                 >
-                  <option selected>Select User:</option>
-                  {/* {console.log(this.state.projectUsers2)} */}
+                  <option value="Default">Select User:</option>
                   {this.state.allUsers.map(user => {
-                    // console.log(user)
                     return (
                       <option
                         key={user.user_id}

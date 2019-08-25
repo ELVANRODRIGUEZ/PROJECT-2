@@ -20,8 +20,6 @@ class Members extends Component {
   constructor(props) {
     super(props);
 
-
-
     this.state = {
       allUsers: [],
       ifNoProjects: null,
@@ -48,7 +46,7 @@ class Members extends Component {
       delCatModalShow: false,
       delCatModalView: "none",
       //"socket" will store the particular "socket session".
-      socket: null,
+      socket: null
     };
   }
 
@@ -81,7 +79,7 @@ class Members extends Component {
     This was originally "componentWillMount", although it seemps it is depricated now, so it was renamed to componentDidMount. "UNSAFE_componentWillMount" could have been used as well according to the React development team recommendation.
     Right after the component has mounted and before it is rendered, we initialize the socket with "this.initSocket".
     */
-   componentDidMount() {
+  componentDidMount() {
     this.initSocket();
   }
 
@@ -90,8 +88,8 @@ class Members extends Component {
     const socket = io(socketUrl);
     //Then we trigger a connect event after which we set "this.state.socket" equals to the by then listening socket.
     socket.on("connect", () => {
-        //Production console.
-        console.log("Socket connected");
+      //Production console.
+      console.log("Socket connected");
     });
     //This is a syntax to avoid this redundancy: "this.setState({socket:socket})"
     this.setState({ socket });
@@ -127,36 +125,39 @@ class Members extends Component {
     const projectName = event.target.getAttribute("name");
     // const projectData = { project: event.target.getAttribute("data-id") };
 
-    this.setState({ 
-      projectSelected: parseInt(projectId), 
-      projectSelectedName: projectName 
-    }, () => {
-      axios
-        //? This is to get the amount of Tasks in each Category according to the Project selected.
-        .get("/members/info/" + projectId)
-        .then(data => {
-          // Test console.
-          // console.log(data.data);
+    this.setState(
+      {
+        projectSelected: parseInt(projectId),
+        projectSelectedName: projectName
+      },
+      () => {
+        axios
+          //? This is to get the amount of Tasks in each Category according to the Project selected.
+          .get("/members/info/" + projectId)
+          .then(data => {
+            // Test console.
+            // console.log(data.data);
 
-          this.setState({ categoryCards: data.data.categories }, () => {
-            // axios
-            //   //?  This is to set the selected Project on the Server. Just a "Hi" response is gotten after that.
-            //   .post("/api/users-selections", projectData)
-            //   .then(data2 => {
-            //     // Test console.
-            //     // console.log(data2.data);
+            this.setState({ categoryCards: data.data.categories }, () => {
+              // axios
+              //   //?  This is to set the selected Project on the Server. Just a "Hi" response is gotten after that.
+              //   .post("/api/users-selections", projectData)
+              //   .then(data2 => {
+              //     // Test console.
+              //     // console.log(data2.data);
 
-            this.loadProjectUsers();
-            // })
-            // .catch(error => {
-            //   console.log(error);
-            // });
+              this.loadProjectUsers();
+              // })
+              // .catch(error => {
+              //   console.log(error);
+              // });
+            });
+          })
+          .catch(error => {
+            console.log(error);
           });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    });
+      }
+    );
   };
 
   loadProjectUsers = () => {
@@ -207,48 +208,51 @@ class Members extends Component {
       this.setState({ categorySelected: categoryId }, () => {});
     */
 
-    this.setState({ 
-      categorySelected: categoryId, 
-      categorySelectedName: categoryName 
-    }, () => {
-      axios
-        //? This request is to retrieve the Tasks related to the selected Project and Category.
-        .get(
-          "/members/info/" +
-            this.state.projectSelected +
-            "/category/" +
-            this.state.categorySelected
-        )
-        .then(data => {
-          // Test console.
-          // console.log(data.data.tasks);
-
-          this.setState({ tasksCards: data.data.tasks }, () => {
+    this.setState(
+      {
+        categorySelected: categoryId,
+        categorySelectedName: categoryName
+      },
+      () => {
+        axios
+          //? This request is to retrieve the Tasks related to the selected Project and Category.
+          .get(
+            "/members/info/" +
+              this.state.projectSelected +
+              "/category/" +
+              this.state.categorySelected
+          )
+          .then(data => {
             // Test console.
-            // console.log(this.state.tasksCards);
+            // console.log(data.data.tasks);
 
-            axios
-              //? This is to get all the Task's Ids from the Selected Project and Category.
-              .get(
-                "/members/info/" +
-                  this.state.projectSelected +
-                  "/category/" +
-                  this.state.categorySelected +
-                  "/all_tasks"
-              )
-              .then(function(data3) {
-                // Test console.
-                // console.log(data3.data);
-              })
-              .catch(error => {
-                console.log(error);
-              });
+            this.setState({ tasksCards: data.data.tasks }, () => {
+              // Test console.
+              // console.log(this.state.tasksCards);
+
+              axios
+                //? This is to get all the Task's Ids from the Selected Project and Category.
+                .get(
+                  "/members/info/" +
+                    this.state.projectSelected +
+                    "/category/" +
+                    this.state.categorySelected +
+                    "/all_tasks"
+                )
+                .then(function(data3) {
+                  // Test console.
+                  // console.log(data3.data);
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            });
+          })
+          .catch(error => {
+            console.log(error);
           });
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    });
+      }
+    );
   };
 
   newProjModalClose = () => {
@@ -266,15 +270,15 @@ class Members extends Component {
   delProjModalShow = () => {
     this.setState({ delProjModalView: "block", delProjModalShow: true });
   };
-  
+
   newCatModalClose = () => {
     this.setState({ newCatModalView: "none", newCatModalShow: false });
   };
-  
+
   newCatModalShow = () => {
     this.setState({ newCatModalView: "block", newCatModalShow: true });
   };
-  
+
   delCatModalClose = () => {
     this.setState({ delCatModalView: "none", delCatModalShow: false });
   };
@@ -334,12 +338,11 @@ class Members extends Component {
   };
 
   render() {
-
     let delProjectButton;
     let delCatgoryButton;
 
     if (this.state.projectSelected) {
-     delProjectButton = this.delProjModalShow;
+      delProjectButton = this.delProjModalShow;
     }
     if (this.state.categorySelected) {
       delCatgoryButton = this.delCatModalShow;
@@ -358,7 +361,7 @@ class Members extends Component {
           projectSelectedName={this.state.projectSelectedName}
           renderForCategories={this.renderForNewTasks}
         ></DeleteProjectModal>
-        
+
         {/* +++++++++++++++++ MODAL: Delete Modal For Categories +++++++++++++++++ */}
         <DeleteCategoryModal
           show={this.state.delCatModalShow}
@@ -400,7 +403,7 @@ class Members extends Component {
           <div className="modal-dialog" role="document">
             <div className="modal-content bg-dark text-white">
               <div className="modal-header">
-                <h5 id="categoryAddMessage" className="modal-title"></h5>
+                {/* <h5 id="categoryAddMessage" className="modal-title"></h5> */}
                 <button
                   type="button"
                   className="close text-danger"
@@ -469,7 +472,7 @@ class Members extends Component {
                     <span className="display-3">
                       <b>Projects</b>
                     </span>
-                    
+
                     <button
                       className="btn btn-secondary  projectDel"
                       style={{ float: "right", margin: "0 2px" }}
@@ -495,10 +498,8 @@ class Members extends Component {
                     className="card-body bg-dark overflow-auto"
                     style={{ maxHeight: "60vh" }}
                   >
-                    {this.state.ifNoProjects}
+                    {/* +++++++++++++++++ Project Card Container +++++++++++++++++ */}
                     <div id="projectDiv" className="card-columns row">
-                      {/* +++++++++++++++++ Project Card Container +++++++++++++++++ */}
-
                       {this.state.projectCards
                         ? this.state.projectCards.map(project => {
                             return (
@@ -541,38 +542,7 @@ class Members extends Component {
                               </div>
                             );
                           })
-                        : () => {
-                            return (
-                              <div
-                                style={{
-                                  position: "relative",
-                                  zIndex: "0",
-                                  width: "100%"
-                                }}
-                              >
-                                <div
-                                  className="Wrapper"
-                                  onClick={this.ProjectClick}
-                                  data-id=""
-                                  style={{
-                                    position: "absolute",
-                                    top: "0",
-                                    left: "0",
-                                    bottom: "0",
-                                    right: "0",
-                                    zIndex: "3"
-                                  }}
-                                ></div>
-                                <ProjectCard
-                                  style={{ position: "relative" }}
-                                  onClick={this.ProjectClick}
-                                  id=""
-                                  name="Project nam?"
-                                  description="Description"
-                                />
-                              </div>
-                            );
-                          }}
+                        : this.state.ifNoProjects}
                     </div>
                   </div>
                 </div>
@@ -592,7 +562,6 @@ class Members extends Component {
                       id="categoryDel"
                       style={{ float: "right", margin: "0 2px" }}
                       onClick={delCatgoryButton}
-
                     >
                       <i className="fa fa-trash-o fa-4" aria-hidden="true"></i>
                     </button>
@@ -605,10 +574,10 @@ class Members extends Component {
                       <i className="fa fa-plus fa-4" aria-hidden="true"></i>
                     </button>
                     <span className="display-3">
-                      <b>Categories</b> 
-                      {this.state.projectSelected? 
-                        ` (P-${this.state.projectSelected})` : 
-                        "" }
+                      <b>Categories</b>
+                      {this.state.projectSelected
+                        ? ` (P-${this.state.projectSelected})`
+                        : ""}
                     </span>
                     {/* <h3 className='display-2'>asdf<span id='forProject'></span></h3> */}
                   </div>
@@ -650,13 +619,12 @@ class Members extends Component {
                                 marginBottom: "1.1rem",
                                 zIndex: "3"
                               }}
-                              ></div>
+                            ></div>
                             <CategoryCard
                               style={{ position: "relative" }}
                               onClick={this.categoryClick}
                               // onDoubleClick={this.taskModalShow}
                               id={category.catId}
-                              name={category.catName}
                               count={category.taskCount}
                               name={category.catName}
                               description={category.catDescription}

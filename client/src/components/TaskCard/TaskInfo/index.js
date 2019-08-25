@@ -148,8 +148,12 @@ class TaskInfo extends Component {
             value={`${this.state.taskAccomplished}%`}
             id="total"
             className="field left form-control col-sm-1"
-            readOnly=""
-            style={{ margin: "5px" }}
+            readOnly
+            style={{ 
+              margin: "5px",
+              border: "0px",
+              backgroundColor: "#343a40" 
+            }}
           />
           <button
             className="btn btn-dark pminus"

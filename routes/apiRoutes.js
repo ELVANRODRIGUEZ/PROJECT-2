@@ -4,18 +4,12 @@ var connection = require("../models").connection;
 var passport = require("../config/passport");
 var moment = require("moment");
 
-// =================================== Require hardcoded templates.
-
-var taskModal = require("../hardcoded-templates/taskModal-templete");
-var userProfile = require("../hardcoded-templates/project-templete.js");
-var categoryCard = require("../hardcoded-templates/category-templete.js");
-var userList = require("../hardcoded-templates/usersList-templete");
-
 module.exports = function(app) {
   // Using the passport.authenticate middleware with our local strategy.
   // If the user has valid login credentials, send them to the members page.
   // Otherwise the user will be sent an error
   app.post("/api/login", passport.authenticate("local"), function(req, res) {
+    
     // Since we're doing a POST with javascript, we can't actually redirect that post into a GET request
     // So we're sending the user back the route to the members page because the redirect will happen on the front end
     // They won't get this or even be able to access this page if they aren't authed
@@ -362,6 +356,7 @@ module.exports = function(app) {
 
     var otherUsers = JSON.parse(req.body.other_users);
 
+    // Test console.
     // console.log(taskDescription);
     // console.log(taskDeadline);
     // console.log(taskAccomplishment);
@@ -391,32 +386,16 @@ module.exports = function(app) {
           parent_id: taskParent
         })
         .then(function(task) {
+          // Test console.
           // console.log(task);
-          console.log("success!");
 
-          var deadline = moment(task.dead_line);
-          console.log(deadline);
+          let msg = "New task created";
+          let taskRel = [];
 
-          var newTask = taskModal(
-            task.id,
-            task.description,
-            deadline.format("DD, MMMM. YYYY"),
-            task.accomplished
-          );
-
-          var sentResponse = {
-            task: newTask
-          };
-
-          res.send(sentResponse);
-
-          var taskRel = [];
-
-          // taskRel.push({
-          //   task_id: task.id,
-          //   responsible: req.user.id
-          // });
-
+          // Test console.
+          console.log(msg);
+          res.send(msg);
+          
           otherUsers.forEach(function(item) {
             taskRel.push({
               task_id: task.id,
@@ -429,6 +408,7 @@ module.exports = function(app) {
     }
   });
 
+  // Relate sent Users Array to New Task created.
   function relateTask(bulk) {
     // console.log(bulk);
 

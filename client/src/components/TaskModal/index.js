@@ -161,7 +161,7 @@ class TaskModal extends Component {
                 <button
             type="button"
             className="btn btn btn-outline-danger"
-            dataDismiss="taskModal"
+            datadismiss="taskModal"
             onClick={this.wholeTaskModalClose}
           >
             Close

@@ -18,35 +18,33 @@ class MailForm extends Component {
       fileName: [],
       buttonLabel: "Select File",
       //File attach Unique Ids
-      emailsId:`emails-${this.props.taskId}`,
-      subjectId:`mailMessage-${this.props.taskId}`,
-      messageId:`message-${this.props.taskId}`,
-      fileUploadID:`fileUpload-${this.props.taskId}`,
+      emailsId: `emails-${this.props.taskId}`,
+      emailsArr: [],
+      subjectId: `mailMessage-${this.props.taskId}`,
+      messageId: `message-${this.props.taskId}`,
+      fileUploadID: `fileUpload-${this.props.taskId}`,
       formId: `formId-${this.props.taskId}`,
       // Alerts
       display: "none",
       opacity: "0",
       errorMessage: "",
       alertType: ""
-      
     };
   }
 
   componentDidUpdate = prevProps => {
-    
     if (this.props.showMailModal !== prevProps.showMailModal) {
       document.getElementById(this.state.formId).reset();
       this.setState({
+        fileURI: [],
+        fileName: [],
         userToAdd: [],
         usersAdded: [],
         taskUsers: this.props.taskUsers,
         buttonLabel: "Select File"
       });
     }
-  
-    
-    
-    
+
     if (this.props.taskUsersIds !== prevProps.taskUsersIds) {
       //  Test console.
       //  Selected Task Id.
@@ -125,7 +123,19 @@ class MailForm extends Component {
           // Clears up the "userToAdd" state so clicking again the Add butto without having changed the dropdown menu (by selecting a new User) does not concatenate the previously added user once more.
           this.setState({ userToAdd: [] });
           // Test console.
-          console.log(this.state.usersAdded);
+          // console.log(this.state.usersAdded);
+
+          this.setState(
+            {
+              emailsArr: this.state.usersAdded.map(email => {
+                return email.user_mail;
+              })
+            },
+            () => {
+              // Test console.
+              // console.log(this.state.emailsArr);
+            }
+          );
 
           this.setState(
             {
@@ -155,7 +165,7 @@ class MailForm extends Component {
     //  Since it matters where the exact clicking was made, we made sure to add the "userid" attribute to the Button as well as to the Times Icon so we can retrieve it from either one of them.
     const userToAddId = parseInt(event.target.getAttribute("userid"));
     // Test console.
-    console.log(userToAddId);
+    // console.log(userToAddId);
 
     // This variable will create the user deleted from the "usersAdded" list to later contatenating it back (thus it needs to be an array) to the "projectUsers" list to render it as available for choosing again.
     let userToReturn = [];
@@ -176,39 +186,31 @@ class MailForm extends Component {
       },
       () => {
         // Test console.
-        console.log(this.state.taskUsers);
+        // console.log(this.state.taskUsers);
       }
     );
-    this.setState(state => ({
-      usersAdded: state.usersAdded.filter(user => {
-        return user.user_id !== userToAddId;
-      })
-    }));
-
-    // this.setState(
-    //   {
-    //     usersAdded: this.state.usersAdded.filter(user => {
-    //       return user.user_id !== userToAddId;
-    //     })
-
-    // },
-    // () => {
-    //   // Test console.
-    //   // console.log("usersAdded"+ this.state.usersAdded.map((u) => u.user_mail));
-    //   // console.log("usersToMail"+ this.state.usersToMail);
-    // }
-    // );
-    // this.setState({ usersToMail: this.state.usersAdded});
-    console.log(JSON.stringify(this.state.usersAdded));
+    this.setState(
+      {
+        usersAdded: this.state.usersAdded.filter(user => {
+          return user.user_id !== userToAddId;
+        })
+      },
+      () => {
+        this.setState(
+          {
+            emailsArr: this.state.usersAdded.map(email => {
+              return email.user_mail;
+            })
+          },
+          () => {
+            // Test console.
+            // console.log(this.state.emailsArr);
+          }
+        );
+      }
+    );
   };
 
-  ////
-  //   this.alertMessage("No Subject");
-  // } else if (email === "") {
-  //   this.alertMessage("No email TO:");
-  // }else if (message === "") {
-  //     this.alertMessage("No messagge");
-  ///
   alertMessage = msg => {
     if (msg === "Mail Sent") {
       return this.setState(
@@ -247,7 +249,7 @@ class MailForm extends Component {
         () => this.showAlertMessage()
       );
     }
-    if (msg === "mail error") {
+    if (msg === "mail sending error") {
       return this.setState(
         {
           errorMessage: "Sending error, try again",
@@ -280,66 +282,59 @@ class MailForm extends Component {
     }, 3000);
   };
 
-  // buildFileTag() {
-  //   //console.log (this.state.fileURI)
-  //   let fileTag = null;
-  //   if (this.state.fileURI !== null)
-  //     fileTag = this.state.fileURI
-
-  //   return fileTag;
-  // }
-
   readURI(e) {
     // console.log(e.target.files);
 
     if (e.target.files && e.target.files[0]) {
-      let middle = []
-      Object.keys(e.target.files).forEach(item =>{
-       middle.push(e.target.files[item].name); 
+      let middle = [];
+      Object.keys(e.target.files).forEach(item => {
+        middle.push(e.target.files[item].name);
         //console.log(e.target.files[item].name);
         let reader = new FileReader();
-        reader.onload = function (ev) {
-           //console.log(ev.target.result)
-          this.setState({fileURI: this.state.fileURI.concat([ev.target.result]) } , ()=>{
-           //console.log(this.state.fileURI);
-          } );
+        reader.onload = function(ev) {
+          //console.log(ev.target.result)
+          this.setState(
+            { fileURI: this.state.fileURI.concat([ev.target.result]) },
+            () => {
+              //console.log(this.state.fileURI);
+            }
+          );
         }.bind(this);
         reader.readAsDataURL(e.target.files[item]);
-      })
-      
-      
-      this.setState({ fileName: middle  } , ()=>{
-       //console.log(this.state.fileName);
-       const label = JSON.stringify(this.state.fileName);
-       //console.log(label)
-       this.setState({ buttonLabel: label.replace(/\[|]|/g, "").replace(",", ", ") })
-    })
+      });
+
+      this.setState({ fileName: middle }, () => {
+        //console.log(this.state.fileName);
+        const label = JSON.stringify(this.state.fileName);
+        //console.log(label)
+        this.setState({
+          buttonLabel: label.replace(/\[|]|/g, "").replace(",", ", ")
+        });
+      });
     }
   }
 
   handleChange(e) {
     e.preventDefault();
-        //const label = document.getElementById("fileUpload").value.replace(/([^\\]*\\)*/, '');
+    //const label = document.getElementById("fileUpload").value.replace(/([^\\]*\\)*/, '');
     // const label = this.state.fileName
     // this.setState({ buttonLabel: label })
     this.readURI(e);
-    if (this.props.onChange !== undefined)
-      this.props.onChange(e); // propagate to parent component
+    if (this.props.onChange !== undefined) this.props.onChange(e); // propagate to parent component
   }
-
-
 
   handleSubmit(event) {
     event.preventDefault();
     const fileTag = this.state.fileURI;
     const fileName = this.state.fileName;
     const mailSubject = document.getElementById(this.state.subjectId).value;
-    const email = document.getElementById(this.state.emailsId).value;
-    // const email = this.state.usersAdded.map((u) => u.user_mail);
+    const email = this.state.emailsArr.join(",");
     const message = document.getElementById(this.state.messageId).value;
-    console.log(fileTag)
-    console.log(fileName)
-    console.log("users to mail are:\n" + email);
+    
+    //Test console.
+    // console.log(fileTag);
+    // console.log(fileName);
+    // console.log("users to mail are:\n" + email);
 
     if (email === "") {
       this.alertMessage("No email TO:");
@@ -350,7 +345,7 @@ class MailForm extends Component {
     } else {
       let mailData;
 
-mailData = {
+      mailData = {
         senderName: this.props.userName,
         senderEmail: this.props.userEmail,
         //for testing porpouses email is harcoded, in production use:
@@ -364,8 +359,8 @@ mailData = {
         fileUri: fileTag,
         fileName: fileName
       };
-      console.log(mailData);
-
+      //  Test console.
+      // console.log(mailData);
 
       axios({
         method: "POST",
@@ -373,20 +368,20 @@ mailData = {
         data: mailData
       }).then(response => {
         //  Test console.
-        //   console.log(response.data);
+          console.log(response.data);
         if (response.data.msg === "success") {
           //Save mail
           //  Test console.
           // console.log(mailData);
-          let mailMongo ={
+          let mailMongo = {
             senderName: this.props.userName,
-        senderEmail: this.props.userEmail,
-        mailSubject: mailSubject,
-        email: email,
-        message: message,
-        taskId: this.props.taskId,
-        fileName: JSON.stringify(fileName) 
-          }
+            senderEmail: this.props.userEmail,
+            mailSubject: mailSubject,
+            email: email,
+            message: message,
+            taskId: this.props.taskId,
+            fileName: JSON.stringify(fileName)
+          };
           API.saveMail(mailMongo)
             // .then(() => {
             //   //  Test console.
@@ -416,10 +411,10 @@ mailData = {
 
   render() {
     let usersToBeAdded;
-// let attachedFiles;
-// if(this.state.buttonLabel){
-//   attachedFiles=this.state.buttonLabel;
-// }
+    // let attachedFiles;
+    // if(this.state.buttonLabel){
+    //   attachedFiles=this.state.buttonLabel;
+    // }
     if (this.state.usersAdded.length > 0) {
       // console.log(this.state.usersAdded);
       usersToBeAdded = (
@@ -429,7 +424,11 @@ mailData = {
               <li
                 key={user.user_id}
                 className="userAdded taskUser list-group-item text-dark col-md-8"
-                style={{backgroundColor: "lightgrey", lineHeight: 1, padding: "5px" }}
+                style={{
+                  backgroundColor: "lightgrey",
+                  lineHeight: 1,
+                  padding: "5px"
+                }}
               >
                 <button
                   className="btn btn-danger pplus"
@@ -467,7 +466,7 @@ mailData = {
             onSubmit={this.handleSubmit.bind(this)}
             method="POST"
           > */}
-          <form id={this.state.formId} >
+          <form id={this.state.formId}>
             {/* +++++++++++++++++ New Task Users deletion +++++++++++++++++ */}
             <label htmlFor="taskUsers">Select Users To eMail</label>
             <div className="row noMargin">
@@ -476,9 +475,9 @@ mailData = {
                 id="taskUsers"
                 type="list"
                 onChange={this.selectuserToAdd}
-                defaultValue="Select User"
+                defaultValue="Default"
               >
-                <option selected>Select User:</option>
+                <option value="Select">Select User:</option>
                 {/* {console.log(this.state.projectUsers2)} */}
                 {this.state.taskUsers.map(user => {
                   // console.log(user)
@@ -515,12 +514,15 @@ mailData = {
                 className="form-control"
                 id={this.state.emailsId}
                 aria-describedby="emailHelp"
-                value={this.state.usersAdded.map((u) => u.user_mail)}
               />
             </div>
             <div className="form-group subject">
               <label htmlFor="subject">Subject</label>
-              <input type="text" className="form-control" id={this.state.subjectId} />
+              <input
+                type="text"
+                className="form-control"
+                id={this.state.subjectId}
+              />
             </div>
             <div className="form-group message">
               <label htmlFor="mailMessage">Message</label>
@@ -535,18 +537,20 @@ mailData = {
               <label
                 htmlFor={this.state.fileUploadID}
                 className="btn btn-outline-success btn-sm"
-                >
+              >
                 <i className="fa fa-arrow-circle-o-up"></i>
                 {/* {attachedFiles} */}
-                {!this.state.buttonLabel ? "Select File" : this.state.buttonLabel}
+                {!this.state.buttonLabel
+                  ? "Select File"
+                  : this.state.buttonLabel}
               </label>
               <input
                 id={this.state.fileUploadID}
                 type="file"
                 onChange={this.handleChange.bind(this)}
-                className="show-for-sr" 
-                multiple = "multiple"
-                />
+                className="show-for-sr"
+                multiple="multiple"
+              />
             </div>
 
             {/*! +++++++++++++++++ Error Dialog +++++++++++++++++ */}
@@ -565,13 +569,15 @@ mailData = {
               <span className="msg">&nbsp; {this.state.errorMessage}</span>
             </div>
 
-
-
             {/* <button type="submit" className="btn btn-primary">
               Submit
             </button> */}
-            <button type="submit" className="btn btn-outline-primary" 
-            onClick={this.handleSubmit.bind(this)}>Submit
+            <button
+              type="submit"
+              className="btn btn-outline-primary"
+              onClick={this.handleSubmit.bind(this)}
+            >
+              Submit
             </button>
           </form>
         </div>

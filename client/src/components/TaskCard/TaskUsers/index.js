@@ -16,8 +16,8 @@ class TaskUsers extends Component {
       
       // +++++++++++++++++ TASK USERS +++++++++++++++++
       <div className="card card-body bg-dark">
-        <div class="row justify-content-center">
-          <div class="col-sm-6">
+        <div className="row justify-content-center">
+          <div className="col-sm-6">
         <ul>
           {this.props.allTaskUsers.map(user => {
             return (

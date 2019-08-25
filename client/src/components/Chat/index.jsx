@@ -165,6 +165,7 @@ class Chat extends React.Component {
                   {this.state.messages.map(message => {
                     return (
                       <div
+                        key={message._id}
                         className={
                           message.author !== this.props.userName
                             ? "received_withd_msg"

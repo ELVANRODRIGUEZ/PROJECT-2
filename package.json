@@ -1,7 +1,7 @@
 {
   "name": "team-orginizer",
-  "version": "1.0.0",
-  "description": "Project 2",
+  "version": "3.0.0",
+  "description": "Organizer for work groups tasks.",
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=\"production\" && npm run start:prod || npm run start:dev",

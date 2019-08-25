@@ -701,12 +701,10 @@ class EditTaskModal extends Component {
                     id="notTaskUsers"
                     type="list"
                     onChange={this.selectUserToAdd}
-                    defaultValue="Select User"
+                    defaultValue="Default"
                   >
-                    <option selected>Select User:</option>
-                    {/* {console.log(this.state.projectUsers2)} */}
+                    <option value="Default">Select User:</option>
                     {this.state.notTaskUsers.map(user => {
-                      // console.log(user)
                       return (
                         <option
                           key={user["user.user_id"]}
@@ -725,7 +723,7 @@ class EditTaskModal extends Component {
                     id="delFromAddList"
                     onClick={this.addUserToAddList}
                   >
-                    Add to Add
+                    Select
                   </button>
                 </div>
               </div>
@@ -741,12 +739,10 @@ class EditTaskModal extends Component {
                   id="taskUsers"
                   type="list"
                   onChange={this.selectUserToDelete}
-                  defaultValue="Select User"
+                  defaultValue="Default"
                 >
-                  <option selected>Select User:</option>
-                  {/* {console.log(this.state.projectUsers2)} */}
+                  <option value="Default">Select User:</option>
                   {this.state.taskUsers.map(user => {
-                    // console.log(user)
                     return (
                       <option
                         key={user.user_id}
@@ -765,7 +761,7 @@ class EditTaskModal extends Component {
                   id="delFromDelList"
                   onClick={this.addUserToDeleteList}
                 >
-                  Add to Del
+                  Select
                 </button>
               </div>
               {/* +++++++++++++++++ New Task Users added +++++++++++++++++ */}

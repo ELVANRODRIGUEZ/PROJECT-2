@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
 import React, { Component } from "react";
-import axios from "axios";  // We import "axios" to be able to make requests to the Backend Endpoints.
-import { Link } from 'react-router-dom';  //  We import "Link" from "react-router-dom" to be able to link to other Route Components.
+import axios from "axios"; // We import "axios" to be able to make requests to the Backend Endpoints.
+import { Link } from "react-router-dom"; //  We import "Link" from "react-router-dom" to be able to link to other Route Components.
 import Alerts from "../components/Alerts";
 // import DeleteBtn from "../components/DeleteBtn";
 // import Jumbotron from "../components/Jumbotron";
@@ -55,7 +55,7 @@ class Signup extends Component {
   };
 
   handleKeyDown = event => {
-    let pswd = event.target.value
+    let pswd = event.target.value;
     this.setState({
       password: event.target.value
     });
@@ -66,7 +66,12 @@ class Signup extends Component {
     var capital;
     var digit;
 
-    if (letter === true && length === true && capital === true && digit === true) {
+    if (
+      letter === true &&
+      length === true &&
+      capital === true &&
+      digit === true
+    ) {
       // $('#pswd_info').hide();
       this.setState({
         pswDisplay: "none"
@@ -82,7 +87,7 @@ class Signup extends Component {
     } else {
       // $('#length').removeClass('invalid').addClass('valid');
       this.setState({
-        pswLengthClass: "valid",
+        pswLengthClass: "valid"
       });
       length = true;
     }
@@ -90,13 +95,13 @@ class Signup extends Component {
     if (pswd.match(/[A-z]/)) {
       //  $('#letter').removeClass('invalid').addClass('valid');
       this.setState({
-        pswLetterClass: "valid",
+        pswLetterClass: "valid"
       });
       letter = true;
     } else {
       //$('#letter').removeClass('valid').addClass('invalid');
       this.setState({
-        pswLetterClass: "invalid",
+        pswLetterClass: "invalid"
       });
       letter = false;
     }
@@ -104,13 +109,13 @@ class Signup extends Component {
     if (pswd.match(/[A-Z]/)) {
       // $('#capital').removeClass('invalid').addClass('valid');
       this.setState({
-        pswCapitalClass: "valid",
+        pswCapitalClass: "valid"
       });
       capital = true;
     } else {
       // $('#capital').removeClass('valid').addClass('invalid');
       this.setState({
-        pswCapitalClass: "invalid",
+        pswCapitalClass: "invalid"
       });
       capital = false;
     }
@@ -119,17 +124,16 @@ class Signup extends Component {
     if (pswd.match(/\d/)) {
       // $('#number').removeClass('invalid').addClass('valid');
       this.setState({
-        pswNumClass: "valid",
+        pswNumClass: "valid"
       });
       digit = true;
     } else {
       // $('#number').removeClass('valid').addClass('invalid');
       this.setState({
-        pswNumClass: "invalid",
+        pswNumClass: "invalid"
       });
       digit = false;
     }
-
   };
 
   onFocus() {
@@ -152,11 +156,18 @@ class Signup extends Component {
       email: this.state.email,
       password: this.state.password,
       phone: this.state.phone,
-      userName: this.state.name,
-
+      userName: this.state.name
     };
-    console.log(userData);
-    if (!userData.email || !userData.password || !userData.userName || !userData.phone) {
+
+    //Test console.
+    // console.log(userData);
+
+    if (
+      !userData.email ||
+      !userData.password ||
+      !userData.userName ||
+      !userData.phone
+    ) {
       this.setState({
         alertmsg: "Please complete all fields"
       });
@@ -182,12 +193,13 @@ class Signup extends Component {
       return false;
     }
 
-
-    console.log(userData);
-    axios.post("/api/signup", userData)
+    axios
+      .post("/api/signup", userData)
 
       .then(res => {
-        console.log(res)
+        //Test console.
+        // console.log(res);
+        
         if (res.data === "Successful") {
           this.props.history.push("/members");
         } else if (res.data.errors[0].message === "email must be unique") {
@@ -195,7 +207,9 @@ class Signup extends Component {
             alertmsg: "email already exists"
           });
           this.showAlert();
-        } else if (res.data.errors[0].message === "Validation len on user_name failed") {
+        } else if (
+          res.data.errors[0].message === "Validation len on user_name failed"
+        ) {
           this.setState({
             alertmsg: "The name is too Short"
           });
@@ -217,17 +231,19 @@ class Signup extends Component {
     let increaseOpacity = setInterval(increase, 250);
 
     setTimeout(() => {
-      this.setState({ display: "none", opacity: "0", });
+      this.setState({ display: "none", opacity: "0" });
       clearInterval(increaseOpacity);
     }, 5000);
-  }
+  };
 
   render() {
     return (
       <div id="most-outter">
-        <h1 style = {{color: "white", marginTop: "5px", marginLeft: "10px"}}>Team Organizer™ </h1>
+        <h1 style={{ color: "white", marginTop: "5px", marginLeft: "10px" }}>
+          Team Organizer™{" "}
+        </h1>
         <div id="outter">
-            <div className="container text-white">
+          <div className="container text-white">
             <div className="row login-form bg-dark">
               <div className="col">
                 <h2>Sign Up Form</h2>
@@ -268,7 +284,7 @@ class Signup extends Component {
                       onChange={this.onChangeEmail}
                     />
                   </div>
-                  <div className="form-group"  >
+                  <div className="form-group">
                     <label htmlFor="InputPassword">Password</label>
                     <input
                       type="password"
@@ -285,9 +301,8 @@ class Signup extends Component {
                     transition={"opacity 2s"}
                     display={this.state.display}
                     opacity={this.state.opacity}
-
-                    alert={this.state.alertmsg}>
-                  </Alerts>
+                    alert={this.state.alertmsg}
+                  ></Alerts>
                   <button
                     type="submit"
                     className="btn btn-outline-success"
