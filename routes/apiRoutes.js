@@ -2,17 +2,18 @@ var db = require("../models").db;
 var Op = require("../models").Op;
 var connection = require("../models").connection;
 var passport = require("../config/passport");
-var moment = require("moment");
+// var moment = require("moment");
 
 module.exports = function(app) {
   // Using the passport.authenticate middleware with our local strategy.
   // If the user has valid login credentials, send them to the members page.
   // Otherwise the user will be sent an error
   app.post("/api/login", passport.authenticate("local"), function(req, res) {
-    
     // Since we're doing a POST with javascript, we can't actually redirect that post into a GET request
     // So we're sending the user back the route to the members page because the redirect will happen on the front end
-    // They won't get this or even be able to access this page if they aren't authed
+    // They won't get this or even be able to access this page if they aren't authenticated.
+
+    //Production console. 
     console.log("I am here at '/api/login' endpoint");
     // console.log(`Email: ${req.body.email} \nPassword: ${req.body.password}`);
 
@@ -34,21 +35,19 @@ module.exports = function(app) {
         res.redirect(307, "/api/login");
       })
       .catch(function(err) {
+        //Production console.
         console.log(err);
-        //   if(err.parent.code=="ER_DUP_ENTRY"){
 
-        //     $("#alert .msg").text("email already exists");
-        // $("#alert").fadeIn(500);
-        //   }
         res.json(err);
-        // res.status(422).json(err.errors[0].message);
       });
   });
 
   // Route for logging user out
   app.get("/logout", function(req, res) {
+    //Production console.
+    console.log("I am here at '/logout'.");
     req.logout();
-    res.redirect("/");
+    res.send("You are logged out");
   });
 
   // Route for getting some data about our user to be used client side
@@ -234,18 +233,16 @@ module.exports = function(app) {
           description: catDescription
         })
         .then(function(category) {
-          
           var categoryRel = [];
-          
+
           categoryRel.push({
             category_id: category.id,
             category_name: category.category_name
           });
-          
-          console.log(categoryRel);
-          
-          res.send(category);
 
+          console.log(categoryRel);
+
+          res.send(category);
         });
     }
   });
@@ -395,7 +392,7 @@ module.exports = function(app) {
           // Test console.
           console.log(msg);
           res.send(msg);
-          
+
           otherUsers.forEach(function(item) {
             taskRel.push({
               task_id: task.id,
@@ -463,7 +460,6 @@ module.exports = function(app) {
       });
 
       res.json(forTaskAddingId);
-
     });
   });
 
@@ -483,7 +479,11 @@ module.exports = function(app) {
         include: [
           {
             model: db.users,
-            attributes: [["user_name", "user_name"], ["id", "user_id"], ["email", "user_mail"]],
+            attributes: [
+              ["user_name", "user_name"],
+              ["id", "user_id"],
+              ["email", "user_mail"]
+            ],
             include: [
               {
                 model: db.project_users,
@@ -575,7 +575,7 @@ module.exports = function(app) {
             }
           })
           .then(function(data2) {
-              res.send("Users deleted");
+            res.send("Users deleted");
           });
       });
 
@@ -619,37 +619,33 @@ module.exports = function(app) {
         res.send("Reload Page");
       });
   });
-  
+
   // Route to get Task progress.
   app.get("/api/task/:id/progress", function(req, res) {
-
     console.log(req.body.dead_line);
     console.log(req.params.id);
 
     db.tasks
-      .findOne(
-        {
-          where: {
-            id: req.params.id
-          },
-          attributes: ["accomplished"]
-        }
-      )
+      .findOne({
+        where: {
+          id: req.params.id
+        },
+        attributes: ["accomplished"]
+      })
       .then(function(data) {
         res.json(data);
       });
   });
-  
+
   // Route to update Task progress.
   app.put("/api/task/:id/update", function(req, res) {
-
     console.log(req.body.dead_line);
     console.log(req.params.id);
 
     db.tasks
       .update(
         {
-          accomplished: req.body.accomplished,
+          accomplished: req.body.accomplished
         },
         {
           where: {

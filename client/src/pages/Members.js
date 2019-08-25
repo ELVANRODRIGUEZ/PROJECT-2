@@ -351,7 +351,7 @@ class Members extends Component {
     return (
       <div id="profile">
         {/*! +++++++++++++++++ NAVBAR  Moved to Navbar component+++++++++++++++++ */}
-        <Navbar userName={this.state.userName} />
+        <Navbar history={this.props.history} userName={this.state.userName} />
 
         {/* +++++++++++++++++ MODAL: Delete Modal For Projects +++++++++++++++++ */}
         <DeleteProjectModal

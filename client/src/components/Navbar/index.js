@@ -6,11 +6,16 @@ class Navbar extends Component {
     event.preventDefault();
     // Test console.
     // console.log("clicked signout");
+
     axios
       .get("/logout")
       .then(res => {
-        window.location = "/";
-        // this.props.history.push("/")
+        if (res.data === "You are logged out") {
+          //Test console.
+          // console.log(res);
+
+          this.props.history.push("/");
+        }
       })
       .catch(err => {
         console.log(err);
@@ -21,8 +26,10 @@ class Navbar extends Component {
     return (
       <nav className="navbar  bg-dark navbarTitle">
         <p id="userNameBanner" className="navbar-brand">
-        Team Organizer™  <span style= {{marginLeft: "20px"}}>Welcome {this.props.userName}</span>
-
+          Team Organizer™{" "}
+          <span style={{ marginLeft: "20px" }}>
+            Welcome {this.props.userName}
+          </span>
         </p>
         <form className="form-inline">
           <button
