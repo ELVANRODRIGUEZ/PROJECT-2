@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const logger = require('morgan');
 const bodyParser = require('body-parser')
 const app = express();
-
 const path = require("path");
 const PORT = process.env.PORT || 3300;
 const routes = require('./routes');
@@ -44,9 +43,6 @@ require("./routes/htmlRoutes")(app);
 
 io.on('connection', function(socket){
   console.log("Socket user Connected"+ socket.id);
-  // socket.on('reconnect_attempt', () => {
-  //   socket.io.opts.transports = ['polling', 'websocket'];
-  // });
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });

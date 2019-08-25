@@ -18,16 +18,6 @@ class Chat extends React.Component {
         "scroll-container-second-element" + this.props.taskId,
       uniqueElementTop: "scroll-container-first-element" + this.props.taskId
     };
-
-    // API.getSavedChats(this.props.taskId).then(res => {
-    //   //  Test console.
-    //   // console.log(res.data);
-
-    //   this.setState({ messages: res.data });
-    //   this.scrollBottom();
-    //   scroll.scrollToBottom();
-    // });
-
   }
 
   componentDidUpdate = prevProps => {
@@ -42,6 +32,19 @@ class Chat extends React.Component {
   componentDidMount() {
     this.getMessages();
 
+    const {socket} = this.props;
+
+    socket.on("RECEIVE_MESSAGE", msg => {
+      //Test console.
+      // console.log(
+        // "+++++++++++++++++++++++++++++\nI, the client, am getting the 'msg' back from the Server:\n",
+        // msg
+      // );
+
+      this.setState({ message: "" }, () => {
+        this.getMessages();
+      });
+    });
     Events.scrollEvent.register("begin", function() {
       // console.log("begin", arguments);
     });
@@ -98,26 +101,13 @@ class Chat extends React.Component {
 
     const { socket } = this.props;
     socket.emit("SEND_MESSAGE", {
-      // testmessage: "This is a test message from the client emit."
       author: this.state.username,
       message: this.state.message,
       taskId: this.props.taskId
     });
-    socket.on("RECEIVE_MESSAGE", msg => {
-      //Test console.
-      console.log(
-        "+++++++++++++++++++++++++++++\nI, the client, am getting the 'msg' back from the Server:\n",
-        msg
-      );
 
-      this.setState({ message: "" }, () => {
-        this.getMessages();
-      });
-    });
     this.getMessages();
   };
-
-  
 
   scrollBottom() {
     let goToContainer = new Promise((resolve, reject) => {
