@@ -8,58 +8,25 @@ const path = require("path");
 
 // =================================== Requiring our custom middleware for checking if a user is logged in.
 
-var isAuthenticated = require("../config/middleware/isAuthenticated");
+let isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = function(app) {
-  var allTasksInProject = [];
-  var allTasksInCategory = [];
 
-  app.get("/", function(req, res) {
-    // If the user already has an account send them to the members page
-    console.log("I am at /");
-    if (req.user) {
-      res.redirect("/members");
-    }
-  });
 
-  app.post("/test", function(req, res) {
-    console.log(req.body.message);
-    let message = req.body.message;
-    res.send(`From the backend, we send this message: "${message}"`);
-  });
+  //*++++++++++++++++++++++++++++++++++++++++++++++++ GET
+  
 
-  app.get("/signup", function(req, res) {
-    // If the user already has an account send them to the members page
-    if (req.user) {
-      res.redirect("/members");
-    }
-
-    res.render("signup");
-  });
-
-  // Here we've add our isAuthenticated middleware to this route.
-  // If a user who is not logged in tries to access this route they will be redirected to the signup page
-  // app.get("/members", isAuthenticated, function(req, res) {
-  //   console.log("I am here at '/members' endpoint.");
-  //   if (req.user) {
-
-  //     res.send("Successful");
-
-  //   } else {
-
-  //     res.send("Not logged");
-
-  //   }
-
-  // });
-
+  // Get all members so they can be added to a new Project.
+  //! >>>>>>>>>>>>>>>>>>>>>>>READY!!!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   app.get("/members/allMembers", isAuthenticated, function(req, res) {
     // Test console.
+    // console.log("++++++++++++++++++++++++++++++++");
     // console.log(req.user);
+    // console.log("++++++++++++++++++++++++++++++++");
 
-    var id = req.user.id;
+    let id = req.user.id;
 
-    var query =
+    let query =
       "SELECT " +
       'up.id as "user_id", ' +
       'up.user_name as "user_name", ' +
@@ -71,19 +38,25 @@ module.exports = function(app) {
 
     connection.query(query, function(err, data) {
       // Test console.
-      console.log(data);
+      // console.log("++++++++++++++++++++++++++++++++");
+      // console.log(data);
+      // console.log("++++++++++++++++++++++++++++++++");
 
       res.send(data);
     });
   });
 
+  // Get all info about the logged member.
+  //! >>>>>>>>>>>>>>>>>>>>>>>READY!!!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   app.get("/members/info", isAuthenticated, function(req, res) {
+    let id = req.user.id;
+
     // Test console.
-    // console.log(req.user);
+    // console.log("++++++++++++++++++++++++++++++++");
+    // console.log(id);
+    // console.log("++++++++++++++++++++++++++++++++");
 
-    var id = req.user.id;
-
-    var query =
+    let query =
       "SELECT " +
       'up.user as "user", ' +
       'up.user_id as "user_id", ' +
@@ -130,13 +103,13 @@ module.exports = function(app) {
       if (err) throw err;
 
       // Test console.
-      console.log("=================");
+      // console.log("++++++++++++++++++++++++++++++++");
       // console.log(data);
       // console.log(req.user);
-      console.log("=================");
+      // console.log("++++++++++++++++++++++++++++++++");
 
       if (data.length == 0) {
-        var sentResponse = {
+        let sentResponse = {
           projectsHtml: "You have no Projects yet.",
           user_Id: req.user.id,
           user_Name: req.user.user_name,
@@ -145,17 +118,12 @@ module.exports = function(app) {
 
         res.send(sentResponse);
       } else {
-        // Getting the User Name of the query and formatting as html.
-
-
-        var userName = data[0].user;
-
-        var allProjects = [];
+        let allProjects = [];
 
         // Getting all the proyects from the query and formatting as html.
         // We need evaluation to not add an already added project while creating the html string.
 
-        var project = "first";
+        let project = "first";
 
         data.forEach(function(item) {
           if (project !== item.projects_id) {
@@ -170,9 +138,9 @@ module.exports = function(app) {
         });
 
         // Creating a JSON object to send as response.
-        var sentResponse = {
+        let sentResponse = {
           projects: allProjects,
-          user_Name: userName,
+          user_Name: data[0].user,
           user_Id: data[0].user_id,
           user_Email: data[0].user_email
         };
@@ -183,14 +151,24 @@ module.exports = function(app) {
     });
   });
 
-  app.get("/members/info/:projectId", isAuthenticated, function(req, res) {
-    // function test(cb) {
+  // This is to get the amount of Tasks in each Category according to the Project selected.
+  //! >>>>>>>>>>>>>>>>>>>>>>>READY!!!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  app.get("/members/:user/info/:projectId", isAuthenticated, function(
+    req,
+    res
+  ) {
+    let userId = req.params.user;
+    let projectId = req.params.projectId;
+    let allCategories = [];
 
-    var userId = req.user.id;
-    var projectId = req.params.projectId;
+    // Test console.
+    // console.log("++++++++++++++++++++++++++++++++");
+    // console.log(userId);
+    // console.log(projectId);
+    // console.log("++++++++++++++++++++++++++++++++");
 
     // Query to get all the Task count within each Category for the selected Project.
-    var query =
+    let query =
       "SELECT " +
       'c.category_name as "category_name", ' +
       'c.description as "category_description", ' +
@@ -222,9 +200,9 @@ module.exports = function(app) {
       if (err) throw err;
 
       // Test console.
+      // console.log("++++++++++++++++++++++++++++++++");
       // console.log(data);
-
-      var allCategories = [];
+      // console.log("++++++++++++++++++++++++++++++++");
 
       data.forEach(function(item) {
         allCategories.push({
@@ -235,154 +213,136 @@ module.exports = function(app) {
         });
       });
 
-      var sentResponse = {
+      let sentResponse = {
         categories: allCategories
       };
 
       res.json(sentResponse);
-
-      // Query to get all Tasks within the selected Project.
-      var query2 =
-        "SELECT " +
-        'u.user_name as "user", ' +
-        'u.id as "user_id", ' +
-        't.description as "task_description", ' +
-        'tr.task_id as "task_id", ' +
-        'p.project_name as "project_name", ' +
-        't.task_project as "project_id" ' +
-        "FROM users u " +
-        "LEFT JOIN tasks_responsibles tr " +
-        "ON tr.responsible = u.id " +
-        "LEFT JOIN tasks t ON t.id = tr.task_id " +
-        "LEFT JOIN projects p ON p.id = t.task_project " +
-        "WHERE u.id = " +
-        userId +
-        " " +
-        "AND p.id = " +
-        projectId;
-
-      connection.query(query2, function(err3, projTasks) {
-        if (err3) throw err3;
-
-        // Test console.
-        // console.log(projTasks);
-
-        allTasksInProject = [];
-
-        projTasks.forEach(function(item) {
-          allTasksInProject.push(item.task_id);
-        });
-
-        // Test console.
-        // console.log(allProjectTasks);
-      });
     });
   });
 
-  //! This one goes in apiRoutes.
-  app.get(
-    "/members/info/:projectId/category/:categoryId",
-    isAuthenticated,
-    function(req, res) {
-      var userId = req.user.id;
-      var categoryId = req.params.categoryId;
-      var projectId = req.params.projectId;
+  // This request is to retrieve the Tasks related to the selected Project and Category.
+  //! >>>>>>>>>>>>>>>>>>>>>>>READY!!!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  app.get("/members/:user/info/:projectId/category/:categoryId", function(
+    req,
+    res
+  ) {
+    //Production console.
+    console.log(
+      "I am here at '/members/:user/info/:projectId/category/:categoryId' endpoint"
+    );
 
-      // console.log(userId);
-      // console.log(categoryId);
+    let userId = req.params.user;
+    let categoryId = req.params.categoryId;
+    let projectId = req.params.projectId;
+    let allTasks = [];
 
-      var query =
-        "SELECT " +
-        "up.user, " +
-        "up.user_id, " +
-        "up.project, " +
-        "up.project_id, " +
-        "tc.category, " +
-        "tc.category_id, " +
-        "upt.task_description, " +
-        "upt.task_deadline, " +
-        "upt.task_accomplished, " +
-        "upt.task_id " +
-        "FROM " +
-        "(SELECT " +
-        'u.user_name as "user", ' +
-        'u.id as "user_id", ' +
-        'p.project_name as "project", ' +
-        'p.id as "project_id" ' +
-        "FROM users u " +
-        "LEFT JOIN project_users pu ON u.id = pu.user_name " +
-        "JOIN projects p ON p.id = pu.project_name " +
-        "WHERE u.id = " +
-        userId +
-        " AND p.id = " +
-        projectId +
-        ") up " +
-        "LEFT JOIN " +
-        "(SELECT " +
-        'u.id as "user", ' +
-        'tr.task_id as "task_id", ' +
-        't.task_project as "task_project_id", ' +
-        't.description as "task_description", ' +
-        't.dead_line as "task_deadline", ' +
-        't.accomplished as "task_accomplished" ' +
-        "FROM users u " +
-        "LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id " +
-        "LEFT JOIN tasks t ON t.id = tr.task_id " +
-        "WHERE u.id = " +
-        userId +
-        ") upt " +
-        "ON upt.task_project_id = up.project_id " +
-        "LEFT JOIN " +
-        "(SELECT " +
-        'c.id as "category_id", ' +
-        'c.description as "category", ' +
-        't.id as "task_id", ' +
-        't.description as "task" ' +
-        "FROM categories c " +
-        "LEFT JOIN tasks t ON t.task_category = c.id) tc " +
-        "ON upt.task_id = tc.task_id " +
-        "WHERE category_id = " +
-        categoryId;
+    //Test console.
+    // console.log("++++++++++++++++++++++++++++++++");
+    // console.log(userId);
+    // console.log(projectId);
+    // console.log(categoryId);
+    // console.log("++++++++++++++++++++++++++++++++");
 
-      connection.query(query, function(err, data) {
-        if (err) throw err;
+    let query =
+      "SELECT " +
+      "up.user, " +
+      "up.user_id, " +
+      "up.project, " +
+      "up.project_id, " +
+      "tc.category, " +
+      "tc.category_id, " +
+      "upt.task_description, " +
+      "upt.task_deadline, " +
+      "upt.task_accomplished, " +
+      "upt.task_id " +
+      "FROM " +
+      "(SELECT " +
+      'u.user_name as "user", ' +
+      'u.id as "user_id", ' +
+      'p.project_name as "project", ' +
+      'p.id as "project_id" ' +
+      "FROM users u " +
+      "LEFT JOIN project_users pu ON u.id = pu.user_name " +
+      "JOIN projects p ON p.id = pu.project_name " +
+      "WHERE u.id = " +
+      userId +
+      " AND p.id = " +
+      projectId +
+      ") up " +
+      "LEFT JOIN " +
+      "(SELECT " +
+      'u.id as "user", ' +
+      'tr.task_id as "task_id", ' +
+      't.task_project as "task_project_id", ' +
+      't.description as "task_description", ' +
+      't.dead_line as "task_deadline", ' +
+      't.accomplished as "task_accomplished" ' +
+      "FROM users u " +
+      "LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id " +
+      "LEFT JOIN tasks t ON t.id = tr.task_id " +
+      "WHERE u.id = " +
+      userId +
+      ") upt " +
+      "ON upt.task_project_id = up.project_id " +
+      "LEFT JOIN " +
+      "(SELECT " +
+      'c.id as "category_id", ' +
+      'c.description as "category", ' +
+      't.id as "task_id", ' +
+      't.description as "task" ' +
+      "FROM categories c " +
+      "LEFT JOIN tasks t ON t.task_category = c.id) tc " +
+      "ON upt.task_id = tc.task_id " +
+      "WHERE category_id = " +
+      categoryId;
 
-        console.log(data);
+    connection.query(query, function(err, data) {
+      if (err) throw err;
 
-        // Getting all tasks from the selected category to create the HTML string.
+      //Test console.
+      // console.log("++++++++++++++++++++++++++++++++");
+      // console.log(data);
+      // console.log("++++++++++++++++++++++++++++++++");
 
-        var allTasks = [];
+      // Getting all tasks from the selected category to create the HTML string.
 
-        data.forEach(function(item) {
-          allTasks.push(item);
-        });
-
-        var sentResponse = {
-          tasks: allTasks
-        };
-
-        res.send(sentResponse);
+      data.forEach(function(item) {
+        allTasks.push(item);
       });
-    }
-  );
 
+      let sentResponse = {
+        tasks: allTasks
+      };
+
+      res.send(sentResponse);
+    });
+  });
+
+  // This is to get all the Task's Ids from the Selected Project and Category.
+  //! >>>>>>>>>>>>>>>>>>>>>>>READY!!!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
   app.get(
-    "/members/info/:projectId/category/:categoryId/all_tasks",
+    "/members/:user/info/:projectId/category/:categoryId/all_tasks",
     isAuthenticated,
     function(req, res) {
-      var userId = req.user.id;
-      var categoryId = req.params.categoryId;
-      var projectId = req.params.projectId;
+      //Production console.
+      console.log(
+        "I am here at '/members/:user/info/:projectId/category/:categoryId/all_tasks' endpoint"
+      );
+
+      let userId = req.params.user;
+      let categoryId = req.params.categoryId;
+      let projectId = req.params.projectId;
+      let allTasksInCategory = [];
 
       // Test console.
+      // console.log("++++++++++++++++++++++++++++++++");
       // console.log(userId);
       // console.log(projectId);
       // console.log(categoryId);
-      console.log(
-        "I am here at '/members/info/:projectId/category/:categoryId/all_tasks' endpoint"
-      );
+      // console.log("++++++++++++++++++++++++++++++++");
 
-      var query =
+      let query =
         "SELECT " +
         "up.user, " +
         "up.user_id, " +
@@ -439,26 +399,37 @@ module.exports = function(app) {
         if (err) throw err;
 
         // Test console.
+        // console.log("++++++++++++++++++++++++++++++++");
         // console.log(data);
+        // console.log("++++++++++++++++++++++++++++++++");
 
         // Getting all Tasks id's from the selected Category to feed the "allTasksInCategory" array.
-
-        allTasksInCategory = [];
 
         data.forEach(function(item) {
           allTasksInCategory.push(item.task_id);
         });
 
         //Test console.
+        // console.log("++++++++++++++++++++++++++++++++");
         // console.log(allTasksInCategory);
+        // console.log("++++++++++++++++++++++++++++++++");
 
         res.json(allTasksInCategory);
       });
     }
   );
 
+
+  //*++++++++++++++++++++++++++++++++++++++++++++++++ DELETE
+
   // Route to delete a Tasks (and all relationships) nested in a Category.
-  app.delete("/members/info/:project/:category/delete_all_tasks", function(req, res) {
+  //! >>>>>>>>>>>>>>>>>>>>>>>READY!!!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  app.delete("/members/:user/info/:project/category/:category/delete_all_tasks", function(
+    req,
+    res
+  ) {
+    let userId = req.params.user;
+
     db.tasks
       .findAll({
         where: {
@@ -470,8 +441,12 @@ module.exports = function(app) {
         let allProjCatTasks = data.map(task => {
           return task.dataValues.id;
         });
+
         //  Test console.
-        console.log(allProjCatTasks);
+        // console.log("++++++++++++++++++++++++++++++++");
+        // console.log(userId);
+        // console.log(allProjCatTasks);
+        // console.log("++++++++++++++++++++++++++++++++");
 
         db.tasks_responsibles
           .destroy({
@@ -479,17 +454,28 @@ module.exports = function(app) {
               task_id: {
                 [Op.in]: allProjCatTasks
               },
-              responsible: req.user.id
+              responsible: userId
             }
           })
-          .then(function(data2) {
+          .then(function() {
             res.send("all User's Project's Category Tasks Deleted");
           });
       });
   });
 
   // Route to delete a Tasks (and all relationships) nested in a Project.
-  app.delete("/members/info/:project/delete_all_tasks", function(req, res) {
+  //! >>>>>>>>>>>>>>>>>>>>>>>READY!!!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  app.delete("/members/:user/info/:project/delete_all_tasks", function(
+    req,
+    res
+  ) {
+    let userId = req.params.user;
+
+    //  Test console.
+    // console.log("++++++++++++++++++++++++++++++++");
+    // console.log(userId);
+    // console.log("++++++++++++++++++++++++++++++++");
+
     db.tasks
       .findAll({
         where: {
@@ -501,7 +487,9 @@ module.exports = function(app) {
           return task.dataValues.id;
         });
         //  Test console.
+        // console.log("++++++++++++++++++++++++++++++++");
         // console.log(allprojectTasks);
+        // console.log("++++++++++++++++++++++++++++++++");
 
         db.tasks_responsibles
           .destroy({
@@ -509,7 +497,7 @@ module.exports = function(app) {
               task_id: {
                 [Op.in]: allprojectTasks
               },
-              responsible: req.user.id
+              responsible: userId
             }
           })
           .then(function(data2) {

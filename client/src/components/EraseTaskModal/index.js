@@ -3,27 +3,26 @@ import React, { Component } from "react";
 import Collapse from "react-bootstrap/Collapse";
 import axios from "axios";
 
-// ================================== Files Dependencies
-// import "../TaskCard/style.css";
-
 class EraseTaskModal extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
 
   eraseTask = () => {
-    axios.delete(`/api/task/${this.props.taskId}/delete_all`).then(data => {
-      //  Rerenders the TaskCards to include the newly created one.
-      this.props.renderForNewTasks();
-    });
+    const { userId } = this.props;
+
+    //? Route to delete a User from a Task (not the Task itself).
+    axios
+      .delete(`/api/${userId}/task/${this.props.taskId}/delete`)
+      .then(data => {
+        //  Rerenders the TaskCards to include the newly created one.
+        this.props.renderForNewTasks();
+      });
   };
 
   render() {
     return (
       <Collapse
-        // className="collapse"
+        className="collapse"
         in={this.props.eraseTaskModalView}
-        // id={`eraseTask${this.props.taskId}`}
+        id={`eraseTask${this.props.taskId}`}
       >
         {/* Collapse Bootstrap tool will not work if there is not a "div" container after the "Collapse" container. */}
         <div>
@@ -31,7 +30,7 @@ class EraseTaskModal extends Component {
             className="card card-title bg-secondary h4"
             style={{ border: "0px" }}
           >
-            {`Confirm to delete Task ${this.props.taskId}?`}
+            {`Confirm to leave Task ${this.props.taskId}?`}
           </div>
           <div
             className="card-body bg-dark"
@@ -42,7 +41,7 @@ class EraseTaskModal extends Component {
               task={this.props.taskId}
               onClick={this.eraseTask}
             >
-              Erase Task and all it's relationships
+              Leave Task {this.props.taskId}
             </button>
           </div>
         </div>

@@ -7,6 +7,7 @@ class Navbar extends Component {
     // Test console.
     // console.log("clicked signout");
 
+    //? Route for logging out a user.
     axios
       .get("/logout")
       .then(res => {
@@ -35,7 +36,6 @@ class Navbar extends Component {
           <button
             className="btn btn-outline-danger my-2 my-sm-0"
             aria-disabled="true"
-            // href="/logout"
             onClick={this.logOut}
           >
             Sign Out

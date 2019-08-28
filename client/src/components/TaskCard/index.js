@@ -42,8 +42,9 @@ class TaskCard extends Component {
   };
 
   getUsers = (params, callback) => {
+    //? This is to get the Users related to a Task with the logged User filtered out.
     axios
-      .get(`/api/project/${this.props.taskId}/users`)
+      .get(`/api/${this.props.userId}/project/${this.props.taskId}/users`)
       .then(users => {
         //  Test console.
         // console.log(users.data);
@@ -52,7 +53,7 @@ class TaskCard extends Component {
           //  Test console.
           // console.log(this.state.taskUsers);
 
-          let loggedUseer = [
+          let loggedUser = [
             {
               user_id: this.props.userId,
               user_name: this.props.userName,
@@ -67,7 +68,7 @@ class TaskCard extends Component {
                   return user.user_id;
                 })
                 .concat([this.props.userId]),
-              allTaskUsers: loggedUseer.concat(
+              allTaskUsers: loggedUser.concat(
                 this.state.taskUsers.map(user => {
                   return user;
                 })
@@ -78,6 +79,7 @@ class TaskCard extends Component {
               // console.log(this.state.taskUsersIds);
               // console.log(this.state.allTaskUsers);
 
+              //? Route for getting all users that are releted to the selected Project but filtering out the already existing ones related to the selected Task
               axios
                 .post(`/api/${this.props.projectId}/users`, {
                   usersIds: this.state.taskUsersIds
@@ -236,6 +238,7 @@ class TaskCard extends Component {
           {/* +++++++++++++++++ ERASE TASK MODAL +++++++++++++++++ */}
           <EraseTaskModal
             eraseTaskModalView={this.props.eraseTaskModalShow}
+            userId={this.props.userId}
             taskId={this.props.taskId}
             eraseTaskModalToggle={this.eraseTaskModalToggle}
             renderForNewTasks={this.props.renderForNewTasks}
@@ -343,7 +346,7 @@ class TaskCard extends Component {
                     {/* {console.log(this.state.taskUsers)} */}
                     {/* {console.log(this.state.taskUsersIds)} */}
                     <MailForm
-                     showMailModal={this.state.mailFormHide}
+                      showMailModal={this.state.mailFormHide}
                       taskId={this.props.taskId}
                       userName={this.props.userName}
                       userEmail={this.props.userEmail}

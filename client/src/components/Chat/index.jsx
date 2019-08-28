@@ -27,6 +27,8 @@ class Chat extends React.Component {
         message: ""
       });
     }
+    this.scrollBottom();
+
   };
 
   componentDidMount() {
@@ -37,7 +39,7 @@ class Chat extends React.Component {
     socket.on("RECEIVE_MESSAGE", msg => {
       //Test console.
       // console.log(
-        // "+++++++++++++++++++++++++++++\nI, the client, am getting the 'msg' back from the Server:\n",
+        // "+++++++++++++++++++++++++++++\nI, the client, am getting this 'msg' back from the Server:\n",
         // msg
       // );
 
@@ -133,14 +135,10 @@ class Chat extends React.Component {
     );
   }
 
-  componentWillUnmount() {
-    Events.scrollEvent.remove("begin");
-    Events.scrollEvent.remove("end");
-  }
-
-  componentWillUpdate() {
-    this.scrollBottom();
-  }
+  // componentDidUnmount() {
+  //   Events.scrollEvent.remove("begin");
+  //   Events.scrollEvent.remove("end");
+  // }
 
   render() {
     return (

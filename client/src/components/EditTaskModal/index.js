@@ -63,7 +63,7 @@ class EditTaskModal extends Component {
     }
   };
 
-  componentWillMount = prevProps => {
+  componentDidMount = prevProps => {
     // Test console.
     // console.log(this.props.taskDeadline);
 
@@ -415,7 +415,7 @@ class EditTaskModal extends Component {
       // Test console.
       // console.log(newTask);
 
-      // Request to update the Task.
+      //? Request to update the Task.
       axios
         .put(`/api/project/task/${this.props.taskId}`, editedTask)
         .then(data => {

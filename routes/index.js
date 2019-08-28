@@ -44,8 +44,10 @@ router.post("/send", (req, res, next) => {
   let attachments = [];
   fileName.forEach((item, index) => {
     //Test console.
+    // console.log("++++++++++++++++++++++++++++++++");
     // console.log(item);
     // console.log(fileURI[index])
+    // console.log("++++++++++++++++++++++++++++++++");
 
     let attchmentConstrution = {
       filename: item,
@@ -55,7 +57,10 @@ router.post("/send", (req, res, next) => {
     attachments.push(attchmentConstrution);
   });
   //Test console.
+  // console.log("++++++++++++++++++++++++++++++++");
   //  console.log(attachments);
+  // console.log("++++++++++++++++++++++++++++++++");
+
   var mail = {
     from: senderName,
     replyTo: senderEmail,
@@ -74,7 +79,10 @@ router.post("/send", (req, res, next) => {
     attachments: attachments
   };
   //Test console.
+  // console.log("++++++++++++++++++++++++++++++++");
   // console.log(mail);
+  // console.log("++++++++++++++++++++++++++++++++");
+  
   transporter.sendMail(mail, (err, data) => {
     if (err) {
       console.log("mail error is:\n" + err);

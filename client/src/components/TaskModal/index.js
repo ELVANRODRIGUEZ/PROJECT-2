@@ -118,6 +118,7 @@ class TaskModal extends Component {
           newTaskModalToggle={this.newTaskModalToggle}
           userId={this.state.userId}
           renderForNewTasks={this.props.renderForNewTasks}
+          socket = {this.props.socket}
         ></NewTaskModal>
 
         {/* +++++++++++++++++ BODY +++++++++++++++++ */}

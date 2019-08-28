@@ -193,6 +193,7 @@ class Signup extends Component {
       return false;
     }
 
+    //? Route for signing up a user.
     axios
       .post("/api/signup", userData)
 

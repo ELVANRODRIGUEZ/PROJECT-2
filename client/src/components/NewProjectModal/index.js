@@ -207,6 +207,7 @@ class NewProjectModal extends Component {
       this.alertMessage("No Description");
     } else {
       let newProject;
+      const { userId } = this.props;
 
       newProject = {
         name: this.state.newProjName,
@@ -221,8 +222,9 @@ class NewProjectModal extends Component {
       // Test console.
       //   console.log(newProject);
 
+      //? Route for adding a project.
       axios
-        .post("/api/projects/add", newProject)
+        .post(`/api/${userId}/projects/add`, newProject)
         .then(data => {
           // Test console.
           // console.log(data.data);
@@ -303,7 +305,11 @@ class NewProjectModal extends Component {
               <li
                 key={user.user_id}
                 className="taskUser list-group-item text-dark col-md-8"
-                style={{backgroundColor: "lightgrey", lineHeight: 1, padding: "5px" }}
+                style={{
+                  backgroundColor: "lightgrey",
+                  lineHeight: 1,
+                  padding: "5px"
+                }}
               >
                 <button
                   className="btn btn-danger pplus"

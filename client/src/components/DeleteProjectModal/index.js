@@ -13,20 +13,22 @@ class DeleteProjectModal extends Component {
   }
 
   deleteProject = () => {
+    const { userId } = this.props;
 
+    //? Route to delete a Tasks (and all relationships) nested in a Project.
     axios
-    .delete(`/members/info/${this.props.projectSelected}/delete_all_tasks`)
-    .then(data => {
+      .delete(
+        `/members/${userId}/info/${this.props.projectSelected}/delete_all_tasks`
+      )
+      .then(data => {
         //  Test console.
         // console.log(data.data);
 
         // Renders the Category Task count to show that all Tasks have been deleted.
         this.props.renderForCategories();
         this.props.handleClose();
-
-    });
-
-  }
+      });
+  };
 
   render() {
     return (
@@ -39,7 +41,7 @@ class DeleteProjectModal extends Component {
       >
         <Modal.Header>
           <h5 className="modal-title" id="eraseProjModalTitle">
-            Delete all Tasks you are related to in 
+            Delete all Tasks you are related to in
             <b> {this.props.projectSelectedName}?</b>
           </h5>
           <button

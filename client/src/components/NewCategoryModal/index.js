@@ -23,16 +23,14 @@ class NewCategoryModal extends Component {
     this.categoryDesc = React.createRef();
   }
 
-  componentDidUpdate = prevProps => {
-    
-  };
+  componentDidUpdate = prevProps => {};
 
   // Closes the New Project Modal.
   wholeNewCatModalClose = () => {
     this.setState(
       {
         newCatName: "",
-        newCatDescription: "",
+        newCatDescription: ""
       },
       () => {
         //  Clears out the Project Name and the Project Description inputs.
@@ -78,11 +76,12 @@ class NewCategoryModal extends Component {
       // Test console.
       //   console.log(newCategory);
 
+      //? Route for adding a category.
       axios
         .post("/api/category/add", newCategory)
         .then(data => {
           // Test console.
-        //   console.log(data.data);
+          //   console.log(data.data);
 
           this.categoryName.current.value = "";
           this.categoryDesc.current.value = "";
@@ -90,7 +89,7 @@ class NewCategoryModal extends Component {
           this.setState(
             {
               newCatName: "",
-              newCatDescription: "",
+              newCatDescription: ""
             },
             () => {
               //  Toggles the NewProjTaskModal.

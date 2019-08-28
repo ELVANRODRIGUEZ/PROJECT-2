@@ -1,10 +1,9 @@
 // ================================== Packages Dependencies
 import React, { Component } from "react";
-import Collapse from 'react-bootstrap/Collapse'
+import Collapse from "react-bootstrap/Collapse";
 import axios from "axios";
 
 // ================================== Files Dependencies
-
 
 class NewTaskModal extends Component {
   constructor(props) {
@@ -37,50 +36,52 @@ class NewTaskModal extends Component {
     this.NewTaskDeadline = React.createRef();
   }
 
-  componentDidUpdate = (prevProps) => {
+  componentDidMount() {
+
+    this.renderOutsideNewTasks();
+
+  }
+
+  componentDidUpdate = prevProps => {
     // Test console.
     // console.log(this.state.projectUsers);
     // console.log(this.state.userId);
-  }
+  };
 
   newTaskModalToggle = () => {
+    this.setState(
+      {
+        newTaskDescription: "",
+        newTaskDeadline: "",
+        userToAdd: [],
+        projectUsers: this.props.projectUsers,
+        usersAdded: []
+      },
+      () => {
+        this.NewTaskDesc.current.value = "";
+        this.NewTaskDeadline.current.value = "";
+        this.props.newTaskModalToggle();
+      }
+    );
+  };
 
-    this.setState({
-      newTaskDescription: "",
-      newTaskDeadline: "",
-      userToAdd: [],
-      projectUsers: this.props.projectUsers,
-      usersAdded: [],
-    }, () => {
-      this.NewTaskDesc.current.value = "";
-      this.NewTaskDeadline.current.value = "";
-      this.props.newTaskModalToggle();
-    })
-
-  }
-
-  chgDescription = (event) => {
-
+  chgDescription = event => {
     const descValue = event.target.value;
 
     this.setState((prevState, props) => {
-      return { newTaskDescription: descValue }
+      return { newTaskDescription: descValue };
     });
+  };
 
-  }
-
-  chgDeadline = (event) => {
-
+  chgDeadline = event => {
     const deadlineValue = event.target.value;
 
     this.setState((prevState, props) => {
-      return { newTaskDeadline: deadlineValue }
+      return { newTaskDeadline: deadlineValue };
     });
+  };
 
-  }
-
-  selectUserToAdd = (event) => {
-
+  selectUserToAdd = event => {
     //  Select the index of the selected item in a dropdown menu.
     let optionIndex = event.target.selectedIndex;
     //  Test console.
@@ -94,19 +95,20 @@ class NewTaskModal extends Component {
     //  Select a Named Attribute (userid) of a given node (similar to HTML Tag). In this case, the node is the Option selected.
     let userToAddId = parseInt(optionSelected.getAttribute("userid"));
 
-    this.setState({
-      userToAdd: this.state.projectUsers.filter(user => {
-        return (user["user.user_id"] === userToAddId);
-      })
-    }, () => {
-      //  Test console.
-      // console.log(this.state.userToAdd);
-    })
+    this.setState(
+      {
+        userToAdd: this.state.projectUsers.filter(user => {
+          return user["user.user_id"] === userToAddId;
+        })
+      },
+      () => {
+        //  Test console.
+        // console.log(this.state.userToAdd);
+      }
+    );
+  };
 
-  }
-
-  addUser = (event) => {
-
+  addUser = event => {
     event.preventDefault();
 
     // Test console.
@@ -114,44 +116,45 @@ class NewTaskModal extends Component {
     // console.log(this.state.userToAdd[0]["user.user_id"]);
 
     if (this.state.userToAdd.length === 0) {
-      return
+      return;
     }
 
     let userToSplice = this.state.userToAdd[0]["user.user_id"];
     // console.log(userToSplice);
 
     if (this.state.userToAdd[0]["user.user_id"] !== "") {
-
-      this.setState({ usersAdded: this.state.usersAdded.concat(this.state.userToAdd) },
+      this.setState(
+        { usersAdded: this.state.usersAdded.concat(this.state.userToAdd) },
         () => {
-
           // Clears up the "userToAdd" state so clicking again the Add butto without having changed the dropdown menu (by selecting a new User) does not concatenate the previously added user once more.
           this.setState({ userToAdd: [] });
 
           // Test console.
           // console.log(this.state.usersAdded);
 
-          this.setState({
-            projectUsers: this.state.projectUsers.filter((user) => {
+          this.setState(
+            {
+              projectUsers: this.state.projectUsers.filter(user => {
+                // Test console.
+                // console.log(user["user.user_id"]);
+                // console.log(userToSplice);
+                return user["user.user_id"] !== userToSplice;
+              })
+            },
+            () => {
               // Test console.
-              // console.log(user["user.user_id"]);
-              // console.log(userToSplice);
-              return user["user.user_id"] !== userToSplice;
-            })
-          }, () => {
-            // Test console.
-            // console.log(this.state.projectUsers);
-          })
-        })
+              // console.log(this.state.projectUsers);
+            }
+          );
+        }
+      );
 
       // Test console.
       // console.log(this.state.usersAdded);
-
     }
-  }
+  };
 
-  deleteUser = (event) => {
-
+  deleteUser = event => {
     event.preventDefault();
 
     //  Since it matters where the exact clicking was made, we made sure to add the "userid" attribute to the Button as well as to the Times Icon so we can retrieve it from either one of them.
@@ -162,7 +165,7 @@ class NewTaskModal extends Component {
     // This variable will create the user deleted from the "usersAdded" list to later contatenating it back (thus it needs to be an array) to the "projectUsers" list to render it as available for choosing again.
     let userToReturn = [];
 
-    userToReturn = this.state.usersAdded.filter((user) => {
+    userToReturn = this.state.usersAdded.filter(user => {
       // Test console.
       // console.log(userToDeleteId);
       // console.log(user["user.user_id"]);
@@ -172,111 +175,142 @@ class NewTaskModal extends Component {
     // Test console.
     // console.log(userToReturn);
 
-    this.setState({
-      projectUsers: this.state.projectUsers.concat(userToReturn)
-    }, () => {
-      // Test console.
-      console.log(this.state.projectUsers);
-    })
+    this.setState(
+      {
+        projectUsers: this.state.projectUsers.concat(userToReturn)
+      },
+      () => {
+        // Test console.
+        console.log(this.state.projectUsers);
+      }
+    );
 
-    this.setState({
-      usersAdded: this.state.usersAdded.filter((user) => {
-        return user["user.user_id"] !== userToDeleteId;
-      })
-    },
+    this.setState(
+      {
+        usersAdded: this.state.usersAdded.filter(user => {
+          return user["user.user_id"] !== userToDeleteId;
+        })
+      },
       () => {
         // Test console.
         console.log(this.state.usersAdded);
-      })
-
-  }
+      }
+    );
+  };
 
   changeMouseIcon = () => {
-
     this.setState((prevState, props) => {
       if (prevState.stateMouseIcon === "context-menu") {
-        return { stateMouseIcon: "pointer" }
+        return { stateMouseIcon: "pointer" };
+      } else {
+        return { stateMouseIcon: "context-menu" };
       }
-      else {
-        return { stateMouseIcon: "context-menu" }
-      }
+    });
+  };
 
-    })
-
-  }
-
-  saveNewTask = (event) => {
-
+  saveNewTask = event => {
     // event.preventDefault();
 
-    if (this.state.newTaskDescription === "") {
-      this.alertMessage("No Description")
-    } else if (this.state.newTaskDeadline === "") {
-      this.alertMessage("No Deadline")
-    } else {
+    const {userId} = this.props;
 
+    if (this.state.newTaskDescription === "") {
+      this.alertMessage("No Description");
+    } else if (this.state.newTaskDeadline === "") {
+      this.alertMessage("No Deadline");
+    } else {
       let newTask;
 
       newTask = {
         description: this.state.newTaskDescription,
         deadline: this.state.newTaskDeadline,
-        other_users: JSON.stringify(this.state.usersAdded.map(user => {
-          return user["user.user_id"];
-        }).concat([parseInt(this.state.userId)]))
+        other_users: JSON.stringify(
+          this.state.usersAdded
+            .map(user => {
+              return user["user.user_id"];
+            })
+            .concat([parseInt(this.state.userId)])
+        )
       };
 
       // Test console.
       // console.log(newTask);
 
+      //? Request for task adding.
       axios
-        .post(`/api/${this.props.projectSelected}/${this.props.categorySelected}/task/add`, newTask)
+        .post(
+          `/api/${userId}/${this.props.projectSelected}/${this.props.categorySelected}/task/add`,
+          newTask
+        )
         .then(data => {
           // Test console.
           // console.log(data.data);
 
+          this.emitNewTask();
+
           this.NewTaskDesc.current.value = "";
           this.NewTaskDeadline.current.value = "";
 
-          this.setState({
-            newTaskDescription: "",
-            newTaskDeadline: "",
-            userToAdd: [],
-            usersAdded: [],
-          }, () => {
-            //  Toggles the NewTaskModal.
-            this.props.newTaskModalToggle();
-            //  Rerenders the TaskCards to include the newly created one.
-            this.props.renderForNewTasks();
-          })
-
+          this.setState(
+            {
+              newTaskDescription: "",
+              newTaskDeadline: "",
+              userToAdd: [],
+              usersAdded: []
+            },
+            () => {
+              //  Toggles the NewTaskModal.
+              this.props.newTaskModalToggle();
+            }
+          );
         })
         .catch(error => {
           console.log(error);
         });
     }
+  };
 
+  emitNewTask = () => {
+    const { socket } = this.props;
+    const msg = "I am saving a new task."
 
-  }
+    socket.emit('SAVE_NEWTASK', msg);
 
-  alertMessage = (msg) => {
+  };
 
+  renderOutsideNewTasks = () => {
+    const { socket } = this.props;
+
+    socket.on('RENDER_NEWTASKS', msg => {
+      //Test console.
+      console.log(
+      "+++++++++++++++++++++++++++++\nI, the client, am getting this 'msg' back from the Server:\n",
+      msg
+      );
+
+      //  Rerenders the TaskCards to include the newly created one.
+      this.props.renderForNewTasks();
+    });
+  };
+
+  alertMessage = msg => {
     if (msg === "No Description") {
-      ;
-      return this.setState({
-        errorMessage: "Please type a Task Description"
-      },
-        () => this.showAlertMessage());
+      return this.setState(
+        {
+          errorMessage: "Please type a Task Description"
+        },
+        () => this.showAlertMessage()
+      );
     } else if (msg === "No Deadline") {
-      return this.setState({
-        errorMessage: "Please type a Task Deadline"
-      },
-        () => this.showAlertMessage());
+      return this.setState(
+        {
+          errorMessage: "Please type a Task Deadline"
+        },
+        () => this.showAlertMessage()
+      );
     }
-
-  }
+  };
 
   showAlertMessage = () => {
-
     let opacityRate = 0;
 
     this.setState({ display: "block" });
@@ -296,49 +330,53 @@ class NewTaskModal extends Component {
       });
       clearInterval(increaseOpacity);
     }, 3000);
-  }
+  };
 
   render() {
-
     let usersToBeAdded;
 
     if (this.state.usersAdded.length > 0) {
-
       // console.log(this.state.usersAdded);
-      usersToBeAdded =
+      usersToBeAdded = (
         <ul id="taskUserList" className="list-group">
-          {this.state.usersAdded.map((user) => {
+          {this.state.usersAdded.map(user => {
             return (
               <li
                 key={user["user.user_id"]}
                 className="taskUser list-group-item text-dark col-md-8"
-                style={{backgroundColor: "lightGrey",  lineHeight: 1, padding: "5px" }}
+                style={{
+                  backgroundColor: "lightGrey",
+                  lineHeight: 1,
+                  padding: "5px"
+                }}
               >
                 <button
-                  className='btn btn-danger pplus'
+                  className="btn btn-danger pplus"
                   userid={user["user.user_id"]}
                   value={user["user.user_name"]}
                   onClick={this.deleteUser}
-                  style={{ margin: 0, marginRight: "5px", display: "inline-block" }}>
+                  style={{
+                    margin: 0,
+                    marginRight: "5px",
+                    display: "inline-block"
+                  }}
+                >
                   <i
-                    className='fa fa-times-circle'
+                    className="fa fa-times-circle"
                     userid={user["user.user_id"]}
                     value={user["user.user_name"]}
-                    aria-hidden='true'>
-                  </i>
+                    aria-hidden="true"
+                  ></i>
                 </button>
                 {user["user.user_name"]}
               </li>
             );
-          })
-          }
+          })}
         </ul>
+      );
     } else {
-      usersToBeAdded =
-        <ul id="taskUserList" className="list-group">
-        </ul>
+      usersToBeAdded = <ul id="taskUserList" className="list-group"></ul>;
     }
-
 
     return (
       // +++++++++++++++++ NEW TASK MODAL +++++++++++++++++
@@ -353,7 +391,14 @@ class NewTaskModal extends Component {
             <h5 className="modal-title">Add new Task</h5>
             <span
               aria-hidden="true"
-              style={{ fontSize: "26px", color:" darkred", textShadow: "lightgrey 0px 2px", lineHeight: "1", fontWeight: 600, cursor: this.state.stateMouseIcon }}
+              style={{
+                fontSize: "26px",
+                color: " darkred",
+                textShadow: "lightgrey 0px 2px",
+                lineHeight: "1",
+                fontWeight: 600,
+                cursor: this.state.stateMouseIcon
+              }}
               onClick={this.newTaskModalToggle}
               onMouseOver={this.changeMouseIcon}
               onMouseOut={this.changeMouseIcon}
@@ -401,7 +446,7 @@ class NewTaskModal extends Component {
                   >
                     <option value="Default">Select User:</option>
                     {/* {console.log(this.state.projectUsers2)} */}
-                    {this.state.projectUsers.map((user) => {
+                    {this.state.projectUsers.map(user => {
                       // console.log(user)
                       return (
                         <option
@@ -456,9 +501,7 @@ class NewTaskModal extends Component {
               role="alert"
             >
               <i className="fa fa-exclamation-circle"></i>
-              <span className="msg">
-                &nbsp; {this.state.errorMessage}
-              </span>
+              <span className="msg">&nbsp; {this.state.errorMessage}</span>
             </div>
             <button
               style={{
@@ -468,12 +511,13 @@ class NewTaskModal extends Component {
               }}
               className="btn btn-outline-success"
               id="addTask"
-              onClick={this.saveNewTask}>
+              onClick={this.saveNewTask}
+            >
               Add task!
             </button>
           </div>
         </div>
-      </Collapse >
+      </Collapse>
     );
   }
 }

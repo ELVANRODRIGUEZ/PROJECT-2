@@ -13,13 +13,26 @@ import CategoryCard from "../components/CategoryCard";
 import TaskModal from "../components/TaskModal";
 import io from "socket.io-client";
 
-// const socketUrl = `http://localhost:${PORT}`;
-const socketUrl = "/";
+//We take the URL the socket will be listening to according to the "NODE_ENV" value.
+let socketUrl;
+
+if (process.env.NODE_ENV === "development") {
+
+  const PORT = 3300;
+  socketUrl = `http://localhost:${PORT}`;
+} else {
+
+  socketUrl = "/";
+}
+
+//Test console.
+// console.log(process.env);
+// console.log(process.env.NODE_ENV);
 
 class Members extends Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       allUsers: [],
       ifNoProjects: null,
@@ -50,7 +63,11 @@ class Members extends Component {
     };
   }
 
-  componentWillMount() {
+  /*
+    This was originally "componentWillMount", although it seemps it is depricated now, so it was renamed to componentDidMount. "UNSAFE_componentWillMount" could have been used as well according to the React development team recommendation.
+    Right after the component has mounted and before it is rendered, we initialize the socket with "this.initSocket".
+    */
+  componentDidMount() {
     //? Get all members so they can be added to a new Project.
     axios
       .get("/members/allMembers")
@@ -73,13 +90,6 @@ class Members extends Component {
       });
 
     this.userInfo();
-  }
-
-  /*
-    This was originally "componentWillMount", although it seemps it is depricated now, so it was renamed to componentDidMount. "UNSAFE_componentWillMount" could have been used as well according to the React development team recommendation.
-    Right after the component has mounted and before it is rendered, we initialize the socket with "this.initSocket".
-    */
-  componentDidMount() {
     this.initSocket();
   }
 
@@ -103,13 +113,19 @@ class Members extends Component {
         // Test console.
         // console.log(data.data);
 
-        this.setState({
-          ifNoProjects: data.data.projectsHtml,
-          projectCards: data.data.projects,
-          userName: data.data.user_Name,
-          userId: data.data.user_Id,
-          userEmail: data.data.user_Email
-        });
+        this.setState(
+          {
+            ifNoProjects: data.data.projectsHtml,
+            projectCards: data.data.projects,
+            userName: data.data.user_Name,
+            userId: data.data.user_Id,
+            userEmail: data.data.user_Email
+          },
+          () => {
+            // Test console.
+            // console.log(this.state.userId);
+          }
+        );
       })
       .catch(error => {
         console.log(error);
@@ -123,7 +139,7 @@ class Members extends Component {
 
     const projectId = event.target.getAttribute("data-id");
     const projectName = event.target.getAttribute("name");
-    // const projectData = { project: event.target.getAttribute("data-id") };
+    const { userId } = this.state;
 
     this.setState(
       {
@@ -133,24 +149,13 @@ class Members extends Component {
       () => {
         axios
           //? This is to get the amount of Tasks in each Category according to the Project selected.
-          .get("/members/info/" + projectId)
+          .get("/members/" + userId + "/info/" + projectId)
           .then(data => {
             // Test console.
             // console.log(data.data);
 
             this.setState({ categoryCards: data.data.categories }, () => {
-              // axios
-              //   //?  This is to set the selected Project on the Server. Just a "Hi" response is gotten after that.
-              //   .post("/api/users-selections", projectData)
-              //   .then(data2 => {
-              //     // Test console.
-              //     // console.log(data2.data);
-
               this.loadProjectUsers();
-              // })
-              // .catch(error => {
-              //   console.log(error);
-              // });
             });
           })
           .catch(error => {
@@ -165,7 +170,7 @@ class Members extends Component {
     // console.log(this.state.projectSelected);
 
     axios
-      //? According to the Project selected, and once that selection has been sent to the Server, this Get request will give back all that Project's Users.
+      //? Gets all selected Project Users.
       .get(`/api/project_users/${this.state.projectSelected}`)
       .then(users => {
         // Test console.
@@ -196,6 +201,7 @@ class Members extends Component {
 
     const categoryId = event.target.getAttribute("data-id");
     const categoryName = event.target.getAttribute("name");
+    const { userId } = this.state;
 
     /*
     React documentation enforces the use of "Functional SetState" to change State values instead of just passing an object to the "SetState" function 
@@ -217,7 +223,9 @@ class Members extends Component {
         axios
           //? This request is to retrieve the Tasks related to the selected Project and Category.
           .get(
-            "/members/info/" +
+            "/members/" +
+              userId +
+              "/info/" +
               this.state.projectSelected +
               "/category/" +
               this.state.categorySelected
@@ -233,7 +241,9 @@ class Members extends Component {
               axios
                 //? This is to get all the Task's Ids from the Selected Project and Category.
                 .get(
-                  "/members/info/" +
+                  "/members/" +
+                    userId +
+                    "/info/" +
                     this.state.projectSelected +
                     "/category/" +
                     this.state.categorySelected +
@@ -296,9 +306,11 @@ class Members extends Component {
   };
 
   renderForNewTasks = () => {
+    const { userId } = this.state;
+
     axios
       //? This is to get the amount of Tasks once a new Task has been added from the NewTaskModal. Project and Category selected are expected to remain the same.
-      .get("/members/info/" + this.state.projectSelected)
+      .get("/members/" + userId + "/info/" + this.state.projectSelected)
       .then(data => {
         // Test console.
         // console.log(data.data);
@@ -311,17 +323,22 @@ class Members extends Component {
 
     let category;
 
-    //! This is just so when a new Category is added without a Category Card has been clicked, "0" is passed instead in the following Axios Call so it does not return an erro.
+    //! This is just so when a new Category is added without a Category Card has been clicked, "1" is passed instead in the following Axios Call so it does not return an error.
     if (this.state.categorySelected === "") {
       category = 1;
     } else {
       category = this.state.categorySelected;
     }
 
+    //? This request is to retrieve the Tasks related to the selected Project and Category. We want to include the recently created one here.
     axios
-      //? This request is to retrieve the new Task once it has been added from the NewTaskModal.
       .get(
-        "/members/info/" + this.state.projectSelected + "/category/" + category
+        "/members/" +
+          userId +
+          "/info/" +
+          this.state.projectSelected +
+          "/category/" +
+          category
       )
       .then(data => {
         // Test console.
@@ -357,6 +374,7 @@ class Members extends Component {
         <DeleteProjectModal
           show={this.state.delProjModalShow}
           handleClose={this.delProjModalClose}
+          userId={this.state.userId}
           projectSelected={this.state.projectSelected}
           projectSelectedName={this.state.projectSelectedName}
           renderForCategories={this.renderForNewTasks}
@@ -366,6 +384,7 @@ class Members extends Component {
         <DeleteCategoryModal
           show={this.state.delCatModalShow}
           handleClose={this.delCatModalClose}
+          userId={this.state.userId}
           projectSelected={this.state.projectSelected}
           projectSelectedName={this.state.projectSelectedName}
           categorySelected={this.state.categorySelected}

@@ -23,7 +23,10 @@ class TaskInfo extends Component {
 
   // This makes the Axios Request to retrieve the Tasks Progress.
   componentDidMount = () => {
-   // console.log(this.props.taskDeadline)
+    //  Test console.
+    // console.log(this.props.taskDeadline)
+
+    //? Route to get Task progress.
     axios.get(`/api/task/${this.props.taskId}/progress`).then(data => {
       //  Test console.
       //   console.log(data.data.accomplished);
@@ -79,6 +82,8 @@ class TaskInfo extends Component {
 
   // This will make the Axios Request to update the Task Progress and unblock the bar.
   updateProgress = edition => {
+
+    //? Route to update Task progress.
     axios.put(`/api/task/${this.props.taskId}/update`, edition).then(users => {
       this.setState({ blockProgress: true });
     });
@@ -149,10 +154,10 @@ class TaskInfo extends Component {
             id="total"
             className="field left form-control col-sm-1"
             readOnly
-            style={{ 
+            style={{
               margin: "5px",
               border: "0px",
-              backgroundColor: "#343a40" 
+              backgroundColor: "#343a40"
             }}
           />
           <button
