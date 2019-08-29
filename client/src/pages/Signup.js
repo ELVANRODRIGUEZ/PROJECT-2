@@ -195,7 +195,7 @@ class Signup extends Component {
 
     //? Route for signing up a user.
     axios
-      .post("/api/signup", userData)
+      .post("/api/post/signup", userData)
 
       .then(res => {
         //Test console.

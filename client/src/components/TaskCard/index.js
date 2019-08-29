@@ -7,7 +7,7 @@ import axios from "axios";
 import MailForm from "../MailForm";
 import MailRetrieve from "../MailRetrieve";
 import EditTaskModal from "../EditTaskModal";
-import EraseTaskModal from "../EraseTaskModal";
+import DeleteTaskModal from "../DeleteTaskModal";
 import TaskInfo from "./TaskInfo";
 import TaskUsers from "./TaskUsers";
 import Chat from "../Chat";
@@ -42,9 +42,12 @@ class TaskCard extends Component {
   };
 
   getUsers = (params, callback) => {
-    //? This is to get the Users related to a Task with the logged User filtered out.
+    //? Route to get the Users related to a Task with the logged User filtered out.
+    //> Endpoint at: "../../../routes/apiTask.js"
     axios
-      .get(`/api/${this.props.userId}/project/${this.props.taskId}/users`)
+      .get(
+        `/api/task/get/users_rel_to_taks/${this.props.userId}/${this.props.taskId}`
+      )
       .then(users => {
         //  Test console.
         // console.log(users.data);
@@ -79,9 +82,10 @@ class TaskCard extends Component {
               // console.log(this.state.taskUsersIds);
               // console.log(this.state.allTaskUsers);
 
-              //? Route for getting all users that are releted to the selected Project but filtering out the already existing ones related to the selected Task
+              //? Route for getting all users that are releted to the selected Project but filtering out the already existing ones related to the selected Task.
+              //> Endpoint at: "../../../routes/apiTask.js"
               axios
-                .post(`/api/${this.props.projectId}/users`, {
+                .post(`/api/task/add/get_projUsers_with_no_taskUsers/${this.props.projectId}`, {
                   usersIds: this.state.taskUsersIds
                 })
                 .then(users2 => {
@@ -236,13 +240,13 @@ class TaskCard extends Component {
           </button>
 
           {/* +++++++++++++++++ ERASE TASK MODAL +++++++++++++++++ */}
-          <EraseTaskModal
+          <DeleteTaskModal
             eraseTaskModalView={this.props.eraseTaskModalShow}
             userId={this.props.userId}
             taskId={this.props.taskId}
             eraseTaskModalToggle={this.eraseTaskModalToggle}
             renderForNewTasks={this.props.renderForNewTasks}
-          ></EraseTaskModal>
+          ></DeleteTaskModal>
 
           {/* +++++++++++++++++ EDIT TASK MODAL +++++++++++++++++ */}
           <EditTaskModal

@@ -17,11 +17,9 @@ import io from "socket.io-client";
 let socketUrl;
 
 if (process.env.NODE_ENV === "development") {
-
   const PORT = 3300;
   socketUrl = `http://localhost:${PORT}`;
 } else {
-
   socketUrl = "/";
 }
 
@@ -32,7 +30,7 @@ if (process.env.NODE_ENV === "development") {
 class Members extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       allUsers: [],
       ifNoProjects: null,
@@ -69,8 +67,9 @@ class Members extends Component {
     */
   componentDidMount() {
     //? Get all members so they can be added to a new Project.
+    //> Endpoint at: "../../../routes/apiProject.js"
     axios
-      .get("/members/allMembers")
+      .get("/api/project/get/all_members")
       .then(data => {
         // Test console.
         // console.log(data.data);
@@ -107,8 +106,9 @@ class Members extends Component {
 
   userInfo = () => {
     //? Get all info about the logged member.
+    //> Endpoint at: "../../../routes/apiLogin.js"
     axios
-      .get("/members/info")
+      .get("/api/get/user/info")
       .then(data => {
         // Test console.
         // console.log(data.data);
@@ -147,9 +147,10 @@ class Members extends Component {
         projectSelectedName: projectName
       },
       () => {
+        //? Route to get the amount of Tasks in each Category according to the Project selected (This also called for rerendering).
+        //> Endpoint at: "../../../routes/apiCategory.js"
         axios
-          //? This is to get the amount of Tasks in each Category according to the Project selected.
-          .get("/members/" + userId + "/info/" + projectId)
+          .get(`/api/category/get/tasks_in_category/${userId}/${projectId}`)
           .then(data => {
             // Test console.
             // console.log(data.data);
@@ -171,7 +172,8 @@ class Members extends Component {
 
     axios
       //? Gets all selected Project Users.
-      .get(`/api/project_users/${this.state.projectSelected}`)
+      //> Endpoint at: "../../../routes/apiProject.js"
+      .get(`/api/project/get/project_users/${this.state.projectSelected}`)
       .then(users => {
         // Test console.
         // console.log(users.data);
@@ -220,15 +222,11 @@ class Members extends Component {
         categorySelectedName: categoryName
       },
       () => {
+        //? Route to retrieve the Tasks related to the selected Project and Category.
+        //> Endpoint at: "../../../routes/apiTask.js"
         axios
-          //? This request is to retrieve the Tasks related to the selected Project and Category.
           .get(
-            "/members/" +
-              userId +
-              "/info/" +
-              this.state.projectSelected +
-              "/category/" +
-              this.state.categorySelected
+            `/api/task/get/tasks_on_proj_and_cat/${userId}/${this.state.projectSelected}/${this.state.categorySelected}`
           )
           .then(data => {
             // Test console.
@@ -238,16 +236,11 @@ class Members extends Component {
               // Test console.
               // console.log(this.state.tasksCards);
 
+              //? This is to get all the Task's Ids from the Selected Project and Category.
+              //> Endpoint at: "../../../routes/apiTask.js"
               axios
-                //? This is to get all the Task's Ids from the Selected Project and Category.
                 .get(
-                  "/members/" +
-                    userId +
-                    "/info/" +
-                    this.state.projectSelected +
-                    "/category/" +
-                    this.state.categorySelected +
-                    "/all_tasks"
+                  `/api/task/get/tasksIds_on_proj_and_cat/${userId}/${this.state.projectSelected}/${this.state.categorySelected}`
                 )
                 .then(function(data3) {
                   // Test console.
@@ -306,11 +299,13 @@ class Members extends Component {
   };
 
   renderForNewTasks = () => {
-    const { userId } = this.state;
+    const { userId, projectSelected, categorySelected } = this.state;
 
+    //? Route to get the amount of Tasks in each Category according to the Project selected (This also called for rerendering).
+    //Project and Category selected are expected to remain the same.
+    //> Endpoint at: "../../../routes/apiTask.js"
     axios
-      //? This is to get the amount of Tasks once a new Task has been added from the NewTaskModal. Project and Category selected are expected to remain the same.
-      .get("/members/" + userId + "/info/" + this.state.projectSelected)
+      .get(`/api/category/get/tasks_in_category/${userId}/${projectSelected}`)
       .then(data => {
         // Test console.
         // console.log(data.data);
@@ -324,21 +319,18 @@ class Members extends Component {
     let category;
 
     //! This is just so when a new Category is added without a Category Card has been clicked, "1" is passed instead in the following Axios Call so it does not return an error.
-    if (this.state.categorySelected === "") {
+    if (categorySelected === "") {
       category = 1;
     } else {
-      category = this.state.categorySelected;
+      category = categorySelected;
     }
 
-    //? This request is to retrieve the Tasks related to the selected Project and Category. We want to include the recently created one here.
+    //? Route to retrieve the Tasks related to the selected Project and Category (This also called for rerendering).
+    //This is to rerender after the new Task has been created.
+    //> Endpoint at: "../../../routes/apiTask.js"
     axios
       .get(
-        "/members/" +
-          userId +
-          "/info/" +
-          this.state.projectSelected +
-          "/category/" +
-          category
+        `/api/task/get/tasks_on_proj_and_cat/${userId}/${projectSelected}/${category}`
       )
       .then(data => {
         // Test console.
@@ -347,6 +339,20 @@ class Members extends Component {
         this.setState({ tasksCards: data.data.tasks }, () => {
           // Test console.
           // console.log(this.state.tasksCards);
+
+          //? This is to get all the Task's Ids from the Selected Project and Category.
+          //> Endpoint at: "../../../routes/apiTask.js"
+          axios
+            .get(
+              `/api/task/get/tasksIds_on_proj_and_cat/${userId}/${projectSelected}/${category}`
+            )
+            .then(function(data3) {
+              // Test console.
+              // console.log(data3.data);
+            })
+            .catch(error => {
+              console.log(error);
+            });
         });
       })
       .catch(error => {

@@ -222,9 +222,10 @@ class NewProjectModal extends Component {
       // Test console.
       //   console.log(newProject);
 
-      //? Route for adding a project.
+      //? Route for adding a Project.
+      //> Endpoint at: "../../../routes/apiProject.js"
       axios
-        .post(`/api/${userId}/projects/add`, newProject)
+        .post(`/api/project/add/${userId}`, newProject)
         .then(data => {
           // Test console.
           // console.log(data.data);

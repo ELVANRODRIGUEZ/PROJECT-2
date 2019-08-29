@@ -27,9 +27,10 @@ class TaskInfo extends Component {
     // console.log(this.props.taskDeadline)
 
     //? Route to get Task progress.
-    axios.get(`/api/task/${this.props.taskId}/progress`).then(data => {
+    //> Endpoint at: "../../../routes/apiTask.js"
+    axios.get(`/api/task/get/progress/${this.props.taskId}`).then(data => {
       //  Test console.
-      //   console.log(data.data.accomplished);
+      // console.log(data.data.accomplished);
       let progress = data.data.accomplished;
       this.setState({
         taskAccomplished: parseInt(parseFloat(progress) * 100)
@@ -82,11 +83,13 @@ class TaskInfo extends Component {
 
   // This will make the Axios Request to update the Task Progress and unblock the bar.
   updateProgress = edition => {
-
     //? Route to update Task progress.
-    axios.put(`/api/task/${this.props.taskId}/update`, edition).then(users => {
-      this.setState({ blockProgress: true });
-    });
+    //> Endpoint at: "../../../routes/apiTask.js"
+    axios
+      .put(`/api/task/update/taskProgress/${this.props.taskId}`, edition)
+      .then(() => {
+        this.setState({ blockProgress: true });
+      });
   };
 
   render() {

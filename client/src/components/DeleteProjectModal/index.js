@@ -15,10 +15,11 @@ class DeleteProjectModal extends Component {
   deleteProject = () => {
     const { userId } = this.props;
 
-    //? Route to delete a Tasks (and all relationships) nested in a Project.
+    //? Route to delete all Tasks nested in a Project for the logged User.
+    //> Endpoint at: "../../../routes/apiProject.js"
     axios
       .delete(
-        `/members/${userId}/info/${this.props.projectSelected}/delete_all_tasks`
+        `/api/project/delete/all_tasks/${userId}/${this.props.projectSelected}`
       )
       .then(data => {
         //  Test console.

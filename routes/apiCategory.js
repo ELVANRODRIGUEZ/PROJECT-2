@@ -9,24 +9,25 @@ let isAuthenticated = require("../config/middleware/isAuthenticated");
 module.exports = function(app) {
   //*++++++++++++++++++++++++++++++++++++++++++++++++ POST
 
-  // Route for adding a category.
+  //? Route for adding a category.
+  //> Request from: "../client/src/components/NewCategoryModal/index.js"
   app.post("/api/category/add", isAuthenticated, function(req, res) {
-    let catName = req.body.name;
-    let catDescription = req.body.description;
+    let {name} = req.body;
+    let {description} = req.body;
 
     //Test console.
     // console.log("++++++++++++++++++++++++++++++++");
-    // console.log(CatName);
-    // console.log(CatDescription);
+    // console.log(name);
+    // console.log(description);
     // console.log("++++++++++++++++++++++++++++++++");
 
-    if (!catName || !catDescription) {
+    if (!name || !description) {
       res.send("Something went wrong. Please Try again.");
     } else {
       db.categories
         .create({
-          category_name: catName,
-          description: catDescription
+          category_name: name,
+          description: description
         })
         .then(function(category) {
           let categoryRel = [];
@@ -48,18 +49,19 @@ module.exports = function(app) {
 
   //*++++++++++++++++++++++++++++++++++++++++++++++++ GET
 
-  // This is to get the amount of Tasks in each Category according to the Project selected.
-  app.get("/members/:user/info/:projectId", isAuthenticated, function(
+  //? Route to get the amount of Tasks in each Category according to the Project selected (This also called for rerendering).
+  //> Request from: "../client/src/pages/Members.js"
+  app.get("/api/category/get/tasks_in_category/:user/:projectId", isAuthenticated, function(
     req,
     res
   ) {
-    let userId = req.params.user;
-    let projectId = req.params.projectId;
+    let {user} = req.params;
+    let {projectId} = req.params;
     let allCategories = [];
 
     // Test console.
     // console.log("++++++++++++++++++++++++++++++++");
-    // console.log(userId);
+    // console.log(user);
     // console.log(projectId);
     // console.log("++++++++++++++++++++++++++++++++");
 
@@ -85,7 +87,7 @@ module.exports = function(app) {
       "LEFT JOIN tasks_responsibles tr " +
       "ON tr.task_id = t.id " +
       "WHERE tr.responsible = " +
-      userId +
+      user +
       " AND t.task_project = " +
       projectId +
       " GROUP BY category_id) t2 " +
@@ -119,18 +121,21 @@ module.exports = function(app) {
 
   //*++++++++++++++++++++++++++++++++++++++++++++++++ DELETE
 
-  // Route to delete a Tasks (and all relationships) nested in a Category.
-  app.delete("/members/:user/info/:project/category/:category/delete_all_tasks", isAuthenticated, function(
+  //? Route to delete all Tasks nested in a Category for the logged User.
+  //> Request from: "../client/src/components/DeleteCategoryModal/index.js"
+  app.delete("/api/category/delete/all_tasks/:user/:project/:category", isAuthenticated, function(
     req,
     res
   ) {
-    let userId = req.params.user;
+    let {user} = req.params;
+    let {project} = req.params;
+    let {category} = req.params;
 
     db.tasks
       .findAll({
         where: {
-          task_project: req.params.project,
-          task_category: req.params.category
+          task_project: project,
+          task_category: category
         }
       })
       .then(function(data) {
@@ -140,7 +145,7 @@ module.exports = function(app) {
 
         //  Test console.
         // console.log("++++++++++++++++++++++++++++++++");
-        // console.log(userId);
+        // console.log(user);
         // console.log(allProjCatTasks);
         // console.log("++++++++++++++++++++++++++++++++");
 
@@ -150,7 +155,7 @@ module.exports = function(app) {
               task_id: {
                 [Op.in]: allProjCatTasks
               },
-              responsible: userId
+              responsible: user
             }
           })
           .then(function() {

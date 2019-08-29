@@ -15,10 +15,11 @@ class DeleteCategoryModal extends Component {
   deleteCategory = () => {
     const { userId, projectSelected, categorySelected  } = this.props;
 
-    //? Route to delete a Tasks (and all relationships) nested in a Category.
+    //? Route to delete all Tasks nested in a Category for the logged User.
+    //> Endpoint at: "../../../routes/apiCategory.js"
     axios
       .delete(
-        `/members/${userId}/info/${projectSelected}/category/${categorySelected}/delete_all_tasks`
+        `/api/category/delete/all_tasks/${userId}/${projectSelected}/${categorySelected}`
       )
       .then(data => {
         //  Test console.

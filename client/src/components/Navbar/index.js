@@ -7,9 +7,10 @@ class Navbar extends Component {
     // Test console.
     // console.log("clicked signout");
 
-    //? Route for logging out a user.
+    //? Route for logging user out.
+    //> Endpoint at: "../../../routes/apiLogin.js"
     axios
-      .get("/logout")
+      .get("/api/get/logout")
       .then(res => {
         if (res.data === "You are logged out") {
           //Test console.

@@ -9,8 +9,9 @@ class EraseTaskModal extends Component {
     const { userId } = this.props;
 
     //? Route to delete a User from a Task (not the Task itself).
+    //> Endpoint at: "../../../routes/apiTask.js"
     axios
-      .delete(`/api/${userId}/task/${this.props.taskId}/delete`)
+      .delete(`/api/task/delete/${userId}/${this.props.taskId}`)
       .then(data => {
         //  Rerenders the TaskCards to include the newly created one.
         this.props.renderForNewTasks();

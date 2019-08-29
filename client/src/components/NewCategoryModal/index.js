@@ -77,6 +77,7 @@ class NewCategoryModal extends Component {
       //   console.log(newCategory);
 
       //? Route for adding a category.
+      //> Endpoint at: "../../../routes/apiCategory.js"
       axios
         .post("/api/category/add", newCategory)
         .then(data => {

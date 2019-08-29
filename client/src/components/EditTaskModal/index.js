@@ -57,7 +57,7 @@ class EditTaskModal extends Component {
         () => {
           //  Test console.
           //   console.log(this.state.taskUsers);
-            // console.log(this.state.notTaskUsers);
+          // console.log(this.state.notTaskUsers);
         }
       );
     }
@@ -416,8 +416,9 @@ class EditTaskModal extends Component {
       // console.log(newTask);
 
       //? Request to update the Task.
+      //> Endpoint at: "../../../routes/apiTask.js"
       axios
-        .put(`/api/project/task/${this.props.taskId}`, editedTask)
+        .put(`/api/task/update/taskInfo/${this.props.taskId}`, editedTask)
         .then(data => {
           // Test console.
           //   console.log(data.data);
@@ -433,12 +434,10 @@ class EditTaskModal extends Component {
               };
             });
 
-            // Request to add Users to the Task.
+            //? Request to add Users to the Task.
+            //> Endpoint at: "../../../routes/apiTask.js"
             axios
-              .post(
-                `/api/project/task/responsible/${this.props.taskId}`,
-                newTaskResp
-              )
+              .post(`/api/task/add/users`, newTaskResp)
               .then(data2 => {
                 // Test console.
                 // console.log(data2.data);
@@ -467,12 +466,12 @@ class EditTaskModal extends Component {
               return user.user_id.toString();
             });
 
-            // Request to delete Users from the Task.
+            //? Route to delete Users from the Task (not the Task itself).
+            //> Endpoint at: "../../../routes/apiTask.js"
             axios
-              .delete(
-                `/api/project/task/responsible/delete/${this.props.taskId}`,
-                { data: { data: taskRespToRemove } }
-              )
+              .delete(`/api/task/delete/users/${this.props.taskId}`, {
+                data: { data: taskRespToRemove }
+              })
               .then(data3 => {
                 // Test console.
                 // console.log(data3.data);
@@ -562,7 +561,11 @@ class EditTaskModal extends Component {
               <li
                 key={user["user.user_id"]}
                 className="taskUser list-group-item text-dark col-md-8"
-                style={{backgroundColor: "lightgrey", lineHeight: 1, padding: "5px" }}
+                style={{
+                  backgroundColor: "lightgrey",
+                  lineHeight: 1,
+                  padding: "5px"
+                }}
               >
                 <button
                   className="btn btn-danger pplus"
@@ -601,7 +604,11 @@ class EditTaskModal extends Component {
               <li
                 key={user.user_id}
                 className="taskUser list-group-item text-dark col-md-8"
-                style={{backgroundColor: "lightgrey", lineHeight: 1, padding: "5px" }}
+                style={{
+                  backgroundColor: "lightgrey",
+                  lineHeight: 1,
+                  padding: "5px"
+                }}
               >
                 <button
                   className="btn btn-danger pplus"

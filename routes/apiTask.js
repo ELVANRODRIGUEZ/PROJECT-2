@@ -9,47 +9,48 @@ let isAuthenticated = require("../config/middleware/isAuthenticated");
 module.exports = function(app) {
   //*++++++++++++++++++++++++++++++++++++++++++++++++ POST
 
-  // Route for task adding.
-  app.post("/api/:user/:project/:category/task/add", isAuthenticated, function(req, res) {
-    let taskDescription = req.body.description;
-    let taskDeadline = req.body.deadline;
+  //? Route for task adding.
+  //> Request from: "../client/src/components/NewTaskModal/index.js"
+  app.post("/api/task/add/:user/:project/:category", isAuthenticated, function(req, res) {
+    let {description} = req.body;
+    let {deadline} = req.body;
     let taskAccomplishment = 0;
-    let taskProject = req.params.project;
-    let userId = req.params.user;
-    let taskCategory = req.params.category;
+    let {project} = req.params;
+    let {user} = req.params;
+    let {category} = req.params;
     let taskParent = null;
 
     let otherUsers = JSON.parse(req.body.other_users);
 
     // Test console.
     // console.log("++++++++++++++++++++++++++++++++");
-    // console.log(taskDescription);
-    // console.log(taskDeadline);
+    // console.log(description);
+    // console.log(deadline);
     // console.log(taskAccomplishment);
-    // console.log(taskProject);
-    // console.log(userId);
-    // console.log(taskCategory);
+    // console.log(project);
+    // console.log(user);
+    // console.log(category);
     // console.log(taskParent);
     // console.log("++++++++++++++++++++++++++++++++");
 
     if (
-      !taskDescription ||
-      !taskDeadline ||
-      !taskProject ||
-      !userId ||
-      !taskCategory
+      !description ||
+      !deadline ||
+      !project ||
+      !user ||
+      !category
     ) {
       res.send("Something went wrong. Please Try again.");
       console.log("Failed on adding new Task!");
     } else {
       db.tasks
         .create({
-          description: taskDescription,
-          dead_line: taskDeadline,
+          description: description,
+          dead_line: deadline,
           accomplished: taskAccomplishment,
-          task_project: taskProject,
-          created_by: userId,
-          task_category: taskCategory,
+          task_project: project,
+          created_by: user,
+          task_category: category,
           parent_id: taskParent
         })
         .then(function(task) {
@@ -87,20 +88,23 @@ module.exports = function(app) {
     });
   }
 
-  // Route for getting all users that are related to the selected Project but filtering out the already existing ones related to the selected Task
-  //>>>>>>>>>>>>>>>>>>>>>>>READY!!!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-  app.post("/api/:project/users", isAuthenticated, function(req, res) {
+  //? Route for getting all users that are releted to the selected Project but filtering out the already existing ones related to the selected Task.
+  //> Request from: "../client/src/components/TaskCard/index.js"
+  app.post("/api/task/add/get_projUsers_with_no_taskUsers/:project", isAuthenticated, function(req, res) {
+    let {project} = req.params;
+    let {usersIds} = req.body;
+
     //Test console.
     // console.log("++++++++++++++++++++++++++++++++");
-    // console.log(req.body.usersIds);
+    // console.log(usersIds);
     // console.log("++++++++++++++++++++++++++++++++");
 
     db.project_users
       .findAll({
         attributes: [["user_name", "user_id"]],
         where: {
-          project_name: req.params.project,
-          user_name: { [Op.notIn]: req.body.usersIds }
+          project_name: project,
+          user_name: { [Op.notIn]: usersIds }
         },
         raw: true,
         include: [
@@ -119,7 +123,7 @@ module.exports = function(app) {
                   ["id", "relationship_project-user"]
                 ],
                 where: {
-                  project_name: req.params.project
+                  project_name: project
                 },
                 include: [
                   {
@@ -142,8 +146,9 @@ module.exports = function(app) {
       });
   });
 
-  // Route to add Responsibles to a Task.
-  app.post("/api/project/task/responsible/:id", isAuthenticated, function(req, res) {
+  //? Route to add Users to a Task.
+  //> Request from: "../client/src/components/EditTaskModal/index.js"
+  app.post("/api/task/add/users", isAuthenticated, function(req, res) {
     //  Test console.
     // console.log("++++++++++++++++++++++++++++++++");
     // console.log(req.body);
@@ -163,16 +168,17 @@ module.exports = function(app) {
 
   //*++++++++++++++++++++++++++++++++++++++++++++++++ GET
 
-  // Route to get the Users related to a Task with the logged User filtered out.
-  app.get("/api/:user/project/:task/users", isAuthenticated, function(req, res) {
-    let userId = req.params.user;
-    let taskId = req.params.task;
+  //? Route to get the Users related to a Task with the logged User filtered out.
+  //> Request from: "../client/src/components/TaskCard/index.js"
+  app.get("/api/task/get/users_rel_to_taks/:user/:taskId", isAuthenticated, function(req, res) {
+    let {user} = req.params;
+    let {taskId} = req.params;
     let allTaskUsers = [];
     let forTaskAddingId = [];
 
     // Test console.
     // console.log("++++++++++++++++++++++++++++++++");
-    // console.log(userId);
+    // console.log(user);
     // console.log(taskId);
     // console.log("++++++++++++++++++++++++++++++++");
 
@@ -211,25 +217,27 @@ module.exports = function(app) {
 
       // Filter Session User to send a clean "ready to use" Users to Add array.
       forTaskAddingId = allTaskUsers.filter(users => {
-        return users.user_id !== parseInt(userId);
+        return users.user_id !== parseInt(user);
       });
 
       res.json(forTaskAddingId);
     });
   });
 
-  // Route to get Task progress.
-  app.get("/api/task/:id/progress", isAuthenticated, function(req, res) {
+  //? Route to get Task progress.
+  //> Request from: "../client/src/components/TaskCard/TaskInfo/index.js"
+  app.get("/api/task/get/progress/:taskId", isAuthenticated, function(req, res) {
+    let {taskId} = req.params;
+
     //Test console.
     // console.log("++++++++++++++++++++++++++++++++");
-    // console.log(req.body.dead_line);
-    // console.log(req.params.id);
+    // console.log(taskId);
     // console.log("++++++++++++++++++++++++++++++++");
 
     db.tasks
       .findOne({
         where: {
-          id: req.params.id
+          id: taskId
         },
         attributes: ["accomplished"]
       })
@@ -238,24 +246,21 @@ module.exports = function(app) {
       });
   });
 
-  // This request is to retrieve the Tasks related to the selected Project and Category.
-  app.get("/members/:user/info/:projectId/category/:categoryId", isAuthenticated, function(
+  //? Route to retrieve the Tasks related to the selected Project and Category.
+  //> Request from: "../client/src/pages/Members.js"
+  app.get("/api/task/get/tasks_on_proj_and_cat/:user/:projectId/:categoryId", isAuthenticated, function(
     req,
     res
   ) {
-    //Production console.
-    console.log(
-      "I am here at '/members/:user/info/:projectId/category/:categoryId' endpoint"
-    );
 
-    let userId = req.params.user;
-    let categoryId = req.params.categoryId;
-    let projectId = req.params.projectId;
+    let {user} = req.params;
+    let {categoryId} = req.params;
+    let {projectId} = req.params;
     let allTasks = [];
 
     //Test console.
     // console.log("++++++++++++++++++++++++++++++++");
-    // console.log(userId);
+    // console.log(user);
     // console.log(projectId);
     // console.log(categoryId);
     // console.log("++++++++++++++++++++++++++++++++");
@@ -282,7 +287,7 @@ module.exports = function(app) {
       "LEFT JOIN project_users pu ON u.id = pu.user_name " +
       "JOIN projects p ON p.id = pu.project_name " +
       "WHERE u.id = " +
-      userId +
+      user +
       " AND p.id = " +
       projectId +
       ") up " +
@@ -298,7 +303,7 @@ module.exports = function(app) {
       "LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id " +
       "LEFT JOIN tasks t ON t.id = tr.task_id " +
       "WHERE u.id = " +
-      userId +
+      user +
       ") upt " +
       "ON upt.task_project_id = up.project_id " +
       "LEFT JOIN " +
@@ -335,24 +340,21 @@ module.exports = function(app) {
     });
   });
 
-  // This is to get all the Task's Ids from the Selected Project and Category.
+  //? This is to get all the Task's Ids from the Selected Project and Category.
+  //> Request from: "../client/src/pages/Members.js"
   app.get(
-    "/members/:user/info/:projectId/category/:categoryId/all_tasks",
+    "/api/task/get/tasksIds_on_proj_and_cat/:user/:projectId/:categoryId",
     isAuthenticated,
     function(req, res) {
-      //Production console.
-      console.log(
-        "I am here at '/members/:user/info/:projectId/category/:categoryId/all_tasks' endpoint"
-      );
 
-      let userId = req.params.user;
-      let categoryId = req.params.categoryId;
-      let projectId = req.params.projectId;
+      let {user} = req.params;
+      let {categoryId} = req.params;
+      let {projectId} = req.params;
       let allTasksInCategory = [];
 
       // Test console.
       // console.log("++++++++++++++++++++++++++++++++");
-      // console.log(userId);
+      // console.log(user);
       // console.log(projectId);
       // console.log(categoryId);
       // console.log("++++++++++++++++++++++++++++++++");
@@ -379,7 +381,7 @@ module.exports = function(app) {
         "LEFT JOIN project_users pu ON u.id = pu.user_name " +
         "JOIN projects p ON p.id = pu.project_name " +
         "WHERE u.id = " +
-        userId +
+        user +
         " AND p.id = " +
         projectId +
         ") up " +
@@ -395,7 +397,7 @@ module.exports = function(app) {
         "LEFT JOIN tasks_responsibles tr ON tr.responsible = u.id " +
         "LEFT JOIN tasks t ON t.id = tr.task_id " +
         "WHERE u.id = " +
-        userId +
+        user +
         ") upt " +
         "ON upt.task_project_id = up.project_id " +
         "LEFT JOIN " +
@@ -436,17 +438,22 @@ module.exports = function(app) {
 
   //*++++++++++++++++++++++++++++++++++++++++++++++++ PUT
 
-  // Route to update the Task..
-  app.put("/api/project/task/:id", function(req, res) {
+  //? Request to update the Task.
+  //> Request from: "../client/src/components/EditTaskModal/index.js"
+  app.put("/api/task/update/taskInfo/:taskId", function(req, res) {
+    let {taskId} = req.params;
+    let {description} = req.body;
+    let {deadline} = req.body;
+
     db.tasks
       .update(
         {
-          description: req.body.description,
-          dead_line: req.body.deadline
+          description: description,
+          dead_line: deadline
         },
         {
           where: {
-            id: req.params.id
+            id: taskId
           }
         }
       )
@@ -455,22 +462,26 @@ module.exports = function(app) {
       });
   });
 
-  // Route to update Task progress.
-  app.put("/api/task/:id/update", function(req, res) {
+  //? Route to update Task progress.
+  //> Request from: "../client/src/components/TaskCard/TaskInfo/index.js"
+  app.put("/api/task/update/taskProgress/:taskId", function(req, res) {
+    let {taskId} = req.params;
+    let {accomplished} = req.body;
+
     //Test console.
     // console.log("++++++++++++++++++++++++++++++++");
-    // console.log(req.body.dead_line);
-    // console.log(req.params.id);
+    // console.log(taskId);
+    // console.log(accomplished);
     // console.log("++++++++++++++++++++++++++++++++");
 
     db.tasks
       .update(
         {
-          accomplished: req.body.accomplished
+          accomplished: accomplished
         },
         {
           where: {
-            id: req.params.id
+            id: taskId
           }
         }
       )
@@ -481,20 +492,22 @@ module.exports = function(app) {
 
   //*++++++++++++++++++++++++++++++++++++++++++++++++ DELETE
 
-  // Route to delete Users from the Task.
-  app.delete("/api/project/task/responsible/delete/:id", function(req, res) {
+  //? Route to delete Users from the Task (not the Task itself).
+  //> Request from: "../client/src/components/EditTaskModal/index.js"
+  app.delete("/api/task/delete/users/:taskId", function(req, res) {
     let bulk = req.body.data;
+    let {taskId} = req.params;
 
     //  Test console.
     // console.log("++++++++++++++++++++++++++++++++");
     // console.log(bulk);
-    // console.log(req.params.id);
+    // console.log(taskId);
     // console.log("++++++++++++++++++++++++++++++++");
 
     db.tasks_responsibles
       .findAll({
         where: {
-          task_id: req.params.id,
+          task_id: taskId,
           responsible: bulk
         }
       })
@@ -522,22 +535,23 @@ module.exports = function(app) {
       });
   });
 
-  // Route to delete a User from a Task (not the Task itself).
-  app.delete("/api/:user/task/:id/delete", function(req, res) {
-    let taskId = req.params.id;
-    let userId = req.params.user;
+  //? Route to delete a User from a Task (not the Task itself).
+  //> Request from: "../client/src/components/DeleteTaskModal/index.js"
+  app.delete("/api/task/delete/:user/:taskId", function(req, res) {
+    let {taskId} = req.params;
+    let {user} = req.params;
 
     //Test console.
     // console.log("++++++++++++++++++++++++++++++++");
     // console.log(taskId);
-    // console.log(userId);
+    // console.log(user);
     // console.log("++++++++++++++++++++++++++++++++");
 
     db.tasks_responsibles
       .destroy({
         where: {
           task_id: taskId,
-          responsible: userId
+          responsible: user
         }
       })
       .then(function() {

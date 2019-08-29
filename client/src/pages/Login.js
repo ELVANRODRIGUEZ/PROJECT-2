@@ -37,8 +37,9 @@ class Login extends Component {
     // console.log(userData);
 
     //? Route for logging on a user.
+    //> Endpoint at: "../../../routes/apiLogin.js"
     axios
-      .post("/api/login", userData)
+      .post("/api/post/login", userData)
       .then(res => {
         if ((res = "Successful")) {
           this.props.history.push("/members")
@@ -71,7 +72,7 @@ class Login extends Component {
     return (
       <div id="most-outter">
 
-        <h1 style = {{color: "white", marginTop: "5px", marginLeft: "10px"}}>Team Organizer™ v3.2.1 </h1>
+        <h1 style = {{color: "white", marginTop: "5px", marginLeft: "10px"}}>Team Organizer™ v3.3 </h1>
         <div id="outter">
            <div id="login-form" className="container text-white">
             <div className="row login-form bg-dark">

@@ -11,7 +11,12 @@ module.exports = function(app) {
   //*++++++++++++++++++++++++++++++++++++++++++++++++ POST
 
   // Using the passport.authenticate middleware with our local strategy. If the user has valid login credentials, send them to the members page. Otherwise the user will be sent an error
-  app.post("/api/login", passport.authenticate("local"), function(req, res) {
+  //? Route for logging on a user.
+  //> Request from: "../client/src/pages/Login.js"
+  app.post("/api/post/login", passport.authenticate("local"), function(
+    req,
+    res
+  ) {
     // Since we're doing a POST with javascript, we can't actually redirect that post into a GET request. So we're sending the user back the route to the members page because the redirect will happen on the front end. They won't get this or even be able to access this page if they aren't authenticated.
 
     //Production console.
@@ -26,7 +31,9 @@ module.exports = function(app) {
   });
 
   // Route for signing up a user. The user's password is automatically hashed and stored securely thanks to how we configured our Sequelize User Model. If the user is created successfully, proceed to log the user in, otherwise send back an error.
-  app.post("/api/signup", function(req, res) {
+  //? Route for signing up a user.
+  //> Request from: "../client/src/pages/Signup.js"
+  app.post("/api/post/signup", function(req, res) {
     db.users
       .create({
         user_name: req.body.userName,
@@ -47,21 +54,27 @@ module.exports = function(app) {
 
   //*++++++++++++++++++++++++++++++++++++++++++++++++ GET
 
-  // Route for logging user out
-  app.get("/logout", function(req, res) {
+  //? Route for logging user out.
+  //> Request from: "../client/src/components/Navbar/index.js"
+  app.get("/api/get/logout", function(req, res) {
     //Production console.
     console.log("I am here at '/logout'.");
     req.logout();
     res.send("You are logged out");
   });
 
-  // Get all info about the logged member.
-  app.get("/members/info", isAuthenticated, function(req, res) {
-    let id = req.user.id;
+  //? Get all info about the logged member.
+  //> Request from: "../client/src/pages/Members.js"
+  app.get("/api/get/user/info", isAuthenticated, function(req, res) {
+    let {id} = req.user;
+    let {user_name} = req.user;
+    let {email} = req.user;
 
     // Test console.
     // console.log("++++++++++++++++++++++++++++++++");
     // console.log(id);
+    // console.log(user_name);
+    // console.log(email);
     // console.log("++++++++++++++++++++++++++++++++");
 
     let query =
@@ -119,9 +132,9 @@ module.exports = function(app) {
       if (data.length == 0) {
         let sentResponse = {
           projectsHtml: "You have no Projects yet.",
-          user_Id: req.user.id,
-          user_Name: req.user.user_name,
-          user_Email: req.user.email
+          user_Id: id,
+          user_Name: user_name,
+          user_Email: email
         };
 
         res.send(sentResponse);
@@ -158,5 +171,4 @@ module.exports = function(app) {
       }
     });
   });
-
 };

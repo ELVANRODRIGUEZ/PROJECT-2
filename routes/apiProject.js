@@ -9,25 +9,26 @@ let isAuthenticated = require("../config/middleware/isAuthenticated");
 module.exports = function(app) {
   //*++++++++++++++++++++++++++++++++++++++++++++++++ POST
 
-  // Route for adding a project.
-  app.post("/api/:user/projects/add", isAuthenticated, function(req, res) {
-    let userId = req.params.user;
-    let proyName = req.body.name;
-    let proyDesc = req.body.description;
+  //? Route for adding a Project.
+  //> Request from: "../client/src/components/NewProjectModal/index.js"
+  app.post("/api/project/add/:user", isAuthenticated, function(req, res) {
+    let {user} = req.params;
+    let {name} = req.body;
+    let {description} = req.body;
     let proyUsers = JSON.parse(req.body.project_users);
 
     //Test console.
     // console.log("++++++++++++++++++++++++++++++++");
-    // console.log(userId);
+    // console.log(user);
     // console.log(proyUsers);
-    // console.log(proyDesc);
-    // console.log(proyName);
+    // console.log(description);
+    // console.log(name);
     // console.log("++++++++++++++++++++++++++++++++");
 
     db.projects
       .create({
-        project_name: proyName,
-        description: proyDesc
+        project_name: name,
+        description: description
       })
       .then(function(project) {
         res.json(project);
@@ -36,7 +37,7 @@ module.exports = function(app) {
 
         projectRel.push({
           project_name: project.id,
-          user_name: userId
+          user_name: user
         });
 
         proyUsers.forEach(function(item) {
@@ -50,7 +51,7 @@ module.exports = function(app) {
       });
   });
 
-  // This function establishes the selected Users to the newly created Project.
+  // This function relates the selected Users to the newly created Project.
   function relateProject(bulk) {
     db.project_users.bulkCreate(bulk).then(function() {
       //Test console.
@@ -66,14 +67,16 @@ module.exports = function(app) {
   
   //*++++++++++++++++++++++++++++++++++++++++++++++++ GET
 
-  // Get all members so they can be added to a new Project.
-  app.get("/members/allMembers", isAuthenticated, function(req, res) {
+  //? Get all members so they can be added to a new Project.
+  //> Request from: "../client/src/pages/Members.js"
+  app.get("/api/project/get/all_members", isAuthenticated, function(req, res) {
+    let {id} = req.user;
+
     // Test console.
     // console.log("++++++++++++++++++++++++++++++++");
-    // console.log(req.user);
+    // console.log(id);
     // console.log("++++++++++++++++++++++++++++++++");
 
-    let id = req.user.id;
 
     let query =
       "SELECT " +
@@ -95,13 +98,16 @@ module.exports = function(app) {
     });
   });
 
-  // Route to get all selected Project Users.
-  app.get("/api/project_users/:project", isAuthenticated, function(req, res) {
+  //? Route to get all selected Project Users.
+  //> Request from: "../client/src/pages/Members.js"
+  app.get("/api/project/get/project_users/:project", isAuthenticated, function(req, res) {
+    let {project} = req.params;
+
     db.project_users
       .findAll({
         attributes: [["user_name", "user_id"]],
         where: {
-          project_name: req.params.project
+          project_name: project
         },
         raw: true,
         include: [
@@ -116,7 +122,7 @@ module.exports = function(app) {
                   ["id", "relationship_project-user"]
                 ],
                 where: {
-                  project_name: req.params.project
+                  project_name: project
                 },
                 include: [
                   {
@@ -142,22 +148,24 @@ module.exports = function(app) {
   
   //*++++++++++++++++++++++++++++++++++++++++++++++++ DELETE
 
-  // Route to delete a Tasks (and all relationships) nested in a Project.
-  app.delete("/members/:user/info/:project/delete_all_tasks", isAuthenticated, function(
+  //? Route to delete all Tasks nested in a Project for the logged User.
+  //> Request from: "../client/src/components/DeleteProjectModal/index.js"
+  app.delete("/api/project/delete/all_tasks/:user/:project", isAuthenticated, function(
     req,
     res
   ) {
-    let userId = req.params.user;
+    let {user} = req.params;
+    let {project} = req.params;
 
     //  Test console.
     // console.log("++++++++++++++++++++++++++++++++");
-    // console.log(userId);
+    // console.log(user);
     // console.log("++++++++++++++++++++++++++++++++");
 
     db.tasks
       .findAll({
         where: {
-          task_project: req.params.project
+          task_project: project
         }
       })
       .then(function(data) {
@@ -175,7 +183,7 @@ module.exports = function(app) {
               task_id: {
                 [Op.in]: allprojectTasks
               },
-              responsible: userId
+              responsible: user
             }
           })
           .then(function(data2) {

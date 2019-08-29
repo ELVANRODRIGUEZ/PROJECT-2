@@ -37,9 +37,7 @@ class NewTaskModal extends Component {
   }
 
   componentDidMount() {
-
     this.renderOutsideNewTasks();
-
   }
 
   componentDidUpdate = prevProps => {
@@ -211,7 +209,7 @@ class NewTaskModal extends Component {
   saveNewTask = event => {
     // event.preventDefault();
 
-    const {userId} = this.props;
+    const { userId } = this.props;
 
     if (this.state.newTaskDescription === "") {
       this.alertMessage("No Description");
@@ -235,10 +233,11 @@ class NewTaskModal extends Component {
       // Test console.
       // console.log(newTask);
 
-      //? Request for task adding.
+      //? Route for task adding.
+      //> Endpoint at: "../../../routes/apiTask.js"
       axios
         .post(
-          `/api/${userId}/${this.props.projectSelected}/${this.props.categorySelected}/task/add`,
+          `/api/task/add/${userId}/${this.props.projectSelected}/${this.props.categorySelected}`,
           newTask
         )
         .then(data => {
@@ -271,20 +270,19 @@ class NewTaskModal extends Component {
 
   emitNewTask = () => {
     const { socket } = this.props;
-    const msg = "I am saving a new task."
+    const msg = "I am saving a new task.";
 
-    socket.emit('SAVE_NEWTASK', msg);
-
+    socket.emit("SAVE_NEWTASK", msg);
   };
 
   renderOutsideNewTasks = () => {
     const { socket } = this.props;
 
-    socket.on('RENDER_NEWTASKS', msg => {
+    socket.on("RENDER_NEWTASKS", msg => {
       //Test console.
       console.log(
-      "+++++++++++++++++++++++++++++\nI, the client, am getting this 'msg' back from the Server:\n",
-      msg
+        "+++++++++++++++++++++++++++++\nI, the client, am getting this 'msg' back from the Server:\n",
+        msg
       );
 
       //  Rerenders the TaskCards to include the newly created one.
