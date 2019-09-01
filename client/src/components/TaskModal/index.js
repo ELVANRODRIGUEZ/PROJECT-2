@@ -89,7 +89,7 @@ class TaskModal extends Component {
           <button
             id="addTaskModal"
             className="btn btn-secondary"
-            style={{ float: "right" }}
+            style={{ float: "right", margin:"0px" }}
             datatoggle="collapse"
             href="#addTaskCollapsWindow"
             aria-expanded="false"

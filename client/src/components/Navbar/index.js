@@ -26,18 +26,28 @@ class Navbar extends Component {
 
   render() {
     return (
-      <nav className="navbar  bg-dark navbarTitle">
-        <p id="userNameBanner" className="navbar-brand">
-          Team Organizer™{" "}
-          <span style={{ marginLeft: "20px" }}>
-            Welcome {this.props.userName}
-          </span>
-        </p>
+      <nav className="navbar bg-dark navbarTitle">
+        <div
+          id="userNameBanner"
+          className="navbar-brand"
+          style={{
+            display: "inline-block",
+            fontSize: "20pt"
+          }}
+        >
+          <div className="navText">Team Organizer™</div>
+          <div
+            className="navText"
+          >
+            Welcome, {this.props.userName}
+          </div>
+        </div>
         <form className="form-inline">
           <button
             className="btn btn-outline-danger my-2 my-sm-0"
             aria-disabled="true"
             onClick={this.logOut}
+            style={{margin:"0px"}}
           >
             Sign Out
           </button>

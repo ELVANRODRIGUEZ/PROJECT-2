@@ -95,33 +95,44 @@ class TaskInfo extends Component {
   render() {
     return (
       // +++++++++++++++++ TASK INFO +++++++++++++++++
-      <div id={`task${this.props.taskId}Info`}>
-        <h5 id="modal-task-id" className="card-title">
+      <div
+        id={`task${this.props.taskId}Info`}
+        style={{
+          fontSize: "14pt"
+        }}
+      >
+        <p id="modal-task-id" className="card-title display-4">
           {`Task: ${this.props.taskId}`}
-        </h5>
-        <div style={{ marginTop: "1rem" }}>
+        </p>
+        <div style={{ marginTop: "1rem", fontSize: "12pt" }}>
           {this.timeRemaing < 0 ? (
-            <h6 className="d-inline p-2 bg-danger rounded text-white">
-              Deadline:{" "}
+            <p className="d-inline p-2 bg-danger rounded text-white display-5">
+              <b>Deadline:&nbsp;&nbsp;&nbsp;</b>
               <Moment format="DD, MMMM. YYYY">{this.props.taskDeadline}</Moment>
               <br />
-            </h6>
+            </p>
           ) : (
-            <h6 className="d-inline p-2 bg-success rounded text-white">
-              Deadline:{" "}
+            <p className="d-inline p-2 bg-success rounded text-white display-5">
+              <b>Deadline:&nbsp;&nbsp;&nbsp;</b>
               <Moment format="DD, MMMM. YYYY">{this.props.taskDeadline}</Moment>
               <br />
-            </h6>
+            </p>
           )}
         </div>
-        <h6
-          id="modal-task-description"
-          className="card-subtitle mb-2 text-white"
-          style={{ marginTop: "15px" }}
-        >
-          {this.props.taskDescription}
-        </h6>
-        <h6>Progress (%):</h6>
+        <div style={{ fontSize: "12pt" }}>
+          <p
+            id="modal-task-description"
+            className="card-subtitle mb-2 text-white display-5"
+            style={{ marginTop: "15px" }}
+          >
+            {this.props.taskDescription}
+          </p>
+        </div>
+        <div style={{ fontSize: "12pt" }}>
+          <p className="display-5">
+            <b>Progress (%):</b>
+          </p>
+        </div>
         <div className="progress" style={{ marginBottom: ".5rem" }}>
           <div
             className="progress-bar progress-bar-striped"
@@ -134,7 +145,7 @@ class TaskInfo extends Component {
             aria-valuemax="100"
           ></div>
         </div>
-        <div className="row" style={{ margin: "auto", marginBottom: ".5rem" }}>
+        <div className="row" style={{ margin: "auto", marginBottom: ".5rem", fontSize: "12pt" }}>
           <button
             className="btn btn-dark pplus"
             style={{ marginLeft: 0 }}
@@ -154,11 +165,13 @@ class TaskInfo extends Component {
           <input
             type="text"
             value={`${this.state.taskAccomplished}%`}
-            id="total"
-            className="field left form-control col-sm-1"
+            id="avance-total"
+            className="field left form-control col-sm-1 display-5"
             readOnly
             style={{
               margin: "5px",
+              width: "60px",
+              maxWidth: "60px",
               border: "0px",
               backgroundColor: "#343a40"
             }}

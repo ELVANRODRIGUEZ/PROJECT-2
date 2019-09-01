@@ -560,7 +560,7 @@ class EditTaskModal extends Component {
             return (
               <li
                 key={user["user.user_id"]}
-                className="taskUser list-group-item text-dark col-md-8"
+                className="taskUser list-group-item text-dark col-md-8 display-5"
                 style={{
                   backgroundColor: "lightgrey",
                   lineHeight: 1,
@@ -603,7 +603,7 @@ class EditTaskModal extends Component {
             return (
               <li
                 key={user.user_id}
-                className="taskUser list-group-item text-dark col-md-8"
+                className="taskUser list-group-item text-dark col-md-8 display-5"
                 style={{
                   backgroundColor: "lightgrey",
                   lineHeight: 1,
@@ -646,8 +646,8 @@ class EditTaskModal extends Component {
       >
         <div className="modal-content bg-dark text-white">
           {/* +++++++++++++++++ HEADER +++++++++++++++++ */}
-          <div className="modal-header">
-            <h5 className="modal-title">{`Edit Task ${this.props.taskId}`}</h5>
+          <div className="modal-header" style={{ fontSize: "14pt" }}>
+            <p className="modal-title display-4">{`Edit Task ${this.props.taskId}`}</p>
             <span
               aria-hidden="true"
               style={{
@@ -670,25 +670,38 @@ class EditTaskModal extends Component {
           <div className="card card-body bg-dark text-white">
             <form>
               {/* +++++++++++++++++ New Task Description +++++++++++++++++ */}
-              <div className="form-group">
-                <label htmlFor="projectDesc">New Task Description</label>
+              <div
+                className="form-group"
+                style={{
+                  fontSize: "12pt"
+                }}
+              >
+                <label htmlFor="projectDesc">
+                  <b className="display-5">New Task Description:</b>
+                </label>
                 <textarea
                   type="text"
-                  className="form-control"
+                  className="form-control display-5"
                   id="taskDesc"
                   rows="3"
                   ref={this.NewTaskDesc}
                   onChange={this.chgDescription}
                   defaultValue={this.props.taskDescription}
                 >
-                  {/* {this.props.taskDescription} */}
                 </textarea>
               </div>
               {/* +++++++++++++++++ New Task Deadline +++++++++++++++++ */}
-              <div className="form-group">
-                <label htmlFor="deadline">New Deadline</label>
+              <div
+                className="form-group"
+                style={{
+                  fontSize: "12pt"
+                }}
+              >
+                <label htmlFor="deadline">
+                  <b className=" display-5">New Deadline:</b>
+                </label>
                 <input
-                  className="form-control"
+                  className="form-control display-5"
                   type="date"
                   name="deadline"
                   id="taskDeadline"
@@ -699,23 +712,32 @@ class EditTaskModal extends Component {
                   defaultValue={this.state.newTaskDeadline}
                 ></input>
               </div>
-              <div className="form-group">
-                {/* +++++++++++++++++ New Task Users addition +++++++++++++++++ */}
-                <label htmlFor="notTaskUsers">Add Users</label>
+              {/* +++++++++++++++++ New Task Users addition +++++++++++++++++ */}
+              <div
+                className="form-group"
+                style={{
+                  fontSize: "12pt"
+                }}
+              >
+                <label htmlFor="notTaskUsers">
+                  <b className="display-5">Add Users:</b>
+                </label>
                 <div className="row noMargin">
                   <select
-                    className="form-control col-md-6 usersAvailables"
+                    className="form-control col-md-6 usersAvailables display-5"
                     id="notTaskUsers"
                     type="list"
                     onChange={this.selectUserToAdd}
                     defaultValue="Default"
                   >
-                    <option value="Default">Select User:</option>
+                    <option value="Default" className="display-5">
+                      Select User:
+                    </option>
                     {this.state.notTaskUsers.map(user => {
                       return (
                         <option
                           key={user["user.user_id"]}
-                          className="taskUsersArr"
+                          className="taskUsersArr display-5"
                           userid={user["user.user_id"]}
                           value={user["user.user_name"]}
                         >
@@ -726,55 +748,70 @@ class EditTaskModal extends Component {
                     })}
                   </select>
                   <button
-                    className="btn btn-outline-success"
+                    className="btn btn-outline-success display-5"
                     id="delFromAddList"
                     onClick={this.addUserToAddList}
                   >
                     Select
                   </button>
                 </div>
+                {/* +++++++++++++++++ New Task Users added +++++++++++++++++ */}
+                <p className="modal-title display-5">
+                  <b>Users to be Added:</b>
+                </p>
+                {/* +++++++++++++++++ to be filled +++++++++++++++++ */}
+                {usersToBeAdded}
               </div>
-              {/* +++++++++++++++++ New Task Users added +++++++++++++++++ */}
-              <h5 className="modal-title">Users to be Added: </h5>
-              {/* +++++++++++++++++ to be filled +++++++++++++++++ */}
-              {usersToBeAdded}
               {/* +++++++++++++++++ New Task Users deletion +++++++++++++++++ */}
-              <label htmlFor="taskUsers">Delete Users</label>
-              <div className="row noMargin">
-                <select
-                  className="form-control col-md-6 usersAvailables"
-                  id="taskUsers"
-                  type="list"
-                  onChange={this.selectUserToDelete}
-                  defaultValue="Default"
-                >
-                  <option value="Default">Select User:</option>
-                  {this.state.taskUsers.map(user => {
-                    return (
-                      <option
-                        key={user.user_id}
-                        className="taskUsersArr"
-                        userid={user.user_id}
-                        value={user.user_name}
-                      >
-                        {/* In JavaScript, any field accesible using the "." operator, is accessible using "[]" with a string version of the field name. */}
-                        {user.user_name}
-                      </option>
-                    );
-                  })}
-                </select>
-                <button
-                  className="btn btn-outline-success"
-                  id="delFromDelList"
-                  onClick={this.addUserToDeleteList}
-                >
-                  Select
-                </button>
+              <div
+                className="form-group"
+                style={{
+                  fontSize: "12pt"
+                }}
+              >
+                <label htmlFor="taskUsers">
+                  <b className=" display-5">Delete Users:</b>
+                </label>
+                <div className="row noMargin">
+                  <select
+                    className="form-control col-md-6 usersAvailables display-5"
+                    id="taskUsers"
+                    type="list"
+                    onChange={this.selectUserToDelete}
+                    defaultValue="Default"
+                  >
+                    <option value="Default" className="display-5">
+                      Select User:
+                    </option>
+                    {this.state.taskUsers.map(user => {
+                      return (
+                        <option
+                          key={user.user_id}
+                          className="taskUsersArr display-5"
+                          userid={user.user_id}
+                          value={user.user_name}
+                        >
+                          {/* In JavaScript, any field accesible using the "." operator, is accessible using "[]" with a string version of the field name. */}
+                          {user.user_name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <button
+                    className="btn btn-outline-success display-5"
+                    id="delFromDelList"
+                    onClick={this.addUserToDeleteList}
+                  >
+                    Select
+                  </button>
+                </div>
+                {/* +++++++++++++++++ New Task Users added +++++++++++++++++ */}
+                <p className="modal-title display-5">
+                  <b>Users to be Deleted:</b>
+                </p>
+                {/* +++++++++++++++++ to be filled +++++++++++++++++ */}
+                {usersToBeDeleted}
               </div>
-              {/* +++++++++++++++++ New Task Users added +++++++++++++++++ */}
-              <h5 className="modal-title">Users to be Deleted: </h5>
-              {/* +++++++++++++++++ to be filled +++++++++++++++++ */}
-              {usersToBeDeleted}
             </form>
           </div>
           {/* +++++++++++++++++ FOOTER +++++++++++++++++ */}
@@ -806,7 +843,7 @@ class EditTaskModal extends Component {
                 marginTop: "1rem",
                 float: "right"
               }}
-              className="btn btn-outline-success"
+              className="btn btn-outline-success display-5"
               id="addTask"
               onClick={this.updateTask}
             >

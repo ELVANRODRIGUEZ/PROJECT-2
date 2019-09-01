@@ -135,19 +135,19 @@ class Chat extends React.Component {
     );
   }
 
-  // componentDidUnmount() {
-  //   Events.scrollEvent.remove("begin");
-  //   Events.scrollEvent.remove("end");
-  // }
+  componentWillUnmount() {
+    Events.scrollEvent.remove("begin");
+    Events.scrollEvent.remove("end");
+  }
 
   render() {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-12">
+          <div className="col-12" style={{padding:"0"}}>
             <div className="card text-white bg-secondary">
               <div className="card-title text-center"></div>
-              <div className="card-body">
+              <div className="card-body" style={{padding:".25rem"}}>
                 <div id={this.state.uniqueConId} className="messages">
                   <p name={this.state.uniqueElementTop}></p>
                   {this.state.messages.map(message => {
@@ -159,6 +159,7 @@ class Chat extends React.Component {
                             ? "received_withd_msg"
                             : "outgoing_msg"
                         }
+                        style={{padding:"0"}}
                       >
                         {message.author !== this.props.userName ? (
                           <Initials className="avatar" name={message.author} />
@@ -171,15 +172,18 @@ class Chat extends React.Component {
                               ? "received_msg"
                               : "sent_msg"
                           }
+                          style={{
+                            fontSize:"12pt"
+                          }}
                         >
                           <p>
-                            <strong>{message.author}</strong>:<br />
-                            {message.message}{" "}
                             <span className="time_date">
-                              Sent {message.day}/{message.month} at{" "}
+                              {message.month}-{message.day} at{" "}
                               {message.hours}:
                               {("0" + message.minutes).slice(-2)}
                             </span>{" "}
+                            <span className="msg_author">{message.author}</span>
+                            <span className="chat-message display-5">{message.message}{" "}</span>
                           </p>
                         </div>
                       </div>

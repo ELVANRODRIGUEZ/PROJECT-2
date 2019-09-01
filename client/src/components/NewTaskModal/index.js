@@ -341,7 +341,7 @@ class NewTaskModal extends Component {
             return (
               <li
                 key={user["user.user_id"]}
-                className="taskUser list-group-item text-dark col-md-8"
+                className="taskUser list-group-item text-dark col-md-8 display-5"
                 style={{
                   backgroundColor: "lightGrey",
                   lineHeight: 1,
@@ -381,20 +381,20 @@ class NewTaskModal extends Component {
       <Collapse
         in={this.props.newTaskModalView}
         id="addTaskCollapsWindow"
-        style={{ margin: "auto", width: "100vh" }}
+        style={{ margin: "auto", width: "100%" }}
       >
         <div className="modal-content bg-dark text-white">
           {/* +++++++++++++++++ HEADER +++++++++++++++++ */}
-          <div className="modal-header">
-            <h5 className="modal-title">Add new Task</h5>
+          <div className="modal-header" style={{ fontSize: "14pt" }}>
+            <p className="modal-title display-4">Add new Task</p>
             <span
               aria-hidden="true"
               style={{
                 fontSize: "26px",
-                color: " darkred",
-                textShadow: "lightgrey 0px 2px",
+                color: "darkred",
+                textShadow: "0px 2px grey",
                 lineHeight: "1",
-                fontWeight: 600,
+                fontWeight: 500,
                 cursor: this.state.stateMouseIcon
               }}
               onClick={this.newTaskModalToggle}
@@ -408,11 +408,18 @@ class NewTaskModal extends Component {
           <div className="card card-body bg-dark text-white">
             <form>
               {/* +++++++++++++++++ New Task Description +++++++++++++++++ */}
-              <div className="form-group">
-                <label htmlFor="projectDesc">New Task Description</label>
+              <div
+                className="form-group"
+                style={{
+                  fontSize: "12pt"
+                }}
+              >
+                <label htmlFor="projectDesc">
+                  <b className="display-5">New Task Description:</b>
+                </label>
                 <textarea
                   type="text"
-                  className="form-control"
+                  className="form-control display-5"
                   id="taskDesc"
                   rows="3"
                   ref={this.NewTaskDesc}
@@ -420,10 +427,17 @@ class NewTaskModal extends Component {
                 ></textarea>
               </div>
               {/* +++++++++++++++++ New Task Deadline +++++++++++++++++ */}
-              <div className="form-group">
-                <label htmlFor="deadline">Deadline</label>
+              <div
+                className="form-group"
+                style={{
+                  fontSize: "12pt"
+                }}
+              >
+                <label htmlFor="deadline">
+                  <b className=" display-5">Deadline:</b>
+                </label>
                 <input
-                  className="form-control"
+                  className="form-control display-5"
                   type="date"
                   name="deadline"
                   id="taskDeadline"
@@ -432,24 +446,32 @@ class NewTaskModal extends Component {
                 />
               </div>
               {/* +++++++++++++++++ New Task Users addition +++++++++++++++++ */}
-              <div className="form-group">
-                <label htmlFor="taskUsers">Add Users</label>
+              <div
+                className="form-group"
+                style={{
+                  fontSize: "12pt"
+                }}
+              >
+                <label htmlFor="taskUsers">
+                  <b className="display-5">Add Users:</b>
+                </label>
                 <div className="row noMargin">
                   <select
-                    className="form-control col-md-6 usersAvailables"
+                    className="form-control col-md-6 usersAvailables display-5"
                     id="taskUsers"
                     type="list"
                     onChange={this.selectUserToAdd}
                     defaultValue="Default"
                   >
-                    <option value="Default">Select User:</option>
-                    {/* {console.log(this.state.projectUsers2)} */}
+                    <option value="Default" className="display-5">
+                      Select User:
+                    </option>
                     {this.state.projectUsers.map(user => {
                       // console.log(user)
                       return (
                         <option
                           key={user["user.user_id"]}
-                          className="taskUsersArr"
+                          className="taskUsersArr display-5"
                           userid={user["user.user_id"]}
                           value={user["user.user_name"]}
                         >
@@ -460,22 +482,20 @@ class NewTaskModal extends Component {
                     })}
                   </select>
                   <button
-                    className="btn btn-outline-success"
+                    className="btn btn-outline-success display-5"
                     id="addTaskUser"
-                    // userid={
-                    //   this.state.userToAdd[0] ?
-                    //   this.state.userToAdd[0]["user.user_id"] : -1
-                    // }
                     onClick={this.addUser}
                   >
                     Add
                   </button>
                 </div>
+                <p className="modal-title display-5">
+                  <b>Users Added:</b>
+                </p>
+                {/* +++++++++++++++++ to be filled +++++++++++++++++ */}
+                {usersToBeAdded}
               </div>
               {/* +++++++++++++++++ New Task Users added +++++++++++++++++ */}
-              <h5 className="modal-title">Users Added: </h5>
-              {/* +++++++++++++++++ to be filled +++++++++++++++++ */}
-              {usersToBeAdded}
             </form>
           </div>
           {/* +++++++++++++++++ FOOTER +++++++++++++++++ */}
@@ -507,11 +527,11 @@ class NewTaskModal extends Component {
                 marginTop: "1rem",
                 float: "right"
               }}
-              className="btn btn-outline-success"
+              className="btn btn-outline-success display-5"
               id="addTask"
               onClick={this.saveNewTask}
             >
-              Add task!
+              Add task
             </button>
           </div>
         </div>

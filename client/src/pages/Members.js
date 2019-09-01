@@ -485,17 +485,27 @@ class Members extends Component {
           className="jumbotron bg-secondary "
           style={{ backgroundColor: "#aaa" }}
         >
-          <div className="row">
+          <div
+            className="row jumbotron-inner-container"
+            style={{
+              margin: "0"
+            }}
+          >
             {/* +++++++++++++++++ PROJECTS +++++++++++++++++ */}
-            <div className="col-sm-6">
-              <div className="row " style={{ margin: "5px" }}>
+            <div
+              className="col-md-6"
+              style={{
+                padding: "0px"
+              }}
+            >
+              <div className="row project-row">
                 <div
                   className="card bg-dark text-white"
                   style={{ width: "100rem", maxHeight: "60vh", height: "60vh" }}
                 >
                   <div className="card-header">
                     <span className="display-3">
-                      <b>Projects</b>
+                      Projects
                     </span>
 
                     <button
@@ -540,7 +550,7 @@ class Members extends Component {
                                   className={
                                     project.projId ===
                                     this.state.projectSelected
-                                      ? "Wrapper border border-primary"
+                                      ? "Wrapper border border-primary card projectCard col-md-12 overflow-auto"
                                       : "Wrapper"
                                   }
                                   onClick={this.ProjectClick}
@@ -548,12 +558,7 @@ class Members extends Component {
                                   name={project.projName}
                                   style={{
                                     position: "absolute",
-                                    top: "0",
-                                    left: "0",
-                                    bottom: "0",
-                                    right: "0",
-                                    borderRadius: "5px",
-                                    marginBottom: "1.1rem",
+                                    background: "transparent",
                                     zIndex: "3"
                                   }}
                                 ></div>
@@ -575,8 +580,13 @@ class Members extends Component {
             </div>
 
             {/* +++++++++++++++++ CATEGORIES +++++++++++++++++ */}
-            <div className="col-sm-6">
-              <div className="row" style={{ margin: "5px" }}>
+            <div
+              className="col-md-6"
+              style={{
+                padding: "0px"
+              }}
+            >
+              <div className="row category-row">
                 <div
                   className="card bg-dark text-white"
                   style={{ width: "100rem", maxHeight: "60vh", height: "60vh" }}
@@ -599,12 +609,11 @@ class Members extends Component {
                       <i className="fa fa-plus fa-4" aria-hidden="true"></i>
                     </button>
                     <span className="display-3">
-                      <b>Categories</b>
+                      Categories
                       {this.state.projectSelected
                         ? ` (P-${this.state.projectSelected})`
                         : ""}
                     </span>
-                    {/* <h3 className='display-2'>asdf<span id='forProject'></span></h3> */}
                   </div>
                   <div
                     className="card-body bg-dark overflow-auto"
@@ -627,27 +636,22 @@ class Members extends Component {
                               className={
                                 category.catId ===
                                 parseInt(this.state.categorySelected)
-                                  ? "Wrapper border border-danger"
+                                  ? "Wrapper border border-danger card categoryCard col-md-12 overflow-auto"
                                   : "Wrapper"
                               }
                               name={category.catName}
-                              onClick={this.CategoryClick}
-                              onDoubleClick={this.taskModalShow}
+                              onClick={this.taskModalShow}
+                              // onDoubleClick={this.taskModalShow}
                               data-id={category.catId}
                               style={{
                                 position: "absolute",
-                                top: "0",
-                                left: "0",
-                                bottom: "0",
-                                right: "0",
-                                borderRadius: "5px",
-                                marginBottom: "1.1rem",
+                                background: "transparent",
                                 zIndex: "3"
                               }}
                             ></div>
                             <CategoryCard
                               style={{ position: "relative" }}
-                              onClick={this.categoryClick}
+                              onClick={this.CategoryClick}
                               // onDoubleClick={this.taskModalShow}
                               id={category.catId}
                               count={category.taskCount}

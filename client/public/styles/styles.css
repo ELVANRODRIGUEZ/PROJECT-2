@@ -1,48 +1,55 @@
-.list-group-item {
-  line-height: 2.5;
-}
-#multiCollapseExample4{
-  height: 400px;
-  overflow:scroll;
-  overflow-x: hidden;
-}
-
-.E404{
-  margin:10% 0 10%;
-  color:white;
-  text-align: center;
-}
-.messages{
-  height: 400px;
-  overflow:scroll;
-  overflow-x: hidden;
-}
-.container{ margin:auto;}
-img{ 
- margin: 5px;
-  max-width:40px;
-  border-radius: 50%;}
-
-select{margin:5px;}
-
-
-ul, li {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-
 html {
   height: 100%;
+  min-width: 320px;
   background-color: #343a40;
 }
 
-
-body, #root, #profile {
+body,
+#root,
+#profile {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
+}
+
+.list-group-item {
+  line-height: 2.5;
+}
+#multiCollapseExample4 {
+  height: 400px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.E404 {
+  margin: 10% 0 10%;
+  color: white;
+  text-align: center;
+}
+.messages {
+  height: 400px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+.container {
+  margin: auto;
+}
+img {
+  margin: 5px;
+  max-width: 40px;
+  border-radius: 50%;
+}
+
+select {
+  margin: 5px;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 }
 
 #most-outter {
@@ -62,60 +69,59 @@ body, #root, #profile {
   margin: 32px 17px 32px 17px;
 }
 
-.logsign-field{
+.logsign-field {
   width: 320px;
 }
-
-/* #outter-div {
-  padding: 10rem
- 
-} */
 
 .inner-div {
   border: solid 2px white;
   padding: 10px 15px 15px 15px;
 }
 
-/* .btn {
-  display: inline-block;
-  display: block
-} */
-
-input[type=date], input[type=email], input[type=password], input[type=text], input[type=tel], textarea[type=text], select[type=list] {
+input[type="date"],
+input[type="email"],
+input[type="password"],
+input[type="text"],
+input[type="tel"],
+textarea[type="text"],
+select[type="list"] {
   padding: 10px 10px;
   border: 1px solid #d5d9da;
   border-radius: 5px;
   box-shadow: 0 0 5px #e8e9eb inset;
-  /* width: 310px; */
-  /*400 (#container) - 40 (li margins) -  10 (span paddings) - 20 (input paddings) - 2 (input borders)*/
-  font-size: 1em;
   outline: 0;
   /* remove webkit focus styles */
   background-color: #6c757d;
   -webkit-transition: width 0.5s ease-in-out;
   transition: width 0.5s ease-in-out;
   color: white;
-  /* width: 50%; */
 }
 
-select[type=list]{
+/* input[type="email"],
+input[type="password"],
+input[type="tel"]  {
+  font-size: 1em;
+} */
+
+select[type="list"] {
   border: 1px solid #d5d9da;
   border-radius: 5px;
   box-shadow: 0 0 5px #e8e9eb inset;
-  height: calc(1.5em + .9rem + 2px);
-  font-size: 1em;
+  height: calc(1.5em + 0.9rem + 2px);
   outline: 0;
   /* remove webkit focus styles */
   background-color: #6c757d;
   -webkit-transition: width 0.5s ease-in-out;
   transition: width 0.5s ease-in-out;
   color: white;
-  /* width: 50%; */
 }
 
-
-
-input[type=date]:focus, input[type=email]:focus, input[type=password]:focus, input[type=text]:focus, input[type=tel]:focus, textarea[type=text]:focus {
+input[type="date"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus,
+input[type="tel"]:focus,
+textarea[type="text"]:focus {
   border: 1px solid #b9d4e9;
   border-top-color: #b6d5ea;
   border-bottom-color: #b8d4ea;
@@ -123,45 +129,37 @@ input[type=date]:focus, input[type=email]:focus, input[type=password]:focus, inp
   background-color: #6c757d;
   color: white;
 }
-select[type=list]:focus{
+select[type="list"]:focus {
   border: 1px solid #b9d4e9;
   border-top-color: #b6d5ea;
   border-bottom-color: #b8d4ea;
   box-shadow: 0 0 5px #b9d4e9;
   background-color: #6c757d;
   color: white;
-} 
+}
 
-input[type=email]::placeholder, input[type=password]::placeholder, input[type=text]::placeholder, input[type=tel]::placeholder {
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+input[type="text"]::placeholder,
+input[type="tel"]::placeholder {
   color: #00397a;
 }
 
-/* input#taskDeadline::-webkit-calendar-picker-indicator { 
-  display: none ;
-  -webkit-appearance: none;
-}
-
-input#taskDeadline:hover::-webkit-calendar-picker-indicator { 
-  display: none 
-} */
-
-input#taskDeadline[type="date"]::-webkit-inner-spin-button, 
-input#taskDeadline[type="date"]::-webkit-outer-spin-button { 
-  /* -webkit-appearance: none; 
-  margin: 0;  */
+input#taskDeadline[type="date"]::-webkit-inner-spin-button,
+input#taskDeadline[type="date"]::-webkit-outer-spin-button {
   background: red;
   color: white;
 }
-/* =======date inout===== */
+/* =======date input===== */
 
-input#taskDeadline[type="date"] {
+#taskDeadline {
   width: 250px;
   position: relative;
 }
 /* create a new arrow, because we are going to mess up the native one
 see "List of symbols" below if you want another, you could also try to add a font-awesome icon.. */
 input#taskDeadline[type="date"]:after {
-  content: "\25BE"; 
+  content: "\25BE";
   color: white;
   /* color: blue; */
   padding: 0 5px;
@@ -185,30 +183,19 @@ input#taskDeadline[type="date"]::-webkit-calendar-picker-indicator {
   background: transparent;
 }
 
-/* adjust increase/decrease button */
-/* input#taskDeadline[type="date"]::-webkit-inner-spin-button, 
-input#taskDeadline[type="date"]::-webkit-inner-spin-button {
-  z-index: -1;
-  background: transparent;
-  color: transparent;
-} */
-
 /* adjust clear button */
 input#taskDeadline[type="date"]::-webkit-clear-button {
-   z-index: 1;
+  z-index: 1;
 }
 
+/* =======date input===== */
 
-/* =======date inout===== */
-
-
-#here{
+#here {
   display: inline-block;
 }
 
-
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
+input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 textarea:-webkit-autofill,
 textarea:-webkit-autofill:hover,
@@ -216,29 +203,43 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  
   -webkit-text-fill-color: white;
-    transition: background-color 5000s ease-in-out 0s;
+  transition: background-color 5000s ease-in-out 0s;
 
   padding: 10px 10px;
   border: 1px solid #d5d9da;
   border-radius: 5px;
 }
 
-.navbarTitle{
-   color: white;
+.navText {
+  display: inline-block;
+  font-size: 20pt;
+  font-weight: 500;
+  margin-left: 20px;
 }
 
-.projectCard, .categoryCard{
-  margin:auto;
+.navbarTitle {
+  color: white;
+}
+
+.projectCard,
+.categoryCard {
+  margin: auto;
+  margin-bottom: 10px;
   min-width: 160px;
-color: #fff;
-min-height: 200px;
-max-height: 200px;
-padding: 0px;
+  color: #fff;
+  min-height: 200px;
+  max-height: 200px;
+  padding: 0px;
 }
 
-#here{ display: inline-block}
+.card-header {
+  font-size: 20pt;
+}
+
+#here {
+  display: inline-block;
+}
 
 /* Password Information Box */
 
@@ -257,12 +258,8 @@ padding: 0px;
   border-bottom-color: #b8d4ea;
   box-shadow: 0 0 5px #b9d4e9;
   background-color: rgb(128, 128, 128);
-  font-size: .875em;
+  font-size: 0.875em;
   border-radius: 5px;
-  /* background: #fefefe;
-  box-shadow: 0 1px 3px #ccc;
-  border: 1px solid #ddd;
-  background-color: rgb(128, 128, 128); */
 }
 
 #pswd_info h6 {
@@ -272,7 +269,7 @@ padding: 0px;
 }
 
 #pswd_info p {
-  margin: 0
+  margin: 0;
 }
 
 #pswd_info::before {
@@ -313,23 +310,21 @@ padding: 0px;
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
+  box-shadow: inset 0 0 5px grey;
   border-radius: 10px;
   background-clip: content-box;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background:#005fc4; 
+  background: #005fc4;
   border-radius: 10px;
-   
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(173, 173, 173); 
+  background: rgb(173, 173, 173);
 }
-
 
 /* Style Nacho ==============================================*/
 
@@ -337,59 +332,116 @@ padding: 0px;
   margin: 5px;
 }
 
+.fa-4 {
+  font-size: 12pt;
+}
+
 .jumbotron {
   margin: 5vh 5vh;
-  /* padding: 32px 32px 32px 32px; */
+}
 
+.project-row, .category-row {
+  margin: 10px;
 }
 
 .display-3 {
-  font-size: 30px;
+  font-size: 20pt;
+  font-weight: 500;
 }
 
-@media screen and (max-width: 950px) {
+.display-4 {
+  font-size: 14pt;
+}
+
+.display-5 {
+  font-size: 12pt;
+}
+
+.chat-message {
+  word-break: break-all;
+}
+
+@media screen and (max-width: 992px) {
   .jumbotron {
-    margin: 5vh;
+    padding: 3rem 1.5rem;
   }
+  .display-5 {
+    font-size: 0.95em;
+  }
+  
   .display-4 {
-    font-size: 35px;
+    font-size: 0.95em;
   }
-  .display-3 {
-    font-size: 27px;
+  .display-3,
+  .navText {
+    font-size: 0.9em;
+    font-weight: 400;
+  }
+  .btn {
+    padding: 0.3375rem 0.675rem;
+  }
+  .fa-4 {
+    font-size: 0.9em;
   }
   .body {
     overflow: hidden;
   }
-
-
 }
 
-
-
-@media screen and (max-width: 760px) {
+@media screen and (max-width: 768px) {
   .jumbotron {
-    margin: 5vh;
+    margin: 3vh 3vh;
   }
+  .project-row {
+    margin: 0px;
+    margin-bottom: 5px;
+  }
+  .category-row {
+    margin: 0px;
+    margin-top: 5px;
+  }
+  .display-5 {
+    font-size: 0.9em;
+  }
+  
   .display-4 {
-    font-size: 32px;
+    font-size: 0.9em;
   }
-  .display-3 {
-    font-size: 26px;
+  .display-3,
+  .navText {
+    font-size: 0.8em;
+    font-weight: 300;
+  }
+  .navText {
+    margin-left: 0;
+  }
+  .btn {
+    padding: 0.3rem 0.6rem;
+  }
+  .fa-4 {
+    font-size: 0.8em;
   }
   .body {
     overflow: hidden;
   }
 }
 
-@media screen and (max-width: 730px) {
+@media screen and (max-width: 576px) {
   .jumbotron {
-    margin: 5vh;
+    margin: 0vh 0vh;
+    padding: 1.25rem 1.25rem;
   }
-  .display-4 {
-    font-size: 20px;
+  .navText {
+    display: block;
+    max-width: "50%";
+    word-break: "break-all";
   }
-  .display-3 {
-    font-size: 13px;
+  
+  .btn {
+    padding: 0.2625rem 0.525rem;
+  }
+  .fa-4 {
+    font-size: 0.75em;
   }
   .body {
     overflow: hidden;
@@ -400,8 +452,6 @@ padding: 0px;
   max-width: 1170px;
   margin: auto;
 }
-
-
 
 .headind_srch {
   padding: 10px 29px 10px 20px;
@@ -416,7 +466,7 @@ padding: 0px;
 
 .received_msg {
   display: inline-block;
-  padding: 0 0 0 10px;
+  padding: 0;
   vertical-align: top;
   width: auto;
 }
@@ -425,21 +475,24 @@ padding: 0px;
   background: #bedfff none repeat scroll 0 0;
   border-radius: 3px;
   color: black;
-  /* color: #646464; */
   font-size: 14px;
   margin: 5px;
-  padding: 5px 10px 5px 12px;
+  padding: 5px;
 }
 
-.time_date {
+.time_date, .msg_author {
   color: #747474;
   display: block;
-  font-size: 12px;
-  margin: 8px 0 0;
+  font-size: 8pt;
+  margin: 0px 0 0;
+}
+
+.msg_author {
+  margin: 0 0 8px 0;
 }
 
 .received_withd_msg {
-  max-width: 70%;
+  max-width: 90%;
 }
 
 .mesgs {
@@ -453,8 +506,7 @@ padding: 0px;
   border-radius: 3px;
   font-size: 14px;
   margin: 0;
-  color:black;
-  /* color: #fff; */
+  color: black;
   padding: 5px 10px 5px 12px;
   width: 100%;
 }
@@ -466,7 +518,7 @@ padding: 0px;
 
 .sent_msg {
   float: right;
-  max-width: 70%;
+  max-width: 90%;
 }
 
 .input_msg_write input {
@@ -506,44 +558,88 @@ padding: 0px;
   overflow-y: auto;
 }
 
-
 /* Style Elvan ==============================================*/
 
+/* For the margin on "EditTaskModal" Text and Input areas. */
 .noMargin {
-  margin-left:0;
-  /* margin-right:0; */
+  margin: 0;
+
 }
 
 .form-control {
-  margin-left:0;
-  /* margin-right:0; */
+  margin-left: 0;
+}
+
+.modal {
+  margin:0;
+  width: 100%;
+  padding:0!Important;
+}
+/* This spread out the TaskModal across the entire window. */
+.modal-dialog {
+  margin:0;
+  width: 100%;
+  min-width: 100%;
 }
 
 /* Adding style to the immediate child of the "taskModal" id tag. */
 #taskModal > .modal-content {
-  background-color:#343a40;
+  background-color: #343a40;
+  margin:0;
+  width: 100%;
 }
 
 /* Adding style to the immediate child of the "newProjectModal" id tag. */
 #newProjectModal > .modal-content {
-  background-color:#343a40;
-  color:white;
+  background-color: #343a40;
+  color: white;
 }
 
 /* Adding style to the immediate child of the "delProjectModal" id tag. */
 #delProjectModal > .modal-content {
-  background-color:#343a40;
-  color:white;
+  background-color: #343a40;
+  color: white;
 }
 
 /* Adding style to the immediate child of the "newCategoryModal" id tag. */
 #newCategoryModal > .modal-content {
-  background-color:#343a40;
-  color:white;
+  background-color: #343a40;
+  color: white;
 }
 
 /* Adding style to the immediate child of the "delProjectModal" id tag. */
 #delCategoryModal > .modal-content {
-  background-color:#343a40;
-  color:white;
+  background-color: #343a40;
+  color: white;
+}
+
+@media screen and (max-width: 768px) {
+  #taskUsers, #notTaskUsers {
+    margin: 0;
+  }
+  #delFromAddList, #delFromDelList, #addTaskUser{
+    margin-left:0;
+  }
+  .taskCard-cardBody, .taskInfo-cardBody {
+    padding: .5rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  /* Navigation tags on the Task Card. */
+  .task-conversation-tags {
+    /* Turn them into Blocks so they fill up all the space. */
+    display: block;
+    /* Take up all the space to throw the next Tag downwards. */
+    width: 100%;
+    /* Set bottoom border to the Navigation Tags on the Task Card. */
+    border-bottom: 1px solid #dee2e6;
+  }
+  #taskDeadline {
+    width: 100%
+  }
+  /* Switcher to turn off the Chat Messages Author inistials on this resolution. */
+  .chat-message-authtorInitials {
+    display:none;
+  }
 }

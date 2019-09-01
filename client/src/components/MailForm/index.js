@@ -330,7 +330,7 @@ class MailForm extends Component {
     const mailSubject = document.getElementById(this.state.subjectId).value;
     const email = this.state.emailsArr.join(",");
     const message = document.getElementById(this.state.messageId).value;
-    
+
     //Test console.
     // console.log(fileTag);
     // console.log(fileName);
@@ -368,7 +368,7 @@ class MailForm extends Component {
         data: mailData
       }).then(response => {
         //  Test console.
-          console.log(response.data);
+        console.log(response.data);
         if (response.data.msg === "success") {
           //Save mail
           //  Test console.
@@ -423,7 +423,7 @@ class MailForm extends Component {
             return (
               <li
                 key={user.user_id}
-                className="userAdded taskUser list-group-item text-dark col-md-8"
+                className="userAdded taskUser list-group-item text-dark col-md-8 display-5"
                 style={{
                   backgroundColor: "lightgrey",
                   lineHeight: 1,
@@ -460,75 +460,103 @@ class MailForm extends Component {
 
     return (
       <div>
-        <div className="col-sm-8 offset-sm-2">
-          {/* <form
-            id=this.state.formId
-            onSubmit={this.handleSubmit.bind(this)}
-            method="POST"
-          > */}
+        <div className="col-sm-12">
           <form id={this.state.formId}>
-            {/* +++++++++++++++++ New Task Users deletion +++++++++++++++++ */}
-            <label htmlFor="taskUsers">Select Users To eMail</label>
-            <div className="row noMargin">
-              <select
-                className="form-control col-md-6 usersAvailables"
-                id="taskUsers"
-                type="list"
-                onChange={this.selectuserToAdd}
-                defaultValue="Default"
-              >
-                <option value="Select">Select User:</option>
-                {/* {console.log(this.state.projectUsers2)} */}
-                {this.state.taskUsers.map(user => {
-                  // console.log(user)
-                  return (
-                    <option
-                      key={user.user_id}
-                      className="taskUsersArr"
-                      userid={user.user_id}
-                      value={user.user_name}
-                    >
-                      {/* In JavaScript, any field accesible using the "." operator, is accessible using "[]" with a string version of the field name. */}
-                      {user.user_name}
-                    </option>
-                  );
-                })}
-              </select>
-              <button
-                className="btn btn-outline-success"
-                id="delFromDelList"
-                onClick={this.adduserToAddList}
-              >
-                Add User
-              </button>
+            {/* +++++++++++++++++ Users to e-mail +++++++++++++++++ */}
+            <div
+              className="form-group"
+              style={{
+                fontSize: "12pt"
+              }}
+            >
+              <label htmlFor="projectDesc">
+                <b className="display-5">Select Users to e-Mail:</b>
+              </label>
+              <div className="row noMargin">
+                <select
+                  className="form-control col-md-6 usersAvailables display-5"
+                  id="taskUsers"
+                  type="list"
+                  onChange={this.selectuserToAdd}
+                  defaultValue="Default"
+                >
+                  <option value="Select" className="display-5">
+                    Select User:
+                  </option>
+                  {/* {console.log(this.state.projectUsers2)} */}
+                  {this.state.taskUsers.map(user => {
+                    // console.log(user)
+                    return (
+                      <option
+                        key={user.user_id}
+                        className="taskUsersArr display-5"
+                        userid={user.user_id}
+                        value={user.user_name}
+                      >
+                        {/* In JavaScript, any field accesible using the "." operator, is accessible using "[]" with a string version of the field name. */}
+                        {user.user_name}
+                      </option>
+                    );
+                  })}
+                </select>
+                <button
+                  className="btn btn-outline-success display-5"
+                  id="delFromDelList"
+                  onClick={this.adduserToAddList}
+                >
+                  Add
+                </button>
+              </div>
+              {/* +++++++++++++++++ New Task Users added +++++++++++++++++ */}
+              <p className="modal-title display-5">
+                <b>Users to be e-mailed:</b>
+              </p>
+              {/* +++++++++++++++++ to be filled +++++++++++++++++ */}
+              {usersToBeAdded}
             </div>
-            {/* +++++++++++++++++ New Task Users added +++++++++++++++++ */}
-            <h5 className="modal-title">Users to be eMailed: </h5>
-            {/* +++++++++++++++++ to be filled +++++++++++++++++ */}
-            {usersToBeAdded}
-
-            <div className="form-group email">
-              <label htmlFor="email">Email address</label>
+            {/* <div
+              className="form-group email"
+              style={{
+                fontSize: "12pt"
+              }}
+            >
+              <label htmlFor="taskUsers">
+                  <b className="display-5">Other addresses:</b>
+                </label>
               <input
                 type="text"
                 className="form-control"
                 id={this.state.emailsId}
                 aria-describedby="emailHelp"
               />
-            </div>
-            <div className="form-group subject">
-              <label htmlFor="subject">Subject</label>
+            </div> */}
+            <div
+              className="form-group subject"
+              style={{
+                fontSize: "12pt"
+              }}
+            >
+              <label htmlFor="taskUsers">
+                <b className="display-5">Subject:</b>
+              </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control display-5"
                 id={this.state.subjectId}
               />
             </div>
-            <div className="form-group message">
-              <label htmlFor="mailMessage">Message</label>
+            <div
+              className="form-group message"
+              style={{
+                fontSize: "12pt"
+              }}
+            >
+              <label htmlFor="taskUsers">
+                <b className="display-5">Message:</b>
+              </label>
               <textarea
                 type="text"
-                className="form-control"
+                className="form-control display-5"
                 rows="5"
                 id={this.state.messageId}
               ></textarea>
@@ -536,10 +564,13 @@ class MailForm extends Component {
             <div className="form-group fileUpload">
               <label
                 htmlFor={this.state.fileUploadID}
-                className="btn btn-outline-success btn-sm"
+                className="btn btn-outline-success btn-sm display-5"
+                style={{
+                  margin:"0"
+                }}
               >
                 <i className="fa fa-arrow-circle-o-up"></i>
-                {/* {attachedFiles} */}
+                &nbsp;&nbsp;&nbsp;&nbsp;
                 {!this.state.buttonLabel
                   ? "Select File"
                   : this.state.buttonLabel}
@@ -548,7 +579,7 @@ class MailForm extends Component {
                 id={this.state.fileUploadID}
                 type="file"
                 onChange={this.handleChange.bind(this)}
-                className="show-for-sr"
+                className="show-for-sr display-5"
                 multiple="multiple"
               />
             </div>
@@ -568,14 +599,13 @@ class MailForm extends Component {
               <i className="fa fa-exclamation-circle"></i>
               <span className="msg">&nbsp; {this.state.errorMessage}</span>
             </div>
-
-            {/* <button type="submit" className="btn btn-primary">
-              Submit
-            </button> */}
             <button
               type="submit"
-              className="btn btn-outline-primary"
+              className="btn btn-outline-primary display-5"
               onClick={this.handleSubmit.bind(this)}
+              style={{
+                margin:"0"
+              }}
             >
               Submit
             </button>

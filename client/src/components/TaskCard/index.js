@@ -85,9 +85,12 @@ class TaskCard extends Component {
               //? Route for getting all users that are releted to the selected Project but filtering out the already existing ones related to the selected Task.
               //> Endpoint at: "../../../routes/apiTask.js"
               axios
-                .post(`/api/task/add/get_projUsers_with_no_taskUsers/${this.props.projectId}`, {
-                  usersIds: this.state.taskUsersIds
-                })
+                .post(
+                  `/api/task/add/get_projUsers_with_no_taskUsers/${this.props.projectId}`,
+                  {
+                    usersIds: this.state.taskUsersIds
+                  }
+                )
                 .then(users2 => {
                   //  Test console.
                   // console.log(users2.data);
@@ -200,9 +203,9 @@ class TaskCard extends Component {
       // +++++++++++++++++ TASK CARD +++++++++++++++++
       <div
         className="card bg-secondary text-white task"
-        style={{ margin: "5px" }}
+        style={{ marginBottom: "5px" }}
       >
-        <div className="card-body">
+        <div className="card-body taskCard-cardBody">
           {/* Erase Task Button */}
           <button
             className="btn btn-secondary"
@@ -272,50 +275,90 @@ class TaskCard extends Component {
 
           {/* +++++++++++++++++ TASK CONVERSATION +++++++++++++++++ */}
           <div className="card bg-dark text-white task">
-            <div className="card-body">
+            <div className="card-body taskInfo-cardBody">
               <ul className="nav nav-tabs nav-pills card-title">
-                <li className="nav-item">
+                <li className="nav-item task-conversation-tags">
                   <a
                     className="nav-link"
                     data-toggle="collapse"
                     href="#multiCollapseExample1"
                     role="button"
                     onClick={this.toggleUsers}
+                    style={{
+                      fontSize: "14pt"
+                    }}
                   >
-                    Users
+                    <p
+                      className="display-4"
+                      style={{
+                        margin: "0px"
+                      }}
+                    >
+                      Users
+                    </p>
                   </a>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item task-conversation-tags">
                   <a
                     className="nav-link"
                     data-toggle="collapse"
                     href="#multiCollapseExample2"
                     role="button"
                     onClick={this.toggleChat}
+                    style={{
+                      fontSize: "14pt"
+                    }}
                   >
-                    Chat
+                    <p
+                      className="display-4"
+                      style={{
+                        margin: "0px"
+                      }}
+                    >
+                      Chat
+                    </p>
                   </a>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item task-conversation-tags">
                   <a
                     className="nav-link"
                     data-toggle="collapse"
                     href="#multiCollapseExample3"
                     role="button"
                     onClick={this.toggleMailForm}
+                    style={{
+                      fontSize: "14pt"
+                    }}
                   >
-                    New Email
+                    <p
+                      className="display-4"
+                      style={{
+                        margin: "0px"
+                      }}
+                    >
+                      New Email
+                    </p>
                   </a>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item task-conversation-tags">
                   <a
                     className="nav-link"
                     data-toggle="collapse"
                     href="#multiCollapseExample4"
                     role="button"
                     onClick={this.toggleMailHistory}
+                    style={{
+                      fontSize: "14pt"
+                    }}
                   >
-                    Email History
+                    <p
+                      className="display-4"
+                      style={{
+                        margin: "0px"
+                      }}
+                    >
+                      Email History
+                    </p>
                   </a>
                 </li>
               </ul>
