@@ -63,19 +63,29 @@ li {
   background-color: #6c757d;
   margin: auto;
   display: block;
+  width: 100%;
+  max-width: 420px;
 }
 
 .login-form {
-  margin: 32px 17px 32px 17px;
+  margin: 30px 30px 30px 30px;
 }
 
 .logsign-field {
-  width: 320px;
+  width: 100%;
 }
 
 .inner-div {
   border: solid 2px white;
   padding: 10px 15px 15px 15px;
+}
+
+@media screen and (max-width: 576px) {
+  #outter {
+    
+    max-width: 320px;
+  }
+
 }
 
 input[type="date"],
@@ -96,12 +106,6 @@ select[type="list"] {
   transition: width 0.5s ease-in-out;
   color: white;
 }
-
-/* input[type="email"],
-input[type="password"],
-input[type="tel"]  {
-  font-size: 1em;
-} */
 
 select[type="list"] {
   border: 1px solid #d5d9da;

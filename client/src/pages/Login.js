@@ -12,7 +12,7 @@ class Login extends Component {
       display: "none",
       opacity: "0"
     };
-  };
+  }
 
   onChangeEmail = event => {
     this.setState({
@@ -32,7 +32,7 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password
     };
-    
+
     //Test console.
     // console.log(userData);
 
@@ -42,9 +42,9 @@ class Login extends Component {
       .post("/api/post/login", userData)
       .then(res => {
         if ((res = "Successful")) {
-          this.props.history.push("/members")
+          this.props.history.push("/members");
         } else {
-          this.props.history.push("/")
+          this.props.history.push("/");
         }
       })
       .catch(err => {
@@ -71,69 +71,100 @@ class Login extends Component {
   render() {
     return (
       <div id="most-outter">
-
-        <h1 style = {{color: "white", marginTop: "5px", marginLeft: "10px"}}>Team Organizer™ v3.4 </h1>
+        <nav className="navbar bg-dark navbarTitle">
+          <div
+            id="userNameBanner"
+            className="navbar-brand"
+            style={{
+              display: "inline-block",
+              fontSize: "20pt"
+            }}
+          >
+            <div className="navText">Team Organizer™ v3.4.1 </div>
+          </div>
+        </nav>
         <div id="outter">
-           <div id="login-form" className="container text-white">
-            <div className="row login-form bg-dark">
-              <div className="col-md-12">
-                <h2>Login Form</h2>
-                <form className="login" onSubmit={this.onSubmit}>
-                  <div className="form-group">
-                    <label htmlFor="InputEmail">Email address</label>
-                    <input
-                      type="email"
-                      className="form-control logsign-field"
-                      id="email-input"
-                      placeholder="Email"
-                      onChange={this.onChangeEmail}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="InputPassword">Password</label>
-                    <input
-                      type="password"
-                      className="form-control logsign-field"
-                      id="password-input"
-                      placeholder="Password"
-                      onChange={this.onChangePassword}
-                    />
-                  </div>
+          <div className="row login-form bg-dark text-white">
+            <div className="col-md-12">
+              <div
+                className="card-header"
+                style={{
+                  padding: "0",
+                  marginBottom: "10px"
+                }}
+              >
+                <span className="display-3">Login Form</span>
+              </div>
+              <form
+                className="login"
+                onSubmit={this.onSubmit}
+                style={{
+                  fontSize: "12pt"
+                }}
+              >
+                <div className="form-group">
+                  <label htmlFor="email-input">
+                    <b className="display-5">Email address:</b>
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control logsign-field display-5"
+                    id="email-input"
+                    placeholder="Email"
+                    onChange={this.onChangeEmail}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password-input">
+                    <b className="display-5">Password:</b>
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control logsign-field display-5"
+                    id="password-input"
+                    placeholder="Password"
+                    onChange={this.onChangePassword}
+                  />
+                </div>
 
-                  {/*! +++++++++++++++++ Error Dialog +++++++++++++++++ */}
-                  <div
-                    style={{
-                      transition: "opacity 2s",
-                      display: this.state.display,
-                      opacity: this.state.opacity
-                    }}
-                    id="alert"
-                    className="alert alert-danger"
-                    role="alert"
-                  >
-                    <i className="fa fa-exclamation-circle"></i>
-                    <span className="msg">
-                      &nbsp; Error: Your Data is incorrect
-                    </span>
-                  </div>
+                {/*! +++++++++++++++++ Error Dialog +++++++++++++++++ */}
+                <div
+                  style={{
+                    transition: "opacity 2s",
+                    display: this.state.display,
+                    opacity: this.state.opacity
+                  }}
+                  id="alert"
+                  className="alert alert-danger"
+                  role="alert"
+                >
+                  <i className="fa fa-exclamation-circle"></i>
+                  <span className="msg">
+                    &nbsp; Error: Your Data is incorrect
+                  </span>
+                </div>
 
-                  <button
-                    id="login"
-                    type="submit"
-                    className="btn btn-outline-success"
-                    onSubmit={this.onSubmit}
-                  >
-                    Login
-                  </button>
-                </form>
-                <br />
+                <button
+                  id="login"
+                  type="submit"
+                  className="btn btn-outline-success display-5"
+                  onSubmit={this.onSubmit}
+                  style={{
+                    marginLeft: "0"
+                  }}
+                >
+                  Login
+                </button>
+              </form>
+              <br />
+              <div style={{ fontSize: "12pt" }}>
                 <p>
-                  Or sign up{" "}
+                  <b className="display-5">Or sign up </b>
                   <Link
                     id="here"
                     role="button"
                     to="/signup"
-                    className="btn btn-outline-primary btn-sm"
+                    className="btn btn-outline-primary btn-sm display-5"
                   >
                     here
                   </Link>
@@ -148,4 +179,3 @@ class Login extends Component {
 }
 
 export default Login;
-
