@@ -200,7 +200,7 @@ class Signup extends Component {
       .then(res => {
         //Test console.
         // console.log(res);
-        
+
         if (res.data === "Successful") {
           this.props.history.push("/members");
         } else if (res.data.errors[0].message === "email must be unique") {
@@ -240,107 +240,128 @@ class Signup extends Component {
   render() {
     return (
       <div id="most-outter">
-        <h1 style={{ color: "white", marginTop: "5px", marginLeft: "10px" }}>
-          Team Organizer™{" "}
-        </h1>
+        <nav className="navbar bg-dark navbarTitle">
+          <div
+            id="userNameBanner"
+            className="navbar-brand"
+            style={{
+              display: "inline-block",
+              fontSize: "20pt"
+            }}
+          >
+            <div className="navText">Team Organizer™ v3.4.1 </div>
+          </div>
+        </nav>
         <div id="outter">
-          <div className="container text-white">
-            <div className="row login-form bg-dark">
-              <div className="col">
-                <h2>Sign Up Form</h2>
-                <form className="signup" onSubmit={this.onSubmit}>
-                  <div className="form-group" autoComplete="off">
-                    <label htmlFor="InputName" autoComplete="off">
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control logsign-field"
-                      id="name-input"
-                      placeholder="John Doe"
-                      autoComplete="off"
-                      onChange={this.onChangeName}
-                    />
-                  </div>
-                  <div className="form-group" autoComplete="off">
-                    <label htmlFor="InputPhone">Your Phone Number</label>
-                    <input
-                      type="tel"
-                      className="form-control logsign-field"
-                      id="phone-input"
-                      placeholder="+12 123 123 1234"
-                      // autoComplete="off"
-                      autoComplete="user-phone"
-                      onChange={this.onChangePhone}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="InputEmail">Email address</label>
-                    <input
-                      type="text"
-                      className="form-control logsign-field"
-                      id="email-input"
-                      placeholder="you@domain.com"
-                      autoComplete="off"
-                      onChange={this.onChangeEmail}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="InputPassword">Password</label>
-                    <input
-                      type="password"
-                      className="form-control logsign-field"
-                      id="password-input"
-                      placeholder="password"
-                      autoComplete="off"
-                      onKeyUpCapture={this.handleKeyDown}
-                      onFocus={this.onFocus}
-                      onBlur={this.onBlur}
-                    />
-                  </div>
-                  <Alerts
-                    transition={"opacity 2s"}
-                    display={this.state.display}
-                    opacity={this.state.opacity}
-                    alert={this.state.alertmsg}
-                  ></Alerts>
-                  <button
-                    type="submit"
-                    className="btn btn-outline-success"
-                    onSubmit={this.onSubmit}
-                  >
-                    Sign Up
-                  </button>
-                </form>
-                <br />
-
-                <div id="pswd_info" style={{ display: this.state.pswDisplay }}>
-                  <h6>Password must have:</h6>
-                  <p id="letter" className={this.state.pswLetterClass}>
-                    At least <strong>one letter</strong>
-                  </p>
-                  <p id="capital" className={this.state.pswCapitalClass}>
-                    At least <strong>one capital letter</strong>
-                  </p>
-                  <p id="number" className={this.state.pswNumClass}>
-                    At least <strong>one number</strong>
-                  </p>
-                  <p id="length" className={this.state.pswLengthClass}>
-                    Be at least <strong>8 characters</strong>
-                  </p>
+          <div className="row login-form bg-dark text-white">
+            <div className="col-md-12">
+              <div
+                className="card-header"
+                style={{
+                  padding: "0",
+                  marginBottom: "10px"
+                }}
+              >
+                <span className="display-3">Sign Up Form</span>
+              </div>
+              <form className="signup" onSubmit={this.onSubmit}>
+                <div className="form-group" autoComplete="off">
+                  <label htmlFor="name-input" autoComplete="off">
+                    <b className="display-5">Your Name:</b>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control logsign-field display-5"
+                    id="name-input"
+                    placeholder="John Doe"
+                    autoComplete="off"
+                    onChange={this.onChangeName}
+                  />
                 </div>
-                <p>
-                  Or log in{" "}
-                  <Link
-                    id="here"
-                    to="/"
-                    role="button"
-                    className="btn btn-outline-primary btn-sm"
-                  >
-                    here
-                  </Link>
+                <div className="form-group" autoComplete="off">
+                  <label htmlFor="phone-input">
+                    <b className="display-5">Your Phone Number:</b>
+                  </label>
+                  <input
+                    type="tel"
+                    className="form-control logsign-field display-5"
+                    id="phone-input"
+                    placeholder="+12 123 123 1234"
+                    // autoComplete="off"
+                    autoComplete="user-phone"
+                    onChange={this.onChangePhone}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email-input">
+                    <b className="display-5">Email address:</b>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control logsign-field display-5"
+                    id="email-input"
+                    placeholder="you@domain.com"
+                    autoComplete="off"
+                    onChange={this.onChangeEmail}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password-input">
+                    <b className="display-5">Password:</b>
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control logsign-field display-5"
+                    id="password-input"
+                    placeholder="password"
+                    autoComplete="off"
+                    onKeyUpCapture={this.handleKeyDown}
+                    onFocus={this.onFocus}
+                    onBlur={this.onBlur}
+                  />
+                </div>
+                <Alerts
+                  transition={"opacity 2s"}
+                  display={this.state.display}
+                  opacity={this.state.opacity}
+                  alert={this.state.alertmsg}
+                ></Alerts>
+                <button
+                  type="submit"
+                  className="btn btn-outline-success display-5"
+                  onSubmit={this.onSubmit}
+                >
+                  Sign Up
+                </button>
+              </form>
+              <br />
+
+              <div id="pswd_info" style={{ display: this.state.pswDisplay }}>
+                <h6>Password must have:</h6>
+                <p id="letter" className={this.state.pswLetterClass}>
+                  At least <strong>one letter</strong>
+                </p>
+                <p id="capital" className={this.state.pswCapitalClass}>
+                  At least <strong>one capital letter</strong>
+                </p>
+                <p id="number" className={this.state.pswNumClass}>
+                  At least <strong>one number</strong>
+                </p>
+                <p id="length" className={this.state.pswLengthClass}>
+                  Be at least <strong>8 characters</strong>
                 </p>
               </div>
+              <p>
+                <b className="display-5">Or log in </b>
+                <Link
+                  id="here"
+                  to="/"
+                  role="button"
+                  className="btn btn-outline-primary btn-sm display-5"
+                >
+                  here
+                </Link>
+              </p>
             </div>
           </div>
         </div>
