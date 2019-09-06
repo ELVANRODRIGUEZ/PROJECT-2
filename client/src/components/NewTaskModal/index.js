@@ -254,6 +254,7 @@ class NewTaskModal extends Component {
               newTaskDescription: "",
               newTaskDeadline: "",
               userToAdd: [],
+              projectUsers: this.props.projectUsers,
               usersAdded: []
             },
             () => {

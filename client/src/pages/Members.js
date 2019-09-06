@@ -45,7 +45,6 @@ class Members extends Component {
       userName: "",
       userId: "",
       userEmail: "",
-      projectCardBorder: "",
       taskModalShow: false,
       taskModalView: "none",
       newProjModalShow: false,
@@ -155,9 +154,16 @@ class Members extends Component {
             // Test console.
             // console.log(data.data);
 
-            this.setState({ categoryCards: data.data.categories }, () => {
-              this.loadProjectUsers();
-            });
+            this.setState(
+              {
+                categoryCards: data.data.categories,
+                categorySelected: "",
+                categorySelectedName: ""
+              },
+              () => {
+                this.loadProjectUsers();
+              }
+            );
           })
           .catch(error => {
             console.log(error);
@@ -504,9 +510,7 @@ class Members extends Component {
                   style={{ width: "100rem", maxHeight: "60vh", height: "60vh" }}
                 >
                   <div className="card-header">
-                    <span className="display-3">
-                      Projects
-                    </span>
+                    <span className="display-3">Projects</span>
 
                     <button
                       className="btn btn-secondary  projectDel"

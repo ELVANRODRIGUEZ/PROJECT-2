@@ -37,9 +37,24 @@ class TaskCard extends Component {
   componentDidMount = prevProps => {
     //  Test console.
     // console.log(this.props.projectUsers);
+    // console.log("TaskCard mounted");
 
     this.getUsers();
   };
+
+  componentWillUnmount () {
+    this.setState({
+      taskUsers: [],
+      allTaskUsers: [],
+      taskUsersIds: [],
+      notTaskUsers: [],
+      savedMails: [],
+      usersHide: false,
+      chatHide: false,
+      mailFormHide: false,
+      mailHistoryHide: false
+    })
+  }
 
   getUsers = (params, callback) => {
     //? Route to get the Users related to a Task with the logged User filtered out.
