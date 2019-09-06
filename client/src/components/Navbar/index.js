@@ -35,11 +35,12 @@ class Navbar extends Component {
             fontSize: "20pt"
           }}
         >
-          <div className="navText">Team Organizer™</div>
+          <div className="navText">Team Organizer™ </div>
           <div
             className="navText"
+            id="loggedUserName"
           >
-            Welcome, {this.props.userName}
+            Welcome,&nbsp;&nbsp;&nbsp;{this.props.userName}
           </div>
         </div>
         <form className="form-inline">

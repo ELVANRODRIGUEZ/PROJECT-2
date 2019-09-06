@@ -305,7 +305,7 @@ class NewProjectModal extends Component {
             return (
               <li
                 key={user.user_id}
-                className="taskUser list-group-item text-dark col-md-8"
+                className="taskUser list-group-item text-dark col-md-8 display-5"
                 style={{
                   backgroundColor: "lightgrey",
                   lineHeight: 1,
@@ -349,8 +349,8 @@ class NewProjectModal extends Component {
         tabIndex="-1"
         id="newProjectModal"
       >
-        <Modal.Header className="text-white">
-          <h5 className="modal-title">Add a new Project</h5>
+        <Modal.Header className="text-white" style={{ fontSize: "14pt" }}>
+          <p className="modal-title display-4">Add a new Project</p>
           <button
             type="button"
             className="close text-danger"
@@ -363,44 +363,68 @@ class NewProjectModal extends Component {
         </Modal.Header>
         <Modal.Body id="newProjectModal-container">
           <form>
-            <div className="form-group">
-              <label htmlFor="projectName">Project Name</label>
+            <div
+              className="form-group"
+              style={{
+                fontSize: "12pt"
+              }}
+            >
+              <label htmlFor="projectName">
+                <b className="display-5">Project Name:</b>
+              </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control display-5"
                 id="projectName"
                 placeholder="Project Name"
                 ref={this.projectName}
                 onChange={this.chgName}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="projectDesc">Project Description</label>
+            <div
+              className="form-group"
+              style={{
+                fontSize: "12pt"
+              }}
+            >
+              <label htmlFor="projectDesc">
+                <b className="display-5">Project Description:</b>
+              </label>
               <textarea
                 type="text"
-                className="form-control"
+                className="form-control display-5"
                 id="projectDesc"
                 rows="3"
                 ref={this.projectDesc}
                 onChange={this.chgDescription}
               ></textarea>
             </div>
-            <div className="form-group">
-              <label htmlFor="projectUsers">Add Users</label>
+            <div
+              className="form-group"
+              style={{
+                fontSize: "12pt"
+              }}
+            >
+              {/* +++++++++++++++++ New Task Users added +++++++++++++++++ */}
+              <label htmlFor="projectUsers">
+                <b className="display-5">Add Users:</b>
+              </label>
               <div className="row noMargin">
                 <select
-                  className="form-control col-md-6 usersAvailables"
+                  className="form-control col-md-6 usersAvailables display-5"
                   id="projectUsers"
                   type="list"
                   onChange={this.selectUserToAdd}
                   defaultValue="Default"
                 >
-                  <option value="Default">Select User:</option>
+                  <option value="Default" className="display-5">
+                    Select User:
+                  </option>
                   {this.state.allUsers.map(user => {
                     return (
                       <option
                         key={user.user_id}
-                        className="allUsersArr"
+                        className="allUsersArr display-5"
                         userid={user.user_id}
                         value={user.user_name}
                       >
@@ -411,18 +435,19 @@ class NewProjectModal extends Component {
                   })}
                 </select>
                 <button
-                  className="btn btn-outline-success"
+                  className="btn btn-outline-success display-5"
                   id="addUser"
                   onClick={this.addUser}
                 >
                   Add
                 </button>
               </div>
+              <p className="modal-title display-5">
+                <b>Users Added:</b>
+              </p>
+              {/* +++++++++++++++++ to be filled +++++++++++++++++ */}
+              {usersToBeAdded}
             </div>
-            {/* +++++++++++++++++ New Task Users added +++++++++++++++++ */}
-            <h5 className="modal-title">Users Added: </h5>
-            {/* +++++++++++++++++ to be filled +++++++++++++++++ */}
-            {usersToBeAdded}
           </form>
         </Modal.Body>
         <Modal.Footer
@@ -452,7 +477,7 @@ class NewProjectModal extends Component {
               marginTop: "1rem",
               float: "right"
             }}
-            className="btn btn-outline-success"
+            className="btn btn-outline-success display-5"
             id="projectModalAdd"
             data-dismiss="modal"
             onClick={this.saveNewProject}

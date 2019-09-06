@@ -40,11 +40,11 @@ class DeleteCategoryModal extends Component {
         tabIndex="-1"
         id="delCategoryModal"
       >
-        <Modal.Header>
-          <h5 className="modal-title" id="eraseCategoryModalTitle">
+        <Modal.Header className="text-white" style={{ fontSize: "14pt" }}>
+          <p className="modal-title display-4" id="eraseCategoryModalTitle">
             Delete all Tasks you are related to in
-            <b> {this.props.categorySelectedName}?</b>
-          </h5>
+            <b> Category-{this.props.categorySelected}</b>?
+          </p>
           <button
             type="button"
             className="close text-danger"
@@ -68,7 +68,7 @@ class DeleteCategoryModal extends Component {
               marginTop: "1rem",
               float: "right"
             }}
-            className="btn btn-outline-success"
+            className="btn btn-outline-success display-5"
             id="deleteCategory"
             data-dismiss="modal"
             onClick={this.deleteCategory}

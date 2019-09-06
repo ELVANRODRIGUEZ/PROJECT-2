@@ -109,13 +109,11 @@ class TaskInfo extends Component {
             <p className="d-inline p-2 bg-danger rounded text-white display-5">
               <b>Deadline:&nbsp;&nbsp;&nbsp;</b>
               <Moment format="DD, MMMM. YYYY">{this.props.taskDeadline}</Moment>
-              <br />
             </p>
           ) : (
             <p className="d-inline p-2 bg-success rounded text-white display-5">
               <b>Deadline:&nbsp;&nbsp;&nbsp;</b>
               <Moment format="DD, MMMM. YYYY">{this.props.taskDeadline}</Moment>
-              <br />
             </p>
           )}
         </div>

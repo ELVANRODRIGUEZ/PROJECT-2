@@ -467,7 +467,6 @@ class NewTaskModal extends Component {
                       Select User:
                     </option>
                     {this.state.projectUsers.map(user => {
-                      // console.log(user)
                       return (
                         <option
                           key={user["user.user_id"]}

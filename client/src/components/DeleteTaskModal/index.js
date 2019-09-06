@@ -4,7 +4,6 @@ import Collapse from "react-bootstrap/Collapse";
 import axios from "axios";
 
 class EraseTaskModal extends Component {
-
   eraseTask = () => {
     const { userId } = this.props;
 
@@ -29,16 +28,19 @@ class EraseTaskModal extends Component {
         <div>
           <div
             className="card card-title bg-secondary h4"
-            style={{ border: "0px" }}
+            style={{ border: "0px", fontSize: "14pt" }}
           >
-            {`Confirm to leave Task ${this.props.taskId}?`}
+            <p className="modal-title display-4" id="eraseProjModalTitle">
+              Confirm to leave
+              <b> Task-{this.props.taskId}</b>?
+            </p>
           </div>
           <div
             className="card-body bg-dark"
             style={{ textAlign: "right", borderRadius: ".25rem" }}
           >
             <button
-              className="btn btn-outline-success eraseOneTask"
+              className="btn btn-outline-success eraseOneTask display-5"
               task={this.props.taskId}
               onClick={this.eraseTask}
             >

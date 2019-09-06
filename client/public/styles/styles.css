@@ -416,9 +416,6 @@ select:-webkit-autofill:focus {
     font-size: 0.8em;
     font-weight: 300;
   }
-  .navText {
-    margin-left: 0;
-  }
   .btn {
     padding: 0.3rem 0.6rem;
   }
@@ -436,6 +433,7 @@ select:-webkit-autofill:focus {
     padding: 1.25rem 1.25rem;
   }
   .navText {
+    margin-left: 0;
     display: block;
     max-width: "50%";
     word-break: "break-all";
@@ -579,6 +577,14 @@ select:-webkit-autofill:focus {
   width: 100%;
   padding:0!Important;
 }
+/* This controlls the modals back-drop. */
+.modal-backdrop {
+  margin:0;
+  width: 100%;
+  min-width: 320px;
+  height: 100%;
+}
+
 /* This spread out the TaskModal across the entire window. */
 .modal-dialog {
   margin:0;
@@ -618,10 +624,10 @@ select:-webkit-autofill:focus {
 }
 
 @media screen and (max-width: 768px) {
-  #taskUsers, #notTaskUsers {
+  #projectUsers, #taskUsers, #notTaskUsers {
     margin: 0;
   }
-  #delFromAddList, #delFromDelList, #addTaskUser{
+  #addUser, #delFromAddList, #delFromDelList, #addTaskUser{
     margin-left:0;
   }
   .taskCard-cardBody, .taskInfo-cardBody {

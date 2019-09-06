@@ -156,8 +156,8 @@ class NewCategoryModal extends Component {
         tabIndex="-1"
         id="newCategoryModal"
       >
-        <Modal.Header className="text-white">
-          <h5 className="modal-title">Add a New Category</h5>
+        <Modal.Header className="text-white" style={{ fontSize: "14pt" }}>
+          <p className="modal-title display-4">Add a new Category</p>
           <button
             type="button"
             className="close text-danger"
@@ -170,22 +170,36 @@ class NewCategoryModal extends Component {
         </Modal.Header>
         <Modal.Body id="newProjectModal-container">
           <form>
-            <div className="form-group">
-              <label htmlFor="categoryName">Category name</label>
+          <div
+              className="form-group"
+              style={{
+                fontSize: "12pt"
+              }}
+            >
+              <label htmlFor="categoryName">
+                <b className="display-5">Category Name:</b>
+              </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control display-5"
                 id="categoryName"
                 placeholder="Category Name"
                 ref={this.categoryName}
                 onChange={this.chgName}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="categoryDesc">Category Description</label>
+            <div
+              className="form-group"
+              style={{
+                fontSize: "12pt"
+              }}
+            >
+              <label htmlFor="projectDesc">
+                <b className="display-5">Category Description:</b>
+              </label>
               <textarea
                 type="text"
-                className="form-control"
+                className="form-control display-5"
                 id="categoryDesc"
                 rows="3"
                 ref={this.categoryDesc}
@@ -221,7 +235,7 @@ class NewCategoryModal extends Component {
               marginTop: "1rem",
               float: "right"
             }}
-            className="btn btn-outline-success"
+            className="btn btn-outline-success display-5"
             id="categoryModalAdd"
             data-dismiss="modal"
             onClick={this.saveNewCategory}
