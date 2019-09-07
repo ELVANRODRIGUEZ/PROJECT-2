@@ -641,7 +641,7 @@ class EditTaskModal extends Component {
     return (
       <Collapse
         in={this.props.editTaskModalView}
-        id="editTaskCollapsWindow"
+        id={`editTask${this.props.taskId}`}
         style={{ margin: "auto", width: "100%" }}
       >
         <div className="modal-content bg-dark text-white">

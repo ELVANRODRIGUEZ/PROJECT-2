@@ -132,9 +132,9 @@ class TaskCard extends Component {
     const target = event.target;
     let task = parseInt(target.getAttribute("task"));
     if (this.props.taskOpened === task) {
-      this.props.openTask(0);
+      this.props.openTask(0 , 0);
     } else {
-      this.props.openTask(task);
+      this.props.openTask(task, 0);
     }
   };
 
@@ -142,10 +142,12 @@ class TaskCard extends Component {
   eraseTaskModalToggle = event => {
     const target = event.target;
     let task = parseInt(target.getAttribute("task"));
+    // console.log(this.props.eraseTaskOpened);
     if (this.props.eraseTaskOpened === task) {
       this.props.openTask(0, 0);
     } else {
       this.props.openTask(0, task);
+      // console.log(this.props.eraseTaskOpened);
     }
   };
 
@@ -215,16 +217,14 @@ class TaskCard extends Component {
           <button
             className="btn btn-secondary"
             data-toggle="collapse"
-            href={`#eraseTask${this.props.taskId}`}
-            task={`${this.props.taskId}`}
+            task={this.props.taskId}
             aria-expanded="false"
-            aria-controls={`eraseTask${this.props.taskId}`}
             style={{ float: "right", margin: "0 2px" }}
             onClick={this.eraseTaskModalToggle}
           >
             <i
-              task={`${this.props.taskId}`}
               className="fa fa-trash-o fa-4"
+              task={this.props.taskId}
               aria-hidden="true"
             ></i>
           </button>
@@ -233,10 +233,8 @@ class TaskCard extends Component {
           <button
             className="btn btn-secondary editTaskButton"
             data-toggle="collapse"
-            // href={`#editTask${this.props.taskId}`}
             task={this.props.taskId}
             aria-expanded="false"
-            // aria-controls={`editTask${this.props.taskId}`}
             style={{ float: "right", margin: "0 2px" }}
             onClick={this.editTaskModalToggle}
           >
@@ -252,7 +250,6 @@ class TaskCard extends Component {
             eraseTaskModalView={this.props.eraseTaskModalShow}
             userId={this.props.userId}
             taskId={this.props.taskId}
-            eraseTaskModalToggle={this.eraseTaskModalToggle}
             renderForNewTasks={this.props.renderForNewTasks}
           ></DeleteTaskModal>
 
@@ -286,7 +283,7 @@ class TaskCard extends Component {
                   <a
                     className="nav-link"
                     data-toggle="collapse"
-                    href="#multiCollapseExample1"
+                    href={`#multiCollapseExample1-${this.props.taskId}`}
                     role="button"
                     onClick={this.toggleUsers}
                     style={{
@@ -307,7 +304,7 @@ class TaskCard extends Component {
                   <a
                     className="nav-link"
                     data-toggle="collapse"
-                    href="#multiCollapseExample2"
+                    href={`#multiCollapseExample2-${this.props.taskId}`}
                     role="button"
                     onClick={this.toggleChat}
                     style={{
@@ -328,7 +325,7 @@ class TaskCard extends Component {
                   <a
                     className="nav-link"
                     data-toggle="collapse"
-                    href="#multiCollapseExample3"
+                    href={`#multiCollapseExample3-${this.props.taskId}`}
                     role="button"
                     onClick={this.toggleMailForm}
                     style={{
@@ -349,7 +346,7 @@ class TaskCard extends Component {
                   <a
                     className="nav-link"
                     data-toggle="collapse"
-                    href="#multiCollapseExample4"
+                    href={`#multiCollapseExample4-${this.props.taskId}`}
                     role="button"
                     onClick={this.toggleMailHistory}
                     style={{
@@ -370,7 +367,7 @@ class TaskCard extends Component {
               {/* ---- Task Users------ */}
               <div
                 className={"hide-" + this.state.usersHide}
-                id="multiCollapseExample1"
+                id={`multiCollapseExample1-${this.props.taskId}`}
               >
                 <TaskUsers allTaskUsers={this.state.allTaskUsers}></TaskUsers>
               </div>
@@ -378,7 +375,7 @@ class TaskCard extends Component {
               {/* ---- Chat Form------ */}
               <div
                 className={"hide-" + this.state.chatHide}
-                id="multiCollapseExample2"
+                id={`multiCollapseExample2-${this.props.taskId}`}
               >
                 <Chat
                   showChatModal={this.state.chatHide}
@@ -391,7 +388,7 @@ class TaskCard extends Component {
               {/* ----email Form------ */}
               <div
                 className={"hide-" + this.state.mailFormHide}
-                id="multiCollapseExample3"
+                id={`multiCollapseExample3-${this.props.taskId}`}
               >
                 <div className="card card-body bg-dark">
                   <div className="container">
@@ -412,7 +409,7 @@ class TaskCard extends Component {
               {/* ----email retrieve---- */}
               <div
                 className={"hide-" + this.state.mailHistoryHide}
-                id="multiCollapseExample4"
+                id={`multiCollapseExample4-${this.props.taskId}`}
               >
                 <div className="card card-body bg-dark">
                   <div className="container">

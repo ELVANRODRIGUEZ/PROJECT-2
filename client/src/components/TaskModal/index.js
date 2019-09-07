@@ -14,8 +14,8 @@ class TaskModal extends Component {
     this.state = {
       newTaskModalShow: false,
       // For toggling the EditTaskModal window according to the selected Task
-      openedTask: "",
-      openEraseTask: "",
+      openedTask: 0,
+      openEraseTask: 0,
       projectUsers: [],
       userId: this.props.userId
     };
@@ -139,7 +139,7 @@ class TaskModal extends Component {
                 taskDeadline={task.task_deadline}
                 renderForEditedTasks={this.props.renderForNewTasks}
                 renderForNewTasks={this.props.renderForNewTasks}
-                // This will compare all The existing Task Cards with the "openedTask" state which should cointained any Task Id that is supposed to be open, or "0" to shut them all.
+                // This will compare all The existing Task Cards with the "openedTask" state which should cointain any Task Id that is supposed to be open, or "0" to shut them all.
                 editTaskModalShow={
                   task.task_id === this.state.openedTask ? true : false
                 }

@@ -20,32 +20,43 @@ class EraseTaskModal extends Component {
   render() {
     return (
       <Collapse
-        className="collapse"
+        // className="collapse"
         in={this.props.eraseTaskModalView}
         id={`eraseTask${this.props.taskId}`}
       >
         {/* Collapse Bootstrap tool will not work if there is not a "div" container after the "Collapse" container. */}
-        <div>
-          <div
-            className="card card-title bg-secondary h4"
-            style={{ border: "0px", fontSize: "14pt" }}
-          >
-            <p className="modal-title display-4" id="eraseProjModalTitle">
+        <div className="modal-content bg-dark text-white">
+          {/* +++++++++++++++++ HEADER +++++++++++++++++ */}
+          <div className="modal-header" style={{ fontSize: "14pt" }}>
+            <p className="modal-title display-4">
               Confirm to leave
               <b> Task-{this.props.taskId}</b>?
             </p>
           </div>
-          <div
-            className="card-body bg-dark"
-            style={{ textAlign: "right", borderRadius: ".25rem" }}
-          >
-            <button
-              className="btn btn-outline-success eraseOneTask display-5"
-              task={this.props.taskId}
-              onClick={this.eraseTask}
-            >
-              Leave Task {this.props.taskId}
-            </button>
+
+          {/* +++++++++++++++++ BODY +++++++++++++++++ */}
+          <div className="card card-body bg-dark text-white">
+            <form>
+              <div
+                className="form-group"
+                style={{
+                  fontSize: "12pt"
+                }}
+              >
+                <button
+                  style={{
+                    margin: 0,
+                    marginTop: "1rem",
+                    float: "right"
+                  }}
+                  className="btn btn-outline-success eraseOneTask display-5"
+                  task={this.props.taskId}
+                  onClick={this.eraseTask}
+                >
+                  Leave Task {this.props.taskId}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </Collapse>

@@ -1,5 +1,5 @@
 import React from "react";
-import * as Scroll from 'react-scroll';
+import * as Scroll from "react-scroll";
 import API from "../../utils/API";
 import Initials from "../Initials/initials";
 // import io from "socket.io-client";
@@ -24,31 +24,27 @@ class Chat extends React.Component {
 
   componentDidUpdate = prevProps => {
     if (this.props.showChatModal !== prevProps.showChatModal) {
-      this.setState({
-        message: ""
-      });
+      if (this.props.showChatModal) {
+        this.getMessages();
+  
+        const { socket } = this.props;
+  
+        socket.on("RECEIVE_MESSAGE", msg => {
+          this.getMessages();
+  
+          //Test console.
+          // console.log(
+          // "+++++++++++++++++++++++++++++\nI, the client, am getting this 'msg' back from the Server:\n",
+          // msg
+          // );
+  
+          this.setState({ message: "" }, () => {});
+        });
+      }
+      this.setState({ message: "" });
+      this.scrollBottom();
     }
-    this.scrollBottom();
   };
-
-  UNSAFE_componentWillMount() {
-    this.getMessages();
-
-    const { socket } = this.props;
-
-    socket.on("RECEIVE_MESSAGE", msg => {
-      this.getMessages();
-      
-      //Test console.
-      // console.log(
-      // "+++++++++++++++++++++++++++++\nI, the client, am getting this 'msg' back from the Server:\n",
-      // msg
-      // );
-
-      this.setState({ message: "" }, () => {
-      });
-    });
-  }
 
   getMessages = () => {
     API.getSavedChats(this.props.taskId).then(res => {
@@ -99,20 +95,18 @@ class Chat extends React.Component {
       .catch(err => {
         console.log(err);
       });
-
   };
 
   scrollBottom = () => {
     scroller.scrollTo(this.state.uniqueElementBottom, {
-      duration: 100,
-      delay: 10,
+      duration: 0,
+      delay: 0,
       smooth: true,
       containerId: this.state.uniqueConId
     });
-  }
+  };
 
   componentWillUnmount() {
-
     this.setState({
       message: "",
       messages: [],

@@ -34,42 +34,42 @@ class MailForm extends Component {
 
   componentDidUpdate = prevProps => {
     if (this.props.showMailModal !== prevProps.showMailModal) {
-      document.getElementById(this.state.formId).reset();
-      this.setState({
-        fileURI: [],
-        fileName: [],
-        userToAdd: [],
-        usersAdded: [],
-        taskUsers: this.props.taskUsers,
-        buttonLabel: "Select File"
-      });
-    }
-
-    if (this.props.taskUsersIds !== prevProps.taskUsersIds) {
-      //  Test console.
-      //  Selected Task Id.
-      // console.log(`From the Mail: ${this.props.taskId}`);
-      //  Logged User Name.
-      // console.log(`From the Mail: ${this.props.userName}`);
-      //  Logged User Email.
-      // console.log(`From the Mail: ${this.props.userEmail}`);
-      //  This will show all the Task Users except for the logged user.
-      // console.log(`From the Mail: `);
-      // console.log(this.props.taskUsers);
-      // console.log(`From the Mail: `);
-      // console.log(this.props.taskUsers.map((u) => u.user_mail));
-      //  This will show all the Task Users Ids including the logged user.
-      // console.log(`From the Mail: ${this.props.taskUsersIds}`);
-      this.setState(
-        {
-          taskUsers: this.props.taskUsers
-        },
-        () => {
+      if (this.props.showMailModal) {
+        document.getElementById(this.state.formId).reset();
+        this.setState({
+          fileURI: [],
+          fileName: [],
+          userToAdd: [],
+          usersAdded: [],
+          taskUsers: this.props.taskUsers,
+          buttonLabel: "Select File"
+        });
+        if (this.props.taskUsersIds !== prevProps.taskUsersIds) {
           //  Test console.
-          //   console.log(this.state.taskUsers);
-          //   console.log(this.state.notTaskUsers);
+          //  Selected Task Id.
+          // console.log(`From the Mail: ${this.props.taskId}`);
+          //  Logged User Name.
+          // console.log(`From the Mail: ${this.props.userName}`);
+          //  Logged User Email.
+          // console.log(`From the Mail: ${this.props.userEmail}`);
+          //  This will show all the Task Users except for the logged user.
+          // console.log(`From the Mail: `);
+          // console.log(this.props.taskUsers);
+          // console.log(`From the Mail: `);
+          // console.log(this.props.taskUsers.map((u) => u.user_mail));
+          //  This will show all the Task Users Ids including the logged user.
+          // console.log(`From the Mail: ${this.props.taskUsersIds}`);
+          this.setState(
+            {
+              taskUsers: this.props.taskUsers
+            },
+            () => {
+              //  Test console.
+              //   console.log(this.state.taskUsers);
+            }
+          );
         }
-      );
+      }
     }
   };
 
@@ -566,7 +566,7 @@ class MailForm extends Component {
                 htmlFor={this.state.fileUploadID}
                 className="btn btn-outline-success btn-sm display-5"
                 style={{
-                  margin:"0"
+                  margin: "0"
                 }}
               >
                 <i className="fa fa-arrow-circle-o-up"></i>
@@ -604,7 +604,7 @@ class MailForm extends Component {
               className="btn btn-outline-primary display-5"
               onClick={this.handleSubmit.bind(this)}
               style={{
-                margin:"0"
+                margin: "0"
               }}
             >
               Submit
