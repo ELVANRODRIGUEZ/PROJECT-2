@@ -238,24 +238,7 @@ class Members extends Component {
             // Test console.
             // console.log(data.data.tasks);
 
-            this.setState({ tasksCards: data.data.tasks }, () => {
-              // Test console.
-              // console.log(this.state.tasksCards);
-
-              //? This is to get all the Task's Ids from the Selected Project and Category.
-              //> Endpoint at: "../../../routes/apiTask.js"
-              axios
-                .get(
-                  `/api/task/get/tasksIds_on_proj_and_cat/${userId}/${this.state.projectSelected}/${this.state.categorySelected}`
-                )
-                .then(function(data3) {
-                  // Test console.
-                  // console.log(data3.data);
-                })
-                .catch(error => {
-                  console.log(error);
-                });
-            });
+            this.setState({ tasksCards: data.data.tasks });
           })
           .catch(error => {
             console.log(error);
@@ -342,24 +325,7 @@ class Members extends Component {
         // Test console.
         // console.log(data.data.tasks);
 
-        this.setState({ tasksCards: data.data.tasks }, () => {
-          // Test console.
-          // console.log(this.state.tasksCards);
-
-          //? This is to get all the Task's Ids from the Selected Project and Category.
-          //> Endpoint at: "../../../routes/apiTask.js"
-          axios
-            .get(
-              `/api/task/get/tasksIds_on_proj_and_cat/${userId}/${projectSelected}/${category}`
-            )
-            .then(function(data3) {
-              // Test console.
-              // console.log(data3.data);
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        });
+        this.setState({ tasksCards: data.data.tasks });
       })
       .catch(error => {
         console.log(error);

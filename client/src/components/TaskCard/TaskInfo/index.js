@@ -22,7 +22,7 @@ class TaskInfo extends Component {
   }
 
   // This makes the Axios Request to retrieve the Tasks Progress.
-  componentDidMount = () => {
+  UNSAFE_componentWillMount = () => {
     //  Test console.
     // console.log(this.props.taskDeadline)
 
@@ -91,6 +91,13 @@ class TaskInfo extends Component {
         this.setState({ blockProgress: true });
       });
   };
+
+  componentWillUnmount () {
+    this.setState({
+      taskAccomplished: 0,
+      blockProgress: true
+    })
+  }
 
   render() {
     return (

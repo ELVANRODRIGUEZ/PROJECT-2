@@ -34,7 +34,7 @@ class TaskCard extends Component {
     };
   }
 
-  componentDidMount = prevProps => {
+  UNSAFE_componentWillMount = prevProps => {
     //  Test console.
     // console.log(this.props.projectUsers);
     // console.log("TaskCard mounted");
@@ -93,31 +93,21 @@ class TaskCard extends Component {
               )
             },
             () => {
+              const {taskUsersIds} = this.state;
+              const {projectUsers} = this.props;
+
               //  Test console.
               // console.log(this.state.taskUsersIds);
               // console.log(this.state.allTaskUsers);
-
-              //? Route for getting all users that are releted to the selected Project but filtering out the already existing ones related to the selected Task.
-              //> Endpoint at: "../../../routes/apiTask.js"
-              axios
-                .post(
-                  `/api/task/add/get_projUsers_with_no_taskUsers/${this.props.projectId}`,
-                  {
-                    usersIds: this.state.taskUsersIds
-                  }
-                )
-                .then(users2 => {
-                  //  Test console.
-                  // console.log(users2.data);
-
-                  this.setState({ notTaskUsers: users2.data }, () => {
-                    //  Test console.
-                    // console.log(this.state.notTaskUsers);
-                  });
-                })
-                .catch(error => {
-                  console.log(error);
-                });
+              // console.log(projectUsers);
+              // console.log(taskUsersIds);
+              
+              this.setState({notTaskUsers: projectUsers.filter(user => {
+                return taskUsersIds.indexOf(parseInt(user.user_id)) === -1
+              })}, () => {
+                //  Test console.
+                // console.log(this.state.notTaskUsers);
+              });
             }
           );
         });

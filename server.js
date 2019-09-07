@@ -66,11 +66,11 @@ io.on("connection", function(socket) {
   });
   socket.on("SAVE_NEWTASK", msg => {
     //Test console.
-    console.log(
-      "+++++++++++++++++++++++++++++\nI, the server, am getting this msg from the Client:\n",
-      msg,
-      "\n+++++++++++++++++++++++++++++"
-    );
+    // console.log(
+    //   "+++++++++++++++++++++++++++++\nI, the server, am getting this msg from the Client:\n",
+    //   msg,
+    //   "\n+++++++++++++++++++++++++++++"
+    // );
 
     io.emit("RENDER_NEWTASKS", msg);
   });

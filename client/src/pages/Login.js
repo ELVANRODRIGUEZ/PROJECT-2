@@ -80,7 +80,7 @@ class Login extends Component {
               fontSize: "20pt"
             }}
           >
-            <div className="navText">Team Organizer™ v3.5 </div>
+            <div className="navText">Team Organizer™ v3.5.1 </div>
           </div>
         </nav>
         <div id="outter">
