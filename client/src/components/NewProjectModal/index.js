@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
+import Alerts from "../Alerts";
 
 // ================================== Files Dependencies
 
@@ -457,20 +458,12 @@ class NewProjectModal extends Component {
           }}
         >
           {/*! +++++++++++++++++ Error Dialog +++++++++++++++++ */}
-          <div
-            style={{
-              transition: "opacity 2s",
-              display: this.state.display,
-              opacity: this.state.opacity,
-              margin: 0
-            }}
-            id="newProjectAlert"
-            className="alert alert-danger"
-            role="alert"
-          >
-            <i className="fa fa-exclamation-circle"></i>
-            <span className="msg">&nbsp; {this.state.errorMessage}</span>
-          </div>
+          <Alerts
+            transition={"opacity 2s"}
+            display={this.state.display}
+            opacity={this.state.opacity}
+            alert={this.state.errorMessage}
+          ></Alerts>
           <button
             style={{
               margin: 0,

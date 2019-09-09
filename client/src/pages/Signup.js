@@ -3,13 +3,6 @@ import React, { Component } from "react";
 import axios from "axios"; // We import "axios" to be able to make requests to the Backend Endpoints.
 import { Link } from "react-router-dom"; //  We import "Link" from "react-router-dom" to be able to link to other Route Components.
 import Alerts from "../components/Alerts";
-// import DeleteBtn from "../components/DeleteBtn";
-// import Jumbotron from "../components/Jumbotron";
-// import API from "../utils/API";
-// import { Link } from "react-router-dom";
-// import { Col, Row, Container } from "../components/Grid";
-// import { List, ListItem } from "../components/List";
-// import { Input, TextArea, FormBtn } from "../components/Form";
 
 class Signup extends Component {
   constructor(props) {
@@ -249,7 +242,7 @@ class Signup extends Component {
               fontSize: "20pt"
             }}
           >
-            <div className="navText">Team Organizer™ v3.5.2 </div>
+            <div className="navText">Team Organizer™ v3.6 </div>
           </div>
         </nav>
         <div id="outter">
@@ -287,7 +280,6 @@ class Signup extends Component {
                     className="form-control logsign-field display-5"
                     id="phone-input"
                     placeholder="+12 123 123 1234"
-                    // autoComplete="off"
                     autoComplete="user-phone"
                     onChange={this.onChangePhone}
                   />
@@ -336,18 +328,43 @@ class Signup extends Component {
               </form>
               <br />
 
-              <div id="pswd_info" style={{ display: this.state.pswDisplay }}>
-                <h6>Password must have:</h6>
-                <p id="letter" className={this.state.pswLetterClass}>
+              {/*! +++++++++++++++++ Password Hints +++++++++++++++++ */}
+              <div
+                id="pswd_info"
+                style={{ display: this.state.pswDisplay, fontSize: "12pt" }}
+              >
+                <p
+                  style={{
+                    margin: "0 0 10px 0",
+                    padding: "0",
+                    fontWeight: "normal"
+                  }}
+                  className="display-4"
+                >
+                  <b>Password must have:</b>
+                </p>
+                <p
+                  id="letter"
+                  className={`display-5 ${this.state.pswLetterClass}`}
+                >
                   At least <strong>one letter</strong>
                 </p>
-                <p id="capital" className={this.state.pswCapitalClass}>
+                <p
+                  id="capital"
+                  className={`display-5 ${this.state.pswCapitalClass}`}
+                >
                   At least <strong>one capital letter</strong>
                 </p>
-                <p id="number" className={this.state.pswNumClass}>
+                <p
+                  id="number"
+                  className={`display-5 ${this.state.pswNumClass}`}
+                >
                   At least <strong>one number</strong>
                 </p>
-                <p id="length" className={this.state.pswLengthClass}>
+                <p
+                  id="length"
+                  className={`display-5 ${this.state.pswLengthClass}`}
+                >
                   Be at least <strong>8 characters</strong>
                 </p>
               </div>

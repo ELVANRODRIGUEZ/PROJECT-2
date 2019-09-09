@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom"; //  We import "Link" from "react-router-dom" to be able to link to other Route Components.
+import Alerts from "../components/Alerts";
 
 class Login extends Component {
   constructor(props) {
@@ -80,7 +81,7 @@ class Login extends Component {
               fontSize: "20pt"
             }}
           >
-            <div className="navText">Team Organizer™ v3.5.2 </div>
+            <div className="navText">Team Organizer™ v3.6 </div>
           </div>
         </nav>
         <div id="outter">
@@ -128,21 +129,12 @@ class Login extends Component {
                 </div>
 
                 {/*! +++++++++++++++++ Error Dialog +++++++++++++++++ */}
-                <div
-                  style={{
-                    transition: "opacity 2s",
-                    display: this.state.display,
-                    opacity: this.state.opacity
-                  }}
-                  id="alert"
-                  className="alert alert-danger"
-                  role="alert"
-                >
-                  <i className="fa fa-exclamation-circle"></i>
-                  <span className="msg">
-                    &nbsp; Error: Your Data is incorrect
-                  </span>
-                </div>
+                <Alerts
+                  transition={"opacity 2s"}
+                  display={this.state.display}
+                  opacity={this.state.opacity}
+                  alert={"Your Data is incorrect"}
+                ></Alerts>
 
                 <button
                   id="login"

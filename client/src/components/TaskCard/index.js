@@ -287,16 +287,16 @@ class TaskCard extends Component {
                     role="button"
                     onClick={this.toggleUsers}
                     style={{
-                      fontSize: "14pt"
+                      fontSize: "12pt"
                     }}
                   >
                     <p
-                      className="display-4"
+                      className="display-5"
                       style={{
                         margin: "0px"
                       }}
                     >
-                      Users
+                      <strong>Users</strong>
                     </p>
                   </a>
                 </li>
@@ -308,16 +308,16 @@ class TaskCard extends Component {
                     role="button"
                     onClick={this.toggleChat}
                     style={{
-                      fontSize: "14pt"
+                      fontSize: "12pt"
                     }}
                   >
                     <p
-                      className="display-4"
+                      className="display-5"
                       style={{
                         margin: "0px"
                       }}
                     >
-                      Chat
+                      <strong>Chat</strong>
                     </p>
                   </a>
                 </li>
@@ -329,16 +329,16 @@ class TaskCard extends Component {
                     role="button"
                     onClick={this.toggleMailForm}
                     style={{
-                      fontSize: "14pt"
+                      fontSize: "12pt"
                     }}
                   >
                     <p
-                      className="display-4"
+                      className="display-5"
                       style={{
                         margin: "0px"
                       }}
                     >
-                      New Email
+                      <strong>New Email</strong>
                     </p>
                   </a>
                 </li>
@@ -350,16 +350,16 @@ class TaskCard extends Component {
                     role="button"
                     onClick={this.toggleMailHistory}
                     style={{
-                      fontSize: "14pt"
+                      fontSize: "12pt"
                     }}
                   >
                     <p
-                      className="display-4"
+                      className="display-5"
                       style={{
                         margin: "0px"
                       }}
                     >
-                      Email History
+                      <strong>Email History</strong>
                     </p>
                   </a>
                 </li>
@@ -391,9 +391,7 @@ class TaskCard extends Component {
                 id={`multiCollapseExample3-${this.props.taskId}`}
               >
                 <div className="card card-body bg-dark">
-                  <div className="container">
-                    {/* {console.log(this.state.taskUsers)} */}
-                    {/* {console.log(this.state.taskUsersIds)} */}
+                  <div className="container" style={{ padding: "0" }}>
                     <MailForm
                       showMailModal={this.state.mailFormHide}
                       taskId={this.props.taskId}
@@ -412,7 +410,7 @@ class TaskCard extends Component {
                 id={`multiCollapseExample4-${this.props.taskId}`}
               >
                 <div className="card card-body bg-dark">
-                  <div className="container">
+                  <div className="container" style={{ padding: "0" }}>
                     <div className="list-group">
                       <MailRetrieve savedMails={this.state.savedMails} />
                     </div>

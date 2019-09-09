@@ -252,9 +252,8 @@ select:-webkit-autofill:focus {
   z-index: 1;
   bottom: 75px;
   bottom: -1px\9;
-  /* IE Specific */
-  right: -155px;
-  width: 250px;
+  right: -45px;
+  width: 225px;
   padding: 15px;
   background: black;
   border: 1px solid #b9d4e9;
@@ -262,7 +261,6 @@ select:-webkit-autofill:focus {
   border-bottom-color: #b8d4ea;
   box-shadow: 0 0 5px #b9d4e9;
   background-color: rgb(128, 128, 128);
-  font-size: 0.875em;
   border-radius: 5px;
 }
 
@@ -274,18 +272,6 @@ select:-webkit-autofill:focus {
 
 #pswd_info p {
   margin: 0;
-}
-
-#pswd_info::before {
-  content: "\25B2";
-  position: absolute;
-  top: -12px;
-  left: 45%;
-  font-size: 14px;
-  line-height: 14px;
-  color: #05728f;
-  text-shadow: none;
-  display: block;
 }
 
 .invalid {

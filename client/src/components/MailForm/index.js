@@ -411,12 +411,8 @@ class MailForm extends Component {
 
   render() {
     let usersToBeAdded;
-    // let attachedFiles;
-    // if(this.state.buttonLabel){
-    //   attachedFiles=this.state.buttonLabel;
-    // }
+    
     if (this.state.usersAdded.length > 0) {
-      // console.log(this.state.usersAdded);
       usersToBeAdded = (
         <ul id="notTaskUserList" className="list-group">
           {this.state.usersAdded.map(user => {
@@ -460,7 +456,7 @@ class MailForm extends Component {
 
     return (
       <div>
-        <div className="col-sm-12">
+        <div className="col-sm-12" style={{ padding: "0" }}>
           <form id={this.state.formId}>
             {/* +++++++++++++++++ Users to e-mail +++++++++++++++++ */}
             <div

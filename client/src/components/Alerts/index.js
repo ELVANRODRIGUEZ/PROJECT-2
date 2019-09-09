@@ -1,22 +1,23 @@
 import React, { Component } from "react";
 
 class Alerts extends Component {
-
   render() {
     return (
-        <div
+      <div
         style={{
-            transition: this.props.transition,
-            display: this.props.display,
-            opacity: this.props.opacity
-          }}
+          transition: this.props.transition,
+          display: this.props.display,
+          opacity: this.props.opacity,
+          fontSize: "12pt"
+        }}
         id="alert"
         className="alert alert-danger"
         role="alert"
-        // onChange = {this.onChange}
       >
-         <i className="fa fa-exclamation-circle"></i>
-        <span>Error:</span> <span id="alertmsg" className="msg">{this.props.alert}</span>
+        <i className="fa fa-exclamation-circle"></i>
+        <span id="alertmsg" className="msg display-5">
+          &nbsp; Error:&nbsp; {this.props.alert}.
+        </span>
       </div>
     );
   }
