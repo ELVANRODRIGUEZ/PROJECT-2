@@ -1,8 +1,10 @@
 import React from "react";
 import * as Scroll from "react-scroll";
+// import Moment from "react-moment";
 import API from "../../utils/API";
 import Initials from "../Initials/initials";
 // import io from "socket.io-client";
+const moment = require("moment");
 
 const Element = Scroll.Element;
 const scroller = Scroll.scroller;
@@ -26,18 +28,18 @@ class Chat extends React.Component {
     if (this.props.showChatModal !== prevProps.showChatModal) {
       if (this.props.showChatModal) {
         this.getMessages();
-  
+
         const { socket } = this.props;
-  
+
         socket.on("RECEIVE_MESSAGE", msg => {
           this.getMessages();
-  
+
           //Test console.
           // console.log(
           // "+++++++++++++++++++++++++++++\nI, the client, am getting this 'msg' back from the Server:\n",
           // msg
           // );
-  
+
           this.setState({ message: "" }, () => {});
         });
       }
@@ -53,10 +55,28 @@ class Chat extends React.Component {
 
       this.setState({ messages: res.data }, () => {
         //  Test console.
-        //console.log(this.state.messages);
+        // console.log(this.state.messages);
+
         this.scrollBottom();
       });
     });
+  };
+
+  localizeTime = severTimestamp => {
+    let localTimestamp = new Date(severTimestamp);
+
+    //Test console.
+    // console.log(localTimestamp);
+
+    let momentlocTimestamp = moment(localTimestamp);
+
+    let localDate = momentlocTimestamp.format("MM-DD");
+    let localTime = momentlocTimestamp.format("hh:mm");
+
+    //Test console.
+    // console.log(`${localDate} at ${localTime}`);
+
+    return `${localDate} at ${localTime}`;
   };
 
   sendMessage = ev => {
@@ -65,18 +85,10 @@ class Chat extends React.Component {
     const message = this.state.message;
     const author = this.state.username;
     const taskId = this.props.taskId;
-    const day = new Date().getDate();
-    const month = new Date().getMonth() + 1;
-    const hours = new Date().getHours();
-    const minutes = new Date().getMinutes();
     let chatData = {
       author: author,
       message: message,
-      taskId: taskId,
-      day: day,
-      month: month,
-      hours: hours,
-      minutes: minutes
+      taskId: taskId
     };
     //Test console.
     // console.log("chat data ");
@@ -155,8 +167,7 @@ class Chat extends React.Component {
                         >
                           <p>
                             <span className="time_date">
-                              {message.month}-{message.day} at {message.hours}:
-                              {("0" + message.minutes).slice(-2)}
+                              {this.localizeTime(message.timestamp)}
                             </span>{" "}
                             <span className="msg_author">{message.author}</span>
                             <span className="chat-message display-5">
